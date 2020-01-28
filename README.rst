@@ -30,7 +30,7 @@ Credits and License
 
 Developed at the Centre of Biological Engineering, University of Minho
 
-Please refer to this work through this `publication <  `__> by Ana Marta Sequeira, Diana Lousa, Miguel Rocha :
+Please refer to this work through this publication by Ana Marta Sequeira, Diana Lousa, Miguel Rocha :
 
 - ProPythia: a python automated platform for the classification of proteins using machine learning
 
