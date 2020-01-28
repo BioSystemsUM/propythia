@@ -6,10 +6,10 @@ package_data={'propythia':['adjuv_functions/features_functions/data/*','adjuv_fu
 # },
 setup(
     name = 'propythia',
-    version = '0.0.1',
+    version = '0.0.2',
     package_dir = {'':'src'},
     packages = find_packages('src'),
-    package_data= package_data,
+    package_data = package_data,
     include_package_data=True,
     install_requires = ["numpy",
                         "scipy",
