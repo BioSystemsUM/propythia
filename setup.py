@@ -22,7 +22,7 @@ setup(
     description = 'propythia - automated platform for the classification of peptides/proteins using machine learning',
     license = 'GNU General Public License v3',
     keywords = 'machine learning classification proteins',
-    url = 'https://github.com/BioSystemsUM/propythia/archive/v_0.0.3.tar.gz',
+    url = 'https://github.com/BioSystemsUM/propythia/archive/v_0.0.4.tar.gz',
     long_description = open('README.rst').read(),
     classifiers = [
         'Development Status :: 4 - Beta',
