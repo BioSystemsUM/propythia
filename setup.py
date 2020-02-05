@@ -10,7 +10,7 @@ setup(
     package_dir = {'':'src'},
     packages = find_packages('src'),
     package_data = package_data,
-    include_package_data=True,
+    include_package_data=False,
     install_requires = ["numpy",
                         "scipy",
                         "pandas",
