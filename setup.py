@@ -6,7 +6,7 @@ package_data={'propythia':['adjuv_functions/features_functions/data/*','adjuv_fu
 # },
 setup(
     name = 'propythia',
-    version = '0.0.2',
+    version = '0.0.3',
     package_dir = {'':'src'},
     packages = find_packages('src'),
     package_data = package_data,
@@ -22,7 +22,7 @@ setup(
     description = 'propythia - automated platform for the classification of peptides/proteins using machine learning',
     license = 'GNU General Public License v3',
     keywords = 'machine learning classification proteins',
-    url = 'https://github.com/BioSystemsUM/propythia',
+    url = 'https://github.com/BioSystemsUM/propythia/archive/v_0.0.3.tar.gz',
     long_description = open('README.rst').read(),
     classifiers = [
         'Development Status :: 4 - Beta',
