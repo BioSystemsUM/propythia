@@ -6,7 +6,7 @@ package_data={'propythia':['adjuv_functions/features_functions/data/*','adjuv_fu
 # },
 setup(
     name = 'propythia',
-    version = '0.0.3',
+    version = '0.0.4',
     package_dir = {'':'src'},
     packages = find_packages('src'),
     package_data = package_data,
