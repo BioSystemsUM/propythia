@@ -144,7 +144,7 @@ class MachineLearning:
             if param_grid is None:
                 param_range = [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]
                 param_grid = [{'clf__C': param_range,
-                               'clf__kernel': ['linear','rbf'],
+                               'clf__kernel': ['linear'],
                                'clf__gamma': param_range
                                #'clf__kernel': ['rbf'] does not allow to retrieve feature importances with rbf kernel
                                }]
@@ -699,7 +699,9 @@ class MachineLearning:
             features_to_select=self.X_data.columns
         else:
             features_to_select= features_names
+
         x_predict_data=featuresDF[features_to_select]
+
         # raw proability predictions of belonging or not
         preds = classifier.predict_proba(x_predict_data)
         #0 or 1 if belong or not
@@ -718,7 +720,6 @@ class MachineLearning:
         pos_0=int
         pos_1=int
         rows = []
-        print(df_pred)
 
         for index, row in df_pred.iterrows():
             value=row['P_class1']
@@ -773,13 +774,13 @@ class MachineLearning:
         df_new=df.drop(columns=['sequence', 'prevision'])
         x=df_new.values.tolist() #not in pandas dataframe
         remove_list=[]
-        print(df_new)
-        for row in range(len(x)-1):
 
-            pos_fin=x[row][0]
-            pos_ini=x[row][1]
-            prob=round(x[row][2],3)
-            scale_prob=x[row][3]
+        for row in range(len(x)-1):
+            pos_fin=x[row][3]
+            pos_ini=x[row][2]
+            prob=round(x[row][0],3)
+            x[row][0] = round(x[row][0], 4)
+            scale_prob=x[row][1]
             key=x[row][4]
 
             if x[row][4]==x[row+1][4]:
@@ -795,10 +796,11 @@ class MachineLearning:
 
         # add sequence
         for row in range(len(x)):
-            seqs=seq[int(x[row][1]):int(x[row][0])]
+            seqs=seq[int(x[row][2]):int(x[row][3])]
             x[row].append(seqs)
 
-        final_df=pd.DataFrame(x, columns=['pos_-1', 'pos_0','probability','scale_probability','key','sequence'])
+        final_df=pd.DataFrame(x, columns=['probability','scale_probability','pos_0','pos_-1','key','sequence'])
         final_df=final_df.drop(columns=['key'])
+        final_df = final_df[['pos_0','pos_-1','probability','scale_probability','sequence']]
         return final_df
 
