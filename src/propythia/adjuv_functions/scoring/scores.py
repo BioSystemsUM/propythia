@@ -19,6 +19,13 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 def score_methods(x_original,x_reduced,labels):
+    '''
+
+    :param x_original: h biuojip+lp´+ç
+    :param x_reduced:
+    :param labels:
+    :return:
+    '''
     svm_mod =svm.SVC(gamma=0.001,C=100)
     gnb = GaussianNB()
     rf=RandomForestClassifier(n_estimators=100)
