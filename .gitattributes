@@ -1,4 +1,10 @@
 src/propythia/adjuv_functions/features_functions/data/* linguist-generated=true
 src/propythia/adjuv_functions/sequence/data/* linguist-generated=true
+<<<<<<< HEAD
 example/* linguist-generated=true
 tests/datasets/* linguist-generated=true
+=======
+tests/datasets/* linguist-generated=true
+example/* linguist-generated=true
+
+>>>>>>> bf2b115cea43797a6d8ea186156b05bd792b0a62
