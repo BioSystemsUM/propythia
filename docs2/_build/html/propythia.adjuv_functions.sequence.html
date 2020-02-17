@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Adjuv functions: Sequence &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Adjuv functions: Scoring" href="propythia.adjuv_functions.scoring.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="propythia.html">ProPythia modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="propythia.adjuv_functions.html">propythia.adjuv_functions package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="propythia.adjuv_functions.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html">Adjuv functions: Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.scoring.html">Adjuv functions: Scoring</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Adjuv functions: Sequence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.sequence.get_sequence">get_sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.sequence.get_sized_seq">get_sized_seq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.sequence.get_sub_seq">get_sub_seq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.sequence.pro_check">pro_check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.sequence">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.html#module-propythia.adjuv_functions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="propythia.adjuv_functions.html">propythia.adjuv_functions package</a> &raquo;</li>
+        
+      <li>Adjuv functions: Sequence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/propythia.adjuv_functions.sequence.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="adjuv-functions-sequence">
+<h1>Adjuv functions: Sequence<a class="headerlink" href="#adjuv-functions-sequence" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-propythia.adjuv_functions.sequence.get_sequence">
+<span id="get-sequence"></span><h2>get_sequence<a class="headerlink" href="#module-propythia.adjuv_functions.sequence.get_sequence" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<p>This file contains functions to get protein sequences.</p>
+<p>To download a protein sequence from the uniprot (<a class="reference external" href="http://www.uniprot.org/">http://www.uniprot.org/</a>) website,
+just provide a protein ID or a txt file with uniprot ID, obtaining a txt file with the protein sequences.</p>
+<p>Authors:</p>
+<p>Date:</p>
+<p>Email:</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sequence.</code><code class="sig-name descname">get_protein_sequence</code><span class="sig-paren">(</span><em class="sig-param">protein_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sequence.html#get_protein_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the protein sequence from the uniprot website by ID.
+:param protein_id: ProteinID is a string indicating ID such as “P48039”.
+:return: str protein sequence</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence_from_txt">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sequence.</code><code class="sig-name descname">get_protein_sequence_from_txt</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">openfile</em>, <em class="sig-param">savefile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sequence.html#get_protein_sequence_from_txt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence_from_txt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the protein sequence from the uniprot website by the file containing ID.
+:param path: path is a directory path containing the ID file (e.g. “/home/protein/”)
+:param openfile: ID file  (e.g. “proteinID.txt”)
+:param savefile: file saving the obtained protein sequences (e.g. “protein.txt”)
+:return: file txt with protein sequences</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-propythia.adjuv_functions.sequence.get_sized_seq">
+<span id="get-sized-seq"></span><h2>get_sized_seq<a class="headerlink" href="#module-propythia.adjuv_functions.sequence.get_sized_seq" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<p>Allows to change the sequence and generating other.cut or add aminoacids to obtain sequences with equal lenght.
+(one sequence —-&gt; one sequence).</p>
+<blockquote>
+<div><p>The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.
+It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa
+(if needed)</p>
+<p>To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.
+If necessary dummy will be added to the right</p>
+<p>To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.
+If necessary dummy will be added to the left</p>
+<p>To consider both extremes of sequence both n and c terminal are different of zero.
+If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.
+If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).</p>
+</div></blockquote>
+<p>Authors:</p>
+<p>Date:</p>
+<p>Email:</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sized_seq.seq_equal_lenght">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sized_seq.</code><code class="sig-name descname">seq_equal_lenght</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">n_terminal=10</em>, <em class="sig-param">c_terminal=10</em>, <em class="sig-param">terminal=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sized_seq.html#seq_equal_lenght"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sized_seq.seq_equal_lenght" title="Permalink to this definition">¶</a></dt>
+<dd><p>cut or add aminoacids to obtain sequences with equal lenght.
+:param seq: protein sequence
+:param n_terminal: number of aa to consider in the n terminal (left side of sequence)
+:param c_terminal: number of aa to consider in the c terminal (right side of sequence)
+:param terminal: in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add</p>
+<blockquote>
+<div><p>0 to add to the right (consider N terminal)
+-1 to add to the left (consider C terminal)
+2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of sequences cntaining all the same lenght</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-propythia.adjuv_functions.sequence.get_sub_seq">
+<span id="get-sub-seq"></span><h2>get_sub_seq<a class="headerlink" href="#module-propythia.adjuv_functions.sequence.get_sub_seq" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<p>Allows to generate subsequences from only one sequence. The output is a list of sequences.
+(one sequence —-&gt; list with subsequences)</p>
+<dl>
+<dt>The subsequences can be:</dt><dd><p>1) sliding window of the protein given. It will generate a list of n sequences with
+lenght equal to the value of window and spaced a gap value. It can or not retrieve
+the indices of location of the subsequence in the original sequence.
+This can be useful for example to screen specific sites in the protein with machine learning.</p>
+<p>2)Split the total protein into a set of segments around specific aminoacid.Given a
+specific window size p, we can obtain all segments of length equal to (2*p+1).
+It can be useful for example in the prediction of functional sites (e.g.,methylation) of protein.</p>
+<p>3)Split the original sequence in a user specified number of subsequences. Divide the sequence in n
+equal lenght (when possible) chunks</p>
+<p>4)Divide the sequence in the N terminal and  C terminal with sizes defined by the user. It returns
+a list with N and C terminal and the rest of the sequence(if user choose).
+By default the N terminal is considerer to be the beggining of the sequence (left)</p>
+</dd>
+</dl>
+<p>Authors:</p>
+<p>Date:</p>
+<p>Email:</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_sliding_window">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sub_seq.</code><code class="sig-name descname">sub_seq_sliding_window</code><span class="sig-paren">(</span><em class="sig-param">ProteinSequence</em>, <em class="sig-param">window_size=20</em>, <em class="sig-param">gap=1</em>, <em class="sig-param">index=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sub_seq.html#sub_seq_sliding_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_sliding_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>sliding window of the protein given. It will generate a list of n sequences with
+lenght equal to the value of window and spaced a gap value. It can or not retrieve
+the indices of location of the subsequence in the original sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ProteinSequence</strong> – protein sequence</p></li>
+<li><p><strong>window_size</strong> – number of aminoacids to considerer, lenght of the subsequence. for default 20</p></li>
+<li><p><strong>gap</strong> – gap size of the search of windows in sequence. default 1</p></li>
+<li><p><strong>index</strong> – if true, return the indices of location of the subsequence in the original sequence</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with subsequences generated with or without a list of tuples with location of subsequences
+in original sequence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_split">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sub_seq.</code><code class="sig-name descname">sub_seq_split</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">number_of_subseq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sub_seq.html#sub_seq_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the originl seq in n number of subsequences.
+:param seq: protein sequence
+:param number_of_subseq: number of subsequences to divide the original seq
+:return: list with number_of_sequences sequences.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_terminals">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sub_seq.</code><code class="sig-name descname">sub_seq_terminals</code><span class="sig-paren">(</span><em class="sig-param">seq</em>, <em class="sig-param">N_terminal=5</em>, <em class="sig-param">C_terminal=5</em>, <em class="sig-param">rest=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sub_seq.html#sub_seq_terminals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_terminals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide the sequence in the N terminal and  C terminal with sizes defined by the user. It returns
+a list with N and C terminal and rest of the sequence.
+By default the N terminal is considerer to be the beggining of the sequence (left)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq</strong> – protein sequence</p></li>
+<li><p><strong>N_terminal</strong> – size of the N terminal to consider. If zero will not return</p></li>
+<li><p><strong>C_terminal</strong> – size of the C terminal to consider. If zero will not return</p></li>
+<li><p><strong>rest</strong> – If true will return the restant subsequence</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with N, C and rest of the sequence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_to_aa">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.get_sub_seq.</code><code class="sig-name descname">sub_seq_to_aa</code><span class="sig-paren">(</span><em class="sig-param">ProteinSequence</em>, <em class="sig-param">ToAA</em>, <em class="sig-param">window</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/get_sub_seq.html#sub_seq_to_aa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.get_sub_seq.sub_seq_to_aa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all 2*window+1 sub-sequences whose center is ToAA in a protein</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ProteinSequence</strong> – protein sequence</p></li>
+<li><p><strong>ToAA</strong> – central (query point) amino acid in the sub-sequence</p></li>
+<li><p><strong>window</strong> – span (number of amnoacids to go front and back from the ToAA</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list form containing sub-sequences</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-propythia.adjuv_functions.sequence.pro_check">
+<span id="pro-check"></span><h2>pro_check<a class="headerlink" href="#module-propythia.adjuv_functions.sequence.pro_check" title="Permalink to this headline">¶</a></h2>
+<p>Authors:</p>
+<p>Date:</p>
+<p>Email:</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="propythia.adjuv_functions.sequence.pro_check.protein_check">
+<code class="sig-prename descclassname">propythia.adjuv_functions.sequence.pro_check.</code><code class="sig-name descname">protein_check</code><span class="sig-paren">(</span><em class="sig-param">ProteinSequence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/propythia/adjuv_functions/sequence/pro_check.html#protein_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#propythia.adjuv_functions.sequence.pro_check.protein_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the protein sequence is a valid amino acid sequence or not
+:param ProteinSequence: protein sequence
+:return: lenght of protein if no porblem, 0 if protein is not valid</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-propythia.adjuv_functions.sequence">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-propythia.adjuv_functions.sequence" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="propythia.adjuv_functions.scoring.html" class="btn btn-neutral float-left" title="Adjuv functions: Scoring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+ package
+========
+
+Subpackages
+-----------
+
+.. toctree::
+
+   propythia
+
+Module contents
+---------------
+
+.. automodule:: 
+   :members:
+   :undoc-members:
+   :show-inheritance:
