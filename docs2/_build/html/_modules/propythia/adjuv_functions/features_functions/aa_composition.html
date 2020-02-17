@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.adjuv_functions.features_functions.aa_composition &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.adjuv_functions.features_functions.aa_composition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.adjuv_functions.features_functions.aa_composition</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">###############################################################################</span>
+
+<span class="sd">The module is used for computing the composition of amino acids, dipetide and </span>
+
+<span class="sd">3-mers (tri-peptide) for a given protein sequence. You can get 8420 descriptors</span>
+
+<span class="sd">for a given protein sequence. You can freely use and distribute it. If you hava </span>
+
+<span class="sd">any problem, you could contact with us timely!</span>
+
+<span class="sd">References:</span>
+
+<span class="sd">[1]: Reczko, M. and Bohr, H. (1994) The DEF data base of sequence based protein</span>
+
+<span class="sd">fold class predictions. Nucleic Acids Res, 22, 3616-3619.</span>
+
+<span class="sd">[2]: Hua, S. and Sun, Z. (2001) Support vector machine approach for protein</span>
+
+<span class="sd">subcellular localization prediction. Bioinformatics, 17, 721-728.</span>
+
+
+<span class="sd">[3]:Grassmann, J., Reczko, M., Suhai, S. and Edler, L. (1999) Protein fold class</span>
+
+<span class="sd">prediction: new methods of statistical classification. Proc Int Conf Intell Syst Mol</span>
+
+<span class="sd">Biol, 106-112.</span>
+
+<span class="sd">Authors: Dongsheng Cao and Yizeng Liang.</span>
+
+<span class="sd">Date: 2012.3.27</span>
+
+<span class="sd">Email: oriental-cds@163.com</span>
+
+<span class="sd">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</span>
+<span class="sd">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">AALetter</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">,</span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">,</span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;T&quot;</span><span class="p">,</span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="calculate_aa_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_aa_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_aa_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calculate the composition of Amino acids for a given protein sequence.</span>
+<span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
+<span class="sd">	:return: result is a dict form containing the composition of 20 amino acids.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">length_sequence</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">)</span>
+	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+		<span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">protein_sequence</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="o">/</span> <span class="n">length_sequence</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">result</span></div>
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="calculate_dipeptide_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_dipeptide_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_dipeptide_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calculate the composition of dipeptidefor a given protein sequence.</span>
+<span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
+<span class="sd">	:return: result is a dict form containing the composition of 400 dipeptides.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">length_sequence</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">)</span>
+	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+			<span class="n">dipeptide</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">j</span>
+			<span class="n">result</span><span class="p">[</span><span class="n">dipeptide</span><span class="p">]</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">protein_sequence</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">dipeptide</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">length_sequence</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">result</span></div>
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="getkmers"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.getkmers">[docs]</a><span class="k">def</span> <span class="nf">getkmers</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get the amino acid list of 3-mers.</span>
+<span class="sd">	:return: result is a list form containing 8000 tri-peptides.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">kmers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+				<span class="n">kmers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">kmers</span></div>
+
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="get_spectrum_dict"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.get_spectrum_dict">[docs]</a><span class="k">def</span> <span class="nf">get_spectrum_dict</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calculate the spectrum of 3-mers for a given protein.</span>
+<span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
+<span class="sd">	:return: result is a dict form containing the composition values of 8000</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">kmers</span> <span class="o">=</span> <span class="n">getkmers</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">kmers</span><span class="p">:</span>
+		<span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">protein_sequence</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">result</span></div>
+
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="calculate_aa_tripeptide_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_aa_tripeptide_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_aa_tripeptide_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Calculate the composition of AADs, dipeptide and 3-mers for a given protein sequence.</span>
+<span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
+<span class="sd">	:return: result is a dict form containing all composition values of AADs, dipeptide and 3-mers (8420).</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
+	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculate_aa_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
+	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculate_dipeptide_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
+	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_spectrum_dict</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
+
+	<span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+	<span class="n">protein</span><span class="o">=</span><span class="s2">&quot;ADGCGVGEGTGQGPMCNCMCMKWVYADEDAADLESDSFADEDASLESDSFPWSNQRVFCSFADEDAS&quot;</span>
+
+	<span class="n">AAC</span><span class="o">=</span><span class="n">calculate_aa_composition</span><span class="p">(</span><span class="n">protein</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">AAC</span><span class="p">)</span>
+	<span class="n">DIP</span><span class="o">=</span><span class="n">calculate_dipeptide_composition</span><span class="p">(</span><span class="n">protein</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">DIP</span><span class="p">)</span>
+	<span class="n">spectrum</span><span class="o">=</span><span class="n">get_spectrum_dict</span><span class="p">(</span><span class="n">protein</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+	<span class="n">res</span><span class="o">=</span><span class="n">calculate_aa_tripeptide_composition</span><span class="p">(</span><span class="n">protein</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
