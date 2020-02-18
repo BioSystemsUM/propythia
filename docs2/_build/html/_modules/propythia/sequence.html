@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -150,13 +152,16 @@
 <span class="sd">##############################################################################</span>
 
 <span class="sd">A class used for reading sequences or change sequences.</span>
-<span class="sd">The main objective is to create sequence objects to calculate descriptors</span>
+<span class="sd">The main objective is to create sequence objects to calculate descriptors.</span>
 <span class="sd">The class allows to:</span>
-<span class="sd">     1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs)</span>
-<span class="sd">     2)Check if the protein sequence is a valid sequence</span>
-<span class="sd">     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals</span>
+<span class="sd">     1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs).</span>
+
+<span class="sd">     2)Check if the protein sequence is a valid sequence.</span>
+
+<span class="sd">     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals.</span>
+
 <span class="sd">     4)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the</span>
-<span class="sd">     the terminals or divide the sequence in parts</span>
+<span class="sd">     terminals or divide the sequence in parts.</span>
 
 <span class="sd">Authors:Ana Marta Sequeira</span>
 
@@ -167,21 +172,21 @@
 <span class="sd">##############################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sequence</span> <span class="k">import</span> <span class="n">get_protein_sequence</span><span class="p">,</span> <span class="n">get_protein_sequence_from_txt</span>
-<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.pro_check</span> <span class="k">import</span> <span class="n">protein_check</span>
-<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sized_seq</span> <span class="k">import</span> <span class="n">seq_equal_lenght</span>
-<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sub_seq</span> <span class="k">import</span> <span class="n">sub_seq_sliding_window</span><span class="p">,</span> <span class="n">sub_seq_to_aa</span><span class="p">,</span> <span class="n">sub_seq_split</span><span class="p">,</span><span class="n">sub_seq_terminals</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sequence</span> <span class="kn">import</span> <span class="n">get_protein_sequence</span><span class="p">,</span> <span class="n">get_protein_sequence_from_txt</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.pro_check</span> <span class="kn">import</span> <span class="n">protein_check</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sized_seq</span> <span class="kn">import</span> <span class="n">seq_equal_lenght</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sub_seq</span> <span class="kn">import</span> <span class="n">sub_seq_sliding_window</span><span class="p">,</span> <span class="n">sub_seq_to_aa</span><span class="p">,</span> <span class="n">sub_seq_split</span><span class="p">,</span><span class="n">sub_seq_terminals</span>
 
 
 <div class="viewcode-block" id="ReadSequence"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence">[docs]</a><span class="k">class</span> <span class="nc">ReadSequence</span><span class="p">:</span>
-
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The ReadSequence class aims to read the input and transform it into a sequence that can be used to calculate Descriptors.</span>
+
 <span class="sd">    It accepts uniprotID, txt with uniprot ID and string with aminoacid sequence. The functions to read protein are based on the package pydpi.</span>
 <span class="sd">    It allows to get sized sequences or a variety of subsequences from just one sequence.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;	constructor &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
@@ -191,6 +196,7 @@
 <div class="viewcode-block" id="ReadSequence.read_protein_sequence"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence.read_protein_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">read_protein_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protein_sequence</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Read a protein sequence.</span>
+
 <span class="sd">        :param protein_sequence: String with sequence</span>
 <span class="sd">        :return: String with aa sequence</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -208,10 +214,11 @@
 <div class="viewcode-block" id="ReadSequence.get_protein_sequence_from_txt"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence.get_protein_sequence_from_txt">[docs]</a>    <span class="k">def</span> <span class="nf">get_protein_sequence_from_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">openfile</span><span class="p">,</span> <span class="n">savefile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to retrieve sequences from a txt with uniprot ID. Does not retrieve a sequence object</span>
-<span class="sd">        :param path: directory path containing ID file</span>
-<span class="sd">        :param openfile:ID file (&#39;name.txt&#39;)</span>
+
+<span class="sd">        :param path: directory path containing ID files</span>
+<span class="sd">        :param openfile: ID file (&#39;name.txt&#39;)</span>
 <span class="sd">        :param savefile: saved file with obtained protein sequences (&#39;name2.txt&#39;)</span>
-<span class="sd">        :return:File containing string of sequences</span>
+<span class="sd">        :return: File containing string of sequences</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">txt</span><span class="o">=</span><span class="n">get_protein_sequence_from_txt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">openfile</span><span class="p">,</span><span class="n">savefile</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">txt</span></div>
@@ -219,6 +226,7 @@
 <div class="viewcode-block" id="ReadSequence.get_protein_sequence_from_id"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence.get_protein_sequence_from_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_protein_sequence_from_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uniprotid</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Downloading a protein sequence by uniprot id.</span>
+
 <span class="sd">        :param uniprotid: String with UniprotID</span>
 <span class="sd">        :return: String with aa sequence</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -239,6 +247,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the protein sequence is a valid amino acid sequence or not.</span>
 <span class="sd">        Just check. Not assign to the object.</span>
+
 <span class="sd">        :param protein_sequence: protein sequence</span>
 <span class="sd">        :return: error or valid message.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -255,26 +264,29 @@
     <span class="c1"># Get equal size sequences</span>
 
 <div class="viewcode-block" id="ReadSequence.get_sized_seq"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence.get_sized_seq">[docs]</a>    <span class="k">def</span> <span class="nf">get_sized_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="o">=</span><span class="p">[],</span> <span class="n">n_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        cut or add aminoacids to obtain sequences with equal lenght.</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        cut or add aminoacids to obtain sequences with equal length.</span>
+
 <span class="sd">        :param sequences: list containing protein sequences (string) or just a protein sequence</span>
 <span class="sd">        :param n_terminal: number of aa to consider in the n terminal (left side of sequence)</span>
 <span class="sd">        :param c_terminal: number of aa to consider in the c terminal (right side of sequence)</span>
-<span class="sd">        :param terminal: in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add</span>
-<span class="sd">                        0 to add to the right (consider N terminal)</span>
-<span class="sd">                        -1 to add to the left (consider C terminal)</span>
-<span class="sd">                        2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle</span>
-<span class="sd">        :return: list of sequences containing all the same lenght. if just one sequence given it will return a string</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        :param terminal:</span>
+<span class="sd">            in case of need to add dummy aa and no terminal has already been chosen, it decides where to add &#39;0&#39; to add</span>
+<span class="sd">            to the right (consider N terminal), &#39;-1&#39; to add to the left (consider C terminal), &#39;2&#39; to add in the middle</span>
+<span class="sd">            (N and C terminal) will be both present and repeated with dummy in middle</span>
+
+<span class="sd">        :return: list of sequences containing all the same length. if just one sequence given it will return a string</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">seq</span><span class="o">=</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">n_terminal</span><span class="p">,</span><span class="n">c_terminal</span><span class="p">,</span><span class="n">terminal</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">seq</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">equal_size_sequences</span><span class="o">=</span><span class="p">[]</span> <span class="c1">#list to store sequences with equal lenght</span>
+            <span class="n">equal_size_sequences</span><span class="o">=</span><span class="p">[]</span> <span class="c1"># list to store sequences with equal lenght</span>
             <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">:</span>
                 <span class="n">seq_2</span><span class="o">=</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="n">n_terminal</span><span class="p">,</span><span class="n">c_terminal</span><span class="p">,</span><span class="n">terminal</span><span class="p">)</span>
                 <span class="n">equal_size_sequences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_2</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">equal_size_sequences</span></div>
+
 
 <span class="c1">##########################################</span>
     <span class="c1"># Generate subsequences</span>
@@ -312,6 +324,7 @@
 <div class="viewcode-block" id="ReadSequence.get_sub_seq_split"><a class="viewcode-back" href="../../propythia.html#propythia.sequence.ReadSequence.get_sub_seq_split">[docs]</a>    <span class="k">def</span> <span class="nf">get_sub_seq_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">number_of_subseq</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Split the originl seq in n number of subsequences.</span>
+
 <span class="sd">        :param seq: protein sequence</span>
 <span class="sd">        :param number_of_subseq: number of subsequences to divide the original seq</span>
 <span class="sd">        :return: list with number_of_sequences sequences.</span>

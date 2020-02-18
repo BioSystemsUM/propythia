@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -179,8 +181,8 @@
 
 <span class="sd">Email: oriental-cds@163.com</span>
 
+<span class="sd">Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019</span>
 
-<span class="sd">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</span>
 <span class="sd">#####################################################################################</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -225,6 +227,7 @@
 <div class="viewcode-block" id="stringto_num"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.stringto_num">[docs]</a><span class="k">def</span> <span class="nf">stringto_num</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Tranform the protein sequence into the string form such as 32123223132121123.</span>
+
 <span class="sd">	:param protein_sequence:  protein is a pure protein sequence.</span>
 <span class="sd">	:param aa_property: AAProperty is a dict form containing classifciation of amino acids such as _Polarizability</span>
 <span class="sd">	:return: result is a string such as 123321222132111123222</span>
@@ -242,6 +245,7 @@
 <div class="viewcode-block" id="calculate_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing composition</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:param aa_property: dict form containing classifciation of amino acids such as _Polarizability.</span>
 <span class="sd">	:param aap_name: string used for indicating a AAP name.</span>
@@ -259,6 +263,7 @@
 <div class="viewcode-block" id="calculate_transition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing transition</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:param aa_property: AAProperty is a dict form containing classifciation of amino acids such as _Polarizability</span>
 <span class="sd">	:param aap_name: string used for indicating a AAP name</span>
@@ -277,6 +282,7 @@
 <div class="viewcode-block" id="calculate_distribution"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing distribution</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:param aa_property: dict form containing classification of amino acids such as _Polarizability</span>
 <span class="sd">	:param aap_name: string used for indicating a AAP name</span>
@@ -318,6 +324,7 @@
 <div class="viewcode-block" id="calculate_composition_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating composition based on Hydrophobicity of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Composition based on Hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -328,6 +335,7 @@
 <div class="viewcode-block" id="calculate_composition_normalized_vdwv"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_normalized_vdwv">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_normalized_vdwv</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating composition based on NormalizedVDWV of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Composition based on NormalizedVDWV</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -338,6 +346,7 @@
 <div class="viewcode-block" id="calculate_composition_polarity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_polarity">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_polarity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	calculating composition based on Polarity of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Composition based on Polarity</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -349,6 +358,7 @@
 <div class="viewcode-block" id="calculate_composition_charge"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_charge">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_charge</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	alculating composition based on Charge of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Composition based on Charge</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -359,6 +369,7 @@
 <div class="viewcode-block" id="calculate_composition_secondary_str"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_secondary_str">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_secondary_str</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	 method used for calculating composition based on SecondaryStr of AADs</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Composition based on SecondaryStr</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -369,6 +380,7 @@
 <div class="viewcode-block" id="calculate_composition_solvent_accessibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_solvent_accessibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_solvent_accessibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating composition based on SolventAccessibility of  AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Composition based on SolventAccessibility</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -379,6 +391,7 @@
 <div class="viewcode-block" id="calculate_composition_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_composition_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_composition_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating composition based on Polarizability of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: ict form containing Composition based on Polarizability</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -392,6 +405,7 @@
 <div class="viewcode-block" id="calculate_transition_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on Hydrophobicity of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Transition based on Hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -402,6 +416,7 @@
 <div class="viewcode-block" id="calculate_transition_normalized_vdwv"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_normalized_vdwv">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_normalized_vdwv</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on NormalizedVDWV of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing Transition based on NormalizedVDWV.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -412,6 +427,7 @@
 <div class="viewcode-block" id="calculate_transition_polarity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_polarity">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_polarity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on Polarity of	AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing Transition based on Polarity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -422,6 +438,7 @@
 <div class="viewcode-block" id="calculate_transition_charge"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_charge">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_charge</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on Charge of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing Transition based on Charge.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -432,6 +449,7 @@
 <div class="viewcode-block" id="calculate_transition_secondary_str"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_secondary_str">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_secondary_str</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on SecondaryStr of	AADs</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: result is a dict form containing Transition based on SecondaryStr</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -442,6 +460,7 @@
 <div class="viewcode-block" id="calculate_transition_solvent_accessibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_solvent_accessibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_solvent_accessibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on SolventAccessibility of  AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Transition based on SolventAccessibility.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -452,6 +471,7 @@
 <div class="viewcode-block" id="calculate_transition_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_transition_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_transition_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Transition based on Polarizability of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Transition based on Polarizability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -464,6 +484,7 @@
 <div class="viewcode-block" id="calculate_distribution_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on Hydrophobicity of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Distribution based on Hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -473,7 +494,8 @@
 
 <div class="viewcode-block" id="calculate_distribution_normalized_vdwv"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_normalized_vdwv">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_normalized_vdwv</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A method used for calculating Distribution based on NormalizedVDWV of	AADs</span>
+<span class="sd">	A method used for calculating Distribution based on NormalizedVDWV of AADs</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Distribution based on NormalizedVDWV</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -484,6 +506,7 @@
 <div class="viewcode-block" id="calculate_distribution_polarity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_polarity">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_polarity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on Polarity of AADs</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Distribution based on Polarity</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -494,6 +517,7 @@
 <div class="viewcode-block" id="calculate_distribution_charge"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_charge">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_charge</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on Charge of	AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Distribution based on Charge</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -503,6 +527,7 @@
 <div class="viewcode-block" id="calculate_distribution_secondary_str"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_secondary_str">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_secondary_str</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on SecondaryStr of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Distribution based on SecondaryStr.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -512,6 +537,7 @@
 <div class="viewcode-block" id="calculate_distribution_solvent_accessibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_solvent_accessibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_solvent_accessibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on SolventAccessibility of  AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing Distribution based on SolventAccessibility</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -521,6 +547,7 @@
 <div class="viewcode-block" id="calculate_distribution_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_distribution_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_distribution_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for calculating Distribution based on Polarizability of	AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing Distribution based on Polarizability</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -533,6 +560,7 @@
 <div class="viewcode-block" id="calculate_c"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_c">[docs]</a><span class="k">def</span> <span class="nf">calculate_c</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate all composition seven different properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: dict form containing all composition</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -550,6 +578,7 @@
 <div class="viewcode-block" id="calculate_t"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_t">[docs]</a><span class="k">def</span> <span class="nf">calculate_t</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate all transition based seven different properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing all transition</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -567,6 +596,7 @@
 <div class="viewcode-block" id="calculate_d"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_d">[docs]</a><span class="k">def</span> <span class="nf">calculate_d</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate all distribution based seven different properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:return: dict form containing all distribution</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -584,6 +614,7 @@
 <div class="viewcode-block" id="calculate_ctd"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.ctd.calculate_ctd">[docs]</a><span class="k">def</span> <span class="nf">calculate_ctd</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate all CTD based seven different properties of AADs</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing all C</span>
 <span class="sd">	&quot;&quot;&quot;</span>

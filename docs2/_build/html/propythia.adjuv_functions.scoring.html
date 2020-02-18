@@ -25,6 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +36,6 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Adjuv functions: Sequence" href="propythia.adjuv_functions.sequence.html" />
     <link rel="prev" title="Adjuv functions: Features" href="propythia.adjuv_functions.features_functions.html" /> 
 </head>
 
@@ -82,20 +82,22 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="propythia.adjuv_functions.html">propythia.adjuv_functions package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="propythia.adjuv_functions.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">Source Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="propythia.html">ProPythia modules</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="propythia.adjuv_functions.html">Adjuv Functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.sequence.html">Adjuv functions: Sequence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html">Adjuv functions: Features</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Adjuv functions: Scoring</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.scoring.scores">scores module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.scoring.scores">scores</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#module-propythia.adjuv_functions.scoring">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.sequence.html">Adjuv functions: Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.html#module-propythia.adjuv_functions">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.html#module-propythia.adjuv_functions">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-propythia">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -143,7 +145,9 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="propythia.adjuv_functions.html">propythia.adjuv_functions package</a> &raquo;</li>
+          <li><a href="src.html">Source Code</a> &raquo;</li>
+        
+          <li><a href="propythia.adjuv_functions.html">Adjuv Functions</a> &raquo;</li>
         
       <li>Adjuv functions: Scoring</li>
     
@@ -164,13 +168,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="adjuv-functions-scoring">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="adjuv-functions-scoring">
 <h1>Adjuv functions: Scoring<a class="headerlink" href="#adjuv-functions-scoring" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="module-propythia.adjuv_functions.scoring.scores">
-<span id="scores-module"></span><h2>scores module<a class="headerlink" href="#module-propythia.adjuv_functions.scoring.scores" title="Permalink to this headline">¶</a></h2>
+<span id="scores"></span><h2>scores<a class="headerlink" href="#module-propythia.adjuv_functions.scoring.scores" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <p>A function used for a brief comparation of scores between a random forest, gaussian bayes and a SVM with or
 without SVC feature selection
@@ -184,9 +209,9 @@ Authors:</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_original</strong> – h biuojip+lp´+ç</p></li>
-<li><p><strong>x_reduced</strong> – </p></li>
-<li><p><strong>labels</strong> – </p></li>
+<li><p><strong>x_original</strong> – dataset with features original (no labels)</p></li>
+<li><p><strong>x_reduced</strong> – dataset with feature selection or reduction applied (no labels)</p></li>
+<li><p><strong>labels</strong> – labels of dataset</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -208,8 +233,6 @@ Authors:</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="propythia.adjuv_functions.sequence.html" class="btn btn-neutral float-right" title="Adjuv functions: Sequence" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="propythia.adjuv_functions.features_functions.html" class="btn btn-neutral float-left" title="Adjuv functions: Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

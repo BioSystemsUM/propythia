@@ -10,8 +10,10 @@ Welcome to ProPythia's documentation!
    :maxdepth: 4
    :caption: Contents:
 
-   propythia
-   propythia.adjuv_functions
+   installation
+   quickstart.ipynb
+   src
+
 
 
 

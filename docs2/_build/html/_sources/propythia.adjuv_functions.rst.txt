@@ -1,14 +1,12 @@
-propythia.adjuv\_functions package
+Adjuv Functions
 ==================================
-
-Subpackages
------------
 
 .. toctree::
 
+   propythia.adjuv_functions.sequence
    propythia.adjuv_functions.features_functions
    propythia.adjuv_functions.scoring
-   propythia.adjuv_functions.sequence
+
 
 Module contents
 ---------------

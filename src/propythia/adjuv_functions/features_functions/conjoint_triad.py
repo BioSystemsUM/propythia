@@ -21,7 +21,7 @@ Date: 2012.09.18
 
 Email: oriental-cds@163.com
 
-Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019
+Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 
 ###############################################################################
 """
@@ -43,6 +43,7 @@ _repmat={1:["A",'G','V'],2:['I','L','F','P'],3:['Y','M','T','S'],4:['H','N','Q',
 def _str2_num(proteinsequence):
 	"""
 	translate the amino acid letter into the corresponding class based on the given form.
+
 	:param proteinsequence:
 	:return:
 	"""
@@ -61,6 +62,7 @@ def _str2_num(proteinsequence):
 def calculate_conjoint_triad(protein_sequence):
 	"""
 	Calculate the conjoint triad features from protein sequence.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing all 343 conjoint triad features
 	"""

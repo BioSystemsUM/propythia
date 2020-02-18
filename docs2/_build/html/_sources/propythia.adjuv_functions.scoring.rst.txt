@@ -1,10 +1,7 @@
 Adjuv functions: Scoring
 ==========================================
 
-Submodules
-----------
-
-scores module
+scores
 ------------------------------------------------
 
 .. automodule:: propythia.adjuv_functions.scoring.scores

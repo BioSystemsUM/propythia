@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -170,6 +172,7 @@
 <div class="viewcode-block" id="get_protein_sequence"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence">[docs]</a><span class="k">def</span> <span class="nf">get_protein_sequence</span><span class="p">(</span><span class="n">protein_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the protein sequence from the uniprot website by ID.</span>
+
 <span class="sd">    :param protein_id: ProteinID is a string indicating ID such as &quot;P48039&quot;.</span>
 <span class="sd">    :return: str protein sequence</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -192,6 +195,7 @@
 <div class="viewcode-block" id="get_protein_sequence_from_txt"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence_from_txt">[docs]</a><span class="k">def</span> <span class="nf">get_protein_sequence_from_txt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">openfile</span><span class="p">,</span> <span class="n">savefile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the protein sequence from the uniprot website by the file containing ID.</span>
+
 <span class="sd">    :param path: path is a directory path containing the ID file (e.g. &quot;/home/protein/&quot;)</span>
 <span class="sd">    :param openfile: ID file  (e.g. &quot;proteinID.txt&quot;)</span>
 <span class="sd">    :param savefile: file saving the obtained protein sequences (e.g. &quot;protein.txt&quot;)</span>

@@ -1,11 +1,10 @@
 ProPythia modules
 =================
 
+sequence
+-------------------------
 
-clustering
----------------------------
-
-.. automodule:: propythia.clustering
+.. automodule:: propythia.sequence
    :members:
    :undoc-members:
    :show-inheritance:
@@ -14,6 +13,22 @@ descriptors
 ----------------------------
 
 .. automodule:: propythia.descriptors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+preprocess
+---------------------------
+
+.. automodule:: propythia.preprocess
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+clustering
+---------------------------
+
+.. automodule:: propythia.clustering
    :members:
    :undoc-members:
    :show-inheritance:
@@ -41,23 +56,6 @@ machine_learning
    :members:
    :undoc-members:
    :show-inheritance:
-
-preprocess
----------------------------
-
-.. automodule:: propythia.preprocess
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-sequence
--------------------------
-
-.. automodule:: propythia.sequence
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Module contents
 ---------------

@@ -24,7 +24,8 @@ import getopt
 
 def bin_aa_ct(seq):
     """
-    Transform sequency in binary porfile
+    Transform sequency in binary profile
+
     :param seq: protein sequence
     :return: binary matrix of sequence
     """

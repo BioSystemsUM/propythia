@@ -39,10 +39,10 @@ import pandas as pd
 
 class Descriptor:
     """
-	The Descriptor class collects all descriptor calculation functions into a simple class.
-	Some of the descriptors functions are based on code from pydpi (altered to python3), modlamp, pfature and biopython.
-	It returns the features in a dictionary object
-	"""
+    The Descriptor class collects all descriptor calculation functions into a simple class.
+    Some of the descriptors functions are based on code from pydpi (altered to python3), modlamp, pfature and biopython.
+    It returns the features in a dictionary object
+    """
 
     AALetter = ["A", "R", "N", "D", "C", "E", "Q", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V"]
     Version = 1.0
@@ -55,32 +55,34 @@ class Descriptor:
 
     def get_aa_index1(self, name, path='.'):
         """
-		Get the amino acid property values from aaindex1
-		(function from pydpi)
-		:param name: name is the name of amino acid property (e.g., KRIW790103)
-		:param path: path to get aa index. by default is the one in the package.
-		:return: result is a dict form containing the properties of 20 amino acids
-		"""
+        Get the amino acid property values from aaindex1
+        (function from pydpi)
+
+        :param name: name is the name of amino acid property (e.g., KRIW790103)
+        :param path: path to get aa index. by default is the one in the package.
+        :return: result is a dict form containing the properties of 20 amino acids
+        """
 
         return get_aa_index1(name, path=path)
 
     def get_aa_index23(self, name, path='.'):
         """
-		Get the amino acid property values from aaindex2 and aaindex3
-		(function from from pydpi)
-		:param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)
-		:param path: path to get aa index. by default is the one in the package.
-		:return: result is a dict form containing the properties of 400 amino acid pairs
-		"""
+        Get the amino acid property values from aaindex2 and aaindex
+        (function from from pydpi)
+
+        :param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)
+        :param path: path to get aa index. by default is the one in the package.
+        :return: result is a dict form containing the properties of 400 amino acid pairs
+        """
         return get_aa_index23(name, path=path)
 
     # ################# BINARY PROFILES DESCRIPTORS  ##################
 
     def get_bin_aa(self):
         """
-		 binary profile of aminoacid composition
-		:return: dictionary containing binary profile
-		"""
+        binary profile of aminoacid composition
+        :return: dictionary containing binary profile
+        """
 
         res = {}
         result = bin_aa_ct(self.ProteinSequence)
@@ -96,37 +98,40 @@ class Descriptor:
                           list_descriptors=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                                             21, 22, 23, 24]):
         """
-		Binary profile of residues for 25 phychem feature
-		:param list_descriptors: ist containing feature numbers (valid number, 0-24) (e.g. [5,4,8,24]
-		    				FEATURE NAME                    FEATURE NUMBER
+        Binary profile of residues for 25 phychem feature
 
-							'Positively charged' --                  0
-							'Negatively charged' --                  1
-							'Neutral charged' --                     2
-							'Polarity' --                            3
-							'Non polarity' --                        4
-							'Aliphaticity' --                        5
-							'Cyclic' --                              6
-							'Aromaticity' --                         7
-							'Acidicity'--                            8
-							'Basicity'--                             9
-							'Neutral (ph)' --                       10
-							'Hydrophobicity' --                     11
-							'Hydrophilicity' --                     12
-							'Neutral' --                            13
-							'Hydroxylic' --                         14
-							'Sulphur content' -                     15
-							'Secondary Structure(Helix)'            16
-							'Secondary Structure(Strands)',         17
-							'Secondary Structure(Coil)',            18
-							'Solvent Accessibilty (Buried)',        19
-							'Solvent Accesibilty(Exposed)',         20
-							'Solvent Accesibilty(Intermediate)',    21
-							'Tiny',                                 22
-							'Small',                                23
-							'Large'                                 24
-		:return: dict form with binary values
-		"""
+        :param list_descriptors: list containing feature numbers (valid number, 0-24) (e.g. [5,4,8,24]
+                \n FEATURE NAME                    FEATURE NUMBER
+                \n 'Positively charged' --                  0
+                \n 'Negatively charged' --                  1
+                \n 'Neutral charged' --                     2
+                \n 'Polarity' --                            3
+                \n 'Non polarity' --                        4
+                \n 'Aliphaticity' --                        5
+                \n 'Cyclic' --                              6
+                \n 'Aromaticity' --                         7
+                \n 'Acidicity'--                            8
+                \n 'Basicity'--                             9
+                \n 'Neutral (ph)' --                       10
+                \n 'Hydrophobicity' --                     11
+                \n 'Hydrophilicity' --                     12
+                \n 'Neutral' --                            13
+                \n 'Hydroxylic' --                         14
+                \n 'Sulphur content' -                     15
+                \n 'Secondary Structure(Helix)'            16
+                \n 'Secondary Structure(Strands)',         17
+                \n 'Secondary Structure(Coil)',            18
+                \n 'Solvent Accessibilty (Buried)',        19
+                \n 'Solvent Accesibilty(Exposed)',         20
+                \n 'Solvent Accesibilty(Intermediate)',    21
+                \n 'Tiny',                                 22
+                \n 'Small',                                23
+                \n 'Large'                                 24
+                \n
+
+
+        :return: dict form with binary values
+        """
 
         res = bin_pc_wp(self.ProteinSequence, list_descriptors)
         return res
@@ -135,20 +140,21 @@ class Descriptor:
 
     def get_lenght(self):
         """
-		Calculates lenght of sequence (number of aa)
-		:return: dictionary with the value of lenght
-		"""
-        res = {}
-        res['lenght'] = float(len(self.ProteinSequence.strip()))
+        Calculates lenght of sequence (number of aa)
+
+        :return: dictionary with the value of lenght
+        """
+        res = {'lenght': float(len(self.ProteinSequence.strip()))}
         return res
 
     def get_charge(self, ph=7.4, amide=False):
         """
-		Calculates charge of sequence (1 value) from modlamp
-		:param ph: ph considered to calculate. 7.4 by default
-		:param amide: by default is not considered an amide protein sequence.
-		:return: dictionary with the value of charge
-		"""
+        Calculates charge of sequence (1 value) from modlamp
+
+        :param ph: ph considered to calculate. 7.4 by default
+        :param amide: by default is not considered an amide protein sequence.
+        :return: dictionary with the value of charge
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -158,11 +164,12 @@ class Descriptor:
 
     def get_charge_density(self, ph=7.0, amide=False):
         """
-		Calculates charge density of sequence (1 value) from modlamp
-		:param ph: ph considered to calculate. 7 by default
-		:param amide: by default is not considered an amide protein sequence.
-		:return: dictionary with the value of charge density
-		"""
+        Calculates charge density of sequence (1 value) from modlamp
+
+        :param ph: ph considered to calculate. 7 by default
+        :param amide: by default is not considered an amide protein sequence.
+        :return: dictionary with the value of charge density
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -172,10 +179,11 @@ class Descriptor:
 
     def get_formula(self, amide=False):
         """
-		Calculates number of C,H,N,O and S of the aa of sequence (5 values) from modlamp
-		:param amide: by default is not considered an amide protein sequence.
-		:return: dictionary with the 5 values of C,H,N,O and S
-		"""
+        Calculates number of C,H,N,O and S of the aa of sequence (5 values) from modlamp
+
+        :param amide: by default is not considered an amide protein sequence.
+        :return: dictionary with the 5 values of C,H,N,O and S
+        """
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
         desc.formula(amide)
@@ -196,19 +204,21 @@ class Descriptor:
 
     def get_bond(self):
         """
-		This function gives the sum of the bond composition for each type of bond
-		For bond composition four types of bonds are considered
-		total number of bonds (including aromatic), hydrogen bond, single bond and double bond.
-		:return: dictionary with 4 values
-		"""
+        This function gives the sum of the bond composition for each type of bond
+        For bond composition four types of bonds are considered
+        total number of bonds (including aromatic), hydrogen bond, single bond and double bond.
+
+        :return: dictionary with 4 values
+        """
         res = boc_wp(self.ProteinSequence)
         return res
 
     def get_mw(self):
         """
-		Calculates molecular weight of sequence (1 value) from modlamp
-		:return: dictionary with the value of molecular weight
-		"""
+        Calculates molecular weight of sequence (1 value) from modlamp
+
+        :return: dictionary with the value of molecular weight
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -230,9 +240,10 @@ class Descriptor:
 
     def get_gravy(self):
         """
-		Calculates Gravy from sequence (1 value) from biopython
-		:return: dictionary with the value of gravy
-		"""
+        Calculates Gravy from sequence (1 value) from biopython
+
+        :return: dictionary with the value of gravy
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -241,9 +252,10 @@ class Descriptor:
 
     def get_aromacity(self):
         """
-		Calculates Aromacity from sequence (1 value) from biopython
-		:return: dictionary with the value of aromacity
-		"""
+        Calculates Aromacity from sequence (1 value) from biopython
+
+        :return: dictionary with the value of aromacity
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -252,9 +264,10 @@ class Descriptor:
 
     def get_isoelectric_point(self):
         """
-		Calculates Isolectric Point from sequence (1 value) from biopython
-		:return: dictionary with the value of Isolectric Point
-		"""
+        Calculates Isolectric Point from sequence (1 value) from biopython
+
+        :return: dictionary with the value of Isolectric Point
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -276,9 +289,10 @@ class Descriptor:
 
     def get_instability_index(self):
         """
-		Calculates Instability index from sequence (1 value) from biopython
-		:return: dictionary with the value of Instability index
-		"""
+        Calculates Instability index from sequence (1 value) from biopython
+
+        :return: dictionary with the value of Instability index
+        """
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
         res['Instability_index'] = analysed_seq.instability_index()
@@ -286,9 +300,10 @@ class Descriptor:
 
     def get_sec_struct(self):
         """
-		Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython
-		:return: dictionary with the 3 value of helix, turn, sheet
-		"""
+        Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython
+
+        :return: dictionary with the 3 value of helix, turn, sheet
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -300,9 +315,10 @@ class Descriptor:
     def get_molar_extinction_coefficient(
             self):  # [reduced, oxidized] # with reduced cysteines / # with disulfid bridges
         """
-		Calculates the molar extinction coefficient (2 values) from biopython
-		:return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)
-		"""
+        Calculates the molar extinction coefficient (2 values) from biopython
+
+        :return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -312,9 +328,10 @@ class Descriptor:
 
     def get_flexibility(self):
         """
-		Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython
-		:return: dictionary with proteinsequencelenght-9 values of flexiblity
-		"""
+        Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython
+
+        :return: dictionary with proteinsequencelenght-9 values of flexiblity
+        """
 
         res = {}
         analysed_seq = ProteinAnalysis(self.ProteinSequence)
@@ -325,9 +342,10 @@ class Descriptor:
 
     def get_aliphatic_index(self):
         """
-		Calculates aliphatic index of sequence (1 value) from modlamp
-		:return: dictionary with the value of aliphatic index
-		"""
+        Calculates aliphatic index of sequence (1 value) from modlamp
+
+        :return: dictionary with the value of aliphatic index
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -337,9 +355,10 @@ class Descriptor:
 
     def get_boman_index(self):
         """
-		Calculates boman index of sequence (1 value) from modlamp
-		:return: dictionary with the value of boman index
-		"""
+        Calculates boman index of sequence (1 value) from modlamp
+
+        :return: dictionary with the value of boman index
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -349,9 +368,10 @@ class Descriptor:
 
     def get_hydrophobic_ratio(self):
         """
-		Calculates hydrophobic ratio of sequence (1 value) from modlamp
-		:return: dictionary with the value of hydrophobic ratio
-		"""
+        Calculates hydrophobic ratio of sequence (1 value) from modlamp
+
+        :return: dictionary with the value of hydrophobic ratio
+        """
 
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
@@ -363,25 +383,28 @@ class Descriptor:
 
     def get_aa_comp(self):
         """
-		Calculates amino acid compositon (20 values)  from pydpi
-		:return: dictionary with the fractions of all 20 aa(keys are the aa)
-		"""
+        Calculates amino acid compositon (20 values)  from pydpi
+
+        :return: dictionary with the fractions of all 20 aa(keys are the aa)
+        """
         res = calculate_aa_composition(self.ProteinSequence)
         return res
 
     def get_dp_comp(self):
         """
-		Calculates dipeptide composition (400 values) from pydpi
-		:return: dictionary with the fractions of all 400 possible combiinations of 2 aa
-		"""
+        Calculates dipeptide composition (400 values) from pydpi
+
+        :return: dictionary with the fractions of all 400 possible combiinations of 2 aa
+        """
         res = calculate_dipeptide_composition(self.ProteinSequence)
         return res
 
     def get_tp_comp(self):
         """
-		Calculates tripeptide composition (8000 values) from pydpi
-		:return: dictionary with the fractions of all 8000 possible combinations of 3 aa
-		"""
+        Calculates tripeptide composition (8000 values) from pydpi
+
+        :return: dictionary with the fractions of all 8000 possible combinations of 3 aa
+        """
 
         res = get_spectrum_dict(self.ProteinSequence)
         return res
@@ -390,42 +413,46 @@ class Descriptor:
 
     def get_paac(self, lamda=10, weight=0.05):
         """
-		Calculates Type I Pseudo amino acid composition (default is 30, depends on lamda) from pydpi
-		:param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
-					should NOT be larger than the length of input protein sequence
-					when lamda =0, the output of PseAA server is the 20-D amino acid composition
-		:param weight: weight on the additional PseAA components. with respect to the conventional AA components.
-					The user can select any value within the region from 0.05 to 0.7 for the weight factor.
-		:return: dictionary with the fractions of all PAAC (keys are the PAAC). Number of keys depends on lamda
-		"""
+        Calculates Type I Pseudo amino acid composition (default is 30, depends on lamda) from pydpi
+
+        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
+                should NOT be larger than the length of input protein sequence
+                when lamda =0, the output of PseAA server is the 20-D amino acid composition
+        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.
+            The user can select any value within the region from 0.05 to 0.7 for the weight factor.
+        :return: dictionary with the fractions of all PAAC (keys are the PAAC). Number of keys depends on lamda
+        """
         res = get_pseudo_aac(self.ProteinSequence, lamda=lamda, weight=weight)
         return res
 
     def get_paac_p(self, lamda=10, weight=0.05, AAP=[]):
         """
-		Calculates Type I Pseudo amino acid composition for a given property (default is 30, depends on lamda) from pydpi
-		:param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
-					should NOT be larger than the length of input protein sequence
-					when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
-		:param weight: weight on the additional PseAA components. with respect to the conventional AA components.
-					The user can select any value within the region from 0.05 to 0.7 for the weight factor.
-		:param AAP: list of properties. each of which is a dict form.
-				PseudoAAC._Hydrophobicity,PseudoAAC._hydrophilicity, PseudoAAC._residuemass,PseudoAAC._pK1,PseudoAAC._pK2,PseudoAAC._pI
-		:return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
-		"""
+        Calculates Type I Pseudo amino acid composition for a given property (default is 30, depends on lamda) from pydpi
+
+        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
+            should NOT be larger than the length of input protein sequence
+            when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
+        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.
+            The user can select any value within the region from 0.05 to 0.7 for the weight factor.
+        :param AAP: list of properties. each of which is a dict form.
+            PseudoAAC._Hydrophobicity,PseudoAAC._hydrophilicity, PseudoAAC._residuemass,PseudoAAC._pK1,PseudoAAC._pK2,
+            PseudoAAC._pI
+        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
+        """
         res = get_pseudo_aac(self.ProteinSequence, lamda=lamda, weight=weight, AAP=AAP)
         return res
 
     def get_apaac(self, lamda=10, weight=0.5):
         """
-		Calculates Type II Pseudo amino acid composition - Amphiphilic (default is 30, depends on lamda) from pydpi
-		:param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
-					should NOT be larger than the length of input protein sequence
-					when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
-		:param weight: weight on the additional PseAA components. with respect to the conventional AA components.
-					The user can select any value within the region from 0.05 to 0.7 for the weight factor.
-		:return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
-		"""
+        Calculates Type II Pseudo amino acid composition - Amphiphilic (default is 30, depends on lamda) from pydpi
+
+        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
+            should NOT be larger than the length of input protein sequence
+            when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
+        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.
+            The user can select any value within the region from 0.05 to 0.7 for the weight factor.
+        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
+        """
         res = get_a_pseudo_aac(self.ProteinSequence, lamda=lamda, weight=weight)
         return res
 
@@ -433,25 +460,28 @@ class Descriptor:
 
     def get_moreau_broto_auto(self):
         """
-		Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi
-		:return: dictionary with the 240 descriptors
-		"""
+        Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi
+
+        :return: dictionary with the 240 descriptors
+        """
         res = calculate_normalized_moreau_broto_auto_total(self.ProteinSequence)
         return res
 
     def get_moran_auto(self):
         """
-		Calculates  Moran autocorrelation (240 values) from pydpi
-		:return: dictionary with the 240 descriptors
-		"""
+        Calculates  Moran autocorrelation (240 values) from pydpi
+
+        :return: dictionary with the 240 descriptors
+        """
         res = calculate_moran_auto_total(self.ProteinSequence)
         return res
 
     def get_geary_auto(self):
         """
-		Calculates  Geary autocorrelation (240 values) from pydpi
-		:return: dictionary with the 240 descriptors
-		"""
+        Calculates  Geary autocorrelation (240 values) from pydpi
+
+        :return: dictionary with the 240 descriptors
+        """
         res = calculate_geary_auto_total(self.ProteinSequence)
         return res
 
@@ -459,9 +489,10 @@ class Descriptor:
 
     def get_ctd(self):
         """
-		Calculates the Composition Transition Distribution descriptors (147 values) from pydpi
-		:return: dictionary with the 147 descriptors
-		"""
+        Calculates the Composition Transition Distribution descriptors (147 values) from pydpi
+
+        :return: dictionary with the 147 descriptors
+        """
         res = calculate_ctd(self.ProteinSequence)
         return res
 
@@ -469,9 +500,10 @@ class Descriptor:
 
     def get_conj_t(self):
         """
-		Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi
-		:return: dictionary with the 343 descriptors
-		"""
+        Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi
+
+        :return: dictionary with the 343 descriptors
+        """
         res = calculate_conjoint_triad(self.ProteinSequence)
         return res
 
@@ -479,42 +511,46 @@ class Descriptor:
 
     def get_socn(self, maxlag=45):
         """
-		Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
-		:param maxlag: maximum lag. Smaller than length of the protein
-		:return: dictionary with the descriptors (90 descriptors)
-		"""
+        Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
+
+        :param maxlag: maximum lag. Smaller than length of the protein
+        :return: dictionary with the descriptors (90 descriptors)
+        """
         res = get_sequence_order_coupling_number_total(self.ProteinSequence, maxlag=maxlag)
         return res
 
     def get_socn_p(self, maxlag=45, distancematrix={}):
-        """
-		Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
-		:param maxlag: maximum lag. Smaller than length of the protein
-		:param distancematrix: dict form containing 400 distance values
-		:return: dictionary with the descriptors (90 descriptors)
-		"""
 
+        """
+        Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
+
+        :param maxlag: maximum lag. Smaller than length of the protein
+        :param distancematrix: dict form containing 400 distance values
+        :return: dictionary with the descriptors (90 descriptors)
+        """
         res = get_sequence_order_coupling_numberp(self.ProteinSequence, maxlag=maxlag, distancematrix=distancematrix)
         return res
 
     def get_qso(self, maxlag=30, weight=0.1):
         """
-		Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
-		:param maxlag: maximum lag. Smaller than length of the protein
-		:param weight:
-		:return: dictionary with the descriptors (100 descriptors)
-		"""
+        Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
+
+        :param maxlag: maximum lag. Smaller than length of the protein
+        :param weight:
+        :return: dictionary with the descriptors (100 descriptors)
+        """
         res = get_quasi_sequence_order(self.ProteinSequence, maxlag=maxlag, weight=weight)
         return res
 
     def get_qso_p(self, maxlag=30, weight=0.1, distancematrix={}):
         """
-		Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
-		:param maxlag: maximum lag. Smaller than length of the protein
-		:param weight:
-		:param distancematrix: dict form containing 400 distance values
-		:return: dictionary with the descriptors (100 descriptors)
-		"""
+        Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
+
+        :param maxlag: maximum lag. Smaller than length of the protein
+        :param weight:
+        :param distancematrix: dict form containing 400 distance values
+        :return: dictionary with the descriptors (100 descriptors)
+        """
 
         res = get_quasi_sequence_orderp(self.ProteinSequence, maxlag=maxlag, weight=weight,
                                         distancematrix=distancematrix)
@@ -522,19 +558,21 @@ class Descriptor:
 
     # ################# BASE CLASS PEPTIDE DESCRIPTOR ##################
 
-    """amino acid descriptor scales available are the ones from modlamo. 
-	For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
-	amino acid sclaes include AASI, argos, bulkiness, charge_phys, charge_acid, eisenberg and others."""
+    """amino acid descriptor scales available are the ones from modlamp.
+    For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+    amino acid sclaes include AASI, argos, bulkiness, charge_phys, charge_acid, eisenberg and others."""
 
     def calculate_moment(self, window=1000, angle=100, modality='max', scalename='Eisenberg'):
         """
-		Calculates moment of sequence (1 value) from modlamp
-		:param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken
-		:param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
-		:param modality: maximum or mean hydrophobic moment
-		:param scalename:
-		:return: dictionary with one value of moment
-		"""
+        Calculates moment of sequence (1 value) from modlamp
+
+        :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window,
+            the length of the sequence is taken
+        :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
+        :param modality: maximum or mean hydrophobic moment
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :return: dictionary with one value of moment
+        """
 
         res = {}
         AMP = PeptideDescriptor(self.ProteinSequence, scalename)
@@ -544,12 +582,13 @@ class Descriptor:
 
     def calculate_global(self, window=1000, modality='max', scalename='Eisenberg'):
         """
-		Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp
-		:param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
-		:param modality: maximum or mean hydrophobic moment
-		:param scalename:
-		:return: dictionary with one value
-		"""
+        Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp
+
+        :param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
+        :param modality: maximum or mean hydrophobic moment
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :return: dictionary with one value
+        """
 
         res = {}
         AMP = PeptideDescriptor(self.ProteinSequence, scalename)
@@ -559,13 +598,14 @@ class Descriptor:
 
     def calculate_profile(self, prof_type='uH', window=7, scalename='Eisenberg'):
         """
-		Calculates hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercep
-		(2 values) from modlamp
-		:param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
-		:param window: size of sliding window used (odd-numbered)
-		:param scalename:
-		:return: dictionary with two value
-		"""
+        Calculates hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercep
+        (2 values) from modlamp
+
+        :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
+        :param window: size of sliding window used (odd-numbered)
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :return: dictionary with two value
+        """
 
         res = {}
         AMP = PeptideDescriptor(self.ProteinSequence, scalename)
@@ -577,11 +617,12 @@ class Descriptor:
 
     def calculate_arc(self, modality="max", scalename='peparc'):
         """
-		Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only ( 5 values) from modlamp
-		:param modality: maximum or mean
-		:param scalename: binary amino acid scales only
-		:return: dictionary with 5 values
-		"""
+        Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only ( 5 values) from modlamp
+
+        :param modality: maximum or mean
+        :param scalename: binary amino acid scales only
+        :return: dictionary with 5 values
+        """
 
         res = {}
         arc = PeptideDescriptor(self.ProteinSequence, scalename)
@@ -593,11 +634,12 @@ class Descriptor:
 
     def calculate_autocorr(self, window, scalename='Eisenberg'):
         """
-		Calculates autocorrelation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
-		:param window: correlation window for descriptor calculation in a sliding window approach
-		:param scalename:
-		:return: dictionary with values of autocorrelation
-		"""
+        Calculates autocorrelation of amino acid values for a given descriptor scale ( variable >>>values) from modlamp
+
+        :param window: correlation window for descriptor calculation in a sliding window approach
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :return: dictionary with values of autocorrelation
+        """
         res = {}
         AMP = PeptideDescriptor(self.ProteinSequence, scalename)
         AMP.calculate_autocorr(window)
@@ -608,11 +650,12 @@ class Descriptor:
 
     def calculate_crosscorr(self, window, scalename='Eisenberg'):
         """
-		Calculates cross correlation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
-		:param window:correlation window for descriptor calculation in a sliding window approach
-		:param scalename:
-		:return: dictionary with values of crosscorrelation
-		"""
+        Calculates cross correlation of amino acid values for a given descriptor scale (variable >>>values) from modlamp
+
+        :param window: correlation window for descriptor calculation in a sliding window approach
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :return: dictionary with values of crosscorrelation
+        """
 
         res = {}
         AMP = PeptideDescriptor(self.ProteinSequence, scalename)
@@ -626,11 +669,12 @@ class Descriptor:
 
     def get_all_physicochemical(self, ph=7, amide=False):
         """
-		Calculate all 15 geral descriptors functions derived from biopython and modlpam
-		:param ph: for functions Charge, charge density and formula
-		:param amide: for functions Charge, charge density and formula
-		:return: dictionary with variable number of descriptors
-		"""
+        Calculate all 15 geral descriptors functions derived from biopython and modlpam
+
+        :param ph: for functions Charge, charge density and formula
+        :param amide: for functions Charge, charge density and formula
+        :return: dictionary with variable number of descriptors
+        """
         res = {}
         res.update(self.get_lenght())
         res.update(self.get_charge(ph, amide))
@@ -654,9 +698,10 @@ class Descriptor:
 
     def get_all_aac(self):
         """
-		Calculate all descriptors from Amino Acid Composition
-		:return: dictionary with values from AAC, DPC and TPC
-		"""
+        Calculate all descriptors from Amino Acid Composition
+
+        :return: dictionary with values from AAC, DPC and TPC
+        """
         res = {}
         res.update(self.get_aa_comp())
         res.update(self.get_dp_comp())
@@ -665,13 +710,14 @@ class Descriptor:
 
     def get_all_paac(self, lamda_paac=10, weight_paac=0.05, lamda_apaac=10, weight_apaac=0.05):
         """
-		Calculate all descriptors from Pseudo Amino Acid Composition
-		:param lamda_paac: parameter for PAAC default 10
-		:param weight_paac: parameter for PAAC default 0.05
-		:param lamda_apaac: parameter for APAAC default 10
-		:param weight_apaac: parameter for APAAC default 0.05
-		:return: dictionary with values from PAAC and APAAC
-		"""
+        Calculate all descriptors from Pseudo Amino Acid Composition
+
+        :param lamda_paac: parameter for PAAC default 10
+        :param weight_paac: parameter for PAAC default 0.05
+        :param lamda_apaac: parameter for APAAC default 10
+        :param weight_apaac: parameter for APAAC default 0.05
+        :return: dictionary with values from PAAC and APAAC
+        """
         res = {}
         lamda = lamda_paac
         weight = weight_paac
@@ -683,12 +729,13 @@ class Descriptor:
 
     def get_all_sequenceorder(self, maxlag_socn=45, maxlag_qso=30, weight_qso=0.1):
         """
-		Calculate all values for sequence order descriptors
-		:param maxlag_socn: parameter for SOCN default 45
-		:param maxlag_qso: parameter for QSO default 30
-		:param weight_qso: parameter for QSO default 0.1
-		:return: dictionary with values for quasi sequence order and sequence order couplig numbers
-		"""
+        Calculate all values for sequence order descriptors
+
+        :param maxlag_socn: parameter for SOCN default 45
+        :param maxlag_qso: parameter for QSO default 30
+        :param weight_qso: parameter for QSO default 0.1
+        :return: dictionary with values for quasi sequence order and sequence order couplig numbers
+        """
 
         res = {}
 
@@ -702,9 +749,10 @@ class Descriptor:
 
     def get_all_correlation(self):
         """
-		Calculate all descriptors from Autocorrelation
-		:return: values for the funtions Moreau Broto, Moran and Geary autocorrelation
-		"""
+        Calculate all descriptors from Autocorrelation
+
+        :return: values for the funtions Moreau Broto, Moran and Geary autocorrelation
+        """
         res = {}
         res.update(self.get_moreau_broto_auto())
         res.update(self.get_moran_auto())
@@ -714,15 +762,17 @@ class Descriptor:
     def get_all_base_class(self, window=7, scalename='Eisenberg', scalename_arc='peparc', angle=100, modality='max',
                            prof_type='uH'):
         """
-		Calculate all functions from Base class
-		:param window:
-		:param scalename:
-		:param scalename_arc:
-		:param angle:
-		:param modality:
-		:param prof_type:
-		:return: dictionary with all 6 base class peptide descriptors (the value is variable)
-		"""
+        Calculate all functions from Base class
+
+        :param window:  correlation window for descriptor calculation in a sliding window approach
+        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :param scalename_arc: binary amino acid scales only. For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+        :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
+        :param modality: maximum or mean hydrophobic moment
+        :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
+        :return: dictionary with all 6 base class peptide descriptors (the value is variable)
+        """
+
         res = {}
         res.update(self.calculate_autocorr(window, scalename))
         res.update(self.calculate_crosscorr(window, scalename))
@@ -737,28 +787,29 @@ class Descriptor:
                 scalename='Eisenberg', scalename_arc='peparc', angle=100, modality='max', prof_type='uH'):
 
         """
-		Calculate all descriptors from pydpi_py3 except tri-peptide pydpi_py3 and binary profiles
-		:param ph:parameters for geral descriptors
-		:param amide:parameters for geral descriptors
-		:param tricomp: true or false to calculate or not tri-peptide pydpi_py3
-		:param bin_aa: true or false to calculate or not binary composition of aa
-		:param bin_prop: true or false to calculate or not binary composition of properties of resides
-		:param lamda_paac: parameters for PAAC: lamdaPAAC=10 should not be larger than len(sequence)
-		:param weight_paac: parameters for PAAC weightPAAC=0.05
-		:param AAP: list with
-		:param lamda_apaac: parmeters for APAAC lamdaAPAAC=10
-		:param weight_apaac:parmeters for APAAC weightAPAAC=0.05
-		:param maxlag_socn: parameters for SOCN: maxlagSOCN=45
-		:param maxlag_qso:parameters for QSO maxlagQSO=30
-		:param weight_qso:parameters for  weightQSO=0.1
-		:param window:parameters for base class descriptors
-		:param scalename:parameters for base class descriptors
-		:param scalename_arc:parameters for base class descriptors
-		:param angle:parameters for base class descriptors
-		:param modality:parameters for base class descriptors
-		:param prof_type:parameters for base class descriptors
-		:return:dictionary with all features (value is variable)
-		"""
+        Calculate all descriptors from pydpi_py3 except tri-peptide pydpi_py3 and binary profiles
+
+        :param ph: parameters for geral descriptors
+        :param amide: parameters for geral descriptors
+        :param tricomp: true or false to calculate or not tri-peptide pydpi_py3
+        :param bin_aa: true or false to calculate or not binary composition of aa
+        :param bin_prop: true or false to calculate or not binary composition of properties of resides
+        :param lamda_paac: parameters for PAAC: lamdaPAAC=10 should not be larger than len(sequence)
+        :param weight_paac: parameters for PAAC weightPAAC=0.05
+        :param AAP: list with
+        :param lamda_apaac: parameters for APAAC lamdaAPAAC=10
+        :param weight_apaac: parameters for APAAC weightAPAAC=0.05
+        :param maxlag_socn: parameters for SOCN: maxlagSOCN=45
+        :param maxlag_qso: parameters for QSO maxlagQSO=30
+        :param weight_qso: parameters for  weightQSO=0.1
+        :param window: parameters for base class descriptors
+        :param scalename: parameters for base class descriptors
+        :param scalename_arc: parameters for base class descriptors
+        :param angle: parameters for base class descriptors
+        :param modality: parameters for base class descriptors
+        :param prof_type: parameters for base class descriptors
+        :return: dictionary with all features (value is variable)
+        """
 
         res = {}
         if bin_aa == True: res.update(self.get_bin_aa())
@@ -823,28 +874,29 @@ class Descriptor:
                   distancematrix={}, window=7, scalename='Eisenberg', scalename_arc='peparc', angle=100,
                   modality='max', prof_type='uH'):
         """
-		Function to calculate user selected descriptors
-		:param ph:parameters for geral descriptors
-		:param amide:parameters for geral descriptors
-		:param tricomp: true or false to calculate or not tri-peptide on get_all
-		:param lamda_paac: parameters for PAAC: lamdaPAAC=10
-		:param weight_paac: parameters for PAAC weightPAAC=0.05
-		:param lamda_apaac: parmeters for APAAC lamdaAPAAC=5 IT SHOULD NOT BE LARGER THAN LENGHT SEQUENCE
-		:param weight_apaac:parmeters for APAAC weightAPAAC=0.05
-		:param aap:
-		:param maxlag_socn: parameters for SOCN: maxlagSOCN=45
-		:param maxlag_qso:parameters for QSO maxlagQSO=30
-		:param weight_qso:parameters for  weightQSO=0.1
-		:param distancematrix:
-		:param window:parameters for base class descriptors
-		:param scalename:parameters for base class descriptors
-		:param scalename_arc:parameters for base class descriptors
-		:param angle:parameters for base class descriptors
-		:param modality:parameters for base class descriptors
-		:param prof_type:parameters for base class descriptors
-		:return:dictionary with all features (value is variable)
-		:param list_of_functions:
-		"""
+        Function to calculate user selected descriptors
+
+        :param ph: parameters for geral descriptors
+        :param amide: parameters for geral descriptors
+        :param tricomp: true or false to calculate or not tri-peptide on get_all
+        :param lamda_paac: parameters for PAAC: lamdaPAAC=10
+        :param weight_paac: parameters for PAAC weightPAAC=0.05
+        :param lamda_apaac: parameters for APAAC lamdaAPAAC=5 it should not be larger than lenght sequence
+        :param weight_apaac: parameters for APAAC weightAPAAC=0.05
+        :param aap:
+        :param maxlag_socn: parameters for SOCN: maxlagSOCN=45
+        :param maxlag_qso: parameters for QSO maxlagQSO=30
+        :param weight_qso: parameters for  weightQSO=0.1
+        :param distancematrix:
+        :param window: parameters for base class descriptors
+        :param scalename: parameters for base class descriptors
+        :param scalename_arc: parameters for base class descriptors
+        :param angle: parameters for base class descriptors
+        :param modality: parameters for base class descriptors
+        :param prof_type: parameters for base class descriptors
+        :param list_of_functions:
+        :return: dictionary with all features (value is variable)
+        """
         res = {}
         for function in list_of_functions:
             if function == 1: res.update(self.get_bin_aa())

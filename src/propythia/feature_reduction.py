@@ -37,6 +37,7 @@ class FeatureReduction:
             tol=0.0, iterated_power='auto', random_state=None):
         """
         Function that realizes the pca analysis
+
         :param dataset: data on to perform pca
         :param scaler: scaler to scale data. standard scaler by default
         :param n_components: Number of components to keep. if n_components is not set all components are kept
@@ -46,10 +47,12 @@ class FeatureReduction:
         :param tol:
         :param iterated_power:
         :param random_state:
-        :return:
         For more information: https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
+
+        :return:
+
         """
-        # scaling data using standard scaller. VEr o scale, normalization, log cenas.....tenho de fazer os imports se nao n conhece
+        # scaling data using standard scaller. scale, normalization, log
         scaler.fit(dataset)
         x_scaled=scaler.transform(dataset)
 
@@ -71,7 +74,8 @@ class FeatureReduction:
     def variance_ratio_components(self,x_pca):
         """
         measures the variance ratio of the principal components
-        :param x_pca:
+
+        :param x_pca: dataset transformed to pca
         :return: variance ratio of principal components
         """
         ex_variance=np.var(x_pca,axis=0)
@@ -83,6 +87,7 @@ class FeatureReduction:
         Function that retrieves a dataframe containing the contribution of each feature (rows) for component
         As unsupervised learning does not represent the importance of features but representing the directions
         of maximum variance in the data.
+
         :param data: dataset as dataframe
         :param pca: dataset fit to pca
         :param x_pca: dataset transformed to pca
@@ -99,6 +104,7 @@ class FeatureReduction:
     def pca_bar_plot(self, pca, height=1, width=1, data=None, color='b', edgecolor='k', linewidth=0, tick_label=None):
         """
         function that derives a bar plot representing the percentage of explained variance ratio by pca
+
         :param pca: dataset fit to pca
         :param height: scalar or sequence of scalars. The height(s) of the bars.
         :param width:  scalar or array-like, optional. The width(s) of the bars
@@ -119,6 +125,7 @@ class FeatureReduction:
     def pca_scatter_plot(self, data, pca, x_pca, target, pca1=0, pca2=1, title='pca'):
         """
         Scatter plot of the labels based on two components (by default the first ones)
+
         :param title: string. title of the scatter plot
         :param data: dataset. dataframe
         :param pca: dataset fit to pca

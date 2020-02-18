@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -151,22 +153,22 @@
 
 <span class="sd">Allows to change the sequence and generating other.cut or add aminoacids to obtain sequences with equal lenght.</span>
 <span class="sd">(one sequence ----&gt; one sequence).</span>
-<span class="sd">	The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.</span>
-<span class="sd">	It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa</span>
-<span class="sd">	(if needed)</span>
+<span class="sd">    The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.</span>
+<span class="sd">    It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa</span>
+<span class="sd">    (if needed)</span>
 
-<span class="sd">	To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.</span>
-<span class="sd">	If necessary dummy will be added to the right</span>
+<span class="sd">    To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.</span>
+<span class="sd">    If necessary dummy will be added to the right</span>
 
-<span class="sd">	To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.</span>
-<span class="sd">	If necessary dummy will be added to the left</span>
+<span class="sd">    To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.</span>
+<span class="sd">    If necessary dummy will be added to the left</span>
 
-<span class="sd">	To consider both extremes of sequence both n and c terminal are different of zero.</span>
-<span class="sd">	If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.</span>
-<span class="sd">	If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).</span>
+<span class="sd">    To consider both extremes of sequence both n and c terminal are different of zero.</span>
+<span class="sd">    If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.</span>
+<span class="sd">    If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).</span>
 
 
-<span class="sd">Authors:</span>
+<span class="sd">Authors: Ana Marta Sequeira</span>
 
 <span class="sd">Date:</span>
 
@@ -186,13 +188,15 @@
 <div class="viewcode-block" id="seq_equal_lenght"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sized_seq.seq_equal_lenght">[docs]</a><span class="k">def</span> <span class="nf">seq_equal_lenght</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="n">n_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    cut or add aminoacids to obtain sequences with equal lenght.</span>
+
 <span class="sd">    :param seq: protein sequence</span>
 <span class="sd">    :param n_terminal: number of aa to consider in the n terminal (left side of sequence)</span>
 <span class="sd">    :param c_terminal: number of aa to consider in the c terminal (right side of sequence)</span>
-<span class="sd">    :param terminal: in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add</span>
-<span class="sd">                    0 to add to the right (consider N terminal)</span>
-<span class="sd">                    -1 to add to the left (consider C terminal)</span>
-<span class="sd">                    2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle</span>
+<span class="sd">    :param terminal:</span>
+<span class="sd">        in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add</span>
+<span class="sd">        0 to add to the right (consider N terminal),</span>
+<span class="sd">        -1 to add to the left (consider C terminal)</span>
+<span class="sd">        2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle</span>
 <span class="sd">    :return: list of sequences cntaining all the same lenght</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

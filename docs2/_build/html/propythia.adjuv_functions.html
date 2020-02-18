@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>propythia.adjuv_functions package &mdash; ProPythia 0.04 documentation</title>
+  <title>Adjuv Functions &mdash; ProPythia 0.04 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Adjuv functions: Features" href="propythia.adjuv_functions.features_functions.html" />
+    <link rel="next" title="Adjuv functions: Sequence" href="propythia.adjuv_functions.sequence.html" />
     <link rel="prev" title="ProPythia modules" href="propythia.html" /> 
 </head>
 
@@ -82,15 +83,18 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">propythia.adjuv_functions package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">Source Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="propythia.html">ProPythia modules</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adjuv Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.sequence.html">Adjuv functions: Sequence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html">Adjuv functions: Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.scoring.html">Adjuv functions: Scoring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.sequence.html">Adjuv functions: Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-propythia.adjuv_functions">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-propythia.adjuv_functions">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-propythia">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +142,9 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>propythia.adjuv_functions package</li>
+          <li><a href="src.html">Source Code</a> &raquo;</li>
+        
+      <li>Adjuv Functions</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -157,49 +163,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="propythia-adjuv-functions-package">
-<h1>propythia.adjuv_functions package<a class="headerlink" href="#propythia-adjuv-functions-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="adjuv-functions">
+<h1>Adjuv Functions<a class="headerlink" href="#adjuv-functions" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html">Adjuv functions: Features</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.aa_composition">aa_composition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#altered-and-converted-to-python-3-6-for-ana-marta-sequeira-05-2019">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#aa-index">aa_index</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.autocorrelation">autocorrelation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.binary">binary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.binary_aa_properties">binary_aa_properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.bondcomp">bondcomp</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#email">Email:</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.conjoint_triad">conjoint_triad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.ctd">ctd</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#id1">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.descriptors_modlamp">descriptors_modlamp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.modlamp_core">modlamp_core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#pcp">pcp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.pseudo_aac">propythia.adjuv_functions.features_functions.pseudo_aac module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.quasi_sequence_order">quasi_sequence_order</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#id3">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="propythia.adjuv_functions.scoring.html">Adjuv functions: Scoring</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.scoring.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.scoring.html#module-propythia.adjuv_functions.scoring.scores">scores module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.scoring.html#module-propythia.adjuv_functions.scoring">Module contents</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="propythia.adjuv_functions.sequence.html">Adjuv functions: Sequence</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.sequence.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.sequence.html#module-propythia.adjuv_functions.sequence.get_sequence">get_sequence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.sequence.html#module-propythia.adjuv_functions.sequence.get_sized_seq">get_sized_seq</a></li>
 <li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.sequence.html#module-propythia.adjuv_functions.sequence.get_sub_seq">get_sub_seq</a></li>
@@ -207,8 +199,29 @@
 <li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.sequence.html#module-propythia.adjuv_functions.sequence">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html">Adjuv functions: Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.aa_composition">aa_composition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#aa-index">aa_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.autocorrelation">autocorrelation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.binary">binary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.binary_aa_properties">binary_aa_properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.bondcomp">bondcomp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.conjoint_triad">conjoint_triad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.ctd">ctd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.descriptors_modlamp">descriptors_modlamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.modlamp_core">modlamp_core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.pcp">pcp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.pseudo_aac">pseudo_aac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions.quasi_sequence_order">quasi_sequence_order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.features_functions.html#module-propythia.adjuv_functions.features_functions">Module contents</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="propythia.adjuv_functions.scoring.html">Adjuv functions: Scoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.scoring.html#module-propythia.adjuv_functions.scoring.scores">scores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="propythia.adjuv_functions.scoring.html#module-propythia.adjuv_functions.scoring">Module contents</a></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="module-propythia.adjuv_functions">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-propythia.adjuv_functions" title="Permalink to this headline">¶</a></h2>
@@ -223,7 +236,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="propythia.adjuv_functions.features_functions.html" class="btn btn-neutral float-right" title="Adjuv functions: Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="propythia.adjuv_functions.sequence.html" class="btn btn-neutral float-right" title="Adjuv functions: Sequence" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="propythia.html" class="btn btn-neutral float-left" title="ProPythia modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

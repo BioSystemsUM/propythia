@@ -89,7 +89,7 @@ pcp
    :undoc-members:
    :show-inheritance:
 
-propythia.adjuv\_functions.features\_functions.pseudo\_aac module
+pseudo_aac
 -----------------------------------------------------------------
 
 .. automodule:: propythia.adjuv_functions.features_functions.pseudo_aac

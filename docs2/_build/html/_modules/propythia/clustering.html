@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -161,25 +163,29 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">accuracy_score</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
-<span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="k">import</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">linkage</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">linkage</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 
 
 <div class="viewcode-block" id="Cluster"><a class="viewcode-back" href="../../propythia.html#propythia.clustering.Cluster">[docs]</a><span class="k">class</span> <span class="nc">Cluster</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The cluster class aims to perform and plot clustering analysis</span>
 <span class="sd">    Based on scikit learn.</span>
+<span class="sd">    When the class is called a dataset containing the features values and a target column must be provided.</span>
+<span class="sd">    Test size is by default 0.3 but can be altered by user</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        load the data. the inputs are inherited from the init function when the class is called.</span>
+
 <span class="sd">        :return: selfs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">sklearn_load</span>
@@ -188,10 +194,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="o">=</span><span class="n">target</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        init function. When the class is called a dataset containing the features values and a target column must be provided.</span>
 <span class="sd">        Test size is by default 0.3 but can be altered by user.</span>
+
 <span class="sd">        :param sklearn_load: dataset X_data</span>
 <span class="sd">        :param target: column with class labels</span>
 <span class="sd">        :param test_size: size for division of the dataset in train and tests</span>
@@ -201,6 +208,7 @@
 <div class="viewcode-block" id="Cluster.kmeans"><a class="viewcode-back" href="../../propythia.html#propythia.clustering.Cluster.kmeans">[docs]</a>    <span class="k">def</span> <span class="nf">kmeans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that performs K means cluster.</span>
+
 <span class="sd">        :param max_iter: number of max terations for cluster (300 by default)</span>
 <span class="sd">        :param n_clusters: if None, it will define the number of clusters as the number of existing labels</span>
 <span class="sd">        :return: cross table with counts for labels vs classification in clusters</span>
@@ -221,10 +229,12 @@
 <div class="viewcode-block" id="Cluster.hierarchical"><a class="viewcode-back" href="../../propythia.html#propythia.clustering.Cluster.hierarchical">[docs]</a>    <span class="k">def</span> <span class="nf">hierarchical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">metric</span><span class="o">=</span><span class="s1">&#39;correlation&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;complete&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform hierarchical clustering</span>
-<span class="sd">        :param metric: distance metric to use in the case that y is a collection of observation vectors. eg. &#39;correlation&#39;, &#39;euclidean&#39;</span>
-<span class="sd">        see (https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist)</span>
+
+<span class="sd">        :param metric:</span>
+<span class="sd">            distance metric to use in the case that y is a collection of observation vectors. eg. &#39;correlation&#39;, &#39;euclidean&#39;</span>
+<span class="sd">            see https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist</span>
 <span class="sd">        :param method: method to be used. exemples: &#39;complete&#39;, &#39;single&#39;, &#39;average&#39;, &#39;ward&#39;</span>
-<span class="sd">        see (https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html)</span>
+<span class="sd">            see https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html</span>
 <span class="sd">        :return: dendogram of the clustered data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -246,6 +256,7 @@
 <div class="viewcode-block" id="Cluster.classify"><a class="viewcode-back" href="../../propythia.html#propythia.clustering.Cluster.classify">[docs]</a>    <span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that fits the model in train datasets and predict on the tests dataset, returning the accuracy</span>
+
 <span class="sd">        :param model: model to make prediction (SVC by default)</span>
 <span class="sd">        :return: the accuracy of the prediction</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -257,9 +268,10 @@
 <div class="viewcode-block" id="Cluster.kmeans_predict"><a class="viewcode-back" href="../../propythia.html#propythia.clustering.Cluster.kmeans_predict">[docs]</a>    <span class="k">def</span> <span class="nf">kmeans_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform the kmeans to train data and predict the tests set</span>
+
 <span class="sd">        :param output: &#39;add&#39; or &#39;replace&#39;.</span>
-<span class="sd">        If add, the labels produced by clustering will be added as features</span>
-<span class="sd">        If replace, labels produced will be replace the old labels</span>
+<span class="sd">            If add, the labels produced by clustering will be added as features</span>
+<span class="sd">            If replace, labels produced will be replace the old labels</span>
 <span class="sd">        :param max_iter: max number of iterations of cluster</span>
 <span class="sd">        :param n_clusters: if None, it will define the number of clusters as the number of existing labels</span>
 <span class="sd">        :return: values of X datasets altered (if add) or the Y datasets replaced</span>

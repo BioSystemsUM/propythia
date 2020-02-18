@@ -3,7 +3,7 @@
 #####################################################################################
 Checking whether the input protein sequence is valid amino acid or not
 
-Authors:
+Authors: Ana Marta Sequeira
 
 Date:
 
@@ -19,6 +19,7 @@ AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W
 def protein_check(ProteinSequence):
 	"""
 	Check whether the protein sequence is a valid amino acid sequence or not
+
 	:param ProteinSequence: protein sequence
 	:return: lenght of protein if no porblem, 0 if protein is not valid
 	"""

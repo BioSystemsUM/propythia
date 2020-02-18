@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -166,6 +168,8 @@
 <span class="sd">Date: 05/2019</span>
 
 <span class="sd">Email:</span>
+
+
 <span class="sd">##############################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -176,6 +180,7 @@
 <span class="sd">    Read in files. You need to run this (once) before you can</span>
 <span class="sd">    access any records. If the files are not within the current directory,</span>
 <span class="sd">    you need to specify the correct directory path.</span>
+
 <span class="sd">    :param path:</span>
 <span class="sd">    :param index:</span>
 <span class="sd">    :return:</span>
@@ -204,6 +209,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sum of the bond composition for each type of bond: total number of bonds (including aromatic), hydrogen bond,</span>
 <span class="sd">    single bond and double</span>
+
 <span class="sd">    :param seq: protein sequence</span>
 <span class="sd">    :return: dictionary with number of total, hydrogen, single and double bonds</span>
 <span class="sd">    &quot;&quot;&quot;</span>

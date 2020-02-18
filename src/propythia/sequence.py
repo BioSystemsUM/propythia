@@ -3,13 +3,16 @@
 ##############################################################################
 
 A class used for reading sequences or change sequences.
-The main objective is to create sequence objects to calculate descriptors
+The main objective is to create sequence objects to calculate descriptors.
 The class allows to:
-     1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs)
-     2)Check if the protein sequence is a valid sequence
-     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals
+     1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs).
+
+     2)Check if the protein sequence is a valid sequence.
+
+     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals.
+
      4)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the
-     the terminals or divide the sequence in parts
+     terminals or divide the sequence in parts.
 
 Authors:Ana Marta Sequeira
 
@@ -27,9 +30,9 @@ from propythia.adjuv_functions.sequence.get_sub_seq import sub_seq_sliding_windo
 
 
 class ReadSequence:
-
     """
     The ReadSequence class aims to read the input and transform it into a sequence that can be used to calculate Descriptors.
+
     It accepts uniprotID, txt with uniprot ID and string with aminoacid sequence. The functions to read protein are based on the package pydpi.
     It allows to get sized sequences or a variety of subsequences from just one sequence.
     """
@@ -44,6 +47,7 @@ class ReadSequence:
     def read_protein_sequence(self, protein_sequence=""):
         """
         Read a protein sequence.
+
         :param protein_sequence: String with sequence
         :return: String with aa sequence
         """
@@ -61,10 +65,11 @@ class ReadSequence:
     def get_protein_sequence_from_txt(self, path, openfile, savefile):
         """
         Function to retrieve sequences from a txt with uniprot ID. Does not retrieve a sequence object
-        :param path: directory path containing ID file
-        :param openfile:ID file ('name.txt')
+
+        :param path: directory path containing ID files
+        :param openfile: ID file ('name.txt')
         :param savefile: saved file with obtained protein sequences ('name2.txt')
-        :return:File containing string of sequences
+        :return: File containing string of sequences
         """
         self.txt=get_protein_sequence_from_txt(path,openfile,savefile)
         return self.txt
@@ -72,6 +77,7 @@ class ReadSequence:
     def get_protein_sequence_from_id(self, uniprotid=""):
         """
         Downloading a protein sequence by uniprot id.
+
         :param uniprotid: String with UniprotID
         :return: String with aa sequence
         """
@@ -92,6 +98,7 @@ class ReadSequence:
         """
         Check whether the protein sequence is a valid amino acid sequence or not.
         Just check. Not assign to the object.
+
         :param protein_sequence: protein sequence
         :return: error or valid message.
         """
@@ -108,26 +115,29 @@ class ReadSequence:
     # Get equal size sequences
 
     def get_sized_seq(self, sequences=[], n_terminal=10, c_terminal=10, terminal=0):
-        """
-        cut or add aminoacids to obtain sequences with equal lenght.
+        '''
+        cut or add aminoacids to obtain sequences with equal length.
+
         :param sequences: list containing protein sequences (string) or just a protein sequence
         :param n_terminal: number of aa to consider in the n terminal (left side of sequence)
         :param c_terminal: number of aa to consider in the c terminal (right side of sequence)
-        :param terminal: in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add
-                        0 to add to the right (consider N terminal)
-                        -1 to add to the left (consider C terminal)
-                        2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle
-        :return: list of sequences containing all the same lenght. if just one sequence given it will return a string
-        """
+        :param terminal:
+            in case of need to add dummy aa and no terminal has already been chosen, it decides where to add '0' to add
+            to the right (consider N terminal), '-1' to add to the left (consider C terminal), '2' to add in the middle
+            (N and C terminal) will be both present and repeated with dummy in middle
+
+        :return: list of sequences containing all the same length. if just one sequence given it will return a string
+        '''
         if len(sequences)==1:
             seq=seq_equal_lenght(sequences[0],n_terminal,c_terminal,terminal)
             return seq
         else:
-            equal_size_sequences=[] #list to store sequences with equal lenght
+            equal_size_sequences=[] # list to store sequences with equal lenght
             for seq in sequences:
                 seq_2=seq_equal_lenght(seq,n_terminal,c_terminal,terminal)
                 equal_size_sequences.append(seq_2)
             return equal_size_sequences
+
 
 ##########################################
     # Generate subsequences
@@ -165,6 +175,7 @@ class ReadSequence:
     def get_sub_seq_split(self, seq, number_of_subseq):
         """
         Split the originl seq in n number of subsequences.
+
         :param seq: protein sequence
         :param number_of_subseq: number of subsequences to divide the original seq
         :return: list with number_of_sequences sequences.

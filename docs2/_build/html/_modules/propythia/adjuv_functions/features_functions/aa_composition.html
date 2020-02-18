@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -182,6 +184,7 @@
 <span class="sd">Email: oriental-cds@163.com</span>
 
 <span class="sd">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</span>
+
 <span class="sd">###############################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -194,6 +197,7 @@
 <div class="viewcode-block" id="calculate_aa_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_aa_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_aa_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the composition of Amino acids for a given protein sequence.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing the composition of 20 amino acids.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -209,6 +213,7 @@
 <div class="viewcode-block" id="calculate_dipeptide_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_dipeptide_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_dipeptide_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the composition of dipeptidefor a given protein sequence.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing the composition of 400 dipeptides.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -225,6 +230,7 @@
 <div class="viewcode-block" id="getkmers"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.getkmers">[docs]</a><span class="k">def</span> <span class="nf">getkmers</span><span class="p">():</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get the amino acid list of 3-mers.</span>
+
 <span class="sd">	:return: result is a list form containing 8000 tri-peptides.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">kmers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -240,6 +246,7 @@
 <div class="viewcode-block" id="get_spectrum_dict"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.get_spectrum_dict">[docs]</a><span class="k">def</span> <span class="nf">get_spectrum_dict</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the spectrum of 3-mers for a given protein.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing the composition values of 8000</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -256,6 +263,7 @@
 <div class="viewcode-block" id="calculate_aa_tripeptide_composition"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_composition.calculate_aa_tripeptide_composition">[docs]</a><span class="k">def</span> <span class="nf">calculate_aa_tripeptide_composition</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the composition of AADs, dipeptide and 3-mers for a given protein sequence.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing all composition values of AADs, dipeptide and 3-mers (8420).</span>
 <span class="sd">	&quot;&quot;&quot;</span>

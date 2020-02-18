@@ -28,11 +28,15 @@ class Cluster:
     """
     The cluster class aims to perform and plot clustering analysis
     Based on scikit learn.
+    When the class is called a dataset containing the features values and a target column must be provided.
+    Test size is by default 0.3 but can be altered by user
+
     """
 
     def _load_data(self, sklearn_load,target,test_size):
         """
         load the data. the inputs are inherited from the init function when the class is called.
+
         :return: selfs
         """
         data = sklearn_load
@@ -45,6 +49,7 @@ class Cluster:
         """
         init function. When the class is called a dataset containing the features values and a target column must be provided.
         Test size is by default 0.3 but can be altered by user.
+
         :param sklearn_load: dataset X_data
         :param target: column with class labels
         :param test_size: size for division of the dataset in train and tests
@@ -54,6 +59,7 @@ class Cluster:
     def kmeans(self, max_iter=300, n_clusters=None):
         """
         Function that performs K means cluster.
+
         :param max_iter: number of max terations for cluster (300 by default)
         :param n_clusters: if None, it will define the number of clusters as the number of existing labels
         :return: cross table with counts for labels vs classification in clusters
@@ -74,10 +80,12 @@ class Cluster:
     def hierarchical(self,metric='correlation', method='complete'):
         """
         Perform hierarchical clustering
-        :param metric: distance metric to use in the case that y is a collection of observation vectors. eg. 'correlation', 'euclidean'
-        see (https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist)
+
+        :param metric:
+            distance metric to use in the case that y is a collection of observation vectors. eg. 'correlation', 'euclidean'
+            see https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist
         :param method: method to be used. exemples: 'complete', 'single', 'average', 'ward'
-        see (https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html)
+            see https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
         :return: dendogram of the clustered data
         """
 
@@ -99,6 +107,7 @@ class Cluster:
     def classify(self, model=SVC(random_state=42)):
         """
         Function that fits the model in train datasets and predict on the tests dataset, returning the accuracy
+
         :param model: model to make prediction (SVC by default)
         :return: the accuracy of the prediction
         """
@@ -110,9 +119,10 @@ class Cluster:
     def kmeans_predict(self, output='add', max_iter=300, n_clusters=None):
         """
         Perform the kmeans to train data and predict the tests set
+
         :param output: 'add' or 'replace'.
-        If add, the labels produced by clustering will be added as features
-        If replace, labels produced will be replace the old labels
+            If add, the labels produced by clustering will be added as features
+            If replace, labels produced will be replace the old labels
         :param max_iter: max number of iterations of cluster
         :param n_clusters: if None, it will define the number of clusters as the number of existing labels
         :return: values of X datasets altered (if add) or the Y datasets replaced

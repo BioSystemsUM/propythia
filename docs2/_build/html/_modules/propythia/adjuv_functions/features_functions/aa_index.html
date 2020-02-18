@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -157,7 +159,7 @@
 <span class="sd">Date: 2012.09.10</span>
 
 <span class="sd">Email: oriental-cds@163.com</span>
-<span class="sd">Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019</span>
+<span class="sd">Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">string</span>
 
@@ -172,7 +174,7 @@
 <span class="sd">	Amino acid index (AAindex) Record</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">aakeys</span> <span class="o">=</span> <span class="s1">&#39;ARNDCQEGHILKMFPSTWYV&#39;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -193,7 +195,7 @@
 		<span class="k">assert</span> <span class="n">aaj</span> <span class="ow">is</span> <span class="kc">None</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aai</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
 
-	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aai</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Record.median"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.Record.median">[docs]</a>	<span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -203,7 +205,7 @@
 			<span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="p">]</span>
 		<span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span></div>
 
-	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="n">desc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 		<span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span></div>
 		
@@ -214,7 +216,7 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Matrix record for mutation matrices or pair-wise contact potentials</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="n">Record</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
@@ -238,7 +240,7 @@
 		<span class="k">except</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">d</span></div>
 
-	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aaij</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aaij</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aaij</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aaij</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <div class="viewcode-block" id="MatrixRecord.median"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.MatrixRecord.median">[docs]</a>	<span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -256,6 +258,7 @@
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Search for pattern in description and title (optional) of all records and</span>
 <span class="sd">	return matched records as list. By default search case insensitive.</span>
+
 <span class="sd">	:param pattern:</span>
 <span class="sd">	:param searchtitle:</span>
 <span class="sd">	:param casesensitive:</span>
@@ -276,8 +279,8 @@
 
 <div class="viewcode-block" id="grep"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.grep">[docs]</a><span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Search for pattern in title and description of all records (case</span>
-<span class="sd">	insensitive) and print results on standard output.</span>
+<span class="sd">	Search for pattern in title and description of all records (case insensitive) and print results on standard output.</span>
+
 <span class="sd">	:param pattern:</span>
 <span class="sd">	:return:</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -289,6 +292,7 @@
 <div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get record for key</span>
+
 <span class="sd">	:param key:</span>
 <span class="sd">	:return:</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -313,6 +317,7 @@
 <span class="sd">	access any records. If the files are not within the current directory,</span>
 <span class="sd">	you need to specify the correct directory path. By default all three</span>
 <span class="sd">	aaindex files are read in.</span>
+
 <span class="sd">	:param path:</span>
 <span class="sd">	:param index:</span>
 <span class="sd">	:return:</span>
@@ -339,8 +344,8 @@
 
 <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Parse aaindex input file. `rec` must be `Record` for aaindex1 and</span>
-<span class="sd">	`MarixRecord` for aaindex2 and aaindex3.</span>
+<span class="sd">	Parse aaindex input file. `rec` must be `Record` for aaindex1 and `MarixRecord` for aaindex2 and aaindex3.</span>
+
 <span class="sd">	:param filename:</span>
 <span class="sd">	:param rec:</span>
 <span class="sd">	:param quiet:</span>
@@ -419,6 +424,7 @@
 <div class="viewcode-block" id="get_aa_index1"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get_aa_index1">[docs]</a><span class="k">def</span> <span class="nf">get_aa_index1</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get the amino acid property values from aaindex1</span>
+
 <span class="sd">	:param name: name is the name of amino acid property (e.g., KRIW790103)</span>
 <span class="sd">	:param path:</span>
 <span class="sd">	:return: get_aa_index1(name). result is a dict form containing the properties of 20 amino acids</span>
@@ -437,6 +443,7 @@
 <div class="viewcode-block" id="get_aa_index23"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get_aa_index23">[docs]</a><span class="k">def</span> <span class="nf">get_aa_index23</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Get the amino acid property values from aaindex2 and aaindex3</span>
+
 <span class="sd">	:param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)</span>
 <span class="sd">	:param path:</span>
 <span class="sd">	:return: get_aa_index23(name). result is a dict form containing the properties of 400 amino acid pairs</span>

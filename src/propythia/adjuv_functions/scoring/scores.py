@@ -21,9 +21,9 @@ from sklearn.ensemble import RandomForestClassifier
 def score_methods(x_original,x_reduced,labels):
     '''
 
-    :param x_original: h biuojip+lp´+ç
-    :param x_reduced:
-    :param labels:
+    :param x_original: dataset with features original (no labels)
+    :param x_reduced: dataset with feature selection or reduction applied (no labels)
+    :param labels: labels of dataset
     :return:
     '''
     svm_mod =svm.SVC(gamma=0.001,C=100)

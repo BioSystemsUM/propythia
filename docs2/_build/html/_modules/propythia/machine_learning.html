@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -164,25 +166,25 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">propythia.sequence</span> <span class="k">import</span> <span class="n">ReadSequence</span>
-<span class="kn">from</span> <span class="nn">propythia.descriptors</span> <span class="k">import</span> <span class="n">Descriptor</span>
-<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sub_seq</span> <span class="k">import</span> <span class="n">sub_seq_sliding_window</span>
+<span class="kn">from</span> <span class="nn">propythia.sequence</span> <span class="kn">import</span> <span class="n">ReadSequence</span>
+<span class="kn">from</span> <span class="nn">propythia.descriptors</span> <span class="kn">import</span> <span class="n">Descriptor</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.sequence.get_sub_seq</span> <span class="kn">import</span> <span class="n">sub_seq_sliding_window</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">validation_curve</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">metrics</span> <span class="k">as</span> <span class="n">mets</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
-<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">SGDClassifier</span><span class="p">,</span> <span class="n">LogisticRegressionCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="k">import</span> <span class="n">GaussianNB</span>
-<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">GradientBoostingClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">learning_curve</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">ShuffleSplit</span><span class="p">,</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">validation_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span> <span class="k">as</span> <span class="n">mets</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span><span class="p">,</span> <span class="n">LogisticRegressionCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">learning_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ShuffleSplit</span><span class="p">,</span> <span class="n">train_test_split</span>
 
 <span class="c1"># import scikitplot as skplt</span>
 <span class="c1"># from more_itertools import unique_everseen</span>
@@ -199,6 +201,7 @@
     <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="p">,</span><span class="n">classes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        load the data. the inputs are inherited from the init function when the class is called.</span>
+
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">sklearn_load</span>
@@ -212,10 +215,11 @@
         <span class="c1"># self.y_train_encoded=np.ravel(label_binarize(self.y_train, classes=[&#39;fps&#39;,&#39;tmds&#39;])) # ham will be 0 and spam will be 1</span>
         <span class="c1"># self.y_test_encoded=np.ravel(label_binarize(self.y_test, classes=[&#39;fps&#39;,&#39;tmds&#39;])) # ham will be 0 and spam will be 1</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="n">classes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span><span class="s1">&#39;neg&#39;</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sklearn_load</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="n">classes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">,</span><span class="s1">&#39;neg&#39;</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        init function. When the class is called a dataset containing the features values and a target column must be provided.</span>
 <span class="sd">        Test size is by default 0.3 but can be altered by user.</span>
+
 <span class="sd">        :param sklearn_load: dataset X_data</span>
 <span class="sd">        :param target: column with class labels</span>
 <span class="sd">        :param test_size: size for division of the dataset in train and tests</span>
@@ -228,6 +232,7 @@
 <span class="sd">        This function performs a parameter grid search on a selected classifier model and peptide training data set.</span>
 <span class="sd">        It returns a scikit-learn pipeline that performs standard scaling and contains the best model found by the</span>
 <span class="sd">        grid search according to the Matthews correlation coefficient.</span>
+
 <span class="sd">        :param model: {str} model to train. Choose between &#39;svm&#39;, &#39;knn&#39;, &#39;sgd&#39;, &#39;lr&#39;,&#39;rf&#39;, &#39;gnb&#39;, &#39;nn&#39;,&#39;gboosting&#39;</span>
 <span class="sd">        :param x_train: {array} descriptor values for training data.</span>
 <span class="sd">        :param y_train: {array} class values for training data.</span>
@@ -235,48 +240,69 @@
 <span class="sd">        :param scaler: {scaler} scaler to use in the pipe to scale data prior to training. Choose from</span>
 <span class="sd">            ``sklearn.preprocessing``, e.g. &#39;StandardScaler()&#39;, &#39;MinMaxScaler()&#39;, &#39;Normalizer()&#39;.</span>
 <span class="sd">        :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form</span>
-<span class="sd">            (choose from the scikit-learn`scoring-parameters &lt;http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter&gt;`_).</span>
-<span class="sd">        :param param_grid: {dict} parameter grid for the gridsearch (see`sklearn.grid_search &lt;http://scikit-learn.org/stable/modules/model_evaluation.html&gt;`_).</span>
+<span class="sd">            (choose from the scikit-learn`scoring-parameters</span>
+<span class="sd">            &lt;http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter&gt;`_).</span>
+<span class="sd">        :param param_grid:</span>
+<span class="sd">            {dict} parameter grid for the gridsearch (see`sklearn.grid_search</span>
+<span class="sd">            &lt;http://scikit-learn.org/stable/modules/model_evaluation.html&gt;`_)</span>
+<span class="sd">            \n **Default parameter grids:**</span>
+
+<span class="sd">            \n =================                   =====================================================================</span>
+<span class="sd">            \n Model                                Parameter grid</span>
+<span class="sd">            \n =================                   =====================================================================</span>
+<span class="sd">            \n SVM</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__C&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0],</span>
+<span class="sd">                                                    &#39;clf__kernel&#39;: [&#39;linear&#39;],</span>
+<span class="sd">                                                    &#39;clf__gamma&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]}]</span>
+
+<span class="sd">            \n Random Forest (RF)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__n_estimators&#39;: [10, 100, 500],</span>
+<span class="sd">                                                    &#39;clf__max_features&#39;: [&#39;sqrt&#39;, &#39;log2&#39;],</span>
+<span class="sd">                                                    &#39;clf__bootstrap&#39;: [True],</span>
+<span class="sd">                                                    &#39;clf__criterion&#39;: [&quot;gini&quot;]}]</span>
+
+<span class="sd">            \n k Nearest Neighbours (KNN)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__n_neighbors&#39;: [2, 5, 10, 15],</span>
+<span class="sd">                                                    &#39;clf__weights&#39;: [&#39;uniform&#39;, &#39;distance&#39;],</span>
+<span class="sd">                                                    &#39;clf__leaf_size&#39;:[15, 30, 60]}]</span>
+
+<span class="sd">            \n Stochastic Gradient Descent (SGD)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__loss&#39;: [&#39;hinge&#39;, &#39;log&#39;, &#39;modified_huber&#39;,&#39;perceptron&#39;],</span>
+<span class="sd">                                                    &#39;clf__penalty&#39;: [&#39;l2&#39;, &#39;l1&#39;,&#39;elasticnet&#39;],</span>
+<span class="sd">                                                    &#39;clf__alpha&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]}]</span>
+
+<span class="sd">            \n Logistic Regression CV (LR)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__Cs&#39;: param_range = [0.001,0.01,0.1,1.0,10.0,100,1000],</span>
+<span class="sd">                                           &#39;         &#39;clf__solver&#39;: [&#39;newton-cg&#39;, &#39;lbfgs&#39;, &#39;sag&#39;]}]</span>
+
+<span class="sd">            \n Gaussian Naive Bayes (GNB)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__var_smoothing&#39;: [1e-12, 1e-9, 1e-4]}]</span>
+
+<span class="sd">            \n Neural network  (NN)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__activation&#39;: [&#39;identity&#39;, &#39;logistic&#39;, &#39;tanh&#39;, &#39;relu&#39;],</span>
+<span class="sd">                                                    #&#39;clf__solver&#39;: [&#39;lbfgs&#39;, &#39;sgd&#39;, &#39;adam&#39;],</span>
+<span class="sd">                                                    #&#39;clf__learning_rate&#39;: [ &#39;constant&#39;, &#39;invscaling&#39;, &#39;adaptive&#39;],</span>
+<span class="sd">                                                    &#39;clf__batch_size&#39;: [0,5,10]}]</span>
+
+<span class="sd">            \n Gradient Boosting (gboosting)</span>
+<span class="sd">                                                    param_grid = [{</span>
+<span class="sd">                                                    &#39;clf__loss&#39;: [&#39;deviance&#39;, &#39;exponential&#39;],</span>
+<span class="sd">                                                    &#39;clf__n_estimators&#39;: [10, 100, 500],</span>
+<span class="sd">                                                    &#39;clf__max_depth&#39;: [1,3,5,10]}]</span>
+<span class="sd">            =================                   ========================================================================</span>
+
 <span class="sd">        :param n_jobs: {int} number of parallel jobs to use for calculation. if ``-1``, all available cores are used.</span>
 <span class="sd">        :param cv: {int} number of folds for cross-validation.</span>
+
 <span class="sd">        :return: best estimator pipeline.</span>
 
-<span class="sd">        **Default parameter grids:**</span>
-
-<span class="sd">        =================                   ==============================================================================</span>
-<span class="sd">        Model                                Parameter grid</span>
-<span class="sd">        =================                   ==============================================================================</span>
-<span class="sd">        SVM                                     param_grid = [{&#39;clf__C&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0],</span>
-<span class="sd">                                                        &#39;clf__kernel&#39;: [&#39;linear&#39;],</span>
-<span class="sd">                                                        &#39;clf__gamma&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0]}]</span>
-
-<span class="sd">        Random Forest (RF)                      param_grid = [{&#39;clf__n_estimators&#39;: [10, 100, 500],</span>
-<span class="sd">                                                        &#39;clf__max_features&#39;: [&#39;sqrt&#39;, &#39;log2&#39;],</span>
-<span class="sd">                                                        &#39;clf__bootstrap&#39;: [True],</span>
-<span class="sd">                                                        &#39;clf__criterion&#39;: [&quot;gini&quot;]}]</span>
-
-<span class="sd">        k Nearest Neighbours (KNN)                param_grid = [{&#39;clf__n_neighbors&#39;: [2, 5, 10, 15],</span>
-<span class="sd">                                                            &#39;clf__weights&#39;: [&#39;uniform&#39;, &#39;distance&#39;],</span>
-<span class="sd">                                                            &#39;clf__leaf_size&#39;:[15, 30, 60]}]</span>
-
-<span class="sd">        Stochastic Gradient Descent (SGD)   param_grid = [{&#39;clf__loss&#39;: [&#39;hinge&#39;, &#39;log&#39;, &#39;modified_huber&#39;, &#39;perceptron&#39;],</span>
-<span class="sd">                                                            &#39;clf__penalty&#39;: [&#39;l2&#39;, &#39;l1&#39;,&#39;elasticnet&#39;],</span>
-<span class="sd">                                                            &#39;clf__alpha&#39;: [0.00001, 0.0001, 0.001, 0.01, 0.1, 1.0, 10.0],}]</span>
-
-<span class="sd">        Logistic Regression CV (LR)        param_grid = [{&#39;clf__Cs&#39;: param_range = [0.001, 0.01, 0.1, 1.0, 10.0, 100, 1000],</span>
-<span class="sd">                                       &#39;                   clf__solver&#39;: [&#39;newton-cg&#39;, &#39;lbfgs&#39;, &#39;sag&#39;]}]</span>
-
-<span class="sd">        Gaussian Naive Bayes (GNB)                param_grid = [{&#39;clf__var_smoothing&#39;: [1e-12, 1e-9, 1e-4]}]</span>
-
-<span class="sd">        Neural network  (NN)                     param_grid = [{&#39;clf__activation&#39;: [&#39;identity&#39;, &#39;logistic&#39;, &#39;tanh&#39;, &#39;relu&#39;],</span>
-<span class="sd">                                                            #&#39;clf__solver&#39;: [&#39;lbfgs&#39;, &#39;sgd&#39;, &#39;adam&#39;],</span>
-<span class="sd">                                                            #&#39;clf__learning_rate&#39;: [ &#39;constant&#39;, &#39;invscaling&#39;, &#39;adaptive&#39;],</span>
-<span class="sd">                                                            &#39;clf__batch_size&#39;: [0,5,10]}]</span>
-
-<span class="sd">        Gradient Boosting (gboosting)       param_grid = [{&#39;clf__loss&#39;: [&#39;deviance&#39;, &#39;exponential&#39;],</span>
-<span class="sd">                                                            &#39;clf__n_estimators&#39;: [10, 100, 500],</span>
-<span class="sd">                                                            &#39;clf__max_depth&#39;: [1,3,5,10]}]</span>
-<span class="sd">        ====================              ==============================================================================</span>
 <span class="sd">        Based on a function from moodlamp</span>
 <span class="sd">        Müller A. T. et al. (2017) modlAMP: Python for anitmicrobial peptides, Bioinformatics 33, (17), 2753-2755,</span>
 <span class="sd">        DOI:10.1093/bioinformatics/btx285</span>
@@ -291,9 +317,9 @@
             <span class="k">if</span> <span class="n">param_grid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">param_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.00001</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">]</span>
                 <span class="n">param_grid</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;clf__C&#39;</span><span class="p">:</span> <span class="n">param_range</span><span class="p">,</span>
-                               <span class="s1">&#39;clf__kernel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="s1">&#39;rbf&#39;</span><span class="p">],</span>
+                               <span class="s1">&#39;clf__kernel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">],</span>
                                <span class="s1">&#39;clf__gamma&#39;</span><span class="p">:</span> <span class="n">param_range</span>
-                               <span class="c1">#&#39;clf__kernel&#39;: [&#39;rbf&#39;] does not allow to retrieve feature importances with rbf kernel</span>
+                               <span class="c1"># &#39;clf__kernel&#39;: [&#39;rbf&#39;] does not allow to retrieve feature importances with rbf kernel</span>
                                <span class="p">}]</span>
 
             <span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipe_svc</span><span class="p">,</span>
@@ -304,7 +330,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -330,7 +357,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -355,7 +383,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -380,7 +409,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -404,7 +434,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -429,7 +460,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -452,7 +484,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -477,7 +510,8 @@
                               <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">)</span>
 
             <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span><span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best score </span><span class="si">%s</span><span class="s2"> (scorer: </span><span class="si">%s</span><span class="s2">) and parameters from a </span><span class="si">%d</span><span class="s2">-fold cross validation:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                                                                  <span class="n">score</span><span class="p">,</span> <span class="n">cv</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCC score:</span><span class="se">\t</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters:</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
 
@@ -494,18 +528,20 @@
                               <span class="n">score</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">matthews_corrcoef</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Validation Curve&quot;</span><span class="p">,</span>
                               <span class="n">xlab</span><span class="o">=</span><span class="s2">&quot;parameter range&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s2">&quot;MCC&quot;</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;This function plots a cross-validation curve for the specified classifier on all tested parameters given in the</span>
-<span class="sd">        option &#39;param_range&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;This function plots a cross-validation curve for the specified classifier on all tested parameters given in</span>
+<span class="sd">        the option &#39;param_range&#39;.</span>
 
 <span class="sd">        :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).</span>
 <span class="sd">        :param x_train: {array} descriptor values for training data.</span>
 <span class="sd">        :param y_train: {array} class values for training data.</span>
-<span class="sd">        :param param_name: {string} parameter to assess in the validation curve plot. For example,</span>
-<span class="sd">        For SVM,</span>
-<span class="sd">            &quot;clf__C&quot; (C parameter), &quot;clf__gamma&quot; (gamma parameter).</span>
-<span class="sd">        For Random Forest,</span>
-<span class="sd">            &quot;clf__n_estimators&quot; (number of trees),&quot;clf__max_depth&quot; (max num of branches per tree, &quot;clf__min_samples_split&quot; (min number of samples required to</span>
-<span class="sd">            split an internal tree node), &quot;clf__min_samples_leaf&quot; (min number of samples in newly created leaf).</span>
+<span class="sd">        :param param_name:</span>
+<span class="sd">                {string} parameter to assess in the validation curve plot. For example,</span>
+<span class="sd">                \n For SVM, &quot;clf__C&quot; (C parameter), &quot;clf__gamma&quot; (gamma parameter).</span>
+<span class="sd">                \n For Random Forest,</span>
+<span class="sd">                    \n &quot;clf__n_estimators&quot; (number of trees),&quot;clf__max_depth&quot; (max num of branches per tree,</span>
+<span class="sd">                    \n &quot;clf__min_samples_split&quot; (min number of samples required to split an internal tree node),</span>
+<span class="sd">                    \n &quot;clf__min_samples_leaf&quot; (min number of samples in newly created leaf).</span>
+
 <span class="sd">        :param param_range: {list} parameter range for the validation curve.</span>
 <span class="sd">        :param cv: {int} number of folds for cross-validation.</span>
 <span class="sd">        :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form</span>
@@ -548,9 +584,9 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MachineLearning.score_testset"><a class="viewcode-back" href="../../propythia.html#propythia.machine_learning.MachineLearning.score_testset">[docs]</a>    <span class="k">def</span> <span class="nf">score_testset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">classifier</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the tests set scores for the specified scoring metrics in a ``pandas.DataFrame``. The calculated metrics</span>
-<span class="sd">        are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under the Receiver-Operator Curve</span>
-<span class="sd">        (roc_auc). See `sklearn.metrics &lt;http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics&gt;`_</span>
+        <span class="sd">&quot;&quot;&quot; Returns the tests set scores for the specified scoring metrics in a ``pandas.DataFrame``.</span>
+<span class="sd">        The calculated metrics are Matthews correlation coefficient, accuracy, precision, recall, f1 and area under</span>
+<span class="sd">        the Receiver-Operator Curve (roc_auc). See `sklearn.metrics &lt;http://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics&gt;`_</span>
 <span class="sd">        for more information.</span>
 
 <span class="sd">        :param classifier: {classifier instance} pre-trained classifier used for predictions.</span>
@@ -558,7 +594,6 @@
 <span class="sd">        :param y_test: {array} true class values of the tests data.</span>
 <span class="sd">        :param sample_weights: {array} weights for the tests data.</span>
 <span class="sd">        :return: ``pandas.DataFrame`` containing the cross validation scores for the specified metrics.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
@@ -589,6 +624,7 @@
 <span class="sd">         On the y axis, true positive rate and false positive rate on the X axis.</span>
 <span class="sd">         The top left corner of the plot is the &#39;ideal&#39; point - a false positive rate of zero, and a true positive rate of one,</span>
 <span class="sd">         meaning a larger area under the curve (AUC) is usually better.</span>
+
 <span class="sd">        :param classifier: {classifier instance} pre-trained classifier used for predictions.</span>
 <span class="sd">        :param x_test: {array} descriptor values of the tests data.</span>
 <span class="sd">        :param y_test:{array} true class values of the tests data.</span>
@@ -599,7 +635,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">y_score</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">)</span>
-        <span class="c1">#y_score = classifier.predict_proba(X_test)[:,1]</span>
+        <span class="c1"># y_score = classifier.predict_proba(X_test)[:,1]</span>
         <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_score</span><span class="p">)</span>
         <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">roc_auc</span><span class="p">)</span>
@@ -620,6 +656,7 @@
 <div class="viewcode-block" id="MachineLearning.features_importances"><a class="viewcode-back" href="../../propythia.html#propythia.machine_learning.MachineLearning.features_importances">[docs]</a>    <span class="k">def</span> <span class="nf">features_importances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">classifier</span><span class="p">,</span><span class="n">model_name</span><span class="p">,</span><span class="n">top_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that given a classifier retrieves the features importances as a dataset and represent as barplot.</span>
+
 <span class="sd">        :param classifier: classifier</span>
 <span class="sd">        :param model_name: model used in classifier. Choose between &#39;svm&#39;, &#39;sgd&#39;, &#39;lr&#39;, &#39;gboosting&#39; or &#39;rf&#39;</span>
 <span class="sd">        :param x_train: descriptor values for training data.</span>
@@ -649,11 +686,11 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">feat_table</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">feat_table</span>
 
-        <span class="k">elif</span> <span class="n">model_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;svm&#39;</span> <span class="p">,</span> <span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">model_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="s1">&#39;lr&#39;</span><span class="p">):</span>
 
             <span class="n">feature_importance</span><span class="o">=</span><span class="n">classifier</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;clf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span>
             <span class="n">coef</span> <span class="o">=</span> <span class="n">feature_importance</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-            <span class="n">top_features</span><span class="o">=</span><span class="n">top_features</span><span class="o">//</span><span class="mi">2</span> <span class="c1">#to consider posiive and negative</span>
+            <span class="n">top_features</span><span class="o">=</span><span class="n">top_features</span><span class="o">//</span><span class="mi">2</span> <span class="c1"># to consider posiive and negative</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coef</span><span class="p">))</span><span class="o">&lt;</span><span class="n">top_features</span><span class="p">:</span> <span class="n">top_features</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">coef</span><span class="p">)</span>
 
@@ -661,10 +698,11 @@
             <span class="n">top_negative_coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">coef</span><span class="p">)[:</span><span class="n">top_features</span><span class="p">]</span>
             <span class="n">top_coefficients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">top_negative_coefficients</span><span class="p">,</span> <span class="n">top_positive_coefficients</span><span class="p">])</span>
             <span class="n">unique</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="p">[</span><span class="n">unique</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">top_coefficients</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique</span><span class="p">]</span> <span class="c1">#remove duplicates</span>
+            <span class="p">[</span><span class="n">unique</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">top_coefficients</span> <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">unique</span><span class="p">]</span> <span class="c1"># remove duplicates</span>
             <span class="n">top_coefficients</span><span class="o">=</span><span class="n">unique</span>
 
-            <span class="n">feat_table</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_importance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">feat_table</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_importance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                                    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">feat_table</span><span class="p">)</span>
 
             <span class="c1"># create plot</span>
@@ -686,13 +724,14 @@
                             <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">train_sizes</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot a learning curve to determine cross validated training and tests scores for different training set sizes</span>
+
 <span class="sd">        :param estimator: classifier/ model to use</span>
 <span class="sd">        :param title: title of the plot</span>
 <span class="sd">        :param ylim:</span>
 <span class="sd">        :param cv: cross validation to use</span>
 <span class="sd">        :param n_jobs:  number of parallel jobs to use for calculation. if ``-1``, all available cores are used.</span>
 <span class="sd">        :param train_sizes: train sizes to tests</span>
-<span class="sd">        :return: graphic representing learning curves, numbers of trainig examples, scores on training sets, and scores on tests set</span>
+<span class="sd">        :return: graphic representing learning curves, nº of trainig examples, scores on training and on tests set</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -777,6 +816,7 @@
 <div class="viewcode-block" id="MachineLearning.add_features"><a class="viewcode-back" href="../../propythia.html#propythia.machine_learning.MachineLearning.add_features">[docs]</a>    <span class="k">def</span> <span class="nf">add_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">list_of_sequences</span><span class="p">,</span><span class="n">list_functions</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate all features available in package or lis of descriptors given</span>
+
 <span class="sd">        :param list_functions: list of features to be calculated with function adaptable from module Descriptors</span>
 <span class="sd">        :param list_of_sequences: list of sequences to calculate features</span>
 <span class="sd">        :return: dataframe with sequences and its features</span>
@@ -806,7 +846,8 @@
 <span class="sd">        &#39;pandas.DataFrame&#39; with predictions using the specified estimator and tests data. If true class is provided,</span>
 <span class="sd">        it returns the scoring value for the tests data.</span>
 <span class="sd">        The user can provide a features_dataframe if does not want to use the descriptors supported. Otherwise, the user</span>
-<span class="sd">        can also provide a list with the numbers of the descriptors that want to be calculated (descriptors module adaptable())</span>
+<span class="sd">        can also provide a list with the numbers of the descriptors that want to be calculated</span>
+<span class="sd">        (descriptors module adaptable()).</span>
 <span class="sd">        if none is provided, the function will calculate all the descriptors available.</span>
 
 <span class="sd">        :param classifier: {classifier instance} classifier used for predictions.</span>
@@ -817,11 +858,11 @@
 <span class="sd">        :param features: list containing the list features to be calculated under de adaptable function.</span>
 <span class="sd">                if list is empty will calculate all the descriptors available in the package</span>
 <span class="sd">        :param features_dataframe: dataframe with sequences and its features</span>
-<span class="sd">        :param features_names:names of features. If none will match the features with the ones with the model given</span>
+<span class="sd">        :param features_names: names of features. If none will match the features with the ones with the model given</span>
 <span class="sd">        :param names: {list} (optional) names of the peptides in ``x``.</span>
 <span class="sd">        :param y: {array} (optional) true (known) classes of the peptides.</span>
-<span class="sd">        :param filename: {string} (optional) output filename to store the predictions to (``.csv`` format); if ``None``:</span>
-<span class="sd">            not saved.</span>
+<span class="sd">        :param filename:</span>
+<span class="sd">            {string} (optional) output filename to store the predictions to (``.csv`` format); if ``None``: not saved.</span>
 <span class="sd">        :return: ``pandas.DataFrame`` containing predictions for subsequences generated, ``P_class0`` and ``P_class1``</span>
 <span class="sd">            are the predicted probability of the peptide belonging to class 0 and class 1, respectively. The previsions</span>
 <span class="sd">            are divided in probability classes &lt;0.99, &gt;0.95, &gt;0.9, &lt;0.8, &gt;0.7, &gt;0.6 and 0</span>
@@ -846,10 +887,12 @@
             <span class="n">features_to_select</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">.</span><span class="n">columns</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">features_to_select</span><span class="o">=</span> <span class="n">features_names</span>
+
         <span class="n">x_predict_data</span><span class="o">=</span><span class="n">featuresDF</span><span class="p">[</span><span class="n">features_to_select</span><span class="p">]</span>
+
         <span class="c1"># raw proability predictions of belonging or not</span>
         <span class="n">preds</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x_predict_data</span><span class="p">)</span>
-        <span class="c1">#0 or 1 if belong or not</span>
+        <span class="c1"># 0 or 1 if belong or not</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_predict_data</span><span class="p">)</span>
 
         <span class="c1"># dataframe with probabilities</span>
@@ -865,7 +908,6 @@
         <span class="n">pos_0</span><span class="o">=</span><span class="nb">int</span>
         <span class="n">pos_1</span><span class="o">=</span><span class="nb">int</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">df_pred</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_pred</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">value</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;P_class1&#39;</span><span class="p">]</span>
@@ -920,13 +962,13 @@
         <span class="n">df_new</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;prevision&#39;</span><span class="p">])</span>
         <span class="n">x</span><span class="o">=</span><span class="n">df_new</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1">#not in pandas dataframe</span>
         <span class="n">remove_list</span><span class="o">=</span><span class="p">[]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">df_new</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
 
-            <span class="n">pos_fin</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">pos_ini</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">prob</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
-            <span class="n">scale_prob</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">pos_fin</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">pos_ini</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">prob</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">scale_prob</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">key</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">]:</span>
@@ -942,11 +984,12 @@
 
         <span class="c1"># add sequence</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
-            <span class="n">seqs</span><span class="o">=</span><span class="n">seq</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">])]</span>
+            <span class="n">seqs</span><span class="o">=</span><span class="n">seq</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">2</span><span class="p">]):</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">3</span><span class="p">])]</span>
             <span class="n">x</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span>
 
-        <span class="n">final_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pos_-1&#39;</span><span class="p">,</span> <span class="s1">&#39;pos_0&#39;</span><span class="p">,</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span><span class="s1">&#39;scale_probability&#39;</span><span class="p">,</span><span class="s1">&#39;key&#39;</span><span class="p">,</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
+        <span class="n">final_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span><span class="s1">&#39;scale_probability&#39;</span><span class="p">,</span><span class="s1">&#39;pos_0&#39;</span><span class="p">,</span><span class="s1">&#39;pos_-1&#39;</span><span class="p">,</span><span class="s1">&#39;key&#39;</span><span class="p">,</span><span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
         <span class="n">final_df</span><span class="o">=</span><span class="n">final_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span>
+        <span class="n">final_df</span> <span class="o">=</span> <span class="n">final_df</span><span class="p">[[</span><span class="s1">&#39;pos_0&#39;</span><span class="p">,</span><span class="s1">&#39;pos_-1&#39;</span><span class="p">,</span><span class="s1">&#39;probability&#39;</span><span class="p">,</span><span class="s1">&#39;scale_probability&#39;</span><span class="p">,</span><span class="s1">&#39;sequence&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">final_df</span></div></div>
 
 </pre></div>

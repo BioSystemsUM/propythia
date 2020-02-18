@@ -4,22 +4,22 @@
 
 Allows to change the sequence and generating other.cut or add aminoacids to obtain sequences with equal lenght.
 (one sequence ----> one sequence).
-	The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.
-	It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa
-	(if needed)
+    The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.
+    It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa
+    (if needed)
 
-	To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.
-	If necessary dummy will be added to the right
+    To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.
+    If necessary dummy will be added to the right
 
-	To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.
-	If necessary dummy will be added to the left
+    To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.
+    If necessary dummy will be added to the left
 
-	To consider both extremes of sequence both n and c terminal are different of zero.
-	If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.
-	If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).
+    To consider both extremes of sequence both n and c terminal are different of zero.
+    If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.
+    If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).
 
 
-Authors:
+Authors: Ana Marta Sequeira
 
 Date:
 
@@ -39,13 +39,15 @@ AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W
 def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0):
     """
     cut or add aminoacids to obtain sequences with equal lenght.
+
     :param seq: protein sequence
     :param n_terminal: number of aa to consider in the n terminal (left side of sequence)
     :param c_terminal: number of aa to consider in the c terminal (right side of sequence)
-    :param terminal: in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add
-                    0 to add to the right (consider N terminal)
-                    -1 to add to the left (consider C terminal)
-                    2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle
+    :param terminal:
+        in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add
+        0 to add to the right (consider N terminal),
+        -1 to add to the left (consider C terminal)
+        2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle
     :return: list of sequences cntaining all the same lenght
     """
 

@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -161,8 +163,8 @@
 
 <span class="sd">##############################################################################</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">VarianceThreshold</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">VarianceThreshold</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -174,12 +176,13 @@
 <span class="sd">    All the functions are imported from the module sklearn.preprocessing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;	constructor &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Preprocess.missing_data"><a class="viewcode-back" href="../../propythia.html#propythia.preprocess.Preprocess.missing_data">[docs]</a>    <span class="k">def</span> <span class="nf">missing_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        check nans. if yes: returns a error message</span>
+
 <span class="sd">        :param data: dataframe</span>
 <span class="sd">        :return: error message or 0 nans error</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -194,6 +197,7 @@
 <div class="viewcode-block" id="Preprocess.remove_columns_all_zeros"><a class="viewcode-back" href="../../propythia.html#propythia.preprocess.Preprocess.remove_columns_all_zeros">[docs]</a>    <span class="k">def</span> <span class="nf">remove_columns_all_zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data</span><span class="p">,</span> <span class="n">columns_names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes columns that have all values as zero.</span>
+
 <span class="sd">        :param data: dataframe</span>
 <span class="sd">        :param columns_names: if True retrieves the names of columns with only zeros</span>
 <span class="sd">        :return: dataset without columns with all values=zero</span>
@@ -206,6 +210,7 @@
 <div class="viewcode-block" id="Preprocess.remove_duplicate_columns"><a class="viewcode-back" href="../../propythia.html#propythia.preprocess.Preprocess.remove_duplicate_columns">[docs]</a>    <span class="k">def</span> <span class="nf">remove_duplicate_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">columns_names</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes columns duplicated.</span>
+
 <span class="sd">        :param data: dataframe</span>
 <span class="sd">        :param columns_names: if True retrieves the names of columns duplicates</span>
 <span class="sd">        :return: dataset without duplicated columns</span>
@@ -223,10 +228,12 @@
 <span class="sd">        Based on scikit learn</span>
 <span class="sd">        VarianceThreshold is a simple baseline approach to feature selection.</span>
 <span class="sd">        It removes all features whose variance doesn’t meet some threshold</span>
+
 <span class="sd">        :param data: dataframe</span>
 <span class="sd">        :param threshold: value. The threshold of variance to drop columns (eg 0.8)</span>
-<span class="sd">        :param standard: if , in the case of threshold &gt;0, the user wants to standardize features before apply variance</span>
-<span class="sd">        threshold. minmaxscaler will be applied</span>
+<span class="sd">        :param standard:</span>
+<span class="sd">            if ,in the case of threshold &gt;0, the user wants to standardize features before apply variance</span>
+<span class="sd">            threshold. minmaxscaler will be applied</span>
 <span class="sd">        :param columns_names:</span>
 <span class="sd">        :return: dataset without low variance columns (not scaled)</span>
 <span class="sd">        &quot;&quot;&quot;</span>

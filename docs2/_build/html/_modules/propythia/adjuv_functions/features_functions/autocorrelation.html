@@ -25,6 +25,7 @@
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -80,8 +81,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.html">ProPythia modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../propythia.adjuv_functions.html">propythia.adjuv_functions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
 </ul>
 
             
@@ -183,7 +185,7 @@
 
 <span class="sd">Email: oriental-cds@163.com</span>
 
-<span class="sd">Altered to python 3.6 for Ana Marta Sequeira 05/2019</span>
+<span class="sd">Altered to python 3.6 by Ana Marta Sequeira 05/2019</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">math</span><span class="o">,</span><span class="nn">string</span>
@@ -243,6 +245,7 @@
 <div class="viewcode-block" id="normalize_each_aap"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.normalize_each_aap">[docs]</a><span class="k">def</span> <span class="nf">normalize_each_aap</span><span class="p">(</span><span class="n">aap</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	All of the amino acid indices are centralized and standardized before the calculation.</span>
+
 <span class="sd">	:param aap: AAP is a dict form containing the properties of 20 amino acids</span>
 <span class="sd">	:return: result is the a dict form containing the normalized properties of 20 amino acids.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -261,6 +264,7 @@
 <div class="viewcode-block" id="calculate_each_normalized_moreau_broto_auto"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_each_normalized_moreau_broto_auto">[docs]</a><span class="k">def</span> <span class="nf">calculate_each_normalized_moreau_broto_auto</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aap</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	you can use the function to compute MoreauBrotoAuto for different properties based on AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).</span>
 <span class="sd">	:param aap_name: AAPName is a string used for indicating the property (e.g., &#39;_AvFlexibility&#39;)</span>
@@ -284,6 +288,7 @@
 <div class="viewcode-block" id="calculate_each_moran_auto"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_each_moran_auto">[docs]</a><span class="k">def</span> <span class="nf">calculate_each_moran_auto</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aap</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	you can use the function to compute MoranAuto for different properties based on AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).</span>
 <span class="sd">	:param aap_name: AAPName is a string used for indicating the property (e.g., &#39;_AvFlexibility&#39;).</span>
@@ -320,6 +325,7 @@
 <div class="viewcode-block" id="calculate_each_geary_auto"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_each_geary_auto">[docs]</a><span class="k">def</span> <span class="nf">calculate_each_geary_auto</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aap</span><span class="p">,</span> <span class="n">aap_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	you can use the function to compute GearyAuto for different properties based on AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).</span>
 <span class="sd">	:param aap_name: AAPName is a string used for indicating the property (e.g., &#39;_AvFlexibility&#39;).</span>
@@ -365,6 +371,7 @@
 <div class="viewcode-block" id="calculate_moran_auto"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">,</span> <span class="n">aa_property_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing MoranAuto for all properties</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:param aa_property: AAProperty is a list or tuple form containing the properties of 20 amino acids (e.g., _AAProperty).</span>
 <span class="sd">	:param aa_property_name: AAPName is a list or tuple form used for indicating the property (e.g., &#39;_AAPropertyName&#39;).</span>
@@ -381,6 +388,7 @@
 <div class="viewcode-block" id="calculate_geary_auto"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">,</span> <span class="n">aa_property</span><span class="p">,</span> <span class="n">aa_property_name</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing GearyAuto for all properties</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence</span>
 <span class="sd">	:param aa_property: AAProperty is a list or tuple form containing the properties of 20 amino acids (e.g., _AAProperty).</span>
 <span class="sd">	:param aa_property_name: AAPName is a list or tuple form used for indicating the property (e.g., &#39;_AAPropertyName&#39;).</span>
@@ -399,6 +407,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on hydrophobicity.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -410,6 +419,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_av_flexibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_av_flexibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_av_flexibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on AvFlexibility.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on AvFlexibility.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -420,6 +430,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on Polarizability.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Polarizability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -431,6 +442,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_free_energy"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_free_energy">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_free_energy</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation  based on FreeEnergy.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on FreeEnergy.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -442,6 +454,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_residue_asa"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_residue_asa">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_residue_asa</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on ResidueASA.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on ResidueASA.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -452,6 +465,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_residue_vol"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_residue_vol">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_residue_vol</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on ResidueVol.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return:  result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on ResidueVol.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -462,6 +476,7 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_steric"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_steric">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_steric</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation  based on Steric.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Steric.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -472,6 +487,7 @@
 <div class="viewcode-block" id="CalculateNormalizedMoreauBrotoAutoMutability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.CalculateNormalizedMoreauBrotoAutoMutability">[docs]</a><span class="k">def</span> <span class="nf">CalculateNormalizedMoreauBrotoAutoMutability</span><span class="p">(</span><span class="n">ProteinSequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the NormalizedMoreauBorto Autocorrelation based on Mutability.</span>
+
 <span class="sd">	:param ProteinSequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Mutability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -484,6 +500,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation  based on hydrophobicity.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -494,6 +511,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_av_flexibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_av_flexibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_av_flexibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on	AvFlexibility.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on AvFlexibility.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -504,6 +522,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on Polarizability.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on Polarizability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -514,6 +533,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_free_energy"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_free_energy">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_free_energy</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on FreeEnergy.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on FreeEnergy.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -524,6 +544,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_residue_asa"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_residue_asa">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_residue_asa</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on ResidueASA.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on ResidueASA.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -534,6 +555,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_residue_vol"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_residue_vol">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_residue_vol</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on ResidueVol.</span>
+
 <span class="sd">	:param protein_sequence:  protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on ResidueVol.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -544,6 +566,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_steric"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_steric">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_steric</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on AutoSteric.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on AutoSteric.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -554,6 +577,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_mutability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_mutability">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_mutability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the MoranAuto Autocorrelation based on Mutability.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Moran Autocorrelation based on Mutability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -566,6 +590,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_hydrophobicity"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_hydrophobicity">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on hydrophobicity.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on hydrophobicity.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -576,6 +601,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_av_flexibility"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_av_flexibility">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_av_flexibility</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on AvFlexibility.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on AvFlexibility.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -586,6 +612,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_polarizability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_polarizability">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_polarizability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on Polarizability.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on Polarizability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -596,6 +623,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_free_energy"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_free_energy">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_free_energy</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation based on FreeEnergy.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on FreeEnergy.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -606,6 +634,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_residue_asa"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_residue_asa">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_residue_asa</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on ResidueASA.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on ResidueASA.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -616,6 +645,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_residue_vol"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_residue_vol">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_residue_vol</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on ResidueVol.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on ResidueVol.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -626,6 +656,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_steric"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_steric">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_steric</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on Steric.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on Steric.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -636,6 +667,7 @@
 <div class="viewcode-block" id="calculate_geary_auto_mutability"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_mutability">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_mutability</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Calculate the GearyAuto Autocorrelation  based on Mutability.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30 Geary Autocorrelation based on Mutability.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -647,9 +679,11 @@
 <div class="viewcode-block" id="calculate_normalized_moreau_broto_auto_total"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_normalized_moreau_broto_auto_total">[docs]</a><span class="k">def</span> <span class="nf">calculate_normalized_moreau_broto_auto_total</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing normalized Moreau Broto autocorrelation  based on 8 proterties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
-<span class="sd">	:return: result is a dict form containing 30*8=240 normalized Moreau Broto autocorrelation  based on the given</span>
-<span class="sd">	properties(i.e., _AAPropert).</span>
+<span class="sd">	:return:</span>
+<span class="sd">		result is a dict form containing 30*8=240 normalized Moreau Broto autocorrelation  based on the given</span>
+<span class="sd">		properties(i.e., _AAPropert).</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
 	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculate_normalized_moreau_broto_auto_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
@@ -665,6 +699,7 @@
 <div class="viewcode-block" id="calculate_moran_auto_total"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_moran_auto_total">[docs]</a><span class="k">def</span> <span class="nf">calculate_moran_auto_total</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing Moran autocorrelation based on 8 properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
 <span class="sd">	:return: result is a dict form containing 30*8=240 Moran autocorrelation  based on the given properties(i.e., _AAPropert).</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -682,9 +717,11 @@
 <div class="viewcode-block" id="calculate_geary_auto_total"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_geary_auto_total">[docs]</a><span class="k">def</span> <span class="nf">calculate_geary_auto_total</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing Geary autocorrelation based on 8 properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
-<span class="sd">	:return: result is a dict form containing 30*8=240 Geary autocorrelation based on the given</span>
-<span class="sd">	properties(i.e., _AAPropert).</span>
+<span class="sd">	:return:</span>
+<span class="sd">		result is a dict form containing 30*8=240 Geary autocorrelation based on the given</span>
+<span class="sd">		properties(i.e., _AAPropert).</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
 	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculate_geary_auto_hydrophobicity</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
@@ -703,9 +740,11 @@
 <div class="viewcode-block" id="calculate_auto_total"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.autocorrelation.calculate_auto_total">[docs]</a><span class="k">def</span> <span class="nf">calculate_auto_total</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A method used for computing all autocorrelation  based on 8 properties of AADs.</span>
+
 <span class="sd">	:param protein_sequence: protein is a pure protein sequence.</span>
-<span class="sd">	:return: result is a dict form containing 30*8*3=720 normalized Moreau Broto, Moran, and Geary</span>
-<span class="sd">	autocorrelation based on the given properties(i.e., _AAPropert).</span>
+<span class="sd">	:return:</span>
+<span class="sd">		result is a dict form containing 30*8*3=720 normalized Moreau Broto, Moran, and Geary autocorrelation</span>
+<span class="sd">		based on the given properties(i.e., _AAPropert).</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">result</span><span class="o">=</span><span class="p">{}</span>
 	<span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">calculate_normalized_moreau_broto_auto_total</span><span class="p">(</span><span class="n">protein_sequence</span><span class="p">))</span>
