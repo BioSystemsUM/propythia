@@ -1,10 +1,10 @@
-Features Functions
+Adjuv functions: Features
 ======================================================
 
 aa_composition
 ---------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.aa_composition
+.. automodule:: propythia.adjuv_functions.features_functions.aa_composition
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ aa_composition
 aa_index
 ---------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.aa_index
+.. automodule:: propythia.adjuv_functions.features_functions.aa_index
    :members:
    :undoc-members:
    :show-inheritance:
@@ -20,7 +20,7 @@ aa_index
 autocorrelation
 ---------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.autocorrelation
+.. automodule:: propythia.adjuv_functions.features_functions.autocorrelation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,7 +28,7 @@ autocorrelation
 binary
 ------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.binary
+.. automodule:: propythia.adjuv_functions.features_functions.binary
    :members:
    :undoc-members:
    :show-inheritance:
@@ -36,15 +36,15 @@ binary
 binary_aa_properties
 ----------------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.binary_aa_properties
+.. automodule:: propythia.adjuv_functions.features_functions.binary_aa_properties
    :members:
    :undoc-members:
-   :show-inheritance:y
+   :show-inheritance:
 
 bondcomp
 --------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.bondcomp
+.. automodule:: propythia.adjuv_functions.features_functions.bondcomp
    :members:
    :undoc-members:
    :show-inheritance:
@@ -52,7 +52,7 @@ bondcomp
 conjoint_triad
 ---------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.conjoint_triad
+.. automodule:: propythia.adjuv_functions.features_functions.conjoint_triad
    :members:
    :undoc-members:
    :show-inheritance:
@@ -60,15 +60,15 @@ conjoint_triad
 ctd
 ---------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.ctd
+.. automodule:: propythia.adjuv_functions.features_functions.ctd
    :members:
    :undoc-members:
    :show-inheritance:
 
-_modlamp
+descriptors_modlamp
 --------------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.descriptors_modlamp
+.. automodule:: propythia.adjuv_functions.features_functions.descriptors_modlamp
    :members:
    :undoc-members:
    :show-inheritance:
@@ -76,7 +76,7 @@ _modlamp
 modlamp_core
 -------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.modlamp_core
+.. automodule:: propythia.adjuv_functions.features_functions.modlamp_core
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,7 +84,7 @@ modlamp_core
 pcp
 ---------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.pcp
+.. automodule:: propythia.adjuv_functions.features_functions.pcp
    :members:
    :undoc-members:
    :show-inheritance:
@@ -92,7 +92,7 @@ pcp
 pseudo_aac
 -----------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.pseudo_aac
+.. automodule:: propythia.adjuv_functions.features_functions.pseudo_aac
    :members:
    :undoc-members:
    :show-inheritance:
@@ -100,7 +100,7 @@ pseudo_aac
 quasi_sequence_order
 ----------------------------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.features_functions.quasi_sequence_order
+.. automodule:: propythia.adjuv_functions.features_functions.quasi_sequence_order
    :members:
    :undoc-members:
    :show-inheritance:
@@ -109,7 +109,7 @@ quasi_sequence_order
 Module contents
 ---------------
 
-.. automodule::propythia.adjuv_functions.features_functions
+.. automodule:: propythia.adjuv_functions.features_functions
    :members:
    :undoc-members:
    :show-inheritance:

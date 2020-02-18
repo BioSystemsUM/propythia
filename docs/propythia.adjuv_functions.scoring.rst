@@ -1,11 +1,10 @@
-Scoring Functions
+Adjuv functions: Scoring
 ==========================================
-
 
 scores
 ------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.scoring.scores
+.. automodule:: propythia.adjuv_functions.scoring.scores
    :members:
    :undoc-members:
    :show-inheritance:
@@ -14,7 +13,7 @@ scores
 Module contents
 ---------------
 
-.. automodule::propythia.adjuv_functions.scoring
+.. automodule:: propythia.adjuv_functions.scoring
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,10 +1,10 @@
-Sequence Functions
+Adjuv functions: Sequence
 ===========================================
 
 get_sequence
 --------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.sequence.get_sequence
+.. automodule:: propythia.adjuv_functions.sequence.get_sequence
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ get_sequence
 get_sized_seq
 ----------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.sequence.get_sized_seq
+.. automodule:: propythia.adjuv_functions.sequence.get_sized_seq
    :members:
    :undoc-members:
    :show-inheritance:
@@ -20,7 +20,7 @@ get_sized_seq
 get_sub_seq
 --------------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.sequence.get_sub_seq
+.. automodule:: propythia.adjuv_functions.sequence.get_sub_seq
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,8 +28,16 @@ get_sub_seq
 pro_check
 -----------------------------------------------------
 
-.. automodule::propythia.adjuv_functions.sequence.pro_check
+.. automodule:: propythia.adjuv_functions.sequence.pro_check
    :members:
    :undoc-members:
    :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: propythia.adjuv_functions.sequence
+   :members:
+   :undoc-members:
+   :show-inheritance:
