@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.adjuv_functions.features_functions.pcp &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.adjuv_functions.features_functions.pcp</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.adjuv_functions.features_functions.pcp</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding: utf-8</span>
+
+<span class="c1">#!/usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Function to calculate fraction of each physico-chemical property present in sequences (separated by comma)</span>
+<span class="sd">It receives a sequence and a list containing feature numbers (valid number, 0-24)</span>
+
+<span class="sd">    FEATURE NAME                    FEATURE NUMBER</span>
+
+<span class="sd">    &#39;Positively charged&#39; --                  0</span>
+<span class="sd">    &#39;Negatively charged&#39; --                  1</span>
+<span class="sd">    &#39;Neutral charged&#39; --                     2</span>
+<span class="sd">    &#39;Polarity&#39; --                            3</span>
+<span class="sd">    &#39;Non polarity&#39; --                        4</span>
+<span class="sd">    &#39;Aliphaticity&#39; --                        5</span>
+<span class="sd">    &#39;Cyclic&#39; --                              6</span>
+<span class="sd">    &#39;Aromaticity&#39; --                         7</span>
+<span class="sd">    &#39;Acidicity&#39;--                            8</span>
+<span class="sd">    &#39;Basicity&#39;--                             9</span>
+<span class="sd">    &#39;Neutral (ph)&#39; --                       10</span>
+<span class="sd">    &#39;Hydrophobicity&#39; --                     11</span>
+<span class="sd">    &#39;Hydrophilicity&#39; --                     12</span>
+<span class="sd">    &#39;Neutral&#39; --                            13</span>
+<span class="sd">    &#39;Hydroxylic&#39; --                         14</span>
+<span class="sd">    &#39;Sulphur content&#39; -                     15</span>
+<span class="sd">    &#39;Secondary Structure(Helix)&#39;            16</span>
+<span class="sd">    &#39;Secondary Structure(Strands)&#39;,         17</span>
+<span class="sd">    &#39;Secondary Structure(Coil)&#39;,            18</span>
+<span class="sd">    &#39;Solvent Accessibilty (Buried)&#39;,        19</span>
+<span class="sd">    &#39;Solvent Accesibilty(Exposed)&#39;,         20</span>
+<span class="sd">    &#39;Solvent Accesibilty(Intermediate)&#39;,    21</span>
+<span class="sd">    &#39;Tiny&#39;,                                 22</span>
+<span class="sd">    &#39;Small&#39;,                                23</span>
+<span class="sd">    &#39;Large&#39;                                 24</span>
+<span class="sd">Author: Ana Marta Sequeira</span>
+
+<span class="sd">email:</span>
+
+<span class="sd">date: 05/2019</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+<span class="c1"># Secondary functions, move to next section</span>
+<span class="c1"># Single function to calculate 30 physico che</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">getopt</span>
+
+<span class="c1">#Finding physico-chemical property of a vector of polypeptides</span>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.pcp.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read in files. You need to run this (once) before you can</span>
+<span class="sd">    access any records. If the files are not within the current directory,</span>
+<span class="sd">    you need to specify the correct directory path.</span>
+
+<span class="sd">    :param path:</span>
+<span class="sd">    :param index:</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">)):</span>
+                <span class="k">break</span>
+        <span class="c1"># print(&#39;path =&#39;, path, file=sys.stderr)</span>
+
+    <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="s1">&#39;bonds.csv&#39;</span><span class="p">:</span>
+        <span class="n">doc</span><span class="o">=</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/data/bonds.csv&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="s1">&#39;PhysicoChemical.csv&#39;</span><span class="p">:</span>
+        <span class="n">doc</span><span class="o">=</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/data/PhysicoChemical.csv&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">doc</span></div>
+
+
+<span class="n">doc</span><span class="o">=</span><span class="n">init</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;PhysicoChemical.csv&#39;</span><span class="p">)</span>
+<span class="c1">#Finding physico-chemical property of a vector of polypeptides</span>
+<span class="n">PCP</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1">#Our reference table for properties</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Positively charged&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Negatively charged&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Neutral charged&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Polarity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Non polarity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Aliphaticity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Cyclic&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Aromaticity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Acidicity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Basicity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Neutral (ph)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Hydrophobicity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Hydrophilicity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Neutral&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Hydroxylic&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Sulphur content&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Secondary Structure(Helix)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Secondary Structure(Strands)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Secondary Structure(Coil)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Solvent Accessibilty (Buried)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Solvent Accesibilty(Exposed)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Solvent Accesibilty(Intermediate)&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Tiny&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Small&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Large&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;z1&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;z2&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;z3&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;z4&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;z5&#39;</span><span class="p">];</span>
+
+
+<div class="viewcode-block" id="encode"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.pcp.encode">[docs]</a><span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">peptide</span><span class="p">):</span>
+    <span class="c1">#letter = {&#39;A&#39;,&#39;C&#39;,&#39;D&#39;,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;I&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;V&#39;,&#39;W&#39;,&#39;Y&#39;};</span>
+    <span class="n">l</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">peptide</span><span class="p">)</span>
+    <span class="n">encoded</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;A&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;C&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;D&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;E&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;G&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;H&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;I&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;K&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;L&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;M&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;P&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Q&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">13</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;R&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;S&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;T&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;V&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">17</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;W&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">18</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">peptide</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Y&#39;</span><span class="p">):</span>
+            <span class="n">encoded</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">19</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrong residue!&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">encoded</span></div>
+
+
+<div class="viewcode-block" id="lookup"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.pcp.lookup">[docs]</a><span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">peptide</span><span class="p">,</span><span class="n">featureNum</span><span class="p">):</span>
+    <span class="n">l</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">peptide</span><span class="p">)</span>
+    <span class="n">peptide</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">peptide</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">peptide_num</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">peptide</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">PCP</span><span class="p">[</span><span class="n">peptide_num</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">featureNum</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pcp"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.pcp.pcp">[docs]</a><span class="k">def</span> <span class="nf">pcp</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">PCP</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Number of features in our reference table</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Denotes the 20 amino acids</span>
+
+    <span class="n">seq</span><span class="o">=</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">)]</span>
+    <span class="n">sequenceFeature</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="c1"># Loop to iterate over each sequence</span>
+        <span class="n">nfeatures</span> <span class="o">=</span> <span class="n">rows</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfeatures</span><span class="p">):</span> <span class="c1">#Loop to iterate over each feature</span>
+            <span class="n">featureVal</span> <span class="o">=</span> <span class="n">lookup</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">j</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">!=</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">sequenceFeature</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">featureVal</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="mi">3</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sequenceFeature</span><span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sequenceFeature</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sequenceFeature</span></div>
+
+<span class="c1">#</span>
+<span class="c1"># # In[68]:</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># &#39;&#39;&#39;</span>
+<span class="c1">#</span>
+<span class="c1"># unction Name: phyChem</span>
+<span class="c1"># Description: Gives 30 physico-chemical properties of a sequence</span>
+<span class="c1">#</span>
+<span class="c1"># Function prototype: phyChem(file,mode,m,n)</span>
+<span class="c1">#</span>
+<span class="c1"># Input:</span>
+<span class="c1"># @file: an input csv file with multiple sequences</span>
+<span class="c1"># @mode(optional, default = &#39;all&#39;):</span>
+<span class="c1">#     Values possible:</span>
+<span class="c1">#         1) (default)&#39;all&#39; : to get features of entire protein</span>
+<span class="c1">#         2) &#39;NT&#39; : to get the features of first n N-Terminal residues</span>
+<span class="c1">#         3) &#39;CT&#39; : to get the features of last n C-Terminal residues</span>
+<span class="c1">#         4) &#39;rest&#39; : to get the features of a sub-sequence from mth position to nth position(both inclusive)</span>
+<span class="c1"># @m(optional(mandatory if &#39;rest&#39; is chosen, default=0): m is the start position of residue</span>
+<span class="c1"># @n(optional, default = &#39;0&#39;): n is the number of residues you want from desired terminal or end point (if &#39;rest&#39; is chosen)</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># Output:</span>
+<span class="c1"># A matrix (csv file) of dimension (m x 30) containing sequences as rows and their 30 physico-chemical properties as columns</span>
+<span class="c1"># where m = number of sequences (each sequence separated by comma)</span>
+<span class="c1">#</span>
+<span class="c1"># &#39;&#39;&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># &#39;&#39;&#39;</span>
+<span class="c1">#</span>
+<span class="c1"># Function Name: phyChem</span>
+<span class="c1"># Description: Gives 30 physico-chemical properties of a sequence</span>
+<span class="c1">#</span>
+<span class="c1"># Function prototype: phyChem(file,mode,m,n)</span>
+<span class="c1">#</span>
+<span class="c1"># Input:</span>
+<span class="c1"># @file: an input csv file with multiple sequences</span>
+<span class="c1"># @mode(optional, default = &#39;all&#39;):</span>
+<span class="c1">#     Values possible:</span>
+<span class="c1">#         1) (default)&#39;all&#39; : to get features of entire protein</span>
+<span class="c1">#         2) &#39;NT&#39; : to get the features of first n N-Terminal residues</span>
+<span class="c1">#         3) &#39;CT&#39; : to get the features of last n C-Terminal residues</span>
+<span class="c1">#         4) &#39;rest&#39; : to get the features of a sub-sequence from mth position to nth position(both inclusive)</span>
+<span class="c1"># @m(optional(mandatory if &#39;rest&#39; is chosen, default=0): m is the start position of residue</span>
+<span class="c1"># @n(optional, default = &#39;0&#39;): n is the number of residues you want from desired terminal or end point (if &#39;rest&#39; is chosen)</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># Output:</span>
+<span class="c1"># A matrix (csv file) of dimension (m x 30) containing sequences as rows and their 30 physico-chemical properties as columns</span>
+<span class="c1"># where m = number of sequences (each sequence separated by comma)</span>
+<span class="c1">#</span>
+<span class="c1"># &#39;&#39;&#39;</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># def pcp_wp(file,outt,mode=&#39;all&#39;,m=0,n=0):</span>
+<span class="c1">#</span>
+<span class="c1">#     if(type(file) == str):</span>
+<span class="c1">#         seq = pd.read_csv(file,header=None, sep=&#39;,&#39;);</span>
+<span class="c1">#         seq=seq.T</span>
+<span class="c1">#         seq[0].values.tolist()</span>
+<span class="c1">#         seq=seq[0];</span>
+<span class="c1">#     #elif(type(file)==str &amp;&amp; len(file))</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         seq  = file;</span>
+<span class="c1">#</span>
+<span class="c1">#     l = len(seq);</span>
+<span class="c1">#</span>
+<span class="c1">#     newseq = [&quot;&quot;]*l; # To store the trimmed sequence</span>
+<span class="c1">#     #print(&#39;Original Sequence&#39;);</span>
+<span class="c1">#     #print(seq)</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#     for i in range(0,l):</span>
+<span class="c1">#</span>
+<span class="c1">#         #if(n&lt;len(seq[i])):</span>
+<span class="c1">#         l = len(seq[i]);</span>
+<span class="c1">#</span>
+<span class="c1">#         if(mode==&#39;NT&#39;):</span>
+<span class="c1">#             n=m;</span>
+<span class="c1">#             if(n!=0):</span>
+<span class="c1">#                 newseq[i] = seq[i][0:n];</span>
+<span class="c1">#</span>
+<span class="c1">#             elif(n&gt;l):</span>
+<span class="c1">#                 print(&#39;Warning! Sequence&#39;,i,&quot;&#39;s size is less than n. The output table would have NaN for this sequence&quot;);</span>
+<span class="c1">#</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 print(&#39;Value of n is mandatory, it cannot be 0&#39;)</span>
+<span class="c1">#                 break;</span>
+<span class="c1">#</span>
+<span class="c1">#         elif(mode==&#39;CT&#39;):</span>
+<span class="c1">#             n=m;</span>
+<span class="c1">#             if(n!=0):</span>
+<span class="c1">#                 newseq[i] = seq[i][(len(seq[i])-n):]</span>
+<span class="c1">#</span>
+<span class="c1">#             elif(n&gt;l):</span>
+<span class="c1">#                 print(&#39;WARNING: Sequence&#39;,i+1,&quot;&#39;s size is less than the value of n given. The output table would have NaN for this sequence&quot;);</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 print(&#39;Value of n is mandatory, it cannot be 0&#39;)</span>
+<span class="c1">#                 break</span>
+<span class="c1">#</span>
+<span class="c1">#         elif(mode==&#39;all&#39;):</span>
+<span class="c1">#             newseq = seq</span>
+<span class="c1">#</span>
+<span class="c1">#         elif(mode==&#39;rest&#39;):</span>
+<span class="c1">#             if(m==0):</span>
+<span class="c1">#                 print(&#39;Kindly provide start index for rest, it cannot be 0&#39;);</span>
+<span class="c1">#                 break</span>
+<span class="c1">#</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 if(n&lt;=len(seq[i])):</span>
+<span class="c1">#                     newseq[i] = seq[i][m:(len(seq[i])-n)]</span>
+<span class="c1">#                 &#39;&#39;&#39;elif(n&gt;len(seq[i])):</span>
+<span class="c1">#                     newseq[i] = seq[i][m-1:len(seq[i])]</span>
+<span class="c1">#                     print(&#39;WARNING: Since input value of n for sequence&#39;,i+1,&#39;is greater than length of the protein, entire sequence starting from m has been considered&#39;)&#39;&#39;&#39;</span>
+<span class="c1"># #</span>
+<span class="c1"># #         else:</span>
+<span class="c1"># #             print(&quot;Wrong Mode. Enter &#39;NT&#39;, &#39;CT&#39;,&#39;all&#39; or &#39;rest&#39;&quot;);</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1">#     output = pcp(newseq,outt);</span>
+<span class="c1">#     return output</span>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">pcp</span><span class="p">(</span><span class="s1">&#39;KRVLLLDNLSDYIKPGMSVEAIQGIIASMKSDYEDRVDDYIIKNAELSKERRDISKKLKVMGE&#39;</span><span class="p">)</span>
+    <span class="n">pcp</span><span class="p">(</span><span class="s1">&#39;VVLSDQGALFEPCSTQDIACLSRATQQFLEKACRGVPEYDIRPIDPLIISSLDVAAYDDIGLIFHFKNLNITGLKNQKISDFRMDTTRKSVLLKTQADLNVVADVVIELSKQSKSFAGVMNIQASIIGGAKYSYDLQDDSKGVKHFEVGQETISCESIGEPAVNLNPELADALLKDPDTTHYRKDYEAHRVSIRQ&#39;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
