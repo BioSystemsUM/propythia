@@ -5,3 +5,4 @@ sklearn
 biopython
 matplotlib
 nbsphinx
+jupyter_client
