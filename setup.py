@@ -16,7 +16,8 @@ setup(
                         "pandas",
                         "matplotlib",
                         "sklearn",
-                        "biopython"],
+                        "biopython,"
+                        "nbsphinx"],
     author = 'Ana Marta Sequeira',
     author_email = 'anamartasequeira94@gmail.com',
     description = 'propythia - automated platform for the classification of peptides/proteins using machine learning',
