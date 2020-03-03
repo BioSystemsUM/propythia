@@ -16,7 +16,7 @@ setup(
                         "pandas",
                         "matplotlib",
                         "sklearn",
-                        "biopython,"
+                        "biopython",
                         "nbsphinx"],
     author = 'Ana Marta Sequeira',
     author_email = 'anamartasequeira94@gmail.com',
