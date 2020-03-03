@@ -13,6 +13,8 @@ Welcome to ProPythia's documentation!
    installation
    quickstart.ipynb
    src
+   guides
+
 
 
 
