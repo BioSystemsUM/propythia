@@ -3,7 +3,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "# here will be a mega pretty file here explaining everything"
+    "# here will be a mega pretty file explaining everything"
    ],
    "metadata": {
     "collapsed": false,
