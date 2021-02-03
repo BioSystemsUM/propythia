@@ -10,7 +10,7 @@ Authors: Dongsheng Cao and Yizeng Liang.
 Date: 2012.09.10
 
 Email: oriental-cds@163.com
-Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019
+Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 """
 import sys, os, string
 
@@ -109,6 +109,7 @@ def search(pattern, searchtitle=True, casesensitive=False):
 	"""
 	Search for pattern in description and title (optional) of all records and
 	return matched records as list. By default search case insensitive.
+
 	:param pattern:
 	:param searchtitle:
 	:param casesensitive:
@@ -129,8 +130,8 @@ def search(pattern, searchtitle=True, casesensitive=False):
 
 def grep(pattern):
 	"""
-	Search for pattern in title and description of all records (case
-	insensitive) and print results on standard output.
+	Search for pattern in title and description of all records (case insensitive) and print results on standard output.
+
 	:param pattern:
 	:return:
 	"""
@@ -142,6 +143,7 @@ def grep(pattern):
 def get(key):
 	"""
 	Get record for key
+
 	:param key:
 	:return:
 	"""
@@ -166,6 +168,7 @@ def init(path=None, index='123'):
 	access any records. If the files are not within the current directory,
 	you need to specify the correct directory path. By default all three
 	aaindex files are read in.
+
 	:param path:
 	:param index:
 	:return:
@@ -192,8 +195,8 @@ def init_from_file(filename, type=Record):
 
 def _parse(filename, rec, quiet=True):
 	"""
-	Parse aaindex input file. `rec` must be `Record` for aaindex1 and
-	`MarixRecord` for aaindex2 and aaindex3.
+	Parse aaindex input file. `rec` must be `Record` for aaindex1 and `MarixRecord` for aaindex2 and aaindex3.
+
 	:param filename:
 	:param rec:
 	:param quiet:
@@ -272,6 +275,7 @@ def _parse(filename, rec, quiet=True):
 def get_aa_index1(name, path='.'):
 	"""
 	Get the amino acid property values from aaindex1
+
 	:param name: name is the name of amino acid property (e.g., KRIW790103)
 	:param path:
 	:return: get_aa_index1(name). result is a dict form containing the properties of 20 amino acids
@@ -290,6 +294,7 @@ def get_aa_index1(name, path='.'):
 def get_aa_index23(name, path='.'):
 	"""
 	Get the amino acid property values from aaindex2 and aaindex3
+
 	:param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)
 	:param path:
 	:return: get_aa_index23(name). result is a dict form containing the properties of 400 amino acid pairs

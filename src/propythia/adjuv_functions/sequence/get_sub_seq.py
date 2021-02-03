@@ -23,7 +23,7 @@ The subsequences can be:
 	By default the N terminal is considerer to be the beggining of the sequence (left)
 
 
-Authors:
+Authors:Ana Marta Sequeira
 
 Date:
 
@@ -97,6 +97,7 @@ def sub_seq_to_aa(ProteinSequence, ToAA, window):
 def sub_seq_split(seq,number_of_subseq):
 	"""
 	Split the originl seq in n number of subsequences.
+
 	:param seq: protein sequence
 	:param number_of_subseq: number of subsequences to divide the original seq
 	:return: list with number_of_sequences sequences.

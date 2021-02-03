@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.feature_selection &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides.html">Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.feature_selection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.feature_selection</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##############################################################################</span>
+
+<span class="sd">File containing a class used for feature selection. The FeatureSelection class aims to select features based on</span>
+<span class="sd">supervised algorithms in order to improve estimators’ accuracy scores or to boost their performance on very</span>
+<span class="sd">high-dimensional datasets.</span>
+
+<span class="sd">Authors: Ana Marta Sequeira</span>
+
+<span class="sd">Date:06/2019</span>
+
+<span class="sd">Email:</span>
+
+<span class="sd">##############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">GenericUnivariateSelect</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">f_classif</span><span class="p">,</span> <span class="n">mutual_info_classif</span>
+<span class="c1"># from sklearn.feature_selection import f_regression, mutual_info_regression #for regression problems</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectFromModel</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
+<span class="c1"># from scores import score_methods</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">RFE</span><span class="p">,</span><span class="n">RFECV</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+
+<div class="viewcode-block" id="FeatureSelection"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection">[docs]</a><span class="k">class</span> <span class="nc">FeatureSelection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     The FeatureSelection class aims to select features to improve estimators’ accuracy scores or to boost</span>
+<span class="sd">     their performance on very high-dimensional datasets.</span>
+<span class="sd">     It implements sklearn functions</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">x_original</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load the data. the inputs are inherited from the init function when the class is called.</span>
+
+<span class="sd">        :param dataset:</span>
+<span class="sd">        :param x_original:</span>
+<span class="sd">        :param target:</span>
+<span class="sd">        :param test_size:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">=</span><span class="n">x_original</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="o">=</span><span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">x_original</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        init function. When the class is called a dataset containing the features values and a target column must</span>
+<span class="sd">        be provided. Test size is by default 0.3 but can be altered by user.</span>
+
+<span class="sd">        :param dataset:</span>
+<span class="sd">        :param x_original: dataset X_data to sklearn_load</span>
+<span class="sd">        :param target: column with class labels</span>
+<span class="sd">        :param test_size: column with class labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_data</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">x_original</span><span class="p">,</span><span class="n">target</span><span class="p">,</span><span class="n">test_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FeatureSelection.univariate"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection.univariate">[docs]</a>    <span class="k">def</span> <span class="nf">univariate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">score_func</span><span class="o">=</span><span class="n">mutual_info_classif</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;percentile&#39;</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Univariate feature selector, it selects works the best features based on univariate statistical tests.</span>
+<span class="sd">        It can select the k highest scoring features or a user specified percentage of features.</span>
+<span class="sd">        Scoring functions for classification problems can be chi2, f_classif or mutual_info_classif</span>
+
+<span class="sd">        :param scaler:</span>
+<span class="sd">            scaler function to use to datasets before apply univariate tests.</span>
+<span class="sd">            It can be None or any function supported by SKlearn like StandardScaler()</span>
+<span class="sd">        :param score_func:</span>
+<span class="sd">            function that returns univariate scores and p-values (or only scores for SelectKBest and</span>
+<span class="sd">            SelectPercentile)  ( for classification: chi2, f_classif, mutual_info_classif)</span>
+<span class="sd">        :param mode: feature selection mode (‘percentile’, ‘k_best’, ‘fpr’, ‘fdr’, ‘fwe’)</span>
+<span class="sd">        :param param: parameter of corresponding mode</span>
+<span class="sd">        :return: univariate scores and p-values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">scaler</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+
+        <span class="n">transformer</span> <span class="o">=</span> <span class="n">GenericUnivariateSelect</span><span class="p">(</span><span class="n">score_func</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="n">x_fit_univariate</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">)</span>
+        <span class="n">x_transf_univariate</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">x_fit_univariate</span><span class="o">.</span><span class="n">scores_</span> <span class="c1"># scores of features</span>
+        <span class="c1"># original dataset with columns selected (get feature names back)</span>
+        <span class="n">column_selected</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">get_support</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># indexes of selected columns</span>
+        <span class="n">dataset_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span> <span class="c1"># dataset with features names select</span>
+        <span class="n">dataset_features</span> <span class="o">=</span> <span class="n">dataset_features</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">)</span> <span class="c1"># put labels back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span> <span class="c1"># transform the X_data shape</span>
+        <span class="k">return</span> <span class="n">x_fit_univariate</span><span class="p">,</span> <span class="n">x_transf_univariate</span><span class="p">,</span><span class="n">column_selected</span><span class="p">,</span><span class="n">scores</span><span class="p">,</span><span class="n">dataset_features</span></div>
+
+<div class="viewcode-block" id="FeatureSelection.features_scores"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection.features_scores">[docs]</a>    <span class="k">def</span> <span class="nf">features_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_original</span><span class="p">,</span><span class="n">scores</span><span class="p">,</span> <span class="n">column_selected</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves a dataframe with features names and scores of importance resulting of the univariate tests</span>
+
+<span class="sd">        :param dataset: original dataset with columns names</span>
+<span class="sd">        :param scores: list of scores of the features (can be obtained by the function univariate)</span>
+<span class="sd">        :param column_selected: list containing the indexes of the selected columns (can be obtained by function univariate)</span>
+<span class="sd">        :param all: to return all the features and scores or only the selected ones (by default)</span>
+<span class="sd">        :return: dataframe containing the names of features and the scores of univariate tests by descending importance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">x_original</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># get scores of column selected</span>
+            <span class="n">score</span><span class="o">=</span><span class="p">[]</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">column_selected</span><span class="p">:</span>
+                <span class="n">score</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">columns_names</span><span class="o">=</span><span class="n">x_original</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">column_selected</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">score</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">columns_names</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;scores&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureSelection.recursive_feature_elimination"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection.recursive_feature_elimination">[docs]</a>    <span class="k">def</span> <span class="nf">recursive_feature_elimination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cross_validation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">estimator</span><span class="o">=</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">),</span>
+                                      <span class="n">n_features_to_select</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">min_features_to_select</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">scoring</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">n_jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given an external estimator that assigns weights to features (e.g., the coefficients of a linear model),</span>
+<span class="sd">        recursive feature elimination (RFE) is to select features by recursively considering smaller and smaller sets</span>
+<span class="sd">        of features. First, the estimator is trained on the initial set of features and the importance of each feature</span>
+<span class="sd">        is obtained either through a coef_ attribute or through a feature_importances_ attribute.</span>
+<span class="sd">        Then, the least important features are pruned from current set of features.That procedure is recursively</span>
+<span class="sd">        repeated on the pruned set until the desired number of features to select is eventually reached.</span>
+<span class="sd">        RFECV performs RFE in a cross-validation loop to find the optimal number of features.</span>
+
+<span class="sd">        :param scaler:</span>
+<span class="sd">            scaler function to use to datasets before apply univariate tests.</span>
+<span class="sd">            It can be None or any function supported by SKlearn like StandardScaler()</span>
+<span class="sd">        :param cross_validation: if yes: RFECV . if not: RFE</span>
+<span class="sd">        :param estimator: estimator that assign wights to features</span>
+<span class="sd">        :param n_features_to_select: to RFE</span>
+<span class="sd">        :param min_features_to_select: to RFECV</span>
+<span class="sd">        :param cv: number of folds in cross validation</span>
+<span class="sd">        :param scoring: for RFECV</span>
+<span class="sd">        :param n_jobs:</span>
+<span class="sd">        :param step:</span>
+<span class="sd">            If greater than or equal to 1, then step corresponds to the (integer) number of features to remove</span>
+<span class="sd">            at each iteration. If within (0.0, 1.0), then step corresponds to the percentage (rounded down) of</span>
+<span class="sd">            features to remove at each iteration</span>
+<span class="sd">        :param verbose:</span>
+<span class="sd">        :return: rfe fit, rfe transformed, original dataset with features selected, columns names and features ranking</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">scaler</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+        <span class="c1"># https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE</span>
+        <span class="c1"># https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV</span>
+
+        <span class="k">if</span> <span class="n">cross_validation</span><span class="p">:</span>
+            <span class="n">transformer</span><span class="o">=</span><span class="n">RFECV</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">min_features_to_select</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">n_jobs</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transformer</span><span class="o">=</span><span class="n">RFE</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">n_features_to_select</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+        <span class="n">x_fit_rfe</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">)</span>
+        <span class="n">x_transf_rfe</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+
+        <span class="c1">#original dataset with columns selected (get feature names back)</span>
+        <span class="n">column_selected</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">get_support</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#indexes of selected columns</span>
+        <span class="n">dataset_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span><span class="c1">#dataset with features names select</span>
+        <span class="n">dataset_features</span><span class="o">=</span><span class="n">dataset_features</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">)</span> <span class="c1">#put labels back</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span> <span class="c1">#transform the X_data shape</span>
+        <span class="c1">#ranking</span>
+        <span class="n">features_ranking</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">ranking_</span>
+
+        <span class="k">return</span> <span class="n">x_fit_rfe</span><span class="p">,</span> <span class="n">x_transf_rfe</span><span class="p">,</span><span class="n">column_selected</span><span class="p">,</span><span class="n">features_ranking</span><span class="p">,</span><span class="n">dataset_features</span></div>
+
+<div class="viewcode-block" id="FeatureSelection.rfe_ranking"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection.rfe_ranking">[docs]</a>    <span class="k">def</span> <span class="nf">rfe_ranking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">features_ranking</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves a dataframe with features names and its ranking position ordered. Positions 1 are the selected ones.</span>
+
+<span class="sd">        :param dataset: dataset used to performed te fre</span>
+<span class="sd">        :param features_ranking: array containing the features ranking obtained with rfe</span>
+<span class="sd">        :return: dataframe containing the features names and its position ranking ordered by ranking</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">features_ranking</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;features ranking&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;features ranking&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureSelection.select_from_model_feature_elimination"><a class="viewcode-back" href="../../propythia.html#propythia.feature_selection.FeatureSelection.select_from_model_feature_elimination">[docs]</a>    <span class="k">def</span> <span class="nf">select_from_model_feature_elimination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l1&quot;</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                                              <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SelectFromModel is a meta-transformer that can be used along with any estimator that has a coef_</span>
+<span class="sd">        or feature_importances_ attribute after fitting.</span>
+<span class="sd">        The features are considered unimportant and removed, if the corresponding coef_or feature_importances_values are</span>
+<span class="sd">        below the provided threshold parameter.</span>
+
+<span class="sd">        :param scaler:</span>
+<span class="sd">            scaler function to use to datasets before apply univariate tests.</span>
+<span class="sd">            It can be None or any function supported by SKlearn like StandardScaler()</span>
+<span class="sd">        :param data: dataset to perform the feature selection</span>
+<span class="sd">        :param model:</span>
+<span class="sd">                examples:</span>
+<span class="sd">                ExtraTreesClassifier(n_estimators=50)</span>
+<span class="sd">                LinearSVC(C=0.01, penalty=&quot;l1&quot;, dual=False)</span>
+<span class="sd">                LogisticRegression(C=0.1, penalty=&quot;l1&quot;, dual=False)</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">scaler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+            <span class="c1"># self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X_data,</span>
+            <span class="c1"># self.Y_data, test_size=self.test_size, random_state=42)</span>
+        <span class="n">transformer</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span> <span class="p">)</span>
+        <span class="n">select_model</span> <span class="o">=</span> <span class="n">SelectFromModel</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">prefit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># features = np.array(data.columnnames())</span>
+        <span class="c1"># print(features[select_model.get_support()])</span>
+        <span class="n">column_selected</span><span class="o">=</span><span class="n">select_model</span><span class="o">.</span><span class="n">get_support</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># indexes of selected columns</span>
+        <span class="n">dataset_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span> <span class="c1"># dataset with features names select</span>
+        <span class="n">dataset_features</span><span class="o">=</span><span class="n">dataset_features</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_data</span><span class="p">)</span> <span class="c1"># put labels back</span>
+
+        <span class="n">x_transf_model</span> <span class="o">=</span> <span class="n">select_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;Tree&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+            <span class="n">feature_importances</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">feature_importances_</span>
+            <span class="n">feature_importances_DF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_importances</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feature_importances</span><span class="o">=</span><span class="n">transformer</span><span class="o">.</span><span class="n">coef_</span>
+            <span class="n">feature_importances</span><span class="o">=</span><span class="n">feature_importances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">feature_importances_DF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">feature_importances</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;importance&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data</span><span class="p">[:,</span> <span class="n">column_selected</span><span class="p">]</span> <span class="c1"># transform the X_data shape</span>
+        <span class="k">return</span> <span class="n">transformer</span><span class="p">,</span> <span class="n">x_transf_model</span><span class="p">,</span><span class="n">column_selected</span><span class="p">,</span><span class="n">feature_importances</span><span class="p">,</span><span class="n">feature_importances_DF</span><span class="p">,</span><span class="n">dataset_features</span></div></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
