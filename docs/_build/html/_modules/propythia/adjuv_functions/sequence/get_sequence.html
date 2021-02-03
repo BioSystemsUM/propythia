@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.adjuv_functions.sequence.get_sequence &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides.html">Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.adjuv_functions.sequence.get_sequence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.adjuv_functions.sequence.get_sequence</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">################################################################################################</span>
+
+<span class="sd">This file contains functions to get protein sequences.</span>
+
+<span class="sd">To download a protein sequence from the uniprot (http://www.uniprot.org/) website,</span>
+<span class="sd">just provide a protein ID or a txt file with uniprot ID, obtaining a txt file with the protein sequences.</span>
+
+<span class="sd">Authors:</span>
+
+<span class="sd">Date:</span>
+
+<span class="sd">Email:</span>
+
+<span class="sd">################################################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">urllib.request</span><span class="o">,</span> <span class="nn">urllib.parse</span><span class="o">,</span> <span class="nn">urllib.error</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+
+<div class="viewcode-block" id="get_protein_sequence"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence">[docs]</a><span class="k">def</span> <span class="nf">get_protein_sequence</span><span class="p">(</span><span class="n">protein_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the protein sequence from the uniprot website by ID.</span>
+
+<span class="sd">    :param protein_id: ProteinID is a string indicating ID such as &quot;P48039&quot;.</span>
+<span class="sd">    :return: str protein sequence</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ID</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">protein_id</span><span class="p">)</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.uniprot.org/uniprot/&#39;</span><span class="o">+</span><span class="n">ID</span><span class="o">+</span><span class="s1">&#39;.fasta&#39;</span>
+    <span class="c1">#print(url)</span>
+    <span class="n">localfile</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">temp</span><span class="o">=</span><span class="n">localfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">res</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)):</span>
+        <span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="o">+</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">AALetter</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">,</span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">,</span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;T&quot;</span><span class="p">,</span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+    <span class="n">proteinsequence</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">res</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proteinsequence</span></div>
+
+
+<div class="viewcode-block" id="get_protein_sequence_from_txt"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sequence.get_protein_sequence_from_txt">[docs]</a><span class="k">def</span> <span class="nf">get_protein_sequence_from_txt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">openfile</span><span class="p">,</span> <span class="n">savefile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the protein sequence from the uniprot website by the file containing ID.</span>
+
+<span class="sd">    :param path: path is a directory path containing the ID file (e.g. &quot;/home/protein/&quot;)</span>
+<span class="sd">    :param openfile: ID file  (e.g. &quot;proteinID.txt&quot;)</span>
+<span class="sd">    :param savefile: file saving the obtained protein sequences (e.g. &quot;protein.txt&quot;)</span>
+<span class="sd">    :return: file txt with protein sequences</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f1</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">savefile</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">f2</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">openfile</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="c1">#	res=[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f2</span><span class="p">):</span>
+
+        <span class="n">itrim</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">itrim</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp</span><span class="o">=</span><span class="n">get_protein_sequence</span><span class="p">(</span><span class="n">itrim</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The </span><span class="si">%d</span><span class="s2"> protein sequence has been downloaded!&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="n">f1</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">temp</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------&quot;</span><span class="p">)</span>
+    <span class="c1">#		res.append(temp+&#39;\n&#39;)</span>
+    <span class="c1">#	f1.writelines(res)</span>
+    <span class="n">f2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">f1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s1">&#39;end&#39;</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="n">uniprot</span><span class="o">=</span><span class="n">get_protein_sequence</span><span class="p">(</span><span class="s1">&#39;P08172&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">uniprot</span><span class="p">)</span>
+
+    <span class="n">result_ID</span><span class="o">=</span><span class="n">get_protein_sequence_from_txt</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;data/target.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;data/result.txt&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result_ID</span><span class="p">)</span>
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

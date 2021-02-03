@@ -33,6 +33,7 @@ class Preprocess:
     def missing_data(self, data):
         """
         check nans. if yes: returns a error message
+
         :param data: dataframe
         :return: error message or 0 nans error
         """
@@ -47,6 +48,7 @@ class Preprocess:
     def remove_columns_all_zeros(self,data, columns_names=False):
         """
         Removes columns that have all values as zero.
+
         :param data: dataframe
         :param columns_names: if True retrieves the names of columns with only zeros
         :return: dataset without columns with all values=zero
@@ -59,6 +61,7 @@ class Preprocess:
     def remove_duplicate_columns(self, data, columns_names=False):
         """
         Removes columns duplicated.
+
         :param data: dataframe
         :param columns_names: if True retrieves the names of columns duplicates
         :return: dataset without duplicated columns
@@ -76,10 +79,12 @@ class Preprocess:
         Based on scikit learn
         VarianceThreshold is a simple baseline approach to feature selection.
         It removes all features whose variance doesn’t meet some threshold
+
         :param data: dataframe
         :param threshold: value. The threshold of variance to drop columns (eg 0.8)
-        :param standard: if , in the case of threshold >0, the user wants to standardize features before apply variance
-        threshold. minmaxscaler will be applied
+        :param standard:
+            if ,in the case of threshold >0, the user wants to standardize features before apply variance
+            threshold. minmaxscaler will be applied
         :param columns_names:
         :return: dataset without low variance columns (not scaled)
         """

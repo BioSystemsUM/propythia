@@ -1,0 +1,7 @@
+include README.rst
+include docs/*.txt
+graft data
+graft features_functions/data/
+graft sequence/data/
+include propythia/adjuv_functions/features_functions/data/*
+include propythia/adjuv_functions/sequence/data/*

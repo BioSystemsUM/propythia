@@ -7,7 +7,7 @@ This file contains functions to get protein sequences.
 To download a protein sequence from the uniprot (http://www.uniprot.org/) website,
 just provide a protein ID or a txt file with uniprot ID, obtaining a txt file with the protein sequences.
 
-Authors:
+Authors: Ana Marta Sequeira
 
 Date:
 
@@ -23,6 +23,7 @@ import string
 def get_protein_sequence(protein_id):
     """
     Get the protein sequence from the uniprot website by ID.
+
     :param protein_id: ProteinID is a string indicating ID such as "P48039".
     :return: str protein sequence
     """
@@ -45,6 +46,7 @@ def get_protein_sequence(protein_id):
 def get_protein_sequence_from_txt(path, openfile, savefile):
     """
     Get the protein sequence from the uniprot website by the file containing ID.
+
     :param path: path is a directory path containing the ID file (e.g. "/home/protein/")
     :param openfile: ID file  (e.g. "proteinID.txt")
     :param savefile: file saving the obtained protein sequences (e.g. "protein.txt")

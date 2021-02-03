@@ -19,6 +19,8 @@ Authors: Ana Marta Sequeira
 Date: 05/2019
 
 Email:
+
+
 ##############################################################################
 """
 import pandas as pd
@@ -29,6 +31,7 @@ def init(path=None, index=''):
     Read in files. You need to run this (once) before you can
     access any records. If the files are not within the current directory,
     you need to specify the correct directory path.
+
     :param path:
     :param index:
     :return:
@@ -57,6 +60,7 @@ def boc_wp(seq):
     """
     Sum of the bond composition for each type of bond: total number of bonds (including aromatic), hydrogen bond,
     single bond and double
+
     :param seq: protein sequence
     :return: dictionary with number of total, hydrogen, single and double bonds
     """

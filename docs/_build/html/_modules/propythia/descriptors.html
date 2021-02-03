@@ -1,0 +1,1161 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.descriptors &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">here will be a mega pretty file explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides.html">Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.descriptors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.descriptors</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">##############################################################################</span>
+
+<span class="sd">A class  used for computing different types of protein descriptors.</span>
+<span class="sd">It contains descriptors from packages pydpi, biopython, pfeature and modlamp.</span>
+
+<span class="sd">Authors: Ana Marta Sequeira</span>
+
+<span class="sd">Date: 05/2019</span>
+
+<span class="sd">Email:</span>
+
+<span class="sd">##############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">propythia.sequence</span> <span class="kn">import</span> <span class="n">ReadSequence</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.aa_index</span> <span class="kn">import</span> <span class="n">get_aa_index1</span><span class="p">,</span> <span class="n">get_aa_index23</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.binary</span> <span class="kn">import</span> <span class="n">bin_aa_ct</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.binary_aa_properties</span> <span class="kn">import</span> <span class="n">bin_pc_wp</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.descriptors_modlamp</span> <span class="kn">import</span> <span class="n">GlobalDescriptor</span><span class="p">,</span> \
+    <span class="n">PeptideDescriptor</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.bondcomp</span> <span class="kn">import</span> <span class="n">boc_wp</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.aa_composition</span> <span class="kn">import</span> <span class="n">calculate_aa_composition</span><span class="p">,</span> \
+    <span class="n">calculate_dipeptide_composition</span><span class="p">,</span> <span class="n">get_spectrum_dict</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.pseudo_aac</span> <span class="kn">import</span> <span class="n">get_pseudo_aac</span><span class="p">,</span> <span class="n">get_a_pseudo_aac</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.autocorrelation</span> <span class="kn">import</span> \
+    <span class="n">calculate_normalized_moreau_broto_auto_total</span><span class="p">,</span> <span class="n">calculate_moran_auto_total</span><span class="p">,</span> <span class="n">calculate_geary_auto_total</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.ctd</span> <span class="kn">import</span> <span class="n">calculate_ctd</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.quasi_sequence_order</span> <span class="kn">import</span> \
+    <span class="n">get_sequence_order_coupling_number_total</span><span class="p">,</span> <span class="n">get_quasi_sequence_order</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.quasi_sequence_order</span> <span class="kn">import</span> \
+    <span class="n">get_sequence_order_coupling_numberp</span><span class="p">,</span> <span class="n">get_quasi_sequence_orderp</span>
+<span class="kn">from</span> <span class="nn">propythia.adjuv_functions.features_functions.conjoint_triad</span> <span class="kn">import</span> <span class="n">calculate_conjoint_triad</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="Descriptor"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor">[docs]</a><span class="k">class</span> <span class="nc">Descriptor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Descriptor class collects all descriptor calculation functions into a simple class.</span>
+<span class="sd">    Some of the descriptors functions are based on code from pydpi (altered to python3), modlamp, pfature and biopython.</span>
+<span class="sd">    It returns the features in a dictionary object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">AALetter</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]</span>
+    <span class="n">Version</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protein_sequence</span><span class="p">):</span>  <span class="c1"># the function takes as input the protein sequence</span>
+        <span class="sd">&quot;&quot;&quot;	constructor &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span> <span class="o">=</span> <span class="n">protein_sequence</span>
+
+    <span class="c1"># ################# GET AA INDEX (from specific property) ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_aa_index1"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_aa_index1">[docs]</a>    <span class="k">def</span> <span class="nf">get_aa_index1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the amino acid property values from aaindex1</span>
+<span class="sd">        (function from pydpi)</span>
+
+<span class="sd">        :param name: name is the name of amino acid property (e.g., KRIW790103)</span>
+<span class="sd">        :param path: path to get aa index. by default is the one in the package.</span>
+<span class="sd">        :return: result is a dict form containing the properties of 20 amino acids</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">get_aa_index1</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_aa_index23"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_aa_index23">[docs]</a>    <span class="k">def</span> <span class="nf">get_aa_index23</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the amino acid property values from aaindex2 and aaindex</span>
+<span class="sd">        (function from from pydpi)</span>
+
+<span class="sd">        :param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)</span>
+<span class="sd">        :param path: path to get aa index. by default is the one in the package.</span>
+<span class="sd">        :return: result is a dict form containing the properties of 400 amino acid pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_aa_index23</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+    <span class="c1"># ################# BINARY PROFILES DESCRIPTORS  ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_bin_aa"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_bin_aa">[docs]</a>    <span class="k">def</span> <span class="nf">get_bin_aa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        binary profile of aminoacid composition</span>
+<span class="sd">        :return: dictionary containing binary profile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">bin_aa_ct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">residue</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+                    <span class="n">name_feature</span> <span class="o">=</span> <span class="s1">&#39;bin_aa&#39;</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">res</span><span class="p">[</span><span class="n">name_feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">residue</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="n">value</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_bin_resi_prop"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_bin_resi_prop">[docs]</a>    <span class="k">def</span> <span class="nf">get_bin_resi_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">list_descriptors</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span>
+                                            <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Binary profile of residues for 25 phychem feature</span>
+
+<span class="sd">        :param list_descriptors: list containing feature numbers (valid number, 0-24) (e.g. [5,4,8,24]</span>
+<span class="sd">                \n FEATURE NAME                    FEATURE NUMBER</span>
+<span class="sd">                \n &#39;Positively charged&#39; --                  0</span>
+<span class="sd">                \n &#39;Negatively charged&#39; --                  1</span>
+<span class="sd">                \n &#39;Neutral charged&#39; --                     2</span>
+<span class="sd">                \n &#39;Polarity&#39; --                            3</span>
+<span class="sd">                \n &#39;Non polarity&#39; --                        4</span>
+<span class="sd">                \n &#39;Aliphaticity&#39; --                        5</span>
+<span class="sd">                \n &#39;Cyclic&#39; --                              6</span>
+<span class="sd">                \n &#39;Aromaticity&#39; --                         7</span>
+<span class="sd">                \n &#39;Acidicity&#39;--                            8</span>
+<span class="sd">                \n &#39;Basicity&#39;--                             9</span>
+<span class="sd">                \n &#39;Neutral (ph)&#39; --                       10</span>
+<span class="sd">                \n &#39;Hydrophobicity&#39; --                     11</span>
+<span class="sd">                \n &#39;Hydrophilicity&#39; --                     12</span>
+<span class="sd">                \n &#39;Neutral&#39; --                            13</span>
+<span class="sd">                \n &#39;Hydroxylic&#39; --                         14</span>
+<span class="sd">                \n &#39;Sulphur content&#39; -                     15</span>
+<span class="sd">                \n &#39;Secondary Structure(Helix)&#39;            16</span>
+<span class="sd">                \n &#39;Secondary Structure(Strands)&#39;,         17</span>
+<span class="sd">                \n &#39;Secondary Structure(Coil)&#39;,            18</span>
+<span class="sd">                \n &#39;Solvent Accessibilty (Buried)&#39;,        19</span>
+<span class="sd">                \n &#39;Solvent Accesibilty(Exposed)&#39;,         20</span>
+<span class="sd">                \n &#39;Solvent Accesibilty(Intermediate)&#39;,    21</span>
+<span class="sd">                \n &#39;Tiny&#39;,                                 22</span>
+<span class="sd">                \n &#39;Small&#39;,                                23</span>
+<span class="sd">                \n &#39;Large&#39;                                 24</span>
+<span class="sd">                \n</span>
+
+
+<span class="sd">        :return: dict form with binary values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">bin_pc_wp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">list_descriptors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# PHYSICO CHEMICAL DESCRIPTORS  ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_lenght"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_lenght">[docs]</a>    <span class="k">def</span> <span class="nf">get_lenght</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates lenght of sequence (number of aa)</span>
+
+<span class="sd">        :return: dictionary with the value of lenght</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lenght&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="o">.</span><span class="n">strip</span><span class="p">()))}</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_charge"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_charge">[docs]</a>    <span class="k">def</span> <span class="nf">get_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.4</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates charge of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :param ph: ph considered to calculate. 7.4 by default</span>
+<span class="sd">        :param amide: by default is not considered an amide protein sequence.</span>
+<span class="sd">        :return: dictionary with the value of charge</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">calculate_charge</span><span class="p">(</span><span class="n">ph</span><span class="o">=</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="n">amide</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;charge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_charge_density"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_charge_density">[docs]</a>    <span class="k">def</span> <span class="nf">get_charge_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates charge density of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :param ph: ph considered to calculate. 7 by default</span>
+<span class="sd">        :param amide: by default is not considered an amide protein sequence.</span>
+<span class="sd">        :return: dictionary with the value of charge density</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">charge_density</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;chargedensity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_formula"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_formula">[docs]</a>    <span class="k">def</span> <span class="nf">get_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates number of C,H,N,O and S of the aa of sequence (5 values) from modlamp</span>
+
+<span class="sd">        :param amide: by default is not considered an amide protein sequence.</span>
+<span class="sd">        :return: dictionary with the 5 values of C,H,N,O and S</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">formula</span><span class="p">(</span><span class="n">amide</span><span class="p">)</span>
+        <span class="n">formula</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">formula</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="c1"># some formulas, specially S sometimes culd be a zero, to not transform iinto a nan in dataset</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formulaC&#39;</span><span class="p">):</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formulaH&#39;</span><span class="p">):</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formulaN&#39;</span><span class="p">):</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formulaO&#39;</span><span class="p">):</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;formulaS&#39;</span><span class="p">):</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;formulaS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_bond"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_bond">[docs]</a>    <span class="k">def</span> <span class="nf">get_bond</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function gives the sum of the bond composition for each type of bond</span>
+<span class="sd">        For bond composition four types of bonds are considered</span>
+<span class="sd">        total number of bonds (including aromatic), hydrogen bond, single bond and double bond.</span>
+
+<span class="sd">        :return: dictionary with 4 values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">boc_wp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_mw"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_mw">[docs]</a>    <span class="k">def</span> <span class="nf">get_mw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates molecular weight of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :return: dictionary with the value of molecular weight</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">calculate_MW</span><span class="p">(</span><span class="n">amide</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;MW_modlamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># def GetMW2(self): give values different molecular weight from modlamp and biopython.</span>
+    <span class="c1"># 	&quot;&quot;&quot;</span>
+    <span class="c1"># 	Calculates molecular weight from sequence (1 value) from biopython</span>
+    <span class="c1"># 	Input:</span>
+    <span class="c1"># 	Output: dictionary with the value of MW</span>
+    <span class="c1"># 	&quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1"># 	res={}</span>
+    <span class="c1"># 	analysed_seq = ProteinAnalysis(self.protein_sequence)</span>
+    <span class="c1"># 	res[&#39;MW&#39;]= analysed_seq.molecular_weight()</span>
+    <span class="c1"># 	return res</span>
+
+<div class="viewcode-block" id="Descriptor.get_gravy"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_gravy">[docs]</a>    <span class="k">def</span> <span class="nf">get_gravy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Gravy from sequence (1 value) from biopython</span>
+
+<span class="sd">        :return: dictionary with the value of gravy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Gravy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">gravy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_aromacity"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_aromacity">[docs]</a>    <span class="k">def</span> <span class="nf">get_aromacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Aromacity from sequence (1 value) from biopython</span>
+
+<span class="sd">        :return: dictionary with the value of aromacity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Aromacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">aromaticity</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_isoelectric_point"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_isoelectric_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_isoelectric_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Isolectric Point from sequence (1 value) from biopython</span>
+
+<span class="sd">        :return: dictionary with the value of Isolectric Point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;IsoelectricPoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># def GetIsoelectricPoint_2(self):#give values different molecular weight from modlamp and biopython</span>
+    <span class="c1"># 	&quot;&quot;&quot;</span>
+    <span class="c1"># 	Calculates Isolectric Point from sequence (1 value) from modlamp</span>
+    <span class="c1"># 	Input:</span>
+    <span class="c1"># 	Output: dictionary with the value of Isolectric Point</span>
+    <span class="c1"># 	&quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1"># 	res={}</span>
+    <span class="c1"># 	desc = GlobalDescriptor(self.protein_sequence)</span>
+    <span class="c1"># 	desc.isoelectric_point()</span>
+    <span class="c1"># 	res[&#39;isoelectricpoint_modlamp&#39;]= desc.descriptor[0][0]</span>
+    <span class="c1"># 	return res</span>
+
+<div class="viewcode-block" id="Descriptor.get_instability_index"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_instability_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_instability_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Instability index from sequence (1 value) from biopython</span>
+
+<span class="sd">        :return: dictionary with the value of Instability index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Instability_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">instability_index</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_sec_struct"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_sec_struct">[docs]</a>    <span class="k">def</span> <span class="nf">get_sec_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython</span>
+
+<span class="sd">        :return: dictionary with the 3 value of helix, turn, sheet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;SecStruct_helix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">secondary_structure_fraction</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># helix</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;SecStruct_turn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">secondary_structure_fraction</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># turn</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;SecStruct_sheet&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">secondary_structure_fraction</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># sheet</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_molar_extinction_coefficient"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_molar_extinction_coefficient">[docs]</a>    <span class="k">def</span> <span class="nf">get_molar_extinction_coefficient</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">):</span>  <span class="c1"># [reduced, oxidized] # with reduced cysteines / # with disulfid bridges</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the molar extinction coefficient (2 values) from biopython</span>
+
+<span class="sd">        :return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Molar_extinction_coefficient_reduced&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">molar_extinction_coefficient</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># reduced</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Molar_extinction_coefficient_oxidized&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">molar_extinction_coefficient</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># cys cys bounds</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_flexibility"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_flexibility">[docs]</a>    <span class="k">def</span> <span class="nf">get_flexibility</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython</span>
+
+<span class="sd">        :return: dictionary with proteinsequencelenght-9 values of flexiblity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">analysed_seq</span> <span class="o">=</span> <span class="n">ProteinAnalysis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">flexibility</span> <span class="o">=</span> <span class="n">analysed_seq</span><span class="o">.</span><span class="n">flexibility</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">flexibility</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;flexibility_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">flexibility</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_aliphatic_index"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_aliphatic_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_aliphatic_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates aliphatic index of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :return: dictionary with the value of aliphatic index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">aliphatic_index</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;aliphatic_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_boman_index"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_boman_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_boman_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates boman index of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :return: dictionary with the value of boman index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">boman_index</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;bomanindex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_hydrophobic_ratio"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_hydrophobic_ratio">[docs]</a>    <span class="k">def</span> <span class="nf">get_hydrophobic_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates hydrophobic ratio of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :return: dictionary with the value of hydrophobic ratio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">GlobalDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="n">desc</span><span class="o">.</span><span class="n">hydrophobic_ratio</span><span class="p">()</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;hydrophobic_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1">################## AMINO ACID COMPOSITION ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_aa_comp"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_aa_comp">[docs]</a>    <span class="k">def</span> <span class="nf">get_aa_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates amino acid compositon (20 values)  from pydpi</span>
+
+<span class="sd">        :return: dictionary with the fractions of all 20 aa(keys are the aa)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_aa_composition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_dp_comp"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_dp_comp">[docs]</a>    <span class="k">def</span> <span class="nf">get_dp_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates dipeptide composition (400 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the fractions of all 400 possible combiinations of 2 aa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_dipeptide_composition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_tp_comp"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_tp_comp">[docs]</a>    <span class="k">def</span> <span class="nf">get_tp_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates tripeptide composition (8000 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the fractions of all 8000 possible combinations of 3 aa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_spectrum_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1">################## PSEUDO AMINO ACID COMPOSITION ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_paac"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_paac">[docs]</a>    <span class="k">def</span> <span class="nf">get_paac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Type I Pseudo amino acid composition (default is 30, depends on lamda) from pydpi</span>
+
+<span class="sd">        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.</span>
+<span class="sd">                should NOT be larger than the length of input protein sequence</span>
+<span class="sd">                when lamda =0, the output of PseAA server is the 20-D amino acid composition</span>
+<span class="sd">        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.</span>
+<span class="sd">            The user can select any value within the region from 0.05 to 0.7 for the weight factor.</span>
+<span class="sd">        :return: dictionary with the fractions of all PAAC (keys are the PAAC). Number of keys depends on lamda</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_pseudo_aac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_paac_p"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_paac_p">[docs]</a>    <span class="k">def</span> <span class="nf">get_paac_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">AAP</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Type I Pseudo amino acid composition for a given property (default is 30, depends on lamda) from pydpi</span>
+
+<span class="sd">        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.</span>
+<span class="sd">            should NOT be larger than the length of input protein sequence</span>
+<span class="sd">            when lamda =0, theoutput of PseAA server is the 20-D amino acid composition</span>
+<span class="sd">        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.</span>
+<span class="sd">            The user can select any value within the region from 0.05 to 0.7 for the weight factor.</span>
+<span class="sd">        :param AAP: list of properties. each of which is a dict form.</span>
+<span class="sd">            PseudoAAC._Hydrophobicity,PseudoAAC._hydrophilicity, PseudoAAC._residuemass,PseudoAAC._pK1,PseudoAAC._pK2,</span>
+<span class="sd">            PseudoAAC._pI</span>
+<span class="sd">        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_pseudo_aac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">AAP</span><span class="o">=</span><span class="n">AAP</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_apaac"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_apaac">[docs]</a>    <span class="k">def</span> <span class="nf">get_apaac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Type II Pseudo amino acid composition - Amphiphilic (default is 30, depends on lamda) from pydpi</span>
+
+<span class="sd">        :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.</span>
+<span class="sd">            should NOT be larger than the length of input protein sequence</span>
+<span class="sd">            when lamda =0, theoutput of PseAA server is the 20-D amino acid composition</span>
+<span class="sd">        :param weight: weight on the additional PseAA components. with respect to the conventional AA components.</span>
+<span class="sd">            The user can select any value within the region from 0.05 to 0.7 for the weight factor.</span>
+<span class="sd">        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_a_pseudo_aac</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">lamda</span><span class="o">=</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# AUTOCORRELATION DESCRIPTORS ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_moreau_broto_auto"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_moreau_broto_auto">[docs]</a>    <span class="k">def</span> <span class="nf">get_moreau_broto_auto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the 240 descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_normalized_moreau_broto_auto_total</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_moran_auto"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_moran_auto">[docs]</a>    <span class="k">def</span> <span class="nf">get_moran_auto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates  Moran autocorrelation (240 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the 240 descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_moran_auto_total</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_geary_auto"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_geary_auto">[docs]</a>    <span class="k">def</span> <span class="nf">get_geary_auto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates  Geary autocorrelation (240 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the 240 descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_geary_auto_total</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# COMPOSITION, TRANSITION, DISTRIBUTION ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_ctd"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_ctd">[docs]</a>    <span class="k">def</span> <span class="nf">get_ctd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Composition Transition Distribution descriptors (147 values) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the 147 descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_ctd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# CONJOINT TRIAD ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_conj_t"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_conj_t">[docs]</a>    <span class="k">def</span> <span class="nf">get_conj_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi</span>
+
+<span class="sd">        :return: dictionary with the 343 descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">calculate_conjoint_triad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># #################  SEQUENCE ORDER  ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_socn"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_socn">[docs]</a>    <span class="k">def</span> <span class="nf">get_socn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">45</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi</span>
+
+<span class="sd">        :param maxlag: maximum lag. Smaller than length of the protein</span>
+<span class="sd">        :return: dictionary with the descriptors (90 descriptors)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_sequence_order_coupling_number_total</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="n">maxlag</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_socn_p"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_socn_p">[docs]</a>    <span class="k">def</span> <span class="nf">get_socn_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">distancematrix</span><span class="o">=</span><span class="p">{}):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi</span>
+
+<span class="sd">        :param maxlag: maximum lag. Smaller than length of the protein</span>
+<span class="sd">        :param distancematrix: dict form containing 400 distance values</span>
+<span class="sd">        :return: dictionary with the descriptors (90 descriptors)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_sequence_order_coupling_numberp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">distancematrix</span><span class="o">=</span><span class="n">distancematrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_qso"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_qso">[docs]</a>    <span class="k">def</span> <span class="nf">get_qso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi</span>
+
+<span class="sd">        :param maxlag: maximum lag. Smaller than length of the protein</span>
+<span class="sd">        :param weight:</span>
+<span class="sd">        :return: dictionary with the descriptors (100 descriptors)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_quasi_sequence_order</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_qso_p"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_qso_p">[docs]</a>    <span class="k">def</span> <span class="nf">get_qso_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">distancematrix</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi</span>
+
+<span class="sd">        :param maxlag: maximum lag. Smaller than length of the protein</span>
+<span class="sd">        :param weight:</span>
+<span class="sd">        :param distancematrix: dict form containing 400 distance values</span>
+<span class="sd">        :return: dictionary with the descriptors (100 descriptors)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">get_quasi_sequence_orderp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+                                        <span class="n">distancematrix</span><span class="o">=</span><span class="n">distancematrix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# BASE CLASS PEPTIDE DESCRIPTOR ##################</span>
+
+    <span class="sd">&quot;&quot;&quot;amino acid descriptor scales available are the ones from modlamp.</span>
+<span class="sd">    For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">    amino acid sclaes include AASI, argos, bulkiness, charge_phys, charge_acid, eisenberg and others.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Descriptor.calculate_moment"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_moment">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates moment of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window,</span>
+<span class="sd">            the length of the sequence is taken</span>
+<span class="sd">        :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets</span>
+<span class="sd">        :param modality: maximum or mean hydrophobic moment</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :return: dictionary with one value of moment</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">AMP</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">modality</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;moment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.calculate_global"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_global">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_global</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp</span>
+
+<span class="sd">        :param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken</span>
+<span class="sd">        :param modality: maximum or mean hydrophobic moment</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :return: dictionary with one value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">AMP</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">modality</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.calculate_profile"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_profile">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prof_type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercep</span>
+<span class="sd">        (2 values) from modlamp</span>
+
+<span class="sd">        :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment</span>
+<span class="sd">        :param window: size of sliding window used (odd-numbered)</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :return: dictionary with two value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">AMP</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="n">prof_type</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;profile_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">desc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.calculate_arc"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_arc">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_arc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;peparc&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only ( 5 values) from modlamp</span>
+
+<span class="sd">        :param modality: maximum or mean</span>
+<span class="sd">        :param scalename: binary amino acid scales only</span>
+<span class="sd">        :return: dictionary with 5 values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">arc</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">arc</span><span class="o">.</span><span class="n">calculate_arc</span><span class="p">(</span><span class="n">modality</span><span class="p">)</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">arc</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;arc_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">desc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.calculate_autocorr"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_autocorr">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_autocorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates autocorrelation of amino acid values for a given descriptor scale ( variable &gt;&gt;&gt;values) from modlamp</span>
+
+<span class="sd">        :param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :return: dictionary with values of autocorrelation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">AMP</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;autocorr_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">desc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.calculate_crosscorr"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.calculate_crosscorr">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_crosscorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates cross correlation of amino acid values for a given descriptor scale (variable &gt;&gt;&gt;values) from modlamp</span>
+
+<span class="sd">        :param window: correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :return: dictionary with values of crosscorrelation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">AMP</span> <span class="o">=</span> <span class="n">PeptideDescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ProteinSequence</span><span class="p">,</span> <span class="n">scalename</span><span class="p">)</span>
+        <span class="n">AMP</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">AMP</span><span class="o">.</span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;crosscorr_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">desc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+    <span class="c1"># ################# GET ALL FUNCTIONS ##################</span>
+
+<div class="viewcode-block" id="Descriptor.get_all_physicochemical"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_physicochemical">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_physicochemical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all 15 geral descriptors functions derived from biopython and modlpam</span>
+
+<span class="sd">        :param ph: for functions Charge, charge density and formula</span>
+<span class="sd">        :param amide: for functions Charge, charge density and formula</span>
+<span class="sd">        :return: dictionary with variable number of descriptors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lenght</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge_density</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(</span><span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bond</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mw</span><span class="p">())</span>
+        <span class="c1"># res.update(self.GetMW2())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_gravy</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aromacity</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_isoelectric_point</span><span class="p">())</span>
+        <span class="c1"># res.update(self.GetIsoelectricPoint2())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_instability_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sec_struct</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_molar_extinction_coefficient</span><span class="p">())</span>
+        <span class="c1"># res.update(self.get_flexibility())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aliphatic_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_boman_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hydrophobic_ratio</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all_aac"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_aac">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_aac</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all descriptors from Amino Acid Composition</span>
+
+<span class="sd">        :return: dictionary with values from AAC, DPC and TPC</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aa_comp</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dp_comp</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tp_comp</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all_paac"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_paac">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_paac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lamda_paac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_paac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lamda_apaac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_apaac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all descriptors from Pseudo Amino Acid Composition</span>
+
+<span class="sd">        :param lamda_paac: parameter for PAAC default 10</span>
+<span class="sd">        :param weight_paac: parameter for PAAC default 0.05</span>
+<span class="sd">        :param lamda_apaac: parameter for APAAC default 10</span>
+<span class="sd">        :param weight_apaac: parameter for APAAC default 0.05</span>
+<span class="sd">        :return: dictionary with values from PAAC and APAAC</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_paac</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_paac</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_paac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+        <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_apaac</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_apaac</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_apaac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all_sequenceorder"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_sequenceorder">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_sequenceorder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlag_socn</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">maxlag_qso</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weight_qso</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all values for sequence order descriptors</span>
+
+<span class="sd">        :param maxlag_socn: parameter for SOCN default 45</span>
+<span class="sd">        :param maxlag_qso: parameter for QSO default 30</span>
+<span class="sd">        :param weight_qso: parameter for QSO default 0.1</span>
+<span class="sd">        :return: dictionary with values for quasi sequence order and sequence order couplig numbers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_socn</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_socn</span><span class="p">(</span><span class="n">maxlag</span><span class="p">))</span>
+
+        <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_qso</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_qso</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_qso</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all_correlation"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_correlation">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all descriptors from Autocorrelation</span>
+
+<span class="sd">        :return: values for the funtions Moreau Broto, Moran and Geary autocorrelation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moreau_broto_auto</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moran_auto</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_geary_auto</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all_base_class"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all_base_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_base_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="o">=</span><span class="s1">&#39;peparc&#39;</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span>
+                           <span class="n">prof_type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all functions from Base class</span>
+
+<span class="sd">        :param window:  correlation window for descriptor calculation in a sliding window approach</span>
+<span class="sd">        :param scalename: For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :param scalename_arc: binary amino acid scales only. For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor</span>
+<span class="sd">        :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets</span>
+<span class="sd">        :param modality: maximum or mean hydrophobic moment</span>
+<span class="sd">        :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment</span>
+<span class="sd">        :return: dictionary with all 6 base class peptide descriptors (the value is variable)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="n">prof_type</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_arc</span><span class="p">(</span><span class="n">modality</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.get_all"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ph</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tricomp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bin_aa</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bin_prop</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lamda_paac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_paac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                <span class="n">lamda_apaac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_apaac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">maxlag_socn</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">maxlag_qso</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weight_qso</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="o">=</span><span class="s1">&#39;peparc&#39;</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">prof_type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate all descriptors from pydpi_py3 except tri-peptide pydpi_py3 and binary profiles</span>
+
+<span class="sd">        :param ph: parameters for geral descriptors</span>
+<span class="sd">        :param amide: parameters for geral descriptors</span>
+<span class="sd">        :param tricomp: true or false to calculate or not tri-peptide pydpi_py3</span>
+<span class="sd">        :param bin_aa: true or false to calculate or not binary composition of aa</span>
+<span class="sd">        :param bin_prop: true or false to calculate or not binary composition of properties of resides</span>
+<span class="sd">        :param lamda_paac: parameters for PAAC: lamdaPAAC=10 should not be larger than len(sequence)</span>
+<span class="sd">        :param weight_paac: parameters for PAAC weightPAAC=0.05</span>
+<span class="sd">        :param AAP: list with</span>
+<span class="sd">        :param lamda_apaac: parameters for APAAC lamdaAPAAC=10</span>
+<span class="sd">        :param weight_apaac: parameters for APAAC weightAPAAC=0.05</span>
+<span class="sd">        :param maxlag_socn: parameters for SOCN: maxlagSOCN=45</span>
+<span class="sd">        :param maxlag_qso: parameters for QSO maxlagQSO=30</span>
+<span class="sd">        :param weight_qso: parameters for  weightQSO=0.1</span>
+<span class="sd">        :param window: parameters for base class descriptors</span>
+<span class="sd">        :param scalename: parameters for base class descriptors</span>
+<span class="sd">        :param scalename_arc: parameters for base class descriptors</span>
+<span class="sd">        :param angle: parameters for base class descriptors</span>
+<span class="sd">        :param modality: parameters for base class descriptors</span>
+<span class="sd">        :param prof_type: parameters for base class descriptors</span>
+<span class="sd">        :return: dictionary with all features (value is variable)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">bin_aa</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bin_aa</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">bin_prop</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bin_resi_prop</span><span class="p">())</span>
+        <span class="c1"># Geral</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lenght</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge_density</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(</span><span class="n">amide</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bond</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mw</span><span class="p">())</span>
+        <span class="c1"># res.update(self.GetMW2())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_gravy</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aromacity</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_isoelectric_point</span><span class="p">())</span>
+        <span class="c1"># res.update(self.GetIsoelectricPoint2())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_instability_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sec_struct</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_molar_extinction_coefficient</span><span class="p">())</span>
+
+        <span class="c1"># res.update(self.get_flexibility()) (ver se é o q esta  causar nas)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aliphatic_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_boman_index</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hydrophobic_ratio</span><span class="p">())</span>
+
+        <span class="c1"># pydpi_based</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aa_comp</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dp_comp</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">tricomp</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tp_comp</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moreau_broto_auto</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moran_auto</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_geary_auto</span><span class="p">())</span>
+
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ctd</span><span class="p">())</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_conj_t</span><span class="p">())</span>
+
+        <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_paac</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_paac</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_paac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+        <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_apaac</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_apaac</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_apaac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+
+        <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_socn</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_socn</span><span class="p">(</span><span class="n">maxlag</span><span class="p">))</span>
+
+        <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_qso</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_qso</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_qso</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+
+        <span class="c1"># base class</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="n">prof_type</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_arc</span><span class="p">(</span><span class="n">modality</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Descriptor.adaptable"><a class="viewcode-back" href="../../propythia.html#propythia.descriptors.Descriptor.adaptable">[docs]</a>    <span class="k">def</span> <span class="nf">adaptable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_of_functions</span><span class="o">=</span><span class="p">[],</span> <span class="n">ph</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">amide</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tricomp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lamda_paac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_paac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                  <span class="n">lamda_apaac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight_apaac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">aap</span><span class="o">=</span><span class="p">[],</span> <span class="n">maxlag_socn</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">maxlag_qso</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">weight_qso</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                  <span class="n">distancematrix</span><span class="o">=</span><span class="p">{},</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">scalename</span><span class="o">=</span><span class="s1">&#39;Eisenberg&#39;</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="o">=</span><span class="s1">&#39;peparc&#39;</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                  <span class="n">modality</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">prof_type</span><span class="o">=</span><span class="s1">&#39;uH&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to calculate user selected descriptors</span>
+
+<span class="sd">        :param ph: parameters for geral descriptors</span>
+<span class="sd">        :param amide: parameters for geral descriptors</span>
+<span class="sd">        :param tricomp: true or false to calculate or not tri-peptide on get_all</span>
+<span class="sd">        :param lamda_paac: parameters for PAAC: lamdaPAAC=10</span>
+<span class="sd">        :param weight_paac: parameters for PAAC weightPAAC=0.05</span>
+<span class="sd">        :param lamda_apaac: parameters for APAAC lamdaAPAAC=5 it should not be larger than lenght sequence</span>
+<span class="sd">        :param weight_apaac: parameters for APAAC weightAPAAC=0.05</span>
+<span class="sd">        :param aap:</span>
+<span class="sd">        :param maxlag_socn: parameters for SOCN: maxlagSOCN=45</span>
+<span class="sd">        :param maxlag_qso: parameters for QSO maxlagQSO=30</span>
+<span class="sd">        :param weight_qso: parameters for  weightQSO=0.1</span>
+<span class="sd">        :param distancematrix:</span>
+<span class="sd">        :param window: parameters for base class descriptors</span>
+<span class="sd">        :param scalename: parameters for base class descriptors</span>
+<span class="sd">        :param scalename_arc: parameters for base class descriptors</span>
+<span class="sd">        :param angle: parameters for base class descriptors</span>
+<span class="sd">        :param modality: parameters for base class descriptors</span>
+<span class="sd">        :param prof_type: parameters for base class descriptors</span>
+<span class="sd">        :param list_of_functions:</span>
+<span class="sd">        :return: dictionary with all features (value is variable)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">function</span> <span class="ow">in</span> <span class="n">list_of_functions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bin_aa</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bin_resi_prop</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_lenght</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_charge_density</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_formula</span><span class="p">(</span><span class="n">amide</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_bond</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mw</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_gravy</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aromacity</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_isoelectric_point</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_instability_index</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sec_struct</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_molar_extinction_coefficient</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_flexibility</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aliphatic_index</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">17</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_boman_index</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hydrophobic_ratio</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_physicochemical</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_aa_comp</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">21</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dp_comp</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">22</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_tp_comp</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">23</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_aac</span><span class="p">())</span>
+
+            <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_paac</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_paac</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">24</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_paac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">25</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_paac_p</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">aap</span><span class="p">))</span>
+            <span class="n">lamda</span> <span class="o">=</span> <span class="n">lamda_apaac</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_apaac</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">26</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_apaac</span><span class="p">(</span><span class="n">lamda</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_paac</span><span class="p">(</span><span class="n">lamda_paac</span><span class="p">,</span> <span class="n">weight_paac</span><span class="p">,</span> <span class="n">lamda_apaac</span><span class="p">,</span> <span class="n">weight_apaac</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">28</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moreau_broto_auto</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">29</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_moran_auto</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">30</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_geary_auto</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">31</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_correlation</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">32</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_ctd</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">33</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_conj_t</span><span class="p">())</span>
+
+            <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_socn</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">34</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_socn</span><span class="p">(</span><span class="n">maxlag</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">35</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_socn_p</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">distancematrix</span><span class="p">))</span>
+            <span class="n">maxlag</span> <span class="o">=</span> <span class="n">maxlag_qso</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">weight_qso</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">36</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_qso</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">36</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_qso_p</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">distancematrix</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">37</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_sequenceorder</span><span class="p">(</span><span class="n">maxlag_socn</span><span class="p">,</span> <span class="n">maxlag_qso</span><span class="p">,</span> <span class="n">weight_qso</span><span class="p">))</span>
+
+            <span class="c1"># base class</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">38</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_autocorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">39</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_crosscorr</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">40</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_moment</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">41</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_global</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">42</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_profile</span><span class="p">(</span><span class="n">prof_type</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">43</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_arc</span><span class="p">(</span><span class="n">modality</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">44</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_base_class</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">function</span> <span class="o">==</span> <span class="mi">45</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">amide</span><span class="p">,</span> <span class="n">tricomp</span><span class="p">,</span> <span class="n">lamda_paac</span><span class="p">,</span> <span class="n">weight_paac</span><span class="p">,</span> <span class="n">lamda_apaac</span><span class="p">,</span> <span class="n">weight_apaac</span><span class="p">,</span> <span class="n">maxlag_socn</span><span class="p">,</span>
+                             <span class="n">maxlag_qso</span><span class="p">,</span>
+                             <span class="n">weight_qso</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">scalename</span><span class="p">,</span> <span class="n">scalename_arc</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">modality</span><span class="p">,</span> <span class="n">prof_type</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">res</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

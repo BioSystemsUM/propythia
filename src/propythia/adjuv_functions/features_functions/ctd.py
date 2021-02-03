@@ -32,8 +32,8 @@ Date: 2010.11.22
 
 Email: oriental-cds@163.com
 
+Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 
-Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019
 #####################################################################################
 
 """
@@ -78,6 +78,7 @@ _AATPropertyName=('_Hydrophobicity','_NormalizedVDWV','_Polarity','_Charge','_Se
 def stringto_num(protein_sequence, aa_property):
 	"""
 	Tranform the protein sequence into the string form such as 32123223132121123.
+
 	:param protein_sequence:  protein is a pure protein sequence.
 	:param aa_property: AAProperty is a dict form containing classifciation of amino acids such as _Polarizability
 	:return: result is a string such as 123321222132111123222
@@ -95,6 +96,7 @@ def stringto_num(protein_sequence, aa_property):
 def calculate_composition(protein_sequence, aa_property, aap_name):
 	"""
 	A method used for computing composition
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param aa_property: dict form containing classifciation of amino acids such as _Polarizability.
 	:param aap_name: string used for indicating a AAP name.
@@ -112,6 +114,7 @@ def calculate_composition(protein_sequence, aa_property, aap_name):
 def calculate_transition(protein_sequence, aa_property, aap_name):
 	"""
 	A method used for computing transition
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param aa_property: AAProperty is a dict form containing classifciation of amino acids such as _Polarizability
 	:param aap_name: string used for indicating a AAP name
@@ -130,6 +133,7 @@ def calculate_transition(protein_sequence, aa_property, aap_name):
 def calculate_distribution(protein_sequence, aa_property, aap_name):
 	"""
 	A method used for computing distribution
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param aa_property: dict form containing classification of amino acids such as _Polarizability
 	:param aap_name: string used for indicating a AAP name
@@ -171,6 +175,7 @@ def calculate_distribution(protein_sequence, aa_property, aap_name):
 def calculate_composition_hydrophobicity(protein_sequence):
 	"""
 	A method used for calculating composition based on Hydrophobicity of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Composition based on Hydrophobicity.
 	"""
@@ -181,6 +186,7 @@ def calculate_composition_hydrophobicity(protein_sequence):
 def calculate_composition_normalized_vdwv(protein_sequence):
 	"""
 	A method used for calculating composition based on NormalizedVDWV of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Composition based on NormalizedVDWV
 	"""
@@ -191,6 +197,7 @@ def calculate_composition_normalized_vdwv(protein_sequence):
 def calculate_composition_polarity(protein_sequence):
 	"""
 	calculating composition based on Polarity of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Composition based on Polarity
 	"""
@@ -202,6 +209,7 @@ def calculate_composition_polarity(protein_sequence):
 def calculate_composition_charge(protein_sequence):
 	"""
 	alculating composition based on Charge of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Composition based on Charge
 	"""
@@ -212,6 +220,7 @@ def calculate_composition_charge(protein_sequence):
 def calculate_composition_secondary_str(protein_sequence):
 	"""
 	 method used for calculating composition based on SecondaryStr of AADs
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Composition based on SecondaryStr
 	"""
@@ -222,6 +231,7 @@ def calculate_composition_secondary_str(protein_sequence):
 def calculate_composition_solvent_accessibility(protein_sequence):
 	"""
 	A method used for calculating composition based on SolventAccessibility of  AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Composition based on SolventAccessibility
 	"""
@@ -232,6 +242,7 @@ def calculate_composition_solvent_accessibility(protein_sequence):
 def calculate_composition_polarizability(protein_sequence):
 	"""
 	A method used for calculating composition based on Polarizability of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: ict form containing Composition based on Polarizability
 	"""
@@ -245,6 +256,7 @@ def calculate_composition_polarizability(protein_sequence):
 def calculate_transition_hydrophobicity(protein_sequence):
 	"""
 	A method used for calculating Transition based on Hydrophobicity of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Transition based on Hydrophobicity.
 	"""
@@ -255,6 +267,7 @@ def calculate_transition_hydrophobicity(protein_sequence):
 def calculate_transition_normalized_vdwv(protein_sequence):
 	"""
 	A method used for calculating Transition based on NormalizedVDWV of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing Transition based on NormalizedVDWV.
 	"""
@@ -265,6 +278,7 @@ def calculate_transition_normalized_vdwv(protein_sequence):
 def calculate_transition_polarity(protein_sequence):
 	"""
 	A method used for calculating Transition based on Polarity of	AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing Transition based on Polarity.
 	"""
@@ -275,6 +289,7 @@ def calculate_transition_polarity(protein_sequence):
 def calculate_transition_charge(protein_sequence):
 	"""
 	A method used for calculating Transition based on Charge of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing Transition based on Charge.
 	"""
@@ -285,6 +300,7 @@ def calculate_transition_charge(protein_sequence):
 def calculate_transition_secondary_str(protein_sequence):
 	"""
 	A method used for calculating Transition based on SecondaryStr of	AADs
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: result is a dict form containing Transition based on SecondaryStr
 	"""
@@ -295,6 +311,7 @@ def calculate_transition_secondary_str(protein_sequence):
 def calculate_transition_solvent_accessibility(protein_sequence):
 	"""
 	A method used for calculating Transition based on SolventAccessibility of  AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Transition based on SolventAccessibility.
 	"""
@@ -305,6 +322,7 @@ def calculate_transition_solvent_accessibility(protein_sequence):
 def calculate_transition_polarizability(protein_sequence):
 	"""
 	A method used for calculating Transition based on Polarizability of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Transition based on Polarizability.
 	"""
@@ -317,6 +335,7 @@ def calculate_transition_polarizability(protein_sequence):
 def calculate_distribution_hydrophobicity(protein_sequence):
 	"""
 	A method used for calculating Distribution based on Hydrophobicity of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Distribution based on Hydrophobicity.
 	"""
@@ -326,7 +345,8 @@ def calculate_distribution_hydrophobicity(protein_sequence):
 
 def calculate_distribution_normalized_vdwv(protein_sequence):
 	"""
-	A method used for calculating Distribution based on NormalizedVDWV of	AADs
+	A method used for calculating Distribution based on NormalizedVDWV of AADs
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Distribution based on NormalizedVDWV
 	"""
@@ -337,6 +357,7 @@ def calculate_distribution_normalized_vdwv(protein_sequence):
 def calculate_distribution_polarity(protein_sequence):
 	"""
 	A method used for calculating Distribution based on Polarity of AADs
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Distribution based on Polarity
 	"""
@@ -347,6 +368,7 @@ def calculate_distribution_polarity(protein_sequence):
 def calculate_distribution_charge(protein_sequence):
 	"""
 	A method used for calculating Distribution based on Charge of	AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Distribution based on Charge
 	"""
@@ -356,6 +378,7 @@ def calculate_distribution_charge(protein_sequence):
 def calculate_distribution_secondary_str(protein_sequence):
 	"""
 	A method used for calculating Distribution based on SecondaryStr of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Distribution based on SecondaryStr.
 	"""
@@ -365,6 +388,7 @@ def calculate_distribution_secondary_str(protein_sequence):
 def calculate_distribution_solvent_accessibility(protein_sequence):
 	"""
 	A method used for calculating Distribution based on SolventAccessibility of  AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing Distribution based on SolventAccessibility
 	"""
@@ -374,6 +398,7 @@ def calculate_distribution_solvent_accessibility(protein_sequence):
 def calculate_distribution_polarizability(protein_sequence):
 	"""
 	A method used for calculating Distribution based on Polarizability of	AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing Distribution based on Polarizability
 	"""
@@ -386,6 +411,7 @@ def calculate_distribution_polarizability(protein_sequence):
 def calculate_c(protein_sequence):
 	"""
 	Calculate all composition seven different properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: dict form containing all composition
 	"""
@@ -403,6 +429,7 @@ def calculate_c(protein_sequence):
 def calculate_t(protein_sequence):
 	"""
 	Calculate all transition based seven different properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing all transition
 	"""
@@ -420,6 +447,7 @@ def calculate_t(protein_sequence):
 def calculate_d(protein_sequence):
 	"""
 	Calculate all distribution based seven different properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing all distribution
 	"""
@@ -437,6 +465,7 @@ def calculate_d(protein_sequence):
 def calculate_ctd(protein_sequence):
 	"""
 	Calculate all CTD based seven different properties of AADs
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing all C
 	"""

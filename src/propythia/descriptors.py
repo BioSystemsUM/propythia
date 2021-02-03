@@ -7,13 +7,15 @@ It contains descriptors from packages pydpi, biopython, pfeature and modlamp.
 
 Authors: Ana Marta Sequeira
 
-Date: 05/2019
+Date: 05/2019 ALTERED 01/2021
 
 Email:
 
 ##############################################################################
 """
-from propythia.sequence import ReadSequence
+import os
+import sys
+import pandas as pd
 from propythia.adjuv_functions.features_functions.aa_index import get_aa_index1, get_aa_index23
 from propythia.adjuv_functions.features_functions.binary import bin_aa_ct
 from propythia.adjuv_functions.features_functions.binary_aa_properties import bin_pc_wp
@@ -32,17 +34,14 @@ from propythia.adjuv_functions.features_functions.quasi_sequence_order import \
     get_sequence_order_coupling_numberp, get_quasi_sequence_orderp
 from propythia.adjuv_functions.features_functions.conjoint_triad import calculate_conjoint_triad
 from Bio.SeqUtils.ProtParam import ProteinAnalysis
-import os
-import sys
-import pandas as pd
 
 
 class Descriptor:
     """
-	The Descriptor class collects all descriptor calculation functions into a simple class.
-	Some of the descriptors functions are based on code from pydpi (altered to python3), modlamp, pfature and biopython.
-	It returns the features in a dictionary object
-	"""
+    The Descriptor class collects all descriptor calculation functions into a simple class.
+    Some of the descriptors functions are based on code from pydpi (altered to python3), modlamp, pfature and biopython.
+    It returns the features in a dictionary object
+    """
 
     AALetter = ["A", "R", "N", "D", "C", "E", "Q", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V"]
     Version = 1.0
@@ -50,51 +49,61 @@ class Descriptor:
     def __init__(self, protein_sequence):  # the function takes as input the protein sequence
         """	constructor """
         self.ProteinSequence = protein_sequence
+        index = str('')
+        for path in [os.path.split(__file__)[0]]:
+            if os.path.exists(os.path.join(path, index)):
+                break
+        self.nlf = pd.read_csv(path + '/adjuv_functions/features_functions/data/nlf.csv',index_col=0)
+        self.blosum_62 = pd.read_csv(path + '/adjuv_functions/features_functions/data/blosum62.csv')
+        self.blosum_50 = pd.read_csv(path + '/adjuv_functions/features_functions/data/blosum50.csv')
 
     # ################# GET AA INDEX (from specific property) ##################
 
     def get_aa_index1(self, name, path='.'):
         """
-		Get the amino acid property values from aaindex1
-		(function from pydpi)
-		:param name: name is the name of amino acid property (e.g., KRIW790103)
-		:param path: path to get aa index. by default is the one in the package.
-		:return: result is a dict form containing the properties of 20 amino acids
-		"""
+        Get the amino acid property values from aaindex1 (function from pydpi)
+        :param name: name is the name of amino acid property (e.g., KRIW790103)
+        :param path: path to get aa index. by default is the one in the package.
+        :return: result is a dict form containing the properties of 20 amino acids
+        """
 
         return get_aa_index1(name, path=path)
 
     def get_aa_index23(self, name, path='.'):
         """
-		Get the amino acid property values from aaindex2 and aaindex3
-		(function from from pydpi)
-		:param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)
-		:param path: path to get aa index. by default is the one in the package.
-		:return: result is a dict form containing the properties of 400 amino acid pairs
-		"""
+        Get the amino acid property values from aaindex2 and aaindex3
+        (function from from pydpi)
+        :param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)
+        :param path: path to get aa index. by default is the one in the package.
+        :return: result is a dict form containing the properties of 400 amino acid pairs
+        """
         return get_aa_index23(name, path=path)
 
     # ################# BINARY PROFILES DESCRIPTORS  ##################
 
-    def get_bin_aa(self):
+    def get_bin_aa(self, alphabet="ARNDCEQGHILKMFPSTWYV"):
         """
-		 binary profile of aminoacid composition
-		:return: dictionary containing binary profile
-		"""
+        binary profile of aminoacid composition
+        alphabet: alphabet to use. by default 20 aa alphabet  "ARNDCEQGHILKMFPSTWYV",
+        if using an alphabet with X, the X will be eliminated,if using an alphabet with all possible characters,
+        the strange aminoacids will be substituted by similar aa.
+        alphabet_x = "ARNDCEQGHILKMFPSTWYVX"
+        alphabet_all_characters = "ARNDCEQGHILKMFPSTWYVXBZUO"
+        :return: dictionary containing binary profile
+        """
 
         res = {}
-        result = bin_aa_ct(self.ProteinSequence)
-        for i in range(len(self.ProteinSequence)):
-            for residue in range(len(result) - 1):
-                for value in range(20):
-                    name_feature = 'bin_aa' + '_' + str(residue) + '_' + str(value)
-                    res[name_feature] = result[residue].split(",")[value]
+        result = bin_aa_ct(self.ProteinSequence, alphabet)
+        for x in range(result.shape[0]):
+            for y in range(result.shape[1]):
+                name_feature = '{}_{}'.format(x + 1, y + 1)
+                res[name_feature] = result[x][y]
 
         return res
 
     def get_bin_resi_prop(self,
-                          list_descriptors=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                                            21, 22, 23, 24]):
+                          list_descriptors=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                                            21, 22, 23, 24)):
         """
 		Binary profile of residues for 25 phychem feature
 		:param list_descriptors: ist containing feature numbers (valid number, 0-24) (e.g. [5,4,8,24]
@@ -129,6 +138,47 @@ class Descriptor:
 		"""
 
         res = bin_pc_wp(self.ProteinSequence, list_descriptors)
+        return res
+
+    # ################# OTHER PROFILES DESCRIPTORS  ###################
+
+    def get_nlf_encode(self):
+        """
+        Method that takes many physicochemical properties and transforms them using a Fisher Transform (similar to a PCA)
+        creating a smaller set of features that can describe the amino acid just as well.
+        There are 19 transformed features.
+        This method of encoding is detailed by Nanni and Lumini in their paper:
+        L. Nanni and A. Lumini, “A new encoding technique for peptide classification,”
+        Expert Syst. Appl., vol. 38, no. 4, pp. 3185–3191, 2011
+        This function just receives 20aa letters
+        :return dict form with nlf encoding
+        """
+
+        seq = self.ProteinSequence
+        nlf_enc = pd.DataFrame([self.nlf[i] for i in seq]).reset_index(drop=True)
+        # result = nlf_enc.values.flatten().tolist()
+        res = nlf_enc.to_dict()
+        return res
+
+    def get_blosum(self, blosum='blosum62'):
+        """
+        BLOSUM62 is a substitution matrix that specifies the similarity of one amino acid to another by means of a score.
+        This score reflects the frequency of substitutions found from studying protein sequence conservation
+        in large databases of related proteins.
+        The number 62 refers to the percentage identity at which sequences are clustered in the analysis.
+        I is possible to get blosum50 to get 50 % identity.
+        Encoding a peptide this way means we provide the column from the blosum matrix corresponding to the amino acid
+        at each position of the sequence. This produces 24*seqlen matrix.
+        :param blosum: blosum matrix to use either 'blosum62' or 'blosum50'. by default 'blosum62'
+        :return: dict form with blosum encoding
+        """
+        seq = self.ProteinSequence
+        if blosum == 'blosum50':
+            blosum = pd.DataFrame([self.blosum_50[i] for i in seq]).reset_index(drop=True)
+        else:
+            blosum = pd.DataFrame([self.blosum_62[i] for i in seq]).reset_index(drop=True)
+        # e = blosum.values.flatten().tolist()
+        res = blosum.to_dict()
         return res
 
     # ################# PHYSICO CHEMICAL DESCRIPTORS  ##################
@@ -818,12 +868,13 @@ class Descriptor:
         res.update(self.calculate_arc(modality, scalename_arc))
         return res
 
-    def adaptable(self, list_of_functions=[], ph=7, amide=False, tricomp=False, lamda_paac=10, weight_paac=0.05,
-                  lamda_apaac=10, weight_apaac=0.05, aap=[], maxlag_socn=45, maxlag_qso=30, weight_qso=0.1,
+    def adaptable(self, list_of_functions=(), ph=7, amide=False, tricomp=False, lamda_paac=10, weight_paac=0.05,
+                  lamda_apaac=10, weight_apaac=0.05, aap=(), maxlag_socn=45, maxlag_qso=30, weight_qso=0.1,
                   distancematrix={}, window=7, scalename='Eisenberg', scalename_arc='peparc', angle=100,
-                  modality='max', prof_type='uH'):
+                  modality='max', prof_type='uH', blosum='blosum62'):
         """
 		Function to calculate user selected descriptors
+		:param list_of_functions: list of functions desired to calculate descriptors. Numeration in the descriptors guide.
 		:param ph:parameters for geral descriptors
 		:param amide:parameters for geral descriptors
 		:param tricomp: true or false to calculate or not tri-peptide on get_all
@@ -843,7 +894,7 @@ class Descriptor:
 		:param modality:parameters for base class descriptors
 		:param prof_type:parameters for base class descriptors
 		:return:dictionary with all features (value is variable)
-		:param list_of_functions:
+		:param blosum: blosum matrix to use. default blosum62
 		"""
         res = {}
         for function in list_of_functions:
@@ -909,7 +960,10 @@ class Descriptor:
             if function == 43: res.update(self.calculate_arc(modality, scalename_arc))
             if function == 44: res.update(self.get_all_base_class(window, scalename, scalename_arc))
 
-            if function == 45: res.update(
+            if function == 45: res.update(self.get_nlf_encode())
+            if function == 46: res.update(self.get_blosum(blosum))
+
+            if function == 47: res.update(
                 self.get_all(ph, amide, tricomp, lamda_paac, weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
                              maxlag_qso,
                              weight_qso, window, scalename, scalename_arc, angle, modality, prof_type))
