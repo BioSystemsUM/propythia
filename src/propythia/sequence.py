@@ -48,15 +48,14 @@ class ReadSequence:
         :return: String with aa sequence
         """
 
-        protein_sequence=str.strip(protein_sequence)
-        index=protein_check(protein_sequence)
+        self.protein_sequence=str.strip(protein_sequence)
+        # index=protein_check(protein_sequence)
 
-        if index==0:
-            print("Error......")
-            print("Please input a correct protein.")
-        else:
-            self.protein_sequence=protein_sequence
-            return self.protein_sequence
+        # if index==0:
+        #     print("Error......")
+        #     print("Please input a correct protein.")
+        # else:
+        return self.protein_sequence
 
     def get_protein_sequence_from_txt(self, path, openfile, savefile):
         """
@@ -107,7 +106,7 @@ class ReadSequence:
 ##########################################
     # Get equal size sequences
 
-    def get_sized_seq(self, sequences=[], n_terminal=10, c_terminal=10, terminal=0):
+    def get_sized_seq(self, sequences=[], n_terminal=10, c_terminal=10, terminal=0, dummie = 'X'):
         """
         cut or add aminoacids to obtain sequences with equal lenght.
         :param sequences: list containing protein sequences (string) or just a protein sequence
@@ -120,12 +119,12 @@ class ReadSequence:
         :return: list of sequences containing all the same lenght. if just one sequence given it will return a string
         """
         if len(sequences)==1:
-            seq=seq_equal_lenght(sequences[0],n_terminal,c_terminal,terminal)
+            seq=seq_equal_lenght(sequences[0],n_terminal,c_terminal,terminal, dummie=dummie)
             return seq
         else:
             equal_size_sequences=[] #list to store sequences with equal lenght
             for seq in sequences:
-                seq_2=seq_equal_lenght(seq,n_terminal,c_terminal,terminal)
+                seq_2=seq_equal_lenght(seq,n_terminal,c_terminal,terminal, dummie=dummie)
                 equal_size_sequences.append(seq_2)
             return equal_size_sequences
 

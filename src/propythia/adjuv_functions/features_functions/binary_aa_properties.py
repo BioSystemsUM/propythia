@@ -6,33 +6,33 @@ This function gives binary profile of residues for all the  sequences for 25 phy
 
 It receives a sequence and a list containing feature numbers (valid number, 0-24)
 
-    FEATURE NAME                    FEATURE NUMBER
+    \n FEATURE NAME                    FEATURE NUMBER
 
-    'Positively charged' --                  0
-    'Negatively charged' --                  1
-    'Neutral charged' --                     2
-    'Polarity' --                            3
-    'Non polarity' --                        4
-    'Aliphaticity' --                        5
-    'Cyclic' --                              6
-    'Aromaticity' --                         7
-    'Acidicity'--                            8
-    'Basicity'--                             9
-    'Neutral (ph)' --                       10
-    'Hydrophobicity' --                     11
-    'Hydrophilicity' --                     12
-    'Neutral' --                            13
-    'Hydroxylic' --                         14
-    'Sulphur content' -                     15
-    'Secondary Structure(Helix)'            16
-    'Secondary Structure(Strands)',         17
-    'Secondary Structure(Coil)',            18
-    'Solvent Accessibilty (Buried)',        19
-    'Solvent Accesibilty(Exposed)',         20
-    'Solvent Accesibilty(Intermediate)',    21
-    'Tiny',                                 22
-    'Small',                                23
-    'Large'                                 24
+    \n 'Positively charged' --                  0
+    \n 'Negatively charged' --                  1
+    \n 'Neutral charged' --                     2
+    \n 'Polarity' --                            3
+    \n 'Non polarity' --                        4
+    \n 'Aliphaticity' --                        5
+    \n 'Cyclic' --                              6
+    \n 'Aromaticity' --                         7
+    \n 'Acidicity'--                            8
+    \n 'Basicity'--                             9
+    \n 'Neutral (ph)' --                       10
+    \n 'Hydrophobicity' --                     11
+    \n 'Hydrophilicity' --                     12
+    \n 'Neutral' --                            13
+    \n 'Hydroxylic' --                         14
+    \n 'Sulphur content' -                     15
+    \n 'Secondary Structure(Helix)'            16
+    \n 'Secondary Structure(Strands)',         17
+    \n 'Secondary Structure(Coil)',            18
+    \n 'Solvent Accessibilty (Buried)',        19
+    \n 'Solvent Accesibilty(Exposed)',         20
+    \n 'Solvent Accesibilty(Intermediate)',    21
+    \n 'Tiny',                                 22
+    \n 'Small',                                23
+    \n 'Large'                                 24
 
 The code is based on the package Pfeature:
 Pande, Akshara & Patiyal, Sumeet & Lathwal, Anjali & Arora, Chakit & Kaur, Dilraj & Dhall, Anjali & Mishra, Gaurav & Kaur,
@@ -62,6 +62,7 @@ def init(path=None, index=''):
     Read in files. You need to run this (once) before you can
     access any records. If the files are not within the current directory,
     you need to specify the correct directory path.
+
     :param path:
     :param index:
     :return:
@@ -116,6 +117,7 @@ headers = ['Positively charged',
 def encode(peptide):
     """
     encode AA in sequence
+
     :param peptide: protein sequence
     :return: protein sequence with encoded AA
     """
@@ -170,6 +172,7 @@ def encode(peptide):
 
 def lookup(peptide, feature_num):
     """
+
     :param peptide: protein sequence
     :param feature_num: number of the feature to be calculated
     :return: value of property for each AA in sequence
@@ -188,6 +191,7 @@ def lookup(peptide, feature_num):
 def binary_profile_all(seq, feature_numb):
     """
     binary profile of physicalchemical characterisitics choosed of a sequence
+
     :param seq: protein sequence
     :param feature_numb: number of the feature to be calculated
     :return: value of property for each AA in sequence
@@ -207,6 +211,7 @@ def binary_profile_all(seq, feature_numb):
 def bin_pc_wp(sequence, feature_numb):
     """
     Binary profile of a sequence based on physicalchemical characterisitics choosed
+
     :param sequence: protein sequence
     :param feature_numb: list with numbers of the features to be calculated
     :return: dictionary with binary profile of a sequence for a list of desired features

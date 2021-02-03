@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.adjuv_functions.features_functions.aa_index &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../guides.html">Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.adjuv_functions.features_functions.aa_index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.adjuv_functions.features_functions.aa_index</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> This module is used for obtaining the properties of amino acids or their pairs</span>
+
+<span class="sd">from the aaindex database. You can freely use and distribute it. If you hava</span>
+
+<span class="sd">any problem, you could contact with us timely!</span>
+
+<span class="sd">Authors: Dongsheng Cao and Yizeng Liang.</span>
+
+<span class="sd">Date: 2012.09.10</span>
+
+<span class="sd">Email: oriental-cds@163.com</span>
+<span class="sd">Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">string</span>
+
+<span class="n">AALetter</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">,</span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">,</span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;T&quot;</span><span class="p">,</span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+<span class="n">_aaindex</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="Record"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.Record">[docs]</a><span class="k">class</span> <span class="nc">Record</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Amino acid index (AAindex) Record</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">aakeys</span> <span class="o">=</span> <span class="s1">&#39;ARNDCQEGHILKMFPSTWYV&#39;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ref</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">journal</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">correlated</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Record.extend"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.Record.extend">[docs]</a>	<span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">aakeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">x</span>
+			<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Record.get"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.Record.get">[docs]</a>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">,</span> <span class="n">aaj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="k">assert</span> <span class="n">aaj</span> <span class="ow">is</span> <span class="kc">None</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aai</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aai</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Record.median"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.Record.median">[docs]</a>	<span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">_f</span><span class="p">])</span>
+		<span class="n">half</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="p">]</span>
+		<span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">half</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span></div>
+
+	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">desc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">desc</span><span class="p">)</span></div>
+		
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="MatrixRecord"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.MatrixRecord">[docs]</a><span class="k">class</span> <span class="nc">MatrixRecord</span><span class="p">(</span><span class="n">Record</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Matrix record for mutation matrices or pair-wise contact potentials</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">Record</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MatrixRecord.extend"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.MatrixRecord.extend">[docs]</a>	<span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+	<span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">,</span> <span class="n">aaj</span><span class="p">):</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">aai</span><span class="p">]</span>
+		<span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">[</span><span class="n">aaj</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MatrixRecord.get"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.MatrixRecord.get">[docs]</a>	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">,</span> <span class="n">aaj</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">aai</span><span class="p">,</span> <span class="n">aaj</span><span class="p">)</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">pass</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="p">(</span><span class="n">aaj</span><span class="p">,</span> <span class="n">aai</span><span class="p">)</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">d</span></div>
+
+	<span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aaij</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">aaij</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aaij</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="MatrixRecord.median"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.MatrixRecord.median">[docs]</a>	<span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+			<span class="n">x</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">_f</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">y</span> <span class="k">if</span> <span class="n">_f</span><span class="p">])</span>
+		<span class="n">x</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+		<span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span></div></div>
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="search"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.search">[docs]</a><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">searchtitle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">casesensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Search for pattern in description and title (optional) of all records and</span>
+<span class="sd">	return matched records as list. By default search case insensitive.</span>
+
+<span class="sd">	:param pattern:</span>
+<span class="sd">	:param searchtitle:</span>
+<span class="sd">	:param casesensitive:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">whatcase</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">casesensitive</span><span class="p">:</span>
+		<span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+		<span class="n">whatcase</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+	<span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">_aaindex</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+		<span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">whatcase</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span> <span class="ow">or</span> <span class="n">searchtitle</span> <span class="ow">and</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">whatcase</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">title</span><span class="p">):</span>
+			<span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">matches</span></div>
+
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="grep"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.grep">[docs]</a><span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Search for pattern in title and description of all records (case insensitive) and print results on standard output.</span>
+
+<span class="sd">	:param pattern:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get record for key</span>
+
+<span class="sd">	:param key:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_aaindex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">init</span><span class="p">()</span>
+	<span class="k">return</span> <span class="n">_aaindex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+<span class="c1">#####################################################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">_float_or_none</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+	<span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;NA&#39;</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">None</span>
+	<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="init"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.init">[docs]</a><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;123&#39;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Read in the aaindex files. You need to run this (once) before you can</span>
+<span class="sd">	access any records. If the files are not within the current directory,</span>
+<span class="sd">	you need to specify the correct directory path. By default all three</span>
+<span class="sd">	aaindex files are read in.</span>
+
+<span class="sd">	:param path:</span>
+<span class="sd">	:param index:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">index</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">]:</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;aaindex&#39;</span> <span class="o">+</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+				<span class="k">break</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;path =&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;1&#39;</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+		<span class="n">_parse</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/aaindex1&#39;</span><span class="p">,</span> <span class="n">Record</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;2&#39;</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+		<span class="n">_parse</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/aaindex2&#39;</span><span class="p">,</span> <span class="n">MatrixRecord</span><span class="p">)</span>
+	<span class="k">if</span> <span class="s1">&#39;3&#39;</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+		<span class="n">_parse</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/aaindex3&#39;</span><span class="p">,</span> <span class="n">MatrixRecord</span><span class="p">)</span></div>
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="init_from_file"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.init_from_file">[docs]</a><span class="k">def</span> <span class="nf">init_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Record</span><span class="p">):</span>
+	<span class="n">_parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span></div>
+<span class="c1">#####################################################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Parse aaindex input file. `rec` must be `Record` for aaindex1 and `MarixRecord` for aaindex2 and aaindex3.</span>
+
+<span class="sd">	:param filename:</span>
+<span class="sd">	:param rec:</span>
+<span class="sd">	:param quiet:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+		<span class="kn">import</span> <span class="nn">urllib.request</span><span class="o">,</span> <span class="nn">urllib.parse</span><span class="o">,</span> <span class="nn">urllib.error</span>
+		<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;ftp://ftp.genome.jp/pub/db/community/aaindex/&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">#		print &#39;Downloading &quot;%s&quot;&#39; % (url)</span>
+		<span class="n">filename</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#		print &#39;Saved to &quot;%s&quot;&#39; % (filename)</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+	<span class="n">current</span> <span class="o">=</span> <span class="n">rec</span><span class="p">()</span>
+	<span class="n">lastkey</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+			<span class="n">key</span> <span class="o">=</span> <span class="n">lastkey</span>
+		<span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;//&#39;</span><span class="p">:</span>
+			<span class="n">_aaindex</span><span class="p">[</span><span class="n">current</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">current</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="n">rec</span><span class="p">()</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;H &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;R &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">ref</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;D &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">desc</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;A &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">authors</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;T &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">title</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;J &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">journal</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;* &#39;</span><span class="p">:</span>
+			<span class="n">current</span><span class="o">.</span><span class="n">comment</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;C &#39;</span><span class="p">:</span>
+			<span class="n">a</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+				<span class="n">current</span><span class="o">.</span><span class="n">correlated</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;I &#39;</span><span class="p">:</span>
+			<span class="n">a</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;A/L&#39;</span><span class="p">:</span>
+				<span class="n">current</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_float_or_none</span><span class="p">,</span> <span class="n">a</span><span class="p">)))</span>
+			<span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">aakeys</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: wrong amino acid sequence for&#39;</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">aakeys</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
+					<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">Record</span><span class="o">.</span><span class="n">aakeys</span><span class="p">[</span><span class="mi">10</span><span class="p">:])</span> <span class="o">==</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">]</span>
+				<span class="k">except</span><span class="p">:</span>
+					<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: wrong amino acid sequence for&#39;</span><span class="p">,</span> <span class="n">current</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="n">key</span> <span class="o">==</span><span class="s1">&#39;M &#39;</span><span class="p">:</span>
+			<span class="n">a</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span>
+					<span class="n">a</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+				<span class="k">assert</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;cols&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
+				<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+					<span class="n">current</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+					<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
+					<span class="n">current</span><span class="o">.</span><span class="n">cols</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+					<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">current</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_float_or_none</span><span class="p">,</span> <span class="n">a</span><span class="p">)))</span>
+		<span class="k">elif</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: line starts with &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">))</span>
+		<span class="n">lastkey</span> <span class="o">=</span> <span class="n">key</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="get_aa_index1"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get_aa_index1">[docs]</a><span class="k">def</span> <span class="nf">get_aa_index1</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get the amino acid property values from aaindex1</span>
+
+<span class="sd">	:param name: name is the name of amino acid property (e.g., KRIW790103)</span>
+<span class="sd">	:param path:</span>
+<span class="sd">	:return: get_aa_index1(name). result is a dict form containing the properties of 20 amino acids</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+	<span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+	<span class="n">temp</span><span class="o">=</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+	<span class="n">res</span><span class="o">=</span><span class="p">{}</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+		<span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">res</span></div>
+
+<span class="c1">#####################################################################################################</span>
+
+
+<div class="viewcode-block" id="get_aa_index23"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.features_functions.html#propythia.adjuv_functions.features_functions.aa_index.get_aa_index23">[docs]</a><span class="k">def</span> <span class="nf">get_aa_index23</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get the amino acid property values from aaindex2 and aaindex3</span>
+
+<span class="sd">	:param name: name is the name of amino acid property (e.g.,TANS760101,GRAR740104)</span>
+<span class="sd">	:param path:</span>
+<span class="sd">	:return: get_aa_index23(name). result is a dict form containing the properties of 400 amino acid pairs</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">init</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+	<span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+	<span class="n">temp</span><span class="o">=</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+	<span class="n">res</span><span class="o">=</span><span class="p">{}</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">AALetter</span><span class="p">:</span>
+			<span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">temp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">res</span></div>
+<span class="c1">#####################################################################################################</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+	<span class="c1">#	init(path=&#39;.&#39;)</span>
+	<span class="c1">#	grep(&#39;volume&#39;)</span>
+	<span class="c1">#	x = get(&#39;KRIW790103&#39;)</span>
+	<span class="c1">#	print x</span>
+	<span class="c1">#	print x.get(&#39;W&#39;)</span>
+	<span class="n">temp1</span><span class="o">=</span><span class="n">get_aa_index1</span><span class="p">(</span><span class="s1">&#39;KRIW790103&#39;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">temp1</span><span class="p">))</span>
+	
+	<span class="n">temp2</span><span class="o">=</span><span class="n">get_aa_index23</span><span class="p">(</span><span class="s1">&#39;TANS760101&#39;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">temp2</span><span class="p">))</span>
+	<span class="n">temp2</span><span class="o">=</span><span class="n">get_aa_index23</span><span class="p">(</span><span class="s1">&#39;GRAR740104&#39;</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">temp2</span><span class="p">))</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

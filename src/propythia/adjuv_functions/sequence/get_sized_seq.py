@@ -36,7 +36,7 @@ AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W
 #############################################################################################
 
 
-def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0):
+def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0, dummie='X'):
     """
     cut or add aminoacids to obtain sequences with equal lenght.
     :param seq: protein sequence
@@ -46,6 +46,7 @@ def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0):
                     0 to add to the right (consider N terminal)
                     -1 to add to the left (consider C terminal)
                     2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle
+    :param dummie: dummie variable to add. X by default
     :return: list of sequences cntaining all the same lenght
     """
 
@@ -63,19 +64,19 @@ def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0):
         #if one of the terminals is 0 the user already set in each direction to add
 
         if c_terminal==0:
-            seq=seq[:lenght] + str('Z'*(lenght-size))
+            seq=seq[:lenght] + str(dummie*(lenght-size))
 
         elif n_terminal==0:
-            seq= str('Z'*(lenght-size)) +seq[-lenght:]
+            seq= str(dummie*(lenght-size)) +seq[-lenght:]
 
         else: #if both terminals are filled, the variable terminal decide in which direction to cut/add
 
             if terminal==0: #add dummy to the right
-                seq=seq[:lenght] + str('Z'*(lenght-size))
+                seq=seq[:lenght] + str(dummie*(lenght-size))
 
 
             elif terminal==-1: #add dummy to the left
-                seq= str('Z'*(lenght-size)) +seq[-lenght:]
+                seq= str(dummie*(lenght-size)) +seq[-lenght:]
 
 
             else:#duplicate aa in the middle retaining the terminals. If necessary add dummy in the middle
@@ -83,13 +84,13 @@ def seq_equal_lenght(seq,n_terminal=10, c_terminal=10, terminal=0):
                     seq=seq[:n_terminal]+seq[-c_terminal:]
 
                 elif n_terminal<size and c_terminal>size:
-                    seq=seq[:n_terminal]+str('Z'*(c_terminal-size))+seq[-c_terminal:]
+                    seq=seq[:n_terminal]+str(dummie*(c_terminal-size))+seq[-c_terminal:]
 
                 elif n_terminal>size and c_terminal<size:
-                    seq=seq[:n_terminal]+str('Z'*(n_terminal-size))+seq[-c_terminal:]
+                    seq=seq[:n_terminal]+str(dummie*(n_terminal-size))+seq[-c_terminal:]
 
                 else:
-                    seq=seq[:n_terminal]+str('Z'*(n_terminal-size))+str('Z'*(c_terminal-size))+seq[-c_terminal:]
+                    seq=seq[:n_terminal]+str(dummie*(n_terminal-size))+str(dummie*(c_terminal-size))+seq[-c_terminal:]
 
     return seq
 

@@ -39,7 +39,8 @@ Date: 2012.09.03
 
 Email: oriental-cds@163.com
 
-Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019
+Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
+
 ##############################################################################################
 """
 
@@ -59,6 +60,7 @@ _Distance2={"GW":0.923, "GV":0.464, "GT":0.272, "GS":0.158, "GR":1.0, "GQ":0.467
 def get_sequence_order_coupling_number(protein_sequence, d=1, distancematrix=_Distance1):
 	"""
 	Computing the dth-rank sequence order coupling number for a protein.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param d: d is the gap between two amino acids
 	:param distancematrix:
@@ -77,6 +79,7 @@ def get_sequence_order_coupling_numberp(protein_sequence, maxlag=30, distancemat
 	"""
 	Computing the sequence order coupling numbers from 1 to maxlag
 	for a given protein sequence based on the user-defined property.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
 	:param distancematrix: distancematrix is the a dict form containing 400 distance values
@@ -94,13 +97,11 @@ def get_sequence_order_coupling_number_sw(protein_sequence, maxlag=30, distancem
 	Computing the sequence order coupling numbers from 1 to maxlag
 	for a given protein sequence based on the Schneider-Wrede physicochemical
 	distance matrix
+
 	:param protein_sequence: protein is a pure protein sequence
-	:param maxlag: 	maxlag is the maximum lag and the length of the protein should be larger
-	than maxlag. default is 30.
-	:param distancematrix: dict form containing Schneider-Wrede physicochemical
-	distance matrix. omitted!
-	:return: dict form containing all sequence order coupling numbers based
-	on the Schneider-Wrede physicochemical distance matrix
+	:param maxlag: 	maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
+	:param distancematrix: dict form containing Schneider-Wrede physicochemical	distance matrix. omitted!
+	:return: dict form containing all sequence order coupling numbers based on the Schneider-Wrede physicochemical distance matrix
 	"""
 
 	num_protein=len(protein_sequence)
@@ -112,12 +113,11 @@ def get_sequence_order_coupling_number_sw(protein_sequence, maxlag=30, distancem
 
 def get_sequence_order_coupling_number_grant(protein_sequence, maxlag=30, distancematrix=_Distance2):
 	"""
-	Computing the sequence order coupling numbers from 1 to maxlag
-	for a given protein sequence based on the Grantham chemical distance
-	matrix.
-	:param protein_sequence:protein is a pure protein sequence
-	:param maxlag: 	maxlag is the maximum lag and the length of the protein should be larger
-	than maxlag. default is 30.
+	Computing the sequence order coupling numbers from 1 to maxlag for a given protein sequence based on the
+	Grantham chemical distance	matrix.
+
+	:param protein_sequence: protein is a pure protein sequence
+	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
 	:param distancematrix: distancematrix is a dict form containing Grantham chemical distance	matrix. omitted!
 	:return: dict form containing all sequence order coupling number	based on the Grantham chemical distance matrix
 	"""
@@ -130,11 +130,10 @@ def get_sequence_order_coupling_number_grant(protein_sequence, maxlag=30, distan
 
 def get_sequence_order_coupling_number_total(protein_sequence, maxlag=30):
 	"""
-	Computing the sequence order coupling numbers from 1 to maxlag
-	for a given protein sequence.
+	Computing the sequence order coupling numbers from 1 to maxlag for a given protein sequence.
+
 	:param protein_sequence: rotein is a pure protein sequence
-	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger
-	than maxlag. default is 30.
+	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
 	:return: dict form containing all sequence order coupling numbers
 	"""
 	tau={}
@@ -146,6 +145,7 @@ def get_sequence_order_coupling_number_total(protein_sequence, maxlag=30):
 def get_aa_composition(protein_sequence):
 	"""
 	Calculate the composition of Amino acids for a given protein sequence.
+
 	:param protein_sequence: protein is a pure protein sequence
 	:return: dict form containing the composition of 20 amino acids.
 	"""
@@ -160,6 +160,7 @@ def get_quasi_sequence_order1(protein_sequence, maxlag=30, weight=0.1, distancem
 	"""
 	Computing the first 20 quasi-sequence-order for a given protein sequence.
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -182,6 +183,7 @@ def get_quasi_sequence_order2(protein_sequence, maxlag=30, weight=0.1, distancem
 	"""
 	Computing the last maxlag quasi-sequence-order for a given protein sequence.
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -204,6 +206,7 @@ def get_quasi_sequence_order1_sw(protein_sequence, maxlag=30, weight=0.1, distan
 	"""
 	Computing the first 20 quasi-sequence-order for a given protein sequence.
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -224,8 +227,9 @@ def get_quasi_sequence_order1_sw(protein_sequence, maxlag=30, weight=0.1, distan
 
 def get_quasi_sequence_order2_sw(protein_sequence, maxlag=30, weight=0.1, distancematrix=_Distance1):
 	"""
-	Computing the last maxlag quasi-sequence-order for a given protein sequence
+	Computing the last maxlag quasi-sequence-order for a given protein sequence .
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -248,6 +252,7 @@ def get_quasi_sequence_order1_grant(protein_sequence, maxlag=30, weight=0.1, dis
 	"""
 	Computing the first 20 quasi-sequence-order for a given protein sequence.
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -271,6 +276,7 @@ def get_quasi_sequence_order2_grant(protein_sequence, maxlag=30, weight=0.1, dis
 	"""
 	Computing the last maxlag quasi-sequence-order for a given protein sequence.
 	see method get_quasi_sequence_order for the choice of parameters.
+
 	:param protein_sequence:
 	:param maxlag:
 	:param weight:
@@ -296,9 +302,9 @@ def get_quasi_sequence_order(protein_sequence, maxlag=30, weight=0.1):
 	[1]:Kuo-Chen Chou. Prediction of Protein Subcellar Locations by
 	Incorporating Quasi-Sequence-Order Effect. Biochemical and Biophysical
 	Research Communications 2000, 278, 477-483.
+
 	:param protein_sequence: protein is a pure protein sequence
-	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger
-	than maxlag. default is 30.
+	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
 	:param weight: weight is a weight factor.  please see reference 1 for its choice. default is 0.1.
 	:return: dict form containing all quasi-sequence-order
 	"""
@@ -316,9 +322,9 @@ def get_quasi_sequence_orderp(protein_sequence, maxlag=30, weight=0.1, distancem
 	[1]:Kuo-Chen Chou. Prediction of Protein Subcellar Locations by
 	Incorporating Quasi-Sequence-Order Effect. Biochemical and Biophysical
 	Research Communications 2000, 278, 477-483.
+
 	:param protein_sequence: protein is a pure protein sequence
-	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger
-	than maxlag. default is 30.
+	:param maxlag: maxlag is the maximum lag and the length of the protein should be larger than maxlag. default is 30.
 	:param weight: weight is a weight factor.  please see reference 1 for its choice. default is 0.1.
 	:param distancematrix: distancematrix is a dict form containing 400 distance values
 	:return: dict form containing all quasi-sequence-order

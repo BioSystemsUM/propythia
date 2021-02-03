@@ -1,0 +1,118 @@
+adjuv\_functions.features\_functions package
+============================================
+
+Submodules
+----------
+
+adjuv\_functions.features\_functions.aa\_composition module
+-----------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.aa_composition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.aa\_index module
+-----------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.aa_index
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.autocorrelation module
+-----------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.autocorrelation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.binary module
+--------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.binary
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.binary\_aa\_properties module
+------------------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.binary_aa_properties
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.bondcomp module
+----------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.bondcomp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.conjoint\_triad module
+-----------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.conjoint_triad
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.ctd module
+-----------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.ctd
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.descriptors\_modlamp module
+----------------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.descriptors_modlamp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.modlamp\_core module
+---------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.modlamp_core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.pcp module
+-----------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.pcp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.pseudo\_aac module
+-------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.pseudo_aac
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+adjuv\_functions.features\_functions.quasi\_sequence\_order module
+------------------------------------------------------------------
+
+.. automodule::adjuv_functions.features_functions.quasi_sequence_order
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule::adjuv_functions.features_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
