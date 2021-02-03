@@ -36,7 +36,7 @@ Date: 2010.11.22
 
 Email: oriental-cds@163.com
 
-Altered to python 3.6 for Ana Marta Sequeira 05/2019
+Altered to python 3.6 by Ana Marta Sequeira 05/2019
 """
 
 import math,string
@@ -96,6 +96,7 @@ def _std(listvalue, ddof=1):
 def normalize_each_aap(aap):
 	"""
 	All of the amino acid indices are centralized and standardized before the calculation.
+
 	:param aap: AAP is a dict form containing the properties of 20 amino acids
 	:return: result is the a dict form containing the normalized properties of 20 amino acids.
 	"""
@@ -114,6 +115,7 @@ def normalize_each_aap(aap):
 def calculate_each_normalized_moreau_broto_auto(protein_sequence, aap, aap_name):
 	"""
 	you can use the function to compute MoreauBrotoAuto for different properties based on AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).
 	:param aap_name: AAPName is a string used for indicating the property (e.g., '_AvFlexibility')
@@ -137,6 +139,7 @@ def calculate_each_normalized_moreau_broto_auto(protein_sequence, aap, aap_name)
 def calculate_each_moran_auto(protein_sequence, aap, aap_name):
 	"""
 	you can use the function to compute MoranAuto for different properties based on AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).
 	:param aap_name: AAPName is a string used for indicating the property (e.g., '_AvFlexibility').
@@ -173,6 +176,7 @@ def calculate_each_moran_auto(protein_sequence, aap, aap_name):
 def calculate_each_geary_auto(protein_sequence, aap, aap_name):
 	"""
 	you can use the function to compute GearyAuto for different properties based on AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:param aap: AAP is a dict form containing the properties of 20 amino acids (e.g., _AvFlexibility).
 	:param aap_name: AAPName is a string used for indicating the property (e.g., '_AvFlexibility').
@@ -218,6 +222,7 @@ def calculate_normalized_moreau_broto_auto(protein_sequence, aa_property, aa_pro
 def calculate_moran_auto(protein_sequence, aa_property, aa_property_name):
 	"""
 	A method used for computing MoranAuto for all properties
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:param aa_property: AAProperty is a list or tuple form containing the properties of 20 amino acids (e.g., _AAProperty).
 	:param aa_property_name: AAPName is a list or tuple form used for indicating the property (e.g., '_AAPropertyName').
@@ -234,6 +239,7 @@ def calculate_moran_auto(protein_sequence, aa_property, aa_property_name):
 def calculate_geary_auto(protein_sequence, aa_property, aa_property_name):
 	"""
 	A method used for computing GearyAuto for all properties
+
 	:param protein_sequence: protein is a pure protein sequence
 	:param aa_property: AAProperty is a list or tuple form containing the properties of 20 amino acids (e.g., _AAProperty).
 	:param aa_property_name: AAPName is a list or tuple form used for indicating the property (e.g., '_AAPropertyName').
@@ -252,6 +258,7 @@ def calculate_geary_auto(protein_sequence, aa_property, aa_property_name):
 def calculate_normalized_moreau_broto_auto_hydrophobicity(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on hydrophobicity.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Hydrophobicity.
 	"""
@@ -263,6 +270,7 @@ def calculate_normalized_moreau_broto_auto_hydrophobicity(protein_sequence):
 def calculate_normalized_moreau_broto_auto_av_flexibility(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on AvFlexibility.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on AvFlexibility.
 	"""
@@ -273,6 +281,7 @@ def calculate_normalized_moreau_broto_auto_av_flexibility(protein_sequence):
 def calculate_normalized_moreau_broto_auto_polarizability(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on Polarizability.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Polarizability.
 	"""
@@ -284,6 +293,7 @@ def calculate_normalized_moreau_broto_auto_polarizability(protein_sequence):
 def calculate_normalized_moreau_broto_auto_free_energy(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation  based on FreeEnergy.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on FreeEnergy.
 	"""
@@ -295,6 +305,7 @@ def calculate_normalized_moreau_broto_auto_free_energy(protein_sequence):
 def calculate_normalized_moreau_broto_auto_residue_asa(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on ResidueASA.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on ResidueASA.
 	"""
@@ -305,6 +316,7 @@ def calculate_normalized_moreau_broto_auto_residue_asa(protein_sequence):
 def calculate_normalized_moreau_broto_auto_residue_vol(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on ResidueVol.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return:  result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on ResidueVol.
 	"""
@@ -315,6 +327,7 @@ def calculate_normalized_moreau_broto_auto_residue_vol(protein_sequence):
 def calculate_normalized_moreau_broto_auto_steric(protein_sequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation  based on Steric.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Steric.
 	"""
@@ -325,6 +338,7 @@ def calculate_normalized_moreau_broto_auto_steric(protein_sequence):
 def CalculateNormalizedMoreauBrotoAutoMutability(ProteinSequence):
 	"""
 	Calculate the NormalizedMoreauBorto Autocorrelation based on Mutability.
+
 	:param ProteinSequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Normalized Moreau-Broto Autocorrelation based on Mutability.
 	"""
@@ -337,6 +351,7 @@ def CalculateNormalizedMoreauBrotoAutoMutability(ProteinSequence):
 def calculate_moran_auto_hydrophobicity(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation  based on hydrophobicity.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on hydrophobicity.
 	"""
@@ -347,6 +362,7 @@ def calculate_moran_auto_hydrophobicity(protein_sequence):
 def calculate_moran_auto_av_flexibility(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on	AvFlexibility.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on AvFlexibility.
 	"""
@@ -357,6 +373,7 @@ def calculate_moran_auto_av_flexibility(protein_sequence):
 def calculate_moran_auto_polarizability(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on Polarizability.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on Polarizability.
 	"""
@@ -367,6 +384,7 @@ def calculate_moran_auto_polarizability(protein_sequence):
 def calculate_moran_auto_free_energy(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on FreeEnergy.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on FreeEnergy.
 	"""
@@ -377,6 +395,7 @@ def calculate_moran_auto_free_energy(protein_sequence):
 def calculate_moran_auto_residue_asa(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on ResidueASA.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on ResidueASA.
 	"""
@@ -387,6 +406,7 @@ def calculate_moran_auto_residue_asa(protein_sequence):
 def calculate_moran_auto_residue_vol(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on ResidueVol.
+
 	:param protein_sequence:  protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on ResidueVol.
 	"""
@@ -397,6 +417,7 @@ def calculate_moran_auto_residue_vol(protein_sequence):
 def calculate_moran_auto_steric(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on AutoSteric.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on AutoSteric.
 	"""
@@ -407,6 +428,7 @@ def calculate_moran_auto_steric(protein_sequence):
 def calculate_moran_auto_mutability(protein_sequence):
 	"""
 	Calculate the MoranAuto Autocorrelation based on Mutability.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Moran Autocorrelation based on Mutability.
 	"""
@@ -419,6 +441,7 @@ def calculate_moran_auto_mutability(protein_sequence):
 def calculate_geary_auto_hydrophobicity(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on hydrophobicity.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on hydrophobicity.
 	"""
@@ -429,6 +452,7 @@ def calculate_geary_auto_hydrophobicity(protein_sequence):
 def calculate_geary_auto_av_flexibility(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on AvFlexibility.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on AvFlexibility.
 	"""
@@ -439,6 +463,7 @@ def calculate_geary_auto_av_flexibility(protein_sequence):
 def calculate_geary_auto_polarizability(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on Polarizability.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on Polarizability.
 	"""
@@ -449,6 +474,7 @@ def calculate_geary_auto_polarizability(protein_sequence):
 def calculate_geary_auto_free_energy(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation based on FreeEnergy.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on FreeEnergy.
 	"""
@@ -459,6 +485,7 @@ def calculate_geary_auto_free_energy(protein_sequence):
 def calculate_geary_auto_residue_asa(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on ResidueASA.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on ResidueASA.
 	"""
@@ -469,6 +496,7 @@ def calculate_geary_auto_residue_asa(protein_sequence):
 def calculate_geary_auto_residue_vol(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on ResidueVol.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on ResidueVol.
 	"""
@@ -479,6 +507,7 @@ def calculate_geary_auto_residue_vol(protein_sequence):
 def calculate_geary_auto_steric(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on Steric.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on Steric.
 	"""
@@ -489,6 +518,7 @@ def calculate_geary_auto_steric(protein_sequence):
 def calculate_geary_auto_mutability(protein_sequence):
 	"""
 	Calculate the GearyAuto Autocorrelation  based on Mutability.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30 Geary Autocorrelation based on Mutability.
 	"""
@@ -500,9 +530,11 @@ def calculate_geary_auto_mutability(protein_sequence):
 def calculate_normalized_moreau_broto_auto_total(protein_sequence):
 	"""
 	A method used for computing normalized Moreau Broto autocorrelation  based on 8 proterties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
-	:return: result is a dict form containing 30*8=240 normalized Moreau Broto autocorrelation  based on the given
-	properties(i.e., _AAPropert).
+	:return:
+		result is a dict form containing 30*8=240 normalized Moreau Broto autocorrelation  based on the given
+		properties(i.e., _AAPropert).
 	"""
 	result={}
 	result.update(calculate_normalized_moreau_broto_auto_hydrophobicity(protein_sequence))
@@ -518,6 +550,7 @@ def calculate_normalized_moreau_broto_auto_total(protein_sequence):
 def calculate_moran_auto_total(protein_sequence):
 	"""
 	A method used for computing Moran autocorrelation based on 8 properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing 30*8=240 Moran autocorrelation  based on the given properties(i.e., _AAPropert).
 	"""
@@ -535,9 +568,11 @@ def calculate_moran_auto_total(protein_sequence):
 def calculate_geary_auto_total(protein_sequence):
 	"""
 	A method used for computing Geary autocorrelation based on 8 properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
-	:return: result is a dict form containing 30*8=240 Geary autocorrelation based on the given
-	properties(i.e., _AAPropert).
+	:return:
+		result is a dict form containing 30*8=240 Geary autocorrelation based on the given
+		properties(i.e., _AAPropert).
 	"""
 	result={}
 	result.update(calculate_geary_auto_hydrophobicity(protein_sequence))
@@ -556,9 +591,11 @@ def calculate_geary_auto_total(protein_sequence):
 def calculate_auto_total(protein_sequence):
 	"""
 	A method used for computing all autocorrelation  based on 8 properties of AADs.
+
 	:param protein_sequence: protein is a pure protein sequence.
-	:return: result is a dict form containing 30*8*3=720 normalized Moreau Broto, Moran, and Geary
-	autocorrelation based on the given properties(i.e., _AAPropert).
+	:return:
+		result is a dict form containing 30*8*3=720 normalized Moreau Broto, Moran, and Geary autocorrelation
+		based on the given properties(i.e., _AAPropert).
 	"""
 	result={}
 	result.update(calculate_normalized_moreau_broto_auto_total(protein_sequence))

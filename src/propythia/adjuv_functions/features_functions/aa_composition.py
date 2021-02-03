@@ -35,6 +35,7 @@ Date: 2012.3.27
 Email: oriental-cds@163.com
 
 Altered and converted to python 3.6 for Ana Marta Sequeira 05/2019
+
 ###############################################################################
 """
 
@@ -47,6 +48,7 @@ AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W
 def calculate_aa_composition(protein_sequence):
 	"""
 	Calculate the composition of Amino acids for a given protein sequence.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing the composition of 20 amino acids.
 	"""
@@ -62,6 +64,7 @@ def calculate_aa_composition(protein_sequence):
 def calculate_dipeptide_composition(protein_sequence):
 	"""
 	Calculate the composition of dipeptidefor a given protein sequence.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing the composition of 400 dipeptides.
 	"""
@@ -78,6 +81,7 @@ def calculate_dipeptide_composition(protein_sequence):
 def getkmers():
 	"""
 	Get the amino acid list of 3-mers.
+
 	:return: result is a list form containing 8000 tri-peptides.
 	"""
 	kmers = list()
@@ -93,6 +97,7 @@ def getkmers():
 def get_spectrum_dict(protein_sequence):
 	"""
 	Calculate the spectrum of 3-mers for a given protein.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing the composition values of 8000
 	"""
@@ -109,6 +114,7 @@ def get_spectrum_dict(protein_sequence):
 def calculate_aa_tripeptide_composition(protein_sequence):
 	"""
 	Calculate the composition of AADs, dipeptide and 3-mers for a given protein sequence.
+
 	:param protein_sequence: protein is a pure protein sequence.
 	:return: result is a dict form containing all composition values of AADs, dipeptide and 3-mers (8420).
 	"""

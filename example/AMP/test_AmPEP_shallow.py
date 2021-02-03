@@ -4,7 +4,7 @@
 
 File to do a comparative analysis using the AMPEP article as case study.
 Pratiti Bhadra, Jielu Yan, Jinyan Li, Simon Fong, and Shirley W. I. Siu*
-AmPEP: Sequence-based prediction of antimicrobial peptides using distribution patterns of amino acid properties and random forest.
+AMP: Sequence-based prediction of antimicrobial peptides using distribution patterns of amino acid properties and random forest.
 
 Authors: Ana MArta Sequeira
 
@@ -16,14 +16,14 @@ Email:
 """
 import csv
 import pandas as pd
-from propythia.sequence import ReadSequence
-from propythia.descriptors import Descriptor
-from propythia.preprocess import Preprocess
-from propythia.feature_selection import FeatureSelection
+from propythia.src.propythia.sequence import ReadSequence
+from propythia.src.propythia.descriptors import Descriptor
+from propythia.src.propythia.preprocess import Preprocess
+from propythia.src.propythia.feature_selection import FeatureSelection
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from propythia.machine_learning import MachineLearning
+from propythia.src.propythia.shallow_ml import ShallowML
 
 # ##### BUILT SEQUENCE DATASET FROM COLLECTION OF DATA 1:3 (POS/NEG)
 
@@ -169,7 +169,7 @@ def machine_learning_rf(dataset_in, grid=None):
 
     ml=MachineLearning(x_original, labels,classes=['AMP','non_AMP'])
 
-    if grid == 'AmPEP':
+    if grid == 'AMP':
         #with parameters defined by article
         param_grid = [{'clf__n_estimators': [100],
                        'clf__max_features': ['sqrt']}]
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     # select_features()
 
     # # RF with only D features (AMPEP PARAMETERSS)
-    # machine_learning_rf('datasets/test_AmPEP_CTD_D.csv', grid = 'AmPEP')
+    # machine_learning_rf('datasets/test_AmPEP_CTD_D.csv', grid = 'AMP')
     # # RF with only D features (GRID SEARCH)
     # machine_learning_rf('datasets/test_AmPEP_CTD_D.csv')
     #

@@ -4,3 +4,5 @@ scipy
 sklearn
 biopython
 matplotlib
+Keras
+Tensorflow

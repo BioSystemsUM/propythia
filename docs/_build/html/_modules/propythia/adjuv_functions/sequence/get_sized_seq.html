@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>propythia.adjuv_functions.sequence.get_sized_seq &mdash; ProPythia 0.04 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> ProPythia
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">here will be a mega pretty file here explaining everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">Source Code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ProPythia</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>propythia.adjuv_functions.sequence.get_sized_seq</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for propythia.adjuv_functions.sequence.get_sized_seq</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">#####################################################################################</span>
+
+<span class="sd">Allows to change the sequence and generating other.cut or add aminoacids to obtain sequences with equal lenght.</span>
+<span class="sd">(one sequence ----&gt; one sequence).</span>
+<span class="sd">    The function receives a sequence, the desired number of aa from the n terminal and from the c terminal.</span>
+<span class="sd">    It receives a third argument that is called terminal. This argument is used, to decide in which direction add dummy aa</span>
+<span class="sd">    (if needed)</span>
+
+<span class="sd">    To considerer a protein only from the n terminal, c terminal=0 and the proteins will be cutted from left right.</span>
+<span class="sd">    If necessary dummy will be added to the right</span>
+
+<span class="sd">    To considerer a protein only from the c terminal, n terminal= 0 and the proteins will be cutted from right left.</span>
+<span class="sd">    If necessary dummy will be added to the left</span>
+
+<span class="sd">    To consider both extremes of sequence both n and c terminal are different of zero.</span>
+<span class="sd">    If len of protein sequence is smaller than the both extremes together, the middle aa will be repeated.</span>
+<span class="sd">    If necessary dummy aa will be added to the right (terminal=0), to the left (terminal=-1) or in the middle (terminal=2).</span>
+
+
+<span class="sd">Authors: Ana Marta Sequeira</span>
+
+<span class="sd">Date:</span>
+
+<span class="sd">Email:</span>
+
+<span class="sd">#####################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="n">AALetter</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;R&quot;</span><span class="p">,</span><span class="s2">&quot;N&quot;</span><span class="p">,</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">,</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">,</span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="s2">&quot;L&quot;</span><span class="p">,</span><span class="s2">&quot;K&quot;</span><span class="p">,</span><span class="s2">&quot;M&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;T&quot;</span><span class="p">,</span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span><span class="s2">&quot;V&quot;</span><span class="p">]</span>
+<span class="c1">#############################################################################################</span>
+
+
+<div class="viewcode-block" id="seq_equal_lenght"><a class="viewcode-back" href="../../../../propythia.adjuv_functions.sequence.html#propythia.adjuv_functions.sequence.get_sized_seq.seq_equal_lenght">[docs]</a><span class="k">def</span> <span class="nf">seq_equal_lenght</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span><span class="n">n_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">c_terminal</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    cut or add aminoacids to obtain sequences with equal lenght.</span>
+
+<span class="sd">    :param seq: protein sequence</span>
+<span class="sd">    :param n_terminal: number of aa to consider in the n terminal (left side of sequence)</span>
+<span class="sd">    :param c_terminal: number of aa to consider in the c terminal (right side of sequence)</span>
+<span class="sd">    :param terminal:</span>
+<span class="sd">        in case of the need to add dummy aa and no terminal as already been chosen, it decides where to add</span>
+<span class="sd">        0 to add to the right (consider N terminal),</span>
+<span class="sd">        -1 to add to the left (consider C terminal)</span>
+<span class="sd">        2 to add in the middle (N and C terminal will be both present and repeated with dummy in middle</span>
+<span class="sd">    :return: list of sequences cntaining all the same lenght</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="n">lenght</span><span class="o">=</span><span class="n">n_terminal</span><span class="o">+</span><span class="n">c_terminal</span>
+    <span class="k">if</span> <span class="n">size</span><span class="o">&gt;</span><span class="n">lenght</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">c_terminal</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span><span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">c_terminal</span><span class="p">:]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span> <span class="c1">#the size of sequence is less than the lenght desired and dummy aa is needed</span>
+
+        <span class="c1">#if one of the terminals is 0 the user already set in each direction to add</span>
+
+        <span class="k">if</span> <span class="n">c_terminal</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">lenght</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">lenght</span><span class="o">-</span><span class="n">size</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">n_terminal</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">seq</span><span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">lenght</span><span class="o">-</span><span class="n">size</span><span class="p">))</span> <span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">lenght</span><span class="p">:]</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#if both terminals are filled, the variable terminal decide in which direction to cut/add</span>
+
+            <span class="k">if</span> <span class="n">terminal</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="c1">#add dummy to the right</span>
+                <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">lenght</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">lenght</span><span class="o">-</span><span class="n">size</span><span class="p">))</span>
+
+
+            <span class="k">elif</span> <span class="n">terminal</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span> <span class="c1">#add dummy to the left</span>
+                <span class="n">seq</span><span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">lenght</span><span class="o">-</span><span class="n">size</span><span class="p">))</span> <span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">lenght</span><span class="p">:]</span>
+
+
+            <span class="k">else</span><span class="p">:</span><span class="c1">#duplicate aa in the middle retaining the terminals. If necessary add dummy in the middle</span>
+                <span class="k">if</span> <span class="n">n_terminal</span><span class="o">&lt;</span><span class="n">size</span> <span class="ow">and</span> <span class="n">c_terminal</span><span class="o">&lt;</span><span class="n">size</span><span class="p">:</span>
+                    <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span><span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">c_terminal</span><span class="p">:]</span>
+
+                <span class="k">elif</span> <span class="n">n_terminal</span><span class="o">&lt;</span><span class="n">size</span> <span class="ow">and</span> <span class="n">c_terminal</span><span class="o">&gt;</span><span class="n">size</span><span class="p">:</span>
+                    <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">c_terminal</span><span class="o">-</span><span class="n">size</span><span class="p">))</span><span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">c_terminal</span><span class="p">:]</span>
+
+                <span class="k">elif</span> <span class="n">n_terminal</span><span class="o">&gt;</span><span class="n">size</span> <span class="ow">and</span> <span class="n">c_terminal</span><span class="o">&lt;</span><span class="n">size</span><span class="p">:</span>
+                    <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n_terminal</span><span class="o">-</span><span class="n">size</span><span class="p">))</span><span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">c_terminal</span><span class="p">:]</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">seq</span><span class="o">=</span><span class="n">seq</span><span class="p">[:</span><span class="n">n_terminal</span><span class="p">]</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">n_terminal</span><span class="o">-</span><span class="n">size</span><span class="p">))</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">c_terminal</span><span class="o">-</span><span class="n">size</span><span class="p">))</span><span class="o">+</span><span class="n">seq</span><span class="p">[</span><span class="o">-</span><span class="n">c_terminal</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">seq</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)))</span>
+
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;ATN&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;ATN&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;ATN&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;ATN&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">((</span><span class="n">seq_equal_lenght</span><span class="p">(</span><span class="s1">&#39;AAVFNDRAT&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Ana Marta Sequeira
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
