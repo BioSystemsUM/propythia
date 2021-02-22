@@ -2,28 +2,19 @@
 """
 ##############################################################################
 
-File that describes the Antimicrobial peptides case study.
-This section will present a comparative analysis to demonstrate the application and performance of proPythia
-for addressing sequence-based prediction problems.
+File that describes the Antimicrobial peptides case study using Veltri study.
+First, with only the sequence itself we built a similar model used by Veltri.
+Secondly, using this same dataset we apply a similar strategy as the AmPEP study and
+discuss the differences.
+Veltri et al. utilized DL to recognize antimicrobial activity. The model proposed captures position invariant patterns
+ along an amino acid sequence through the use of convolution and LSTM layers.
 
+The collection of data divided in train test eval is available at
+https://www.dveltri.com/ascan/v2/news.html
 
-do a comparative analysis using the AMPEP article as case study.
-
-
-The first case study is with antimicorbial peptides and tries to replicate the study made by P. Bhadra and all,
-“AMP: Sequence-based prediction of antimicrobial peptides using distribution patterns of amino acid properties
-and random forest” which is described to highly perform on AMP prediction methods.
-In the publication, Bhadra et al., used a dataset with a positive:negative ratio (AMP/non-AMP) of 1:3
-, based on the distribution patterns of aa properties along the sequence (CTD features),
-with a 10 fold cross validation RF model. The collection of data with sets of AMP and non-AMP data is freely
-available at https://sourceforge.net/projects/axpep/files/).
-Their model obtained a sensitivity of 0.95, a specificity and accuracy of 0.96, MCC of 0.9 and AUC-ROC of 0.98.
-
-
-P. Bhadra, J. Yan, J. Li, S. Fong, and S. W. Siu, “AMP: Sequence-based prediction
-of antimicrobial peptides using distribution patterns of amino acid properties and
-random forest,” Scientific Reports, vol. 8, no. 1, pp. 1–10, 2018.
-
+D. Veltri, U. Kamath, A. Shehu, Deep learning improves antimicrobial
+peptide recognition, Bioinformatics 34 (16) (2018) 2740{2747. doi:10.
+1093/bioinformatics/bty179.
 
 Authors: Ana Marta Sequeira
 
@@ -35,85 +26,64 @@ Email:
 """
 
 
-import sys
-import os
-sys.path.append('/home/amsequeira/propythia')
 
 import tensorflow as tf
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '6,7'
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.debugging.set_log_device_placement(True)
-if gpus:
-    try:
-        # Currently, memory growth needs to be the same across GPUs
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-            # tf.config.experimental.set_visible_devices(gpus[:1], 'GPU')
+#
+# #define gpu
+# os.environ["CUDA_VISIBLE_DEVICES"] = '6'
+# gpus = tf.config.experimental.list_physical_devices('GPU')
+# tf.debugging.set_log_device_placement(True)
+# if gpus:
+#     try:
+#         # Currently, memory growth needs to be the same across GPUs
+#         for gpu in gpus:
+#             tf.config.experimental.set_memory_growth(gpu, True)
+#             # tf.config.experimental.set_visible_devices(gpus[:1], 'GPU')
+#
+#         logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+#         print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+#     except RuntimeError as e:
+#         # Memory growth must be set before GPUs have been initialized
+#         print(e)
 
-        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-    except RuntimeError as e:
-        # Memory growth must be set before GPUs have been initialized
-        print(e)
-import csv
-import keras as K
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
 import pandas as pd
+import sys
+
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Dense, LSTM, Conv1D, Flatten, MaxPool1D, Dropout, Input
+from tensorflow.keras.layers import Embedding, Bidirectional
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import make_scorer, matthews_corrcoef
+from sklearn.preprocessing import StandardScaler
+
+from Bio.SeqIO.FastaIO import SimpleFastaParser
+
+# sys.path.append('/home/amsequeira/propythia')
 from propythia.sequence import ReadSequence
 from propythia.descriptors import Descriptor
 from propythia.preprocess import Preprocess
 from propythia.feature_selection import FeatureSelection
-from sklearn.feature_selection import mutual_info_classif
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
 from propythia.shallow_ml import ShallowML
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import make_scorer, matthews_corrcoef
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from keras.utils import to_categorical
-import fractions
+from propythia.deep_ml import DeepML
+from propythia.manifold import Manifold
 
-import pandas as pd
-import numpy as np
-import os
-from sklearn.preprocessing import StandardScaler
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # from silence_tensorflow import silence_tensorflow
 # silence_tensorflow()
 # import logging
 # logging.disable(logging.WARNING)
 # logging.getLogger("tensorflow").setLevel(logging.FATAL)
 
-from tensorflow import keras
-from tensorflow.keras.layers import LSTM, ConvLSTM2D, BatchNormalization
-from keras.preprocessing import sequence
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, Bidirectional
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from tensorflow.keras import regularizers
-from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Conv1D
-from tensorflow.keras.layers import MaxPool1D
-from tensorflow.keras.models import Sequential, load_model
 
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import MaxPool1D
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import Input
-from propythia.deep_ml import DeepML
-from propythia.manifold import Manifold
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.utils import shuffle
+
 
 # GET datasets
-
-from Bio.SeqIO.FastaIO import SimpleFastaParser
-
 amp_eval_file = '/home/amsequeira/propythia/propythia/example/AMP/datasets/AMP.eval.fa'
 amp_test_file = '/home/amsequeira/propythia/propythia/example/AMP/datasets/AMP.te.fa'
 amp_train_file = '/home/amsequeira/propythia/propythia/example/AMP/datasets/AMP.tr.fa'
@@ -237,22 +207,7 @@ veltri = dl.run_model(model)
 scores, report, cm, cm2 = dl.model_complete_evaluate()
 
 dl.save_model(model=None, path='model.h5')
-c  = dl.load_model(path='')
-for lay in c.layers:
-    print(lay.name)
-    print(lay.get_weights())
-embedding_35
-conv1d_35
 
-m = Manifold(x_data=c.layers[1].get_weights()[0])
-m.run_tsne()
-# Conv
-# layer embedding weights are first extracted from the trained Keras
-# model using all the data. Then, t-distributed stochastic neighbor
-# embedding (t-SNE) (Van der Maaten and Hinton, 2008) is applied
-# (n_components: 2, init: pca, perplexity: 30, n_iter_
-# without_progress: 300, method: exact)
-# sem shuffle c os tres datasets separados
 
 # ('Training Accuracy mean: ', 0.8933645486831665)
 # ('Validation Accuracy mean: ', 0.8937062919139862)
