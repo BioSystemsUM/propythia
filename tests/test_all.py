@@ -19,17 +19,21 @@ from tests.test_descriptors import test_descriptors
 from tests.test_preprocess import test_preprocess
 from tests.test_clustering import test_clustering
 from tests.test_feature_selection import test_feature_selection
-from tests.test_feature_reduction import test_feature_reduction
-from tests.test_machine_learning import test_machine_learning
+from tests.test_manifold import test_manifold
+from tests.test_linear_dim_reduction import test_linear_dim_reduction
+from test_shallow_ml import test_shallow_ml
+from test_deep_ml import test_deep_ml
 
 if __name__ == "__main__":
     start = timeit.default_timer()
     test_sequence()
     test_descriptors()
     test_preprocess()
-    test_feature_reduction()
+    test_linear_dim_reduction()
+    test_manifold()
     test_feature_selection()
     test_clustering()
-    test_machine_learning()
+    test_shallow_ml()
+    test_deep_ml()
     stop = timeit.default_timer()
     print('Time: ', stop - start, ((stop - start) / 60))
