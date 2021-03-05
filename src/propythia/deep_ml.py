@@ -24,14 +24,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
 import time
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+logging.disable(logging.WARNING)
+logging.getLogger("tensorflow").setLevel(logging.FATAL)
 import tensorflow as tf
 import keras
 from silence_tensorflow import silence_tensorflow
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 silence_tensorflow()
-logging.disable(logging.WARNING)
-logging.getLogger("tensorflow").setLevel(logging.FATAL)
-
 
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
@@ -46,13 +46,13 @@ from sklearn.metrics import precision_recall_curve, precision_score, recall_scor
 from sklearn.metrics import make_scorer
 from sklearn.metrics import matthews_corrcoef
 from sklearn.preprocessing import label_binarize
+from sklearn.model_selection import ShuffleSplit, train_test_split
 
-from propythia.adjuv_functions.ml_deep.utils import timer, saveModel, loadDNN, validation, validation_multiclass
 from propythia.dl_basic_models.basic_models_dnn import create_dnn_embedding, create_dnn_simple
 from propythia.dl_basic_models.basic_models_lstm import create_lstm_embedding, create_lstm_bilstm_simple
 from propythia.dl_basic_models.basic_models_cnn import create_cnn_1D, create_cnn_2D
 from propythia.dl_basic_models.basic_models_hybrid import create_cnn_lstm
-from sklearn.model_selection import ShuffleSplit, train_test_split
+from propythia.adjuv_functions.ml_deep.utils import timer, saveModel, loadDNN, validation, validation_multiclass
 from propythia.adjuv_functions.ml_deep.parameters_deep import param_deep
 from propythia.adjuv_functions.ml_deep.plot_curves_ml_propythia import plot_roc_curve, plot_precision_recall_curve, \
     plot_validation_curve, plot_learning_curve, plot_summary_loss, plot_summary_accuracy
@@ -300,7 +300,7 @@ class DeepML:
 
         s1 = 'Training Accuracy mean: ', np.mean(self.history.history['accuracy'])
         history_dict = self.history.history
-        print(history_dict.keys())
+        # print(history_dict.keys())
         s2 = 'Validation Accuracy mean: ', np.mean(self.history.history['val_accuracy'])
         s3 = 'Training Loss mean: ', np.mean(self.history.history['loss'])
         s4 = 'Validation Loss mean: ', np.mean(self.history.history['val_loss'])
@@ -359,13 +359,10 @@ class DeepML:
         # print(folds)
         for j, (train_idx, val_idx) in enumerate(folds):
             print('\nFold ', j)
-            # print(train_idx, val_idx)
-            # self.x_train = x_cv.reindex(columns = train_idx)
-            # self.x_test = x_cv.reindex(columns = val_idx)
             self.x_train = x_cv[train_idx]
             self.x_test = x_cv[val_idx]
-            self.y_train = y_cv.iloc[train_idx]
-            self.y_test = y_cv.iloc[val_idx]
+            self.y_train = y_cv[train_idx]
+            self.y_test = y_cv[val_idx]
             self.validation_split = 0.10
 
             self.generate_callbacks()
@@ -461,7 +458,8 @@ class DeepML:
         final = time.perf_counter()
         run_time = final - start
 
-        print(list_to_write_top_3_models)
+        for line in list_to_write_top_3_models:
+            print(line)
         print(s1)
         print('df')
         print(df)
@@ -474,7 +472,7 @@ class DeepML:
 
     def save_model(self, model=None, path='model.h5'):
         """
-        Fucntion to save model
+        Function to save model
         :param model: model compiled to save
         :param path: path where to save model. 'model.h5' by default.
         :return:  None
@@ -503,7 +501,21 @@ class DeepML:
     # join this functions equal to shalow and deep
     def conf_matrix_seaborn_table(self, conf_matrix=None, classifier=None, path_save='', show=True,
                                   square=True, annot=True, fmt='d', cbar=False,batch_size=None, **params):
-        "Function to retrieve confusion matrix using seaborn"
+        """
+        Function to retrieve confusion matrix using seaborn
+        :param conf_matrix:
+        :param classifier:
+        :param path_save:
+        :param show:
+        :param square:
+        :param annot:
+        :param fmt:
+        :param cbar:
+        :param batch_size:
+        :param params:
+        :return:
+        """
+
         plt.clf()
         if conf_matrix is None:
             y_pred = classifier.predict(self.x_test, batch_size=batch_size)
@@ -588,10 +600,6 @@ class DeepML:
             y_prob = model.predict(x_test)
             y_pred= np.argmax(y_prob,axis=1)
 
-        print(y_test)
-        print(y_pred)
-        print(y_prob)
-
         scores['Accuracy'] = accuracy_score(y_test, y_pred)
         scores['MCC'] = matthews_corrcoef(y_test, y_pred)
         scores['log_loss'] = log_loss(y_test, y_prob)
@@ -636,12 +644,12 @@ class DeepML:
             self.conf_matrix_seaborn_table(conf_matrix=cm, path_save=str(self.report_name + 'confusion_matrix.png'),
                                            show=False)
 
-        print("=== Confusion Matrix ===")
-        print(cm)
-        print("=== Classification Report ===")
-        print(report)
-        print('\n')
-        print(scores_df)
+        # print("=== Confusion Matrix ===")
+        # print(cm)
+        # print("=== Classification Report ===")
+        # print(report)
+        # print('\n')
+        # print(scores_df)
         self.y_test_pred = y_pred
         self.y_test_proba = y_prob
 
@@ -655,10 +663,13 @@ class DeepML:
     @timer
     def precision_recall_curve(self, show=False, path_save='precision_recall_curve.png', batch_size=None):
         """
-
-        :param show:
-        :param path_save:
-        :param batch_size:
+        Plot a Precision-Recall curve.
+        PRC curves summarize the trade-off between the true positive rate and the positive predictive value for a
+        predictive model using different probability thresholds. While ROC curves are appropriate when the observations
+        are balanced between each class, PRC are appropriate for imbalanced datasets.
+        :param show: whether to show the PRC. false by default
+        :param path_save: path to save the plot. if None, will not be stored.
+        :param batch_size: batch size to calculate the PRC. None by default
         :return:
         """
         y = self.y_test
@@ -689,8 +700,11 @@ class DeepML:
                   title='Receiver operating characteristic (ROC) curve',
                   path_save='plot_roc_curve.png', show=False, batch_size=None):
         """
-        Plot receiver operating characteristic (ROC) curve
-        :param classifier: cassifier instance. If None, will retrieve the trained one from the class.
+        Plot receiver operating characteristic (ROC) curve.
+        ROC Curves summarize the trade-off between the true positive rate and false positive rate for a predictive
+        model using different probability thresholds.
+        ROC curves are appropriate when the observations are balanced between each class.
+        :param classifier: classifier instance. If None, will retrieve the trained one from the class.
         :param ylim: y axis limits
         :param xlim: x axis limits
         :param title: title of the plot. 'Receiver operating characteristic (ROC) curve' by default
@@ -707,7 +721,7 @@ class DeepML:
         plot_roc_curve(classifier, self.final_units, self.x_test, self.y_test, self.x_train, self.y_train, ylim=ylim,
                        xlim=xlim,
                        title=title,
-                       path_save=path_save, show=show, batch_size=batch_size)
+                       path_save=path_save, show=show)
 
     ###################################################################################################################
     # PREDICT
@@ -716,7 +730,7 @@ class DeepML:
     @timer
     def predict(self, x, seqs=None, classifier=None, names=None, true_y=None, batch = None):
         """
-        This function can be used to predict novel peptides with a trained classifier model. The function returns a
+        This function can be used to predict with a trained classifier model. The function returns a
         'pandas.DataFrame' with predictions using the specified estimator and tests data.
         :param x: {array} descriptor values of the peptides to be predicted.
         :param seqs: {list} sequences of the peptides in ``x``.
@@ -834,6 +848,7 @@ class DeepML:
     ####################################################################################################################
     # RUN PREDEFINED MODELS
     # ##################################################################################################################
+    # todo passar para outra class?
     def _get_opt_params(self, param_grid, func_name, model, optType, cv, n_iter_search, n_jobs, scoring):
         start = time.perf_counter()
         # retrieve default grids
@@ -888,7 +903,7 @@ class DeepML:
 
         """
         It runs a home network based on stack of Dense layers. It is possible to run a single network, a cross validation
-        score or to hyperparameter optiimized the network ( with user defined grids or the default ones)
+        score or to hyperparameter optimized the network ( with user defined grids or the default ones)
         :param input_dim: input dim for the network
         :param optimizer: optimizer to use when compiling the model. 'Adam' by default.
         :param hidden_layers: tuple. hidden layers to consider. Default (128,64) will run a etwork with 2 hidden layers
@@ -938,10 +953,12 @@ class DeepML:
         if cv is not None and optType is None: # will do cross validation of the model
             if self.report_name is not None:
                 self._report(['===Train basic models: \n', self.run_dnn_simple.__name__, saved_args])
-            self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
+            scores = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
             dnn_simple = self.run_model(model)
+            return scores
 
         elif optType is not None: # will do param_optimization
+            # retrieve default grids
             if self.report_name is not None:
                 self._report(['===train models with {} param optimization===\n'.format(optType),
                               func_name, saved_args])
@@ -962,7 +979,6 @@ class DeepML:
                           dropout_rate=(0.3,),
                           batchnormalization=(True,),
                           l1=1e-5, l2=1e-4,
-                          final_dropout_value=(0.3,),
                           loss_fun = None, activation_fun = None,
                           cv=None, optType=None, param_grid=None, n_iter_search=15, n_jobs=1,
                           scoring=make_scorer(matthews_corrcoef)):
@@ -986,7 +1002,7 @@ class DeepML:
                                 verbose=self.verbose)
 
         if cv is not None and optType is None: # will do cross validation of the model
-            dnn_embedding, dnn_embedding_history = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
+            dnn_embedding = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
         elif optType is not None: # will do param_optimization
             if self.report_name is not None:
                 self._report(['===train models with {} param optimization===\n'.format(optType),
@@ -1003,13 +1019,12 @@ class DeepML:
     def run_lstm_simple(self, input_dim,
                         optimizer='Adam',
                         bilstm=True,
-                        lstm_layers=((128, 64),),
-                        dense_layers=((64,),),
+                        lstm_layers=(128, 64),
+                        dense_layers=(64,),
                         activation='tanh',
                         recurrent_activation='sigmoid',
                         dense_activation="relu",
                         l1=1e-5, l2=1e-4,
-                        initial_dropout_value=(0.0,),
                         dropout_rate=(0.3,), recurrent_dropout_rate=(0.3,),
                         dropout_rate_dense=(0.3,),
                         batchnormalization = (True,),
@@ -1033,7 +1048,6 @@ class DeepML:
                                 activation=activation,
                                 recurrent_activation=recurrent_activation,
                                 dense_activation=dense_activation,
-                                initial_dropout_value=initial_dropout_value,
                                 dropout_rate=dropout_rate, recurrent_dropout_rate=recurrent_dropout_rate,
                                 dropout_rate_dense=dropout_rate_dense,
                                 batchnormalization = batchnormalization,
@@ -1042,7 +1056,7 @@ class DeepML:
                                 nb_epoch=self.epochs, batch_size=self.batch_size, verbose=self.verbose)
 
         if cv is not None and optType is None: # will do cross validation of the model
-            lstm_simple, lstm_simple_history = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
+            lstm_simple = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
 
         elif optType is not None: # will do param_optimization
             if self.report_name is not None:
@@ -1057,17 +1071,16 @@ class DeepML:
 
         return lstm_simple
 
-
     def run_lstm_embedding(self,
                            optimizer='Adam',
                            input_dim_emb=21, output_dim=128, input_length=1000, mask_zero=True,
                            bilstm=True,
-                           lstm_layers=((128, 64),),
+                           lstm_layers=(128, 64),
                            activation='tanh',
                            recurrent_activation='sigmoid',
                            dropout_rate=(0.3,), recurrent_dropout_rate=(0.3,),
                            l1=1e-5, l2=1e-4,
-                           dense_layers=((64, 32),),
+                           dense_layers=(64, 32),
                            dense_activation="relu",
                            dropout_rate_dense = (0.3,),
                            batchnormalization = (True,),
@@ -1125,7 +1138,7 @@ class DeepML:
                      kernel_initializer='glorot_uniform',
                      dropout_cnn=(0.0,),
                      max_pooling=(True,),
-                     pool_size=2, strides_pool=1,
+                     pool_size=(2,), strides_pool=1,
                      data_format_pool='channels_first',
                      bilstm=True,
                      lstm_layers=(128, 64),
@@ -1240,7 +1253,6 @@ class DeepML:
 
         if cv is not None and optType is None: # will do cross validation of the model
             cnn_1d = self.train_model_cv(self.x_train, self.y_train, cv=cv, model=model)
-
         elif optType is not None: # will do param_optimization
             if self.report_name is not None:
                 self._report(['===train models with {} param optimization===\n'.format(optType),

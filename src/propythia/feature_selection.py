@@ -54,11 +54,10 @@ class FeatureSelection:
     def __init__(self, x_original, target, columns_names, dataset=None, report_name=''):
         """
         init function. When the class is called a dataset containing the features values and a target column must be provided.
-        Test size is by default 0.3 but can be altered by user.
-        :param dataset:
+        :param dataset: full dataset. optional
         :param x_original: dataset X_data to sklearn_load
         :param target: column with class labels
-        :param test_size: column with class labels
+
         """
         self.dataset = dataset
         if columns_names is None:
@@ -118,8 +117,8 @@ class FeatureSelection:
         s2 = 'New X dataset shape: {}'.format(x_transf_univariate.shape)
         s3 = 'number of column selected: {}'.format(column_selected.shape)
         s4 = 'scores: {}'.format(scores_df)
-        s5 = 'column selected: {}'.format(column_selected)
-        print('{}\n{}\n{}\n{}\n{}'.format(s1, s2, s3, s4, s5))
+        # s5 = 'column selected: {}'.format(column_selected)
+        print('{}\n{}\n{}\n{}'.format(s1, s2, s3, s4))
         # assign the new X
         self.X_data = x_transf_univariate
 
@@ -144,21 +143,12 @@ class FeatureSelection:
         the desired number of features to select is eventually reached.
 
         RFECV performs RFE in a cross-validation loop to find the optimal number of features.
-
-        :param scaler: scaler function to use to datasets before apply univariate tests.
-        It can be None or any function supported by SKlearn like StandardScaler()
-        :param cross_validation: if yes: RFECV . if not: RFE
-        :param estimator: estimator that assign wights to features
-        :param n_features_to_select: to RFE
-        :param min_features_to_select: to RFECV
         :param cv: number of folds in cross validation
-        :param scoring: for RFECV
+        :param estimator: estimator that assign wights to features
         :param n_jobs:
         :param step:If greater than or equal to 1, then step corresponds to the (integer) number of features to remove
         at each iteration. If within (0.0, 1.0), then step corresponds to the percentage (rounded down) of features to
         remove at each iteration
-        PUT HERE what are the params that can be added !!!!
-        :param verbose:
         :return: rfe fit, rfe transformed, original dataset with features selected, columns names and the features ranking
         """
         # todo check if it is ok with small dataset
@@ -186,15 +176,15 @@ class FeatureSelection:
         s2 = 'New X dataset shape: {}'.format(x_transf_rfe.shape)
         s3 = 'number of column selected: {}'.format(column_selected.shape)
         s4 = 'features ranking: {}'.format(feat_impo_df)
-        s5 = 'column selected: {}'.format(column_selected)
-        print('{}\n{}\n{}\n{}\n{}'.format(s1, s2, s3, s4, s5))
+        # s5 = 'column selected: {}'.format(column_selected)
+        print('{}\n{}\n{}\n{}'.format(s1, s2, s3, s4))
 
         # assign the new X
         self.X_data = x_transf_rfe
         if self.report_name:
             self._report([self.run_recursive_feature_elimination.__name__, saved_args, s1, s2, s3, s4, s5])
             self._report(feat_impo_df[:30], dataframe=True)
-        return x_fit_rfe, column_selected, feat_impo_df
+        return transformer, x_fit_rfe, x_transf_rfe, column_selected, feat_impo_df
 
     @timer
     def run_from_model(self, model=LinearSVC(C=0.1, penalty="l1", dual=False), **params):
@@ -204,9 +194,6 @@ class FeatureSelection:
         The features are considered unimportant and removed, if the corresponding coef_ or feature_importances_ values are
         below the provided threshold parameter.
 
-        :param scaler: scaler function to use to datasets before apply univariate tests.
-        It can be None or any function supported by SKlearn like StandardScaler()
-        :param data: dataset to perform the feature selection
         :param model:
                 examples:
                 ExtraTreesClassifier(n_estimators=50)
@@ -234,8 +221,8 @@ class FeatureSelection:
         s2 = 'New X dataset shape: {}'.format(x_transf_model.shape)
         s3 = 'number of column selected: {}'.format(column_selected.shape)
         s4 = 'features importance: {}'.format(feat_impo_df)
-        s5 = 'column selected: {}'.format(column_selected)
-        print('{}\n{}\n{}\n{}\n{}'.format(s1, s2, s3, s4, s5))
+        # s5 = 'column selected: {}'.format(column_selected)
+        print('{}\n{}\n{}\n{}'.format(s1, s2, s3, s4))
 
         # assign the new X
         self.X_data = x_transf_model

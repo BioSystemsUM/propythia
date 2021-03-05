@@ -41,9 +41,10 @@ def create_dnn_simple(input_dim, number_classes,
     last_layer = hidden_layers[-1]
     # todo if give dropout rate not equal to layers, add?
     if len([dropout_rate]) == 1:
-        dropout_rate = list([dropout_rate] * len(hidden_layers))
+        dropout_rate = list(dropout_rate * len(hidden_layers))
+    print(dropout_rate)
     if len([batchnormalization]) == 1:
-        batchnormalization = list([batchnormalization] * len(hidden_layers))
+        batchnormalization = list(batchnormalization * len(hidden_layers))
 
     with strategy.scope():
         model = Sequential()
@@ -75,14 +76,14 @@ def create_dnn_embedding(input_dim, number_classes,
                          hidden_layers=(128, 64),
                          optimizer='Adam',
                          input_dim_emb=21, output_dim=256, input_length=1000, mask_zero=True,
-                         dropout_rate=0.3,
+                         dropout_rate=(0.3,),
                          batchnormalization=True, activation="relu",
                          l1=1e-5, l2=1e-4,
                          loss_fun='binary_crossentropy', activation_fun='sigmoid'):
     if len([dropout_rate]) == 1:
-        dropout_rate = list([dropout_rate] * len(hidden_layers))
+        dropout_rate = list(dropout_rate * len(hidden_layers))
     if len([batchnormalization]) == 1:
-        batchnormalization = list([batchnormalization] * len(hidden_layers))
+        batchnormalization = list(batchnormalization * len(hidden_layers))
 
     with strategy.scope():
         model = Sequential()

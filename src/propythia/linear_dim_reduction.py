@@ -80,7 +80,7 @@ class FeatureDecomposition:
         s2 = "Reduced shape: {}".format(str(x_pca_.shape))
         s3 = "Variance explained by the PC: {}".format(sum(pca_.explained_variance_ratio_))
         s4 = "Number of components: {}".format(pca_.n_components_)
-        s5 = "pca components by explained variance ratio:\n{}".format(pca_.components_)
+        # s5 = "pca components by explained variance ratio:\n{}".format(pca_.components_)
 
         print('{}\n{}\n{}\n{}'.format(s1, s2, s3, s4))
 
@@ -188,9 +188,6 @@ class FeatureDecomposition:
         Function that retrieves a dataframe containing the contribution of each feature (rows) for component
         As unsupervised learning does not represent the importance of features but representing the directions
         of maximum variance in the data.
-        :param data: dataset as dataframe
-        :param pca: dataset fit to pca
-        :param x_pca: dataset transformed to pca
         :return: dataframe containing the contribution of each feature (rows) for component
         """
         # does not work with sparse
@@ -242,7 +239,7 @@ class FeatureDecomposition:
         if show is True: plt.show()
         plt.clf()
 
-    def pca_cumulative_explain_ratio(self, show=True, path_save='pca_cumulative_explain_ratio.png'):
+    def pca_cumulative_explain_ratio(self, title = 'cumulative explain ratio', show=True, path_save='pca_cumulative_explain_ratio.png'):
         """
         Plot cumulative explain variance per number of components. useful to understand how many components are needed
         to describe the data.
@@ -254,6 +251,7 @@ class FeatureDecomposition:
         plt.plot(np.cumsum(self.pca.explained_variance_ratio_))
         plt.xlabel('number of components')
         plt.ylabel('cumulative explained variance')
+        plt.title(title)
         if path_save is not None: plt.savefig(fname=path_save)
         if show is True: plt.show()
         plt.clf()

@@ -30,7 +30,7 @@ sns.set()
 class Manifold:
     """
     Class to run manifold learning methods. Contrary to methods such as PCA, manifold preserve nonlinear relationships
-    in the data. This class allows to explore t-sne: tool to visualize high-dimensional data.
+    in the data. This class allows to explore t-sne and UMAP: tool to visualize high-dimensional data.
     The class opens with x_data, a dataset containing the features or encodings. Classes of this representations may
     be given in the classes argument (optional). If wanted, already porjected/ embedding matrices
     may be given just to run plots.
@@ -69,7 +69,7 @@ class Manifold:
         :param n_neighbors: how UMAP balances local versus global structure in the data
         low values of n_neighbors will force UMAP to concentrate on very local structure
         (potentially to the detriment of the big picture), while large values will push UMAP to look at larger
-        eighborhoods of each point when estimating the manifold structure of the data, losing fine detail structure
+        neighborhoods of each point when estimating the manifold structure of the data, losing fine detail structure
         for the sake of getting the broader of the data. 20 by default
         :param min_dist: how tightly UMAP is allowed to pack points together. It, quite literally,
         provides the minimum distance apart that points are allowed to be in the low dimensional representation.

@@ -104,7 +104,7 @@ def plot_roc_curve(classifier, final_units, x_test, y_test, x_train, y_train, yl
     lw = 2
     # binary
     if final_units < 2:
-        y_score = classifier.predict(x_test, batch_size=batch_size)
+        y_score = classifier.predict(x_test)
         # y_score = classifier.predict_proba(X_test)[:,1]
         fpr, tpr, thresholds = roc_curve(y_test, y_score)
         roc_auc = auc(fpr, tpr)
@@ -136,7 +136,7 @@ def plot_roc_curve(classifier, final_units, x_test, y_test, x_train, y_train, yl
 
         # Learn to predict each class against the other
         estimator = OneVsRestClassifier(classifier)
-        y_score = estimator.fit(x_train, y_train).predict_proba(x_test, batch_size=batch_size)
+        y_score = estimator.fit(x_train, y_train).predict_proba(x_test)
 
         # Compute ROC curve and ROC area for each class
         fpr = dict()

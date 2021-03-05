@@ -23,6 +23,7 @@ from sklearn.model_selection import train_test_split, cross_val_score, GridSearc
 from sklearn.metrics import make_scorer
 from sklearn.metrics import matthews_corrcoef
 
+
 # returns the best model fit but dont know if it uses the callbacks and stuff for deep learning models
 # https://www.tensorflow.org/tensorboard/hyperparameter_tuning_with_hparams
 class ParamOptimizer():
@@ -44,8 +45,8 @@ class ParamOptimizer():
         self.score = scoring
         self.model_name = model_name
         self.final_units = len(np.unique(list(datay)))
-        self.gs=None
-        self.refit=refit
+        self.gs = None
+        self.refit = refit
 
     # Utility function to report best scores
     def report_top_models(self, gs=None, n_top=3):
@@ -57,7 +58,7 @@ class ParamOptimizer():
         """
 
         if gs is None:
-            gs=self.gs
+            gs = self.gs
         print(gs)
         results = gs.cv_results_
         list_to_write = []
@@ -68,7 +69,7 @@ class ParamOptimizer():
                 s2 = "Mean validation score: {0:.3f} (std: {1:.3f})\n".format(
                     results['mean_test_score'][candidate],
                     results['std_test_score'][candidate])
-                s3 = ("Parameters: {0:}\n".format(results['params'][candidate])) #todo this values with 4 decimasl
+                s3 = ("Parameters: {0:}\n".format(results['params'][candidate]))  # todo this values with 4 decimasl
                 s4 = "\n"
                 print(s1, s2, s3, s4)
                 list_to_write.append([s1, s2, s3, s4])
@@ -81,7 +82,7 @@ class ParamOptimizer():
         :return:
         """
         if gs is None:
-            gs=self.gs
+            gs = self.gs
         print(self.score)
         print(self.cv)
         s1 = "Best score (scorer: %s) and parameters from a %d-fold cross validation:\n" % \
@@ -118,13 +119,12 @@ class ParamOptimizer():
         # run randomized search
         start = time()
         gs = RandomizedSearchCV(estimator=self.model,
-                                     param_distributions=self.paramDic,
-                                     scoring=self.score,
-                                     cv=self.cv,
-                                     n_jobs=self.n_jobs,
-                                     n_iter=self.n_iter_search, refit=self.refit)
-
-        gs.fit(self.dataX, self.datay)
+                                param_distributions=self.paramDic,
+                                scoring=self.score,
+                                cv=self.cv,
+                                n_jobs=self.n_jobs,
+                                n_iter=self.n_iter_search, refit=self.refit)
+        gs = gs.fit(self.dataX, self.datay)
         print("RandomizedSearchCV took %.2f seconds for %d candidates"
               " parameter settings." % ((time() - start), self.n_iter_search))
         self.gs = gs
@@ -133,10 +133,10 @@ class ParamOptimizer():
     def _grid_search(self):
         # run grid search
         gs = GridSearchCV(estimator=self.model,
-                               param_grid=self.paramDic,
-                               scoring=self.score,
-                               cv=self.cv,
-                               n_jobs=self.n_jobs, refit=self.refit)
+                          param_grid=self.paramDic,
+                          scoring=self.score,
+                          cv=self.cv,
+                          n_jobs=self.n_jobs, refit=self.refit)
         start = time()
         gs.fit(self.dataX, self.datay)
         print("GridSearchCV took %.2f seconds for %d candidate parameter settings."

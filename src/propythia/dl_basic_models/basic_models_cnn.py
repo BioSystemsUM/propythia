@@ -80,7 +80,6 @@ def create_cnn_1D(input_dim, number_classes,
         n_timesteps, n_features = 1, input_dim
         model.add(Input(shape=(n_timesteps,n_features)))
 
-        # todo embedding?
         # model.add(layers.Embedding(max_features, 128, input_length=max_len))
         # https://machinelearningmastery.com/cnn-models-for-human-activity-recognition-time-series-classification/
         # add convolutional layers
@@ -143,13 +142,14 @@ def create_cnn_2D(input_dim, number_classes,
     if len(kernel_size) == 1:
         kernel_size = list(kernel_size * len(filter_count))
     if len(dropout_cnn) ==1 : dropout_cnn = list(dropout_cnn * len(filter_count))
-    if len(max_pooling) ==1 : max_pooling = list(max_pooling * len(filter_count))
+    if len([max_pooling]) ==1 : max_pooling = list(max_pooling * len(filter_count))
     if len(pool_size)==1 : pool_size = list(pool_size * len(filter_count))
-    if len(dropout_rate) ==1: dropout_rate = list(dropout_rate * len(dense_layers))
-    print(dropout_rate)
+    if len([dropout_rate]) ==1: dropout_rate = list(dropout_rate * len(dense_layers))
+
     with strategy.scope():
         model = Sequential()
-
+        # n_timesteps, n_features = 1, input_dim
+        # model.add(Input(shape=(n_timesteps,n_features)))
         # input shape = batch size + (image * image, channels)
         model.add(Input(shape=(input_dim)))
 

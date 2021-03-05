@@ -20,7 +20,8 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
 from propythia.adjuv_functions.ml_deep.utils import timer
 
 
@@ -61,7 +62,7 @@ class Cluster:
                 for l in info:
                     file.writelines('\n{}'.format(l))
 
-    def _kmeans_table(self, rownames=('clusters',)):
+    def kmeans_table(self, rownames=('clusters',)):
         """
         Function to generate a cross table with results from Kmeans
         :param rownames: row names. ('clusters',) by default.
@@ -70,18 +71,20 @@ class Cluster:
         table = pd.crosstab(self.y_labels, columns=self.Y_data, rownames=rownames)
         return table
 
-    def _kmeans_seaborn_table(self, path_save='', show=True):
+    def kmeans_seaborn_table(self, path_save='', show=True):
         """
-        Function to geenrate a seaborn graphic with table results from kmeans
+        Function to generate a seaborn graphic with table results from kmeans
         :param path_save:  path to save file generated. By default ''
         :param show: If to display or not the graphic. True by default.
         :return: seaborn plot with k means results
         """
         plt.clf()
         mat = confusion_matrix(self.Y_data, self.y_labels)
-        sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False)
-        plt.xlabel('true label')
-        plt.ylabel('predicted label')
+        disp = ConfusionMatrixDisplay(confusion_matrix=mat.T)
+        disp.plot()
+        # sns.heatmap(mat, square=True, annot=True, fmt='d', cbar=False)
+        # plt.xlabel('true label')
+        # plt.ylabel('predicted label')
         # save and empty plt
         if path_save is not None:
             plt.savefig(fname=path_save)
@@ -98,15 +101,18 @@ class Cluster:
         if self.Y_data is None:
             self.Y_data = y_data
 
-        accuracy = accuracy_score(self.Y_data, self.y_kmeans)
+        accuracy = accuracy_score(self.Y_data, self.y_labels)
         print('accuracy', accuracy)
         # table
-        table = self._kmeans_table()
+        table = self.kmeans_table()
         print(table)
 
         # fig table
-        kmeans_table_path = str(self.report_name.split('.', 1)[0] + 'kmeans_table.png')
-        self._kmeans_seaborn_table(path_save=kmeans_table_path, show=True)
+        if self.report_name is not None:
+            kmeans_table_path = str(self.report_name.split('.', 1)[0] + 'kmeans_table.png')
+        else:
+            kmeans_table_path = None
+        self.kmeans_seaborn_table(path_save=kmeans_table_path, show=True)
 
         things_to_report = ['accuracy: {}'.format(accuracy), table]
         return things_to_report
@@ -150,7 +156,7 @@ class Cluster:
     def run_minibatch_kmeans(self, max_iter=300, batch_size=100, n_clusters=None, init='k-means++', random_state=42,
                              **params):
         """
-        Function that performs K means cluster using miini batches.
+        Function that performs K means cluster using mini batches.
         :param init: init function for kmeans . 'k-means++' by default.
         :param max_iter: number of max terations for cluster (300 by default)
         :param n_clusters: if None, it will define the number of clusters as the number of existing labels
@@ -213,21 +219,24 @@ class Cluster:
         plt.ylabel('distance')
         labels = list(range(len(self.X_data)))
         label_colors = None
-        if self.Y_data:
+        if self.Y_data is not None:
             labels = list(self.Y_data)
             color_labels = np.unique(self.Y_data)
             rgb_values = sns.color_palette("nipy_spectral", len(color_labels))  # 'set2'
             label_colors = dict(zip(color_labels, rgb_values))
 
         dendrogram(Z,
-                   labels=labels,
+                   labels=np.array(labels),
                    truncate_mode=truncate_mode,
                    p=p,
                    leaf_rotation=90,  # rotate the x axis labels
                    leaf_font_size=8, **params)  # font size for the x axis labels
         ax = plt.gca()
         xlabels = ax.get_xmajorticklabels()
-        for lbl in xlabels: lbl.set_color(label_colors[lbl.get_text()])
+        for lbl in xlabels:
+            print(lbl)
+            print(label_colors)
+            lbl.set_color(label_colors[lbl.get_text()])
         if path_save is not None:
             plt.savefig(fname=path_save, bbox_inches='tight', pad_inches=0)
         if show is True:
@@ -247,21 +256,23 @@ class Cluster:
     # check if it can receive a linkage matrix
     def run_hierarchical(self, n_clusters=None, affinity='euclidean', linkage='ward', y_data=None, **params):
         """
+        Perform hierarchical clustering using scikit learn
         https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
 
-        :param n_clusters:
-        :param affinity:
-        :param linkage:
-        :param path_save:
-        :param show:
-        :return:
+        :param n_clusters: number of clusters in hierarchical clustering. If None will be set to the number of labels
+        :param affinity: affinity function. default euclidean
+        :param linkage: type of linkage . default ward
+        :param y_data: true labels of dataset. Default None
+        :param params: other parameters to agglomerative clustering function
+        For more details please see scikit learn documentation
+        :return: agglomerative clustering model, labels predicted and leaves of cluster
         """
         # https://stackabuse.com/hierarchical-clustering-with-python-and-scikit-learn/
         if not n_clusters:
             n_clusters = len(np.unique(self.Y_data))
         saved_args = locals()
-        cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity=affinity, linkage=linkage, **params)
-        hmodel = cluster.fit_predict(self.X_data)
+        hmodel = AgglomerativeClustering(n_clusters=n_clusters, affinity=affinity, linkage=linkage, compute_distances=True,  **params)
+        hmodel = hmodel.fit(self.X_data)
         self.y_labels = hmodel.labels_
         self.n_leaves = hmodel.n_leaves_
         self.n_components = hmodel.n_connected_components_
@@ -280,9 +291,9 @@ class Cluster:
                           'n_connected_components_\n{}'.format(self.n_components),
                           things_to_report])
 
-        return hmodel, cluster, self.y_labels, self.n_leaves
+        return hmodel, self.y_labels, self.n_leaves
 
-    def scikit_dendrogram(self, model, **kwargs):
+    def _scikit_dendrogram(self, model, **kwargs):
         # code from scikit learn
         # https://scikit-learn.org/stable/auto_examples/cluster/plot_agglomerative_dendrogram.html
         # model = agglomerative cluster.fit(x
@@ -309,12 +320,24 @@ class Cluster:
 
     def plot_dendrogram(self, model=None, title='Hierarchical Clustering Dendrogram', truncate_mode='level', p=3,
                         path_save='', show=True):
+        """
+        Plot dendogram of scikit hierarchical clustering model
+        :param model: scikit hierarchical clustering model
+        :param title: title of the plot. 'Hierarchical Clustering Dendrogram' by default
+        :param truncate_mode: Truncation is used to condense the dendrogram. By default 'level'.
+        in 'level' no more than p levels of the dendrogram tree are displayed. A “level” includes all nodes with p merges from the last merge.
+        'lastp' or None are also accepted.
+        :param p: The p parameter for truncate_mode. By default 3
+        :param path_save: If not None, path to save the dendogram
+        :param show: wether to display the dendogram. True by default.
+        :return:
+        """
         if model is None:
             model = self.hmodel
         plt.clf()
         plt.title(title)
         # plot the top three levels of the dendrogram
-        self.scikit_dendrogram(model, truncate_mode=truncate_mode, p=p)
+        self._scikit_dendrogram(model, truncate_mode=truncate_mode, p=p)
         plt.xlabel("Number of points in node (or index of point if no parenthesis).")
         if path_save is not None:
             plt.savefig(fname=path_save)

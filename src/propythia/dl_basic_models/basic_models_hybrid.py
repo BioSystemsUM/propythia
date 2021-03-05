@@ -70,15 +70,15 @@ def create_cnn_lstm(input_dim, number_classes,
     if len([dropout_cnn]) ==1 : dropout_cnn = list(dropout_cnn * len(filter_count))
     if len([max_pooling]) ==1 : max_pooling = list(max_pooling * len(filter_count))
     if len([pool_size])==1 : pool_size = list(pool_size * len(filter_count))
-    if len([dropout_rate]) ==1: dropout_rate = list([dropout_rate] * len(lstm_layers))
+    if len([dropout_rate]) ==1: dropout_rate = list(dropout_rate * len(lstm_layers))
     # if len([dropout_rate]) == 1:
     #     dropout_rate = list([dropout_rate] * len(lstm_layers))
     if len([recurrent_dropout_rate]) == 1:
-        recurrent_dropout_rate = list([recurrent_dropout_rate] * len(lstm_layers))
+        recurrent_dropout_rate = list(recurrent_dropout_rate * len(lstm_layers))
     if len([dropout_rate_dense]) == 1:
-        dropout_rate_dense = list([dropout_rate_dense] * len(dense_layers))
+        dropout_rate_dense = list(dropout_rate_dense * len(dense_layers))
     if len([batchnormalization]) == 1:
-        batchnormalization = list([batchnormalization] * len(dense_layers))
+        batchnormalization = list(batchnormalization * len(dense_layers))
 
     with strategy.scope():
         model = Sequential()

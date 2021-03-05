@@ -44,23 +44,21 @@ def create_lstm_bilstm_simple(input_dim, number_classes,
                               dense_activation="relu", loss_fun='binary_crossentropy', activation_fun='sigmoid'):
 
     if len([dropout_rate]) == 1:
-        dropout_rate = list([dropout_rate] * len(lstm_layers))
+        dropout_rate = list(dropout_rate * len(lstm_layers))
     if len([recurrent_dropout_rate]) == 1:
-        recurrent_dropout_rate = list([recurrent_dropout_rate] * len(lstm_layers))
+        recurrent_dropout_rate = list(recurrent_dropout_rate * len(lstm_layers))
     if len([dropout_rate_dense]) == 1:
-        dropout_rate_dense = list([dropout_rate_dense] * len(dense_layers))
+        dropout_rate_dense = list(dropout_rate_dense * len(dense_layers))
     if len([batchnormalization]) == 1:
-        batchnormalization = list([batchnormalization] * len(dense_layers))
+        batchnormalization = list(batchnormalization * len(dense_layers))
 
 
     last_lstm_layer = lstm_layers[-1]
     first_lstm_layer = lstm_layers[0]
     middle_lstm_layer = lstm_layers[1:-1]
     last_dense_layer = dense_layers[-1]
-
     middle_lstm_dropout=dropout_rate[1:-1]
     middle_lstm_recurrent_dropout=recurrent_dropout_rate[1:-1]
-    print(middle_lstm_dropout)
 
 
     with strategy.scope():
@@ -124,7 +122,9 @@ def create_lstm_bilstm_simple(input_dim, number_classes,
         # Add Classification Dense, Compile model and make it ready for optimization
         model.add(Dense(number_classes, activation=activation_fun))
         model.compile(loss=loss_fun, optimizer=optimizer, metrics=['accuracy'])
-
+        model._layers = [layer for layer in model._layers if not isinstance(layer, dict)]
+        # Without the line above AttributeError: 'dict' object has no attribute 'name'
+        # https://github.com/tensorflow/tensorflow/issues/38988
         return model
 
 
@@ -144,16 +144,16 @@ def create_lstm_embedding(number_classes,
                           loss_fun='binary_crossentropy', activation_fun='sigmoid'):
 
     if len([dropout_rate]) == 1:
-        dropout_rate = list([dropout_rate] * len(lstm_layers))
+        dropout_rate = list(dropout_rate * len(lstm_layers))
     print(dropout_rate)
 
     if len([recurrent_dropout_rate]) == 1:
-        recurrent_dropout_rate = list([recurrent_dropout_rate] * len(lstm_layers))
+        recurrent_dropout_rate = list(recurrent_dropout_rate * len(lstm_layers))
     if len([dropout_rate_dense]) == 1:
-        dropout_rate_dense = list([dropout_rate_dense] * len(dense_layers))
+        dropout_rate_dense = list(dropout_rate_dense * len(dense_layers))
     print(dropout_rate_dense)
     if len([batchnormalization]) == 1:
-        batchnormalization = list([batchnormalization] * len(dense_layers))
+        batchnormalization = list(batchnormalization * len(dense_layers))
 
 
     last_lstm_layer = lstm_layers[-1]

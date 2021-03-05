@@ -163,7 +163,7 @@ class ReadSequence:
 
     def get_sub_seq_split(self, seq, number_of_subseq):
         """
-        Split the originl seq in n number of subsequences.
+        Split the original seq in n number of subsequences.
         :param seq: protein sequence
         :param number_of_subseq: number of subsequences to divide the original seq
         :return: list with number_of_sequences sequences.

@@ -4,7 +4,7 @@
 
 File containing a class intend to facilitate machine learning with peptides or other.
 The functions are based on the package scikit learn.
-Model available: 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+Model available: 'svm', 'linear_svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
 
 Authors: Ana Marta Sequeira
 
@@ -56,7 +56,7 @@ seed = None
 class ShallowML:
     """
     The MachineLearning class aims to process different models of machine learning with peptides.
-    Model available: 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+    Model available: 'svm', 'linear_svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
     Based on scikit learn.
     """
 
@@ -118,10 +118,10 @@ class ShallowML:
                          random_state=1, n_iter=15, refit=True, **params):
 
         """
-        This function performs a parameter grid search on a selected classifier model and training data set.
-        It returns a scikit-learn pipeline that performs standard scaling and contains the best model found by the
+        This function performs a parameter grid search or randomizedsearch on a selected classifier model and training data set.
+        It returns a scikit-learn pipeline that performs standard scaling (if not None) and contains the best model found by the
         grid search according to the Matthews correlation coefficient or other given metric.
-        :param model: {str} model to train. Choose between 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+        :param model: {str} model to train. Choose between 'svm', 'linear_svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
         :param scaler: {scaler} scaler to use in the pipe to scale data prior to training (integrated  in pipeline)
          Choose from
             ``sklearn.preprocessing``, e.g. 'StandardScaler()', 'MinMaxScaler()', 'Normalizer()' or None.None by default.
@@ -219,8 +219,8 @@ class ShallowML:
 
         return best_classifier_fit
 
-    def cross_val_score_model(self, model,
-                              score=make_scorer(matthews_corrcoef),
+    def cross_val_score_model(self, model_name,
+                              score='accuracy',
                               cv=10,
                               n_jobs=10,
                               random_state=1, **params):
@@ -228,7 +228,7 @@ class ShallowML:
         """
         This function performs cross validations core on a selected classifier model and training data set.
         It returns the scores across the different folds, means and standard deviations of these scores.
-        :param model: {str} model to train. Choose between 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+        :param model_name: {str} model to train. Choose between 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
         :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
             (choose from the scikit-learn`scoring-parameters <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
         :param cv: {int} number of folds for cross-validation score.
@@ -242,32 +242,32 @@ class ShallowML:
         print("performing cross val score with {} folds".format(cv))
 
         saved_args = locals()
-        self.model_name = model.lower()
+        self.model_name = model_name.lower()
         if self.model_name == 'svm':
             clf = SVC(random_state=random_state, **params)
 
-        elif model.lower() == 'linear_svm':  # scale better to large number of samples
+        elif self.model_name == 'linear_svm':  # scale better to large number of samples
             clf = LinearSVC(random_state=random_state, **params)
 
-        elif model.lower() == 'rf':
+        elif self.model_name == 'rf':
             clf = RandomForestClassifier(random_state=random_state, **params)
 
-        elif model.lower() == 'gboosting':
+        elif self.model_name == 'gboosting':
             clf = GradientBoostingClassifier(random_state=random_state, **params)
 
-        elif model.lower() == 'knn':
+        elif self.model_name == 'knn':
             clf = KNeighborsClassifier(**params)
 
-        elif model.lower() == 'sgd':
+        elif self.model_name == 'sgd':
             clf = SGDClassifier(random_state=random_state, **params)
 
-        elif model.lower() == 'lr':
+        elif self.model_name == 'lr':
             clf = LogisticRegression(random_state=random_state, **params)
 
-        elif model.lower() == 'gnb':
+        elif self.model_name == 'gnb':
             clf = GaussianNB(**params)
 
-        elif model.lower() == 'nn':
+        elif self.model_name == 'nn':
             clf = MLPClassifier(**params)
         else:
             print("Model not supported, please choose between 'svm', 'knn', 'sgd', 'rf', 'gnb', 'nn', 'gboosting' ")
@@ -275,9 +275,20 @@ class ShallowML:
 
         # retrieve default grids
         scores = cross_validate(clf, self.x_train, self.y_train, cv=10, scoring=score)
-        for scorer in score:
-            scores['test_mean_%s' % (scorer)] = np.mean(scores['test_%s' % (scorer)])
-            scores['test_std_%s' % (scorer)] = np.std(scores['test_%s' % (scorer)])
+        # print(scores)
+        scores = pd.DataFrame(scores)
+        scores.loc['mean'] = scores.mean()
+        scores.loc['std'] = scores.std()
+
+        # try:
+        #     scores['test_mean_score'] = np.mean(scores['test_score'])
+        #     scores['test_std_score'] = np.std(scores['test_score'])
+        #
+        # except:
+        #     for scorer in score:
+        #         scores['test_mean_%s' % (scorer)] = np.mean(scores['test_%s' % (scorer)])
+        #         scores['test_std_%s' % (scorer)] = np.std(scores['test_%s' % (scorer)])
+
         final = time.perf_counter()
         run_time = final - start
 
@@ -419,11 +430,7 @@ class ShallowML:
             plt.ylabel('True Positive Rate')
             plt.title(title)
             plt.legend(loc="lower right", )
-            if path_save is not None:
-                plt.savefig(fname=path_save)
-            if show is True:
-                plt.show()
-            plt.clf()
+
 
         # multiclass/ multilabel
         elif self.final_units > 2:
@@ -495,11 +502,11 @@ class ShallowML:
             plt.ylabel('True Positive Rate')
             plt.title(title)
             plt.legend(loc="lower right", fontsize='xx-small')
-            if path_save is not None:
-                plt.savefig(fname=path_save)
-            if show is True:
-                plt.show()
-            plt.clf()
+        if path_save is not None:
+            plt.savefig(fname=path_save)
+        if show is True:
+            plt.show()
+        plt.clf()
 
     ####################################################################################################################
     # PLOTS : Model curves
@@ -513,7 +520,8 @@ class ShallowML:
                               xlab="parameter range", ylab="MCC", n_jobs=1, show=False,
                               path_save='plot_validation_curve', **params):
 
-        """This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
+        """
+        This function plots a cross-validation curve for the specified classifier on all tested parameters given in the
         option 'param_range'.
 
         :param param_name: {string} parameter to assess in the validation curve plot. For example,
@@ -703,7 +711,7 @@ class ShallowML:
 
     def features_importances_df(self, classifier=None, model_name=None, top_features=20, column_to_sort='mean_coef'):
         """
-        Function that given a classifier retrieves the features importances as a dataset and represent as barplot.
+        Function that given a classifier retrieves the features importances as a dataframe.
         :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).If None (default)
         uses the classifier inside the class.
         :param model_name: model used in classifier. Choose between 'svm', 'sgd', 'lr', 'gboosting' or 'rf'.
@@ -815,7 +823,7 @@ class ShallowML:
     @timer
     def predict(self, x, seqs=None, classifier=None, names=None, true_y=None):
 
-        """This function can be used to predict novel peptides with a trained classifier model. The function returns a
+        """This function can be used to predict novel data with a trained classifier model. The function returns a
         'pandas.DataFrame' with predictions using the specified estimator and tests data.
 
         :param classifier: {classifier instance} classifier or validation curve (e.g. sklearn.svm.SVC).If None (default)

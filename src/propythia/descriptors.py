@@ -19,8 +19,7 @@ import pandas as pd
 from propythia.adjuv_functions.features_functions.aa_index import get_aa_index1, get_aa_index23
 from propythia.adjuv_functions.features_functions.binary import bin_aa_ct
 from propythia.adjuv_functions.features_functions.binary_aa_properties import bin_pc_wp
-from propythia.adjuv_functions.features_functions.descriptors_modlamp import GlobalDescriptor, \
-    PeptideDescriptor
+from propythia.adjuv_functions.features_functions.descriptors_modlamp import GlobalDescriptor, PeptideDescriptor
 from propythia.adjuv_functions.features_functions.bondcomp import boc_wp
 from propythia.adjuv_functions.features_functions.aa_composition import calculate_aa_composition, \
     calculate_dipeptide_composition, get_spectrum_dict
@@ -948,22 +947,22 @@ class Descriptor:
             maxlag = maxlag_qso
             weight = weight_qso
             if function == 36: res.update(self.get_qso(maxlag, weight))
-            if function == 36: res.update(self.get_qso_p(maxlag, weight, distancematrix))
-            if function == 37: res.update(self.get_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso))
+            if function == 37: res.update(self.get_qso_p(maxlag, weight, distancematrix))
+            if function == 38: res.update(self.get_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso))
 
             # base class
-            if function == 38: res.update(self.calculate_autocorr(window, scalename))
-            if function == 39: res.update(self.calculate_crosscorr(window, scalename))
-            if function == 40: res.update(self.calculate_moment(window, angle, modality, scalename))
-            if function == 41: res.update(self.calculate_global(window, modality, scalename))
-            if function == 42: res.update(self.calculate_profile(prof_type, window, scalename))
-            if function == 43: res.update(self.calculate_arc(modality, scalename_arc))
-            if function == 44: res.update(self.get_all_base_class(window, scalename, scalename_arc))
+            if function == 39: res.update(self.calculate_autocorr(window, scalename))
+            if function == 40: res.update(self.calculate_crosscorr(window, scalename))
+            if function == 41: res.update(self.calculate_moment(window, angle, modality, scalename))
+            if function == 42: res.update(self.calculate_global(window, modality, scalename))
+            if function == 43: res.update(self.calculate_profile(prof_type, window, scalename))
+            if function == 44: res.update(self.calculate_arc(modality, scalename_arc))
+            if function == 45: res.update(self.get_all_base_class(window, scalename, scalename_arc))
 
-            if function == 45: res.update(self.get_nlf_encode())
-            if function == 46: res.update(self.get_blosum(blosum))
+            if function == 46: res.update(self.get_nlf_encode())
+            if function == 47: res.update(self.get_blosum(blosum))
 
-            if function == 47: res.update(
+            if function == 48: res.update(
                 self.get_all(ph, amide, tricomp, lamda_paac, weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
                              maxlag_qso,
                              weight_qso, window, scalename, scalename_arc, angle, modality, prof_type))
