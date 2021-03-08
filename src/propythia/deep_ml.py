@@ -30,8 +30,6 @@ logging.disable(logging.WARNING)
 logging.getLogger("tensorflow").setLevel(logging.FATAL)
 import tensorflow as tf
 import keras
-from silence_tensorflow import silence_tensorflow
-silence_tensorflow()
 
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
