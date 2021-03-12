@@ -6,7 +6,7 @@ package_data={'propythia':['adjuv_functions/features_functions/data/*','adjuv_fu
 # },
 setup(
     name = 'propythia',
-    version = '1.0.0',
+    version = '2.0.0',
     package_dir = {'':'src'},
     packages = find_packages('src'),
     package_data = package_data,
@@ -18,7 +18,8 @@ setup(
                         "sklearn",
                         "biopython",
                         "tensorflow",
-                        "Keras"],
+                        "Keras",
+                        "umap"],
     author = 'Ana Marta Sequeira',
     author_email = 'anamartasequeira94@gmail.com',
     description = 'propythia - automated platform for the classification of peptides/proteins using machine learning',
