@@ -111,7 +111,7 @@ class ShallowML:
                 for l in info:
                     file.writelines('\n{}'.format(l))
 
-    def train_best_model(self, model, scaler=None,
+    def train_best_model(self, model_name, model, scaler=None,
                          score=make_scorer(matthews_corrcoef),
                          cv=10, optType='gridSearch', param_grid=None,
                          n_jobs=10,
@@ -121,7 +121,8 @@ class ShallowML:
         This function performs a parameter grid search or randomizedsearch on a selected classifier model and training data set.
         It returns a scikit-learn pipeline that performs standard scaling (if not None) and contains the best model found by the
         grid search according to the Matthews correlation coefficient or other given metric.
-        :param model: {str} model to train. Choose between 'svm', 'linear_svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+        :param model_name: {str} model to train. Choose between 'svm', 'linear_svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+        :param model: scikit learn model
         :param scaler: {scaler} scaler to use in the pipe to scale data prior to training (integrated  in pipeline)
          Choose from
             ``sklearn.preprocessing``, e.g. 'StandardScaler()', 'MinMaxScaler()', 'Normalizer()' or None.None by default.
@@ -134,7 +135,7 @@ class ShallowML:
         :param n_iter: number of iterations when using randomizedSearch optimizaton. default 15.
         :param n_jobs: {int} number of parallel jobs to use for calculation. if ``-1``, all available cores are used.
         10 by default.
-        :param refit: wether to refit the model accordingy to the best model . Default True.
+        :param refit: wether to refit the model accordingly to the best model . Default True.
         :param random_state: random_state 1 by default.
         :param **params: params to integrate in scikit models
         :return: best classifier fitted to training data.
@@ -143,45 +144,53 @@ class ShallowML:
         print("performing {}...".format(optType))
 
         saved_args = locals()
-        self.model_name = model.lower()
-        if self.model_name == 'svm':
+        if model_name:
+            model = model_name.lower()
+        if model is not None:
+            model = model
+
+        if model == 'svm':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', SVC(random_state=random_state, **params))])
 
-        elif model.lower() == 'linear_svm':  # scale better to large number of samples
+        elif model == 'linear_svm':  # scale better to large number of samples
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', LinearSVC(random_state=random_state, **params))])
 
-        elif model.lower() == 'rf':
+        elif model == 'rf':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', RandomForestClassifier(random_state=random_state, **params))])
 
-        elif model.lower() == 'gboosting':
+        elif model == 'gboosting':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', GradientBoostingClassifier(random_state=random_state, **params))])
 
-        elif model.lower() == 'knn':
+        elif model == 'knn':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', KNeighborsClassifier(**params))])
 
-        elif model.lower() == 'sgd':
+        elif model == 'sgd':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', SGDClassifier(random_state=random_state, **params))])
 
-        elif model.lower() == 'lr':
+        elif model == 'lr':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', LogisticRegression(random_state=random_state, **params))])
 
-        elif model.lower() == 'gnb':
+        elif model == 'gnb':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', GaussianNB(**params))])
 
-        elif model.lower() == 'nn':
+        elif model == 'nn':
             pipe_model = Pipeline([('scl', scaler),
                                    ('clf', MLPClassifier(**params))])
-        else:
+        elif model is str:
+            # keras classifier
             print("Model not supported, please choose between 'svm', 'knn', 'sgd', 'rf', 'gnb', 'nn', 'gboosting' ")
             return
+        else:
+            pipe_model = Pipeline([('scl', scaler),
+                                   ('clf', model(**params))])
 
         # retrieve default grids
         if param_grid is None:
@@ -219,7 +228,7 @@ class ShallowML:
 
         return best_classifier_fit
 
-    def cross_val_score_model(self, model_name,
+    def cross_val_score_model(self, model_name,model,
                               score='accuracy',
                               cv=10,
                               n_jobs=10,
@@ -229,6 +238,7 @@ class ShallowML:
         This function performs cross validations core on a selected classifier model and training data set.
         It returns the scores across the different folds, means and standard deviations of these scores.
         :param model_name: {str} model to train. Choose between 'svm', 'knn', 'sgd', 'lr','rf', 'gnb', 'nn','gboosting'
+        :param model: scikit learn machine learning model object
         :param score: {metrics instance} scoring function built from make_scorer() or a predefined value in string form
             (choose from the scikit-learn`scoring-parameters <http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter>`_).
         :param cv: {int} number of folds for cross-validation score.
@@ -242,37 +252,41 @@ class ShallowML:
         print("performing cross val score with {} folds".format(cv))
 
         saved_args = locals()
-        self.model_name = model_name.lower()
-        if self.model_name == 'svm':
+        if model_name:
+            model = model_name.lower()
+        if model is not None:
+            model = model
+        if model == 'svm':
             clf = SVC(random_state=random_state, **params)
 
-        elif self.model_name == 'linear_svm':  # scale better to large number of samples
+        elif model == 'linear_svm':  # scale better to large number of samples
             clf = LinearSVC(random_state=random_state, **params)
 
-        elif self.model_name == 'rf':
+        elif model == 'rf':
             clf = RandomForestClassifier(random_state=random_state, **params)
 
-        elif self.model_name == 'gboosting':
+        elif model == 'gboosting':
             clf = GradientBoostingClassifier(random_state=random_state, **params)
 
-        elif self.model_name == 'knn':
+        elif model == 'knn':
             clf = KNeighborsClassifier(**params)
 
-        elif self.model_name == 'sgd':
+        elif model == 'sgd':
             clf = SGDClassifier(random_state=random_state, **params)
 
-        elif self.model_name == 'lr':
+        elif model == 'lr':
             clf = LogisticRegression(random_state=random_state, **params)
 
-        elif self.model_name == 'gnb':
+        elif model == 'gnb':
             clf = GaussianNB(**params)
 
-        elif self.model_name == 'nn':
+        elif model == 'nn':
             clf = MLPClassifier(**params)
-        else:
+        elif model is str:
             print("Model not supported, please choose between 'svm', 'knn', 'sgd', 'rf', 'gnb', 'nn', 'gboosting' ")
             return
-
+        else:
+            clf = model(**params)
         # retrieve default grids
         scores = cross_validate(clf, self.x_train, self.y_train, cv=10, scoring=score)
         # print(scores)
