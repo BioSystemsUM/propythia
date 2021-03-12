@@ -13,7 +13,7 @@ sequences.
 
 It was tested on the classification of membrane active antimicrobial peptides and enzymes, available in folder examples.
 
-![plot](plot.png)
+![plot](docs/plot.png)
 
 Documentation
 ~~~~~~~~~~~~~
@@ -33,10 +33,9 @@ Developed at the Centre of Biological Engineering, University of Minho
 
 Please refer to this work through this publication by Ana Marta Sequeira, Diana Lousa, Miguel Rocha :
 
-- Sequeira A.M., Lousa D., Rocha M. (2021) ProPythia: A Python Automated Platform for the Classification of Proteins
-Using Machine Learning. Practical Applications of Computational Biology & Bioinformatics, 14th International Conference
-(PACBB 2020). PACBB 2020. Advances in Intelligent Systems and Computing, vol 1240. Springer, Cham.
-https://doi.org/10.1007/978-3-030-54568-0_4
+- Sequeira A.M., Lousa D., Rocha M. (2021) ProPythia: A Python Automated Platform for the Classification of Proteins Using
+Machine Learning. Practical Applications of Computational Biology & Bioinformatics, 14th International Conference (PACBB 2020).
+PACBB 2020. Advances in Intelligent Systems and Computing, vol 1240. Springer, Cham. https://doi.org/10.1007/978-3-030-54568-0_4
 
 Released under the GNU Public License (version 3.0).
 
