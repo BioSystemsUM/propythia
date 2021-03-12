@@ -27,6 +27,7 @@ setup(
     keywords = 'machine learning deep learning classification proteins',
     url = 'https://github.com/BioSystemsUM/propythia',
     long_description = open('README.rst').read(),
+    long_description_content_type = 'text/markdown',
     classifiers = [
         'Development Status :: 4 - Beta',
         'Topic :: Scientific/Engineering :: Bio-Informatics',
