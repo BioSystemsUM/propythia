@@ -172,14 +172,60 @@ class Descriptor:
         :return: dict form with blosum encoding
         """
         seq = self.ProteinSequence
+        header = ['#']
+        for p in range(1, len(seq)):
+            for z in range(len(self.blosum_62)):
+                header.append('Pos'+str(p) + '.blosum' + z)
+
         if blosum == 'blosum50':
-            blosum = pd.DataFrame([self.blosum_50[i] for i in seq]).reset_index(drop=True)
+            blosum = pd.DataFrame([self.blosum_50[i] for i in seq], columns=header).reset_index(drop=True)
         else:
-            blosum = pd.DataFrame([self.blosum_62[i] for i in seq]).reset_index(drop=True)
+            blosum = pd.DataFrame([self.blosum_62[i] for i in seq], columns=header).reset_index(drop=True)
+            print(blosum)
         # e = blosum.values.flatten().tolist()
         res = blosum.to_dict()
         return res
 
+    def get_z_scales(self):
+
+        zscale = {
+            'A': [0.24,  -2.32,  0.60, -0.14,  1.30], # A
+            'C': [0.84,  -1.67,  3.71,  0.18, -2.65], # C
+            'D': [3.98,   0.93,  1.93, -2.46,  0.75], # D
+            'E': [3.11,   0.26, -0.11, -0.34, -0.25], # E
+            'F': [-4.22,  1.94,  1.06,  0.54, -0.62], # F
+            'G': [2.05,  -4.06,  0.36, -0.82, -0.38], # G
+            'H': [2.47,   1.95,  0.26,  3.90,  0.09], # H
+            'I': [-3.89, -1.73, -1.71, -0.84,  0.26], # I
+            'K': [2.29,   0.89, -2.49,  1.49,  0.31], # K
+            'L': [-4.28, -1.30, -1.49, -0.72,  0.84], # L
+            'M': [-2.85, -0.22,  0.47,  1.94, -0.98], # M
+            'N': [3.05,   1.62,  1.04, -1.15,  1.61], # N
+            'P': [-1.66,  0.27,  1.84,  0.70,  2.00], # P
+            'Q': [1.75,   0.50, -1.44, -1.34,  0.66], # Q
+            'R': [3.52,   2.50, -3.50,  1.99, -0.17], # R
+            'S': [2.39,  -1.07,  1.15, -1.39,  0.67], # S
+            'T': [0.75,  -2.18, -1.12, -1.46, -0.40], # T
+            'V': [-2.59, -2.64, -1.54, -0.85, -0.02], # V
+            'W': [-4.36,  3.94,  0.59,  3.44, -1.59], # W
+            'Y': [-2.54,  2.44,  0.43,  0.04, -1.47], # Y
+            '-': [0.00,   0.00,  0.00,  0.00,  0.00], # -
+        }
+        sequence = self.ProteinSequence
+        encodings = []
+        header = ['#']
+        for p in range(1, len(sequence)):
+            for z in ('1', '2', '3', '4', '5'):
+                header.append('Pos'+str(p) + '.ZSCALE' + z)
+        encodings.append(header)
+
+        #for aa in sequence:
+        #   code = zscale[aa]
+        #  encodings.append(code)
+        #return encodings
+        new_sequence = [zscale[aa] for aa in sequence]
+        encodings.append(new_sequence)
+        return new_sequence
     # ################# PHYSICO CHEMICAL DESCRIPTORS  ##################
 
     def get_lenght(self):
@@ -198,7 +244,6 @@ class Descriptor:
 		:param amide: by default is not considered an amide protein sequence.
 		:return: dictionary with the value of charge
 		"""
-
         res = {}
         desc = GlobalDescriptor(self.ProteinSequence)
         desc.calculate_charge(ph=ph, amide=amide)
@@ -961,8 +1006,9 @@ class Descriptor:
 
             if function == 46: res.update(self.get_nlf_encode())
             if function == 47: res.update(self.get_blosum(blosum))
+            if function == 48: res.update(self.get_z_scales())
 
-            if function == 48: res.update(
+            if function == 49: res.update(
                 self.get_all(ph, amide, tricomp, lamda_paac, weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
                              maxlag_qso,
                              weight_qso, window, scalename, scalename_arc, angle, modality, prof_type))
