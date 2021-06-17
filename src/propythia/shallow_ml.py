@@ -288,7 +288,7 @@ class ShallowML:
         else:
             clf = model(**params)
         # retrieve default grids
-        scores = cross_validate(clf, self.x_train, self.y_train, cv=10, scoring=score)
+        scores = cross_validate(clf, self.x_train, self.y_train, cv=cv, scoring=score)
         # print(scores)
         scores = pd.DataFrame(scores)
         scores.loc['mean'] = scores.mean()
@@ -785,6 +785,8 @@ class ShallowML:
         saved_args = locals()
         if model_name is None:
             model_name = self.model_name
+        else:
+            self.model_name = model_name
         if classifier is None:
             classifier = self.classifier
         if self.feat_table is None:
@@ -797,7 +799,7 @@ class ShallowML:
         linewidth = 0.5
         label = 'Features Coefficients'
 
-        if model_name.lower() in ('rf', 'gboosting'):
+        if self.model_name.lower() in ('rf', 'gboosting'):
             label = 'Features Importance'
             table = self.feat_table[:top_features]
 

@@ -357,8 +357,12 @@ class DeepML:
         # print(folds)
         for j, (train_idx, val_idx) in enumerate(folds):
             print('\nFold ', j)
-            self.x_train = x_cv[train_idx]
-            self.x_test = x_cv[val_idx]
+            try:
+                self.x_train = x_cv.iloc[train_idx]
+                self.x_test = x_cv.iloc[val_idx]
+            except:
+                self.x_train = x_cv[train_idx] # todo resolver esta questao. tem q aceitar dataframes listas, numpy....
+                self.x_test = x_cv[val_idx]
             self.y_train = y_cv[train_idx]
             self.y_test = y_cv[val_idx]
             self.validation_split = 0.10
