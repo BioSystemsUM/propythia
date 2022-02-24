@@ -2,4 +2,5 @@ build/*
 __pycache__/*
 .idea/*
 dist/*
-venv/.DS_Store
+venv/
+.DS_Store
