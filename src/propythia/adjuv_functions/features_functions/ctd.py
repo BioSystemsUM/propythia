@@ -38,7 +38,7 @@ Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 
 """
 
-import string, math, copy
+import math, copy
 
 
 AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"]

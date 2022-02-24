@@ -281,10 +281,10 @@ class GlobalDescriptor(BaseDescriptor):
         :return: array of molecular formulas {str} in the attribute :py:attr:`descriptor`
         :Example:
         
-        >>> desc = GlobalDescriptor(['KADSFLSADGHSADFSLDKKLKERL', 'ERTILSDFPQWWFASLDFLNC', 'ACDEFGHIKLMNPQRSTVWY'])
-        >>> desc.formula(amide=True)
-        >>> for v in desc.descriptor:
-        ...     print(v[0])
+        # >>> desc = GlobalDescriptor(['KADSFLSADGHSADFSLDKKLKERL', 'ERTILSDFPQWWFASLDFLNC', 'ACDEFGHIKLMNPQRSTVWY'])
+        # >>> desc.formula(amide=True)
+        # >>> for v in desc.descriptor:
+        # ...     print(v[0])
         C122 H197 N35 O39
         C121 H168 N28 O33 S
         C106 H157 N29 O30 S2
@@ -438,9 +438,9 @@ class GlobalDescriptor(BaseDescriptor):
         :return: array of descriptor values in the attribute :py:attr:`descriptor`
         :Example:
         
-        >>> desc = GlobalDescriptor('KLFDIKFGHIPQRST')
-        >>> desc.isoelectric_point()
-        >>> desc.descriptor
+        # >>> desc = GlobalDescriptor('KLFDIKFGHIPQRST')
+        # >>> desc.isoelectric_point()
+        # >>> desc.descriptor
         array([[ 10.6796875]])
         """
 

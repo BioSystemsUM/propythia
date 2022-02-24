@@ -25,7 +25,7 @@ Email:
 """
 import pandas as pd
 import os
-import sys
+# import sys
 def init(path=None, index=''):
     """
     Read in files. You need to run this (once) before you can

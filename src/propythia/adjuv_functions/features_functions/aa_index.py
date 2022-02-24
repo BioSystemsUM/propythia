@@ -12,7 +12,7 @@ Date: 2012.09.10
 Email: oriental-cds@163.com
 Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 """
-import sys, os, string
+import sys, os
 
 AALetter=["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"]
 _aaindex = dict()
@@ -51,10 +51,9 @@ class Record:
 
 	def median(self):
 		x = sorted([_f for _f in list(self.index.values()) if _f])
-		half = len(x)/2
 		if len(x) % 2 == 1:
-			return x[half]
-		return (x[half-1] + x[half])/2.0
+			return x[len(x)//2]
+		return (sum(x[len(x)//2-1:len(x)//2+1]))/2
 
 	def __str__(self):
 		desc = self.desc.replace('\n', ' ').strip()
@@ -100,7 +99,7 @@ class MatrixRecord(Record):
 			x.extend([_f for _f in y if _f])
 		x.sort()
 		if len(x) % 2 == 1:
-			return x[len(x)/2]
+			return x[len(x)//2]
 		return sum(x[len(x)/2-1:len(x)/2+1])/2.0
 #####################################################################################################
 
