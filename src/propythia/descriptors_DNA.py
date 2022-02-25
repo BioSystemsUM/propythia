@@ -155,6 +155,20 @@ class DNADescriptor:
                 res[key] = res[key] / N
         return res
 
+    def get_binary(self):
+        """
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
+        :return: list with values of binary encoding
+        """
+        binary = {
+            'A': [1, 0, 0, 0],
+            'C': [0, 1, 0, 0],
+            'G': [0, 0, 1, 0],
+            'T': [0, 0, 0, 1]
+        }
+        return [binary[i] for i in self.dna_sequence]
+
     def get_nucleotide_chemical_property(self):
         """
         From: https://academic.oup.com/bioinformatics/article/33/22/3518/4036387
@@ -172,7 +186,7 @@ class DNADescriptor:
         Functional group  | Amino 	   | A, C
                           | Keto 	   | G, T
 
-        :return: dictionary with values of nucleotide chemical property
+        :return: list with values of nucleotide chemical property
         """
         chemical_property = {
             'A': [1, 1, 1],
@@ -181,6 +195,20 @@ class DNADescriptor:
             'T': [0, 0, 1],
         }
         return [chemical_property[i] for i in self.dna_sequence]
+
+    def get_accumulated_nucleotide_frequency(self):
+        """
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Calculates accumulated nucleotide frequency
+        :return: list with values of accumulated nucleotide frequency
+        """
+        res = []
+        aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+        for i in range(len(self.dna_sequence)):
+            aux_d[self.dna_sequence[i]] += 1
+            x = aux_d[self.dna_sequence[i]] / (i + 1)
+            res.append(x)
+        return res
 
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
@@ -205,5 +233,7 @@ class DNADescriptor:
         res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
         res['dinucleotide_composition'] = self.get_dinucleotide_composition()
         res['trinucleotide_composition'] = self.get_trinucleotide_composition()
+        res['binary'] = self.get_binary()
         res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
+        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
         return res
