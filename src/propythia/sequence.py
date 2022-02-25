@@ -7,11 +7,12 @@ The main objective is to create sequence objects to calculate descriptors
 The class allows to:
      1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs)
      2)Check if the protein sequence is a valid sequence
-     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals
-     4)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the
+     3) Preprocessing methods to transform the protein sequences
+     4)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals
+     5)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the
      the terminals or divide the sequence in parts
 
-Authors:Ana Marta Sequeira
+Authors:Ana Marta Sequeira, Miguel Barros
 
 Date: 01/2019
 
@@ -22,10 +23,10 @@ Email:
 from joblib import Parallel, delayed
 from multiprocessing import cpu_count
 from propythia.adjuv_functions.sequence.get_sequence import get_protein_sequence, get_protein_sequence_from_txt
-from propythia.adjuv_functions.sequence.pro_check import protein_check, protein_preprocessing_20AA, protein_preprocessing_removeX, protein_preprocessing_X
+from propythia.adjuv_functions.sequence.pro_check import protein_check
+from propythia.adjuv_functions.sequence.preprocess_seq import protein_preprocessing_20AA, protein_preprocessing_removeX, protein_preprocessing_X
 from propythia.adjuv_functions.sequence.get_sized_seq import seq_equal_lenght
 from propythia.adjuv_functions.sequence.get_sub_seq import sub_seq_sliding_window, sub_seq_to_aa, sub_seq_split,sub_seq_terminals
-
 
 class ReadSequence:
 
