@@ -142,7 +142,7 @@ class ReadSequence:
 ##########################################
     # parallelized preprocessing sequence
 
-    def par_preprocessing_20AA(self, dataset, col: str):
+    def par_preprocessing_20AA(self, dataset, col: str, n_jobs : int = int(0.8 * cpu_count())):
         '''
         Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G), Selenocysteine (U) and
          Pyrrolysine (O) for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
@@ -151,34 +151,37 @@ class ReadSequence:
 
         :param dataset: Pandas dataframe containing the sequences
         :param col: Column where the sequences are present
+        :param n_jobs: number of CPU cores to use
         :return: transformed Pandas dataframe
         '''
-        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_20AA)(seq) for seq in dataset[col])
+        res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_20AA)(seq) for seq in dataset[col])
         dataset[col] = res
         return dataset
 
-    def par_preprocessing_X(self, dataset, col: str):
+    def par_preprocessing_X(self, dataset, col: str, n_jobs : int = int(0.8 * cpu_count())):
         '''
         Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G),
         Selenocysteine (U) and Pyrrolysine (O) by an ambiguous aminoacid (X). It also alters the ambiguos J by X.
 
         :param dataset: Pandas dataframe containing the sequences
         :param col: Column where the sequences are present
+        :param n_jobs: number of CPU cores to use
         :return: transformed Pandas dataframe
         '''
-        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_X)(seq) for seq in dataset[col])
+        res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_X)(seq) for seq in dataset[col])
         dataset[col] = res
         return dataset
 
-    def par_preprocessing_removeX(self, dataset, col: str):
+    def par_preprocessing_removeX(self, dataset, col: str, n_jobs : int = int(0.8 * cpu_count())):
         '''
         Transforms the protein sequence in the dataset by  removing the ambiguous aminoacid (X).
 
         :param dataset: Pandas dataframe containing the sequences
         :param col: Column where the sequences are present
+        :param n_jobs: number of CPU cores to use
         :return: transformed Pandas dataframe
         '''
-        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_removeX)(seq) for seq in dataset[col])
+        res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_removeX)(seq) for seq in dataset[col])
         dataset[col] = res
         return dataset
 
