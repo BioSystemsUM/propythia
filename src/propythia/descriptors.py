@@ -5,9 +5,9 @@
 A class  used for computing different types of protein descriptors.
 It contains descriptors from packages pydpi, biopython, pfeature and modlamp.
 
-Authors: Ana Marta Sequeira
+Authors: Ana Marta Sequeira, Miguel Barros
 
-Date: 05/2019 ALTERED 01/2022
+Date: 05/2019 ALTERED 02/2022
 
 Email:
 
