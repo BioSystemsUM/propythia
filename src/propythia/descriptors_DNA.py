@@ -115,6 +115,30 @@ class DNADescriptor:
                 res[key] = res[key] / N
         return res
 
+    def get_enhanced_nucleic_acid_composition(self, window_size=5, normalize=False):
+        """
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6216033/#SM0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Calculates enhanced nucleic acid composition
+        :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
+        :return: dictionary with values of enhanced nucleic acid composition
+        """
+        res = []
+        for i in range(len(self.dna_sequence) - window_size + 1):
+            aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+            segment = self.dna_sequence[i:i+window_size]
+
+            for letter in segment:
+                aux_d[letter] += 1
+
+            if normalize:
+                N = sum(aux_d.values())
+                for key in aux_d:
+                    aux_d[key] = aux_d[key] / N
+
+            res.append(aux_d)
+
+        return res
+
     def get_dinucleotide_composition(self, normalize=False):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/
@@ -231,6 +255,7 @@ class DNADescriptor:
         res['at_content'] = self.get_at_content()
         res['kmer'] = self.get_kmer()
         res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
+        res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
         res['dinucleotide_composition'] = self.get_dinucleotide_composition()
         res['trinucleotide_composition'] = self.get_trinucleotide_composition()
         res['binary'] = self.get_binary()
