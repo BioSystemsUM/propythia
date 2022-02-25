@@ -18,7 +18,7 @@ class DNADescriptor:
 
     def get_length(self):
         """
-        From: https://sci-hub.se/10.1093/bib/bbz041
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates lenght of sequence (number of aa)
         :return: value of length
         """
@@ -46,39 +46,61 @@ class DNADescriptor:
                 at_content += 1
         return at_content / self.get_length()
 
-    def get_kmer(self, k, reverse=False):
+    def get_kmer(self, k=2, normalize=False, reverse=False):
         """
-        From: https://sci-hub.se/10.1093/bib/bbz041
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
         Calculates Kmer
         :param k: value of k
+        :param normalize: default value is False. If True, this method returns the frequencies of all kmers.
         :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
         :return: dictionary with values of kmer
         """
-        kmer = {}
-        new_sequence = self.dna_sequence if not reverse else self.get_reverse_complement()
-        for i in range(len(new_sequence) - k + 1):
-            if(new_sequence[i:i+k] in kmer):
-                kmer[new_sequence[i:i+k]] += 1
-            else:
-                kmer[new_sequence[i:i+k]] = 1
-        return kmer
+        res = {}
 
-    def get_reverse_complement(self):
-        """
-        Calculates reverse complement (Auxiliary function to "get_kmer")
-        :return: reverse complement of sequence
-        """
-        res = ""
-        for letter in self.dna_sequence:
-            res += self.pairs[letter]
-        return res[::-1]
+        for i in range(len(self.dna_sequence) - k + 1):
+            if(self.dna_sequence[i:i+k] in res):
+                res[self.dna_sequence[i:i+k]] += 1
+            else:
+                res[self.dna_sequence[i:i+k]] = 1
+
+        if reverse:
+            for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
+                reverse = "".join([self.pairs[i] for i in kmer[::-1]])
+
+                # calculate alphabet order between kmer and reverse compliment
+                if(kmer < reverse):
+                    smaller = kmer
+                    bigger = reverse
+                else:
+                    smaller = reverse
+                    bigger = kmer
+
+                # create in dict if they dont exist
+                if(smaller not in res):
+                    res[smaller] = 0
+                if(bigger not in res):
+                    res[bigger] = 0
+
+                if(smaller != bigger):
+                    # add to dict
+                    res[smaller] += res[bigger]
+                    # delete from dict
+                    del res[bigger]
+
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
+
+        return res
 
     # -----------------------  NUCLEIC ACID COMPOSITION ----------------------- #
 
-    def get_nucleic_acid_composition(self):
+    def get_nucleic_acid_composition(self, normalize=False):
         """
-        From: https://sci-hub.se/10.1093/bib/bbz041
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates nucleic acid composition
+        :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
         :return: dictionary with values of nucleic acid composition
         """
         res = {}
@@ -87,12 +109,17 @@ class DNADescriptor:
                 res[letter] += 1
             else:
                 res[letter] = 1
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
         return res
 
-    def get_dinucleotide_composition(self):
+    def get_dinucleotide_composition(self, normalize=False):
         """
-        From: https://sci-hub.se/10.1093/bib/bbz041
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates dinucleotide composition
+        :param normalize: default value is False. If True, this method returns the frequencies of each dinucleotide.
         :return: dictionary with values of dinucleotide composition
         """
         res = {}
@@ -102,12 +129,17 @@ class DNADescriptor:
                 res[dinucleotide] += 1
             else:
                 res[dinucleotide] = 1
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
         return res
 
-    def get_trinucleotide_composition(self):
+    def get_trinucleotide_composition(self, normalize=False):
         """
-        From: https://sci-hub.se/10.1093/bib/bbz041
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates trinucleotide composition
+        :param normalize: default value is False. If True, this method returns the frequencies of each trinucleotide.
         :return: dictionary with values of trinucleotide composition
         """
         res = {}
@@ -117,22 +149,10 @@ class DNADescriptor:
                 res[trinucleotide] += 1
             else:
                 res[trinucleotide] = 1
-        return res
-
-    def get_accumulated_nucleotide_frequency(self):
-        """
-        From: https://sci-hub.se/10.1093/bib/bbz041
-        Calculates accumulated nucleotide frequency
-        :return: dictionary with values of accumulated nucleotide frequency in percentage
-        """
-        res = {}
-        for letter in self.dna_sequence:
-            if letter in res:
-                res[letter] += 1
-            else:
-                res[letter] = 1
-        for key in res:
-            res[key] = res[key] / self.get_length()
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
         return res
 
     def get_nucleotide_chemical_property(self):
@@ -143,14 +163,14 @@ class DNADescriptor:
 
         Chemical property | Class	   | Nucleotides
         -------------------------------------------
-        Ring structure 	  | Purine 	   | A, G 
-                          | Pyrimidine | C, T 
+        Ring structure 	  | Purine 	   | A, G
+                          | Pyrimidine | C, T
         -------------------------------------------
-        Hydrogen bond 	  | Strong 	   | C, G 
-                          | Weak 	   | A, T 
+        Hydrogen bond 	  | Strong 	   | C, G
+                          | Weak 	   | A, T
         -------------------------------------------
-        Functional group  | Amino 	   | A, C 
-                          | Keto 	   | G, T 
+        Functional group  | Amino 	   | A, C
+                          | Keto 	   | G, T
 
         :return: dictionary with values of nucleotide chemical property
         """
@@ -181,10 +201,9 @@ class DNADescriptor:
         res['length'] = self.get_length()
         res['gc_content'] = self.get_gc_content()
         res['at_content'] = self.get_at_content()
-        res['kmer'] = self.get_kmer(k=3)
+        res['kmer'] = self.get_kmer()
         res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
         res['dinucleotide_composition'] = self.get_dinucleotide_composition()
         res['trinucleotide_composition'] = self.get_trinucleotide_composition()
-        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
         res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
         return res
