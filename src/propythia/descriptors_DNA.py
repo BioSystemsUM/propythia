@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+"""
+##############################################################################
+
+A class used for computing different types of DNA descriptors.
+It contains descriptors from packages iLearn, iDNA4mC, rDNAse, ...
+
+Authors: João Nuno Abreu
+
+Date: 02/2021
+
+Email:
+
+##############################################################################
+"""
+
+
 class DNADescriptor:
 
     pairs = {
