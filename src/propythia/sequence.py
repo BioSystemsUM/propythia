@@ -19,9 +19,10 @@ Email:
 
 ##############################################################################
 """
-
+from joblib import Parallel, delayed
+from multiprocessing import cpu_count
 from propythia.adjuv_functions.sequence.get_sequence import get_protein_sequence, get_protein_sequence_from_txt
-from propythia.adjuv_functions.sequence.pro_check import protein_check
+from propythia.adjuv_functions.sequence.pro_check import protein_check, protein_preprocessing_20AA, protein_preprocessing_removeX, protein_preprocessing_X
 from propythia.adjuv_functions.sequence.get_sized_seq import seq_equal_lenght
 from propythia.adjuv_functions.sequence.get_sub_seq import sub_seq_sliding_window, sub_seq_to_aa, sub_seq_split,sub_seq_terminals
 
@@ -102,6 +103,83 @@ class ReadSequence:
             print("Please input a correct protein.")
         else:
             print('sequence valid')
+
+    ##########################################
+    # preprocessing sequence
+
+    def get_preprocessing_20AA(self, ProteinSequence: str):
+        '''
+        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(G), Selenocysteine (U) and
+         Pyrrolysine (O) for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+         Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
+         aminoacid (J) to a Isoleucine (I). Use with caution.
+
+        :param ProteinSequence: Protein sequence
+        :return: transformed protein sequence
+        '''
+        return protein_preprocessing_20AA(ProteinSequence)
+
+    def get_preprocessing_X(self, ProteinSequence: str):
+        '''
+        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(G),
+        Selenocysteine (U) and Pyrrolysine (O) by an ambiguous aminoacid (X). It also alters the ambiguos J by X.
+
+        :param ProteinSequence: Protein sequence
+        :return: transformed protein sequence
+        '''
+        return protein_preprocessing_X(ProteinSequence)
+
+    def get_preprocessing_removeX(self, ProteinSequence : str):
+        '''
+        Transforms the protein sequence by  removing the ambiguous aminoacid (X).
+
+        :param ProteinSequence: Protein sequence
+        :return: transformed protein sequence
+        '''
+        return protein_preprocessing_removeX(ProteinSequence)
+
+##########################################
+    # parallelized preprocessing sequence
+
+    def par_preprocessing_20AA(self, dataset, col: str):
+        '''
+        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G), Selenocysteine (U) and
+         Pyrrolysine (O) for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+         Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
+         aminoacid (J) to a Isoleucine (I). Use with caution.
+
+        :param dataset: Pandas dataframe containing the sequences
+        :param col: Column where the sequences are present
+        :return: transformed Pandas dataframe
+        '''
+        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_20AA)(seq) for seq in dataset[col])
+        dataset[col] = res
+        return dataset
+
+    def par_preprocessing_X(self, dataset, col: str):
+        '''
+        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G),
+        Selenocysteine (U) and Pyrrolysine (O) by an ambiguous aminoacid (X). It also alters the ambiguos J by X.
+
+        :param dataset: Pandas dataframe containing the sequences
+        :param col: Column where the sequences are present
+        :return: transformed Pandas dataframe
+        '''
+        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_X)(seq) for seq in dataset[col])
+        dataset[col] = res
+        return dataset
+
+    def par_preprocessing_removeX(self, dataset, col: str):
+        '''
+        Transforms the protein sequence in the dataset by  removing the ambiguous aminoacid (X).
+
+        :param dataset: Pandas dataframe containing the sequences
+        :param col: Column where the sequences are present
+        :return: transformed Pandas dataframe
+        '''
+        res = Parallel(n_jobs=int(0.8 * cpu_count()))(delayed(protein_preprocessing_removeX)(seq) for seq in dataset[col])
+        dataset[col] = res
+        return dataset
 
 ##########################################
     # Get equal size sequences
