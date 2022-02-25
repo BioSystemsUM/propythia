@@ -157,7 +157,7 @@ class DNADescriptor:
 
     def get_binary(self):
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
         Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
         :return: list with values of binary encoding
         """
@@ -198,7 +198,7 @@ class DNADescriptor:
 
     def get_accumulated_nucleotide_frequency(self):
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
         Calculates accumulated nucleotide frequency
         :return: list with values of accumulated nucleotide frequency
         """
