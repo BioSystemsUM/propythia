@@ -63,55 +63,7 @@ class DNADescriptor:
                 at_content += 1
         return at_content / self.get_length()
 
-    def get_kmer(self, k=2, normalize=False, reverse=False):
-        """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
-        Calculates Kmer
-        :param k: value of k
-        :param normalize: default value is False. If True, this method returns the frequencies of all kmers.
-        :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
-        :return: dictionary with values of kmer
-        """
-        res = {}
-
-        for i in range(len(self.dna_sequence) - k + 1):
-            if(self.dna_sequence[i:i+k] in res):
-                res[self.dna_sequence[i:i+k]] += 1
-            else:
-                res[self.dna_sequence[i:i+k]] = 1
-
-        if reverse:
-            for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
-                reverse = "".join([self.pairs[i] for i in kmer[::-1]])
-
-                # calculate alphabet order between kmer and reverse compliment
-                if(kmer < reverse):
-                    smaller = kmer
-                    bigger = reverse
-                else:
-                    smaller = reverse
-                    bigger = kmer
-
-                # create in dict if they dont exist
-                if(smaller not in res):
-                    res[smaller] = 0
-                if(bigger not in res):
-                    res[bigger] = 0
-
-                if(smaller != bigger):
-                    # add to dict
-                    res[smaller] += res[bigger]
-                    # delete from dict
-                    del res[bigger]
-
-        if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
-
-        return res
-
-    # -----------------------  NUCLEIC ACID COMPOSITION ----------------------- #
+    # ----------------------- NUCLEIC ACID COMPOSITION ----------------------- #
 
     def get_nucleic_acid_composition(self, normalize=False):
         """
@@ -196,19 +148,76 @@ class DNADescriptor:
                 res[key] = res[key] / N
         return res
 
-    def get_binary(self):
+    def get_k_spaced_nucleic_acid_pairs(self, k=0, normalize=False):
         """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
-        :return: list with values of binary encoding
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Calculates k-spaced nucleic acid pairs
+        :param k: value of k
+        :param normalize: default value is False. If True, this method returns the frequencies of each k-spaced nucleic acid pair.
+        :return: dictionary with values of k-spaced nucleic acid pairs
         """
-        binary = {
-            'A': [1, 0, 0, 0],
-            'C': [0, 1, 0, 0],
-            'G': [0, 0, 1, 0],
-            'T': [0, 0, 0, 1]
-        }
-        return [binary[i] for i in self.dna_sequence]
+        res = {}
+        for i in range(len(self.dna_sequence) - k - 1):
+            k_spaced_nucleic_acid_pair = self.dna_sequence[i] + \
+                self.dna_sequence[i+k+1]
+            if k_spaced_nucleic_acid_pair in res:
+                res[k_spaced_nucleic_acid_pair] += 1
+            else:
+                res[k_spaced_nucleic_acid_pair] = 1
+
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
+        return res
+
+    def get_kmer(self, k=2, normalize=False, reverse=False):
+        """
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
+        Calculates Kmer
+        :param k: value of k
+        :param normalize: default value is False. If True, this method returns the frequencies of all kmers.
+        :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
+        :return: dictionary with values of kmer
+        """
+        res = {}
+
+        for i in range(len(self.dna_sequence) - k + 1):
+            if(self.dna_sequence[i:i+k] in res):
+                res[self.dna_sequence[i:i+k]] += 1
+            else:
+                res[self.dna_sequence[i:i+k]] = 1
+
+        if reverse:
+            for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
+                reverse = "".join([self.pairs[i] for i in kmer[::-1]])
+
+                # calculate alphabet order between kmer and reverse compliment
+                if(kmer < reverse):
+                    smaller = kmer
+                    bigger = reverse
+                else:
+                    smaller = reverse
+                    bigger = kmer
+
+                # create in dict if they dont exist
+                if(smaller not in res):
+                    res[smaller] = 0
+                if(bigger not in res):
+                    res[bigger] = 0
+
+                if(smaller != bigger):
+                    # add to dict
+                    res[smaller] += res[bigger]
+                    # delete from dict
+                    del res[bigger]
+
+        if normalize:
+            N = sum(res.values())
+            for key in res:
+                res[key] = res[key] / N
+
+        return res
 
     def get_nucleotide_chemical_property(self):
         """
@@ -251,6 +260,22 @@ class DNADescriptor:
             res.append(x)
         return res
 
+    # -------------------------------  Binary  ------------------------------ #
+
+    def get_binary(self):
+        """
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
+        :return: list with values of binary encoding
+        """
+        binary = {
+            'A': [1, 0, 0, 0],
+            'C': [0, 1, 0, 0],
+            'G': [0, 0, 1, 0],
+            'T': [0, 0, 0, 1]
+        }
+        return [binary[i] for i in self.dna_sequence]
+
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
     def get_pseudo_dinucleotide_composition(self):
@@ -270,12 +295,13 @@ class DNADescriptor:
         res['length'] = self.get_length()
         res['gc_content'] = self.get_gc_content()
         res['at_content'] = self.get_at_content()
-        res['kmer'] = self.get_kmer()
         res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
         res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
         res['dinucleotide_composition'] = self.get_dinucleotide_composition()
         res['trinucleotide_composition'] = self.get_trinucleotide_composition()
-        res['binary'] = self.get_binary()
+        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
+        res['kmer'] = self.get_kmer()
         res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
         res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
+        res['binary'] = self.get_binary()
         return res
