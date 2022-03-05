@@ -15,6 +15,9 @@ Email:
 """
 
 
+from itertools import product
+
+
 class DNADescriptor:
 
     pairs = {
@@ -72,12 +75,10 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
         :return: dictionary with values of nucleic acid composition
         """
-        res = {}
+        res = {''.join(i): 0 for i in product('ATCG', repeat=1)}
         for letter in self.dna_sequence:
-            if letter in res:
-                res[letter] += 1
-            else:
-                res[letter] = 1
+            res[letter] += 1
+
         if normalize:
             N = sum(res.values())
             for key in res:
@@ -115,13 +116,10 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each dinucleotide.
         :return: dictionary with values of dinucleotide composition
         """
-        res = {}
+        res = {''.join(i): 0 for i in product('ATCG', repeat=2)}
         for i in range(len(self.dna_sequence) - 1):
             dinucleotide = self.dna_sequence[i:i+2]
-            if dinucleotide in res:
-                res[dinucleotide] += 1
-            else:
-                res[dinucleotide] = 1
+            res[dinucleotide] += 1
         if normalize:
             N = sum(res.values())
             for key in res:
@@ -135,13 +133,11 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each trinucleotide.
         :return: dictionary with values of trinucleotide composition
         """
-        res = {}
+        res = {''.join(i): 0 for i in product('ATCG', repeat=3)}
         for i in range(len(self.dna_sequence) - 2):
             trinucleotide = self.dna_sequence[i:i+3]
-            if trinucleotide in res:
-                res[trinucleotide] += 1
-            else:
-                res[trinucleotide] = 1
+            res[trinucleotide] += 1
+
         if normalize:
             N = sum(res.values())
             for key in res:
@@ -156,14 +152,11 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each k-spaced nucleic acid pair.
         :return: dictionary with values of k-spaced nucleic acid pairs
         """
-        res = {}
+        res = {''.join(i): 0 for i in product('ATCG', repeat=2)}
         for i in range(len(self.dna_sequence) - k - 1):
             k_spaced_nucleic_acid_pair = self.dna_sequence[i] + \
                 self.dna_sequence[i+k+1]
-            if k_spaced_nucleic_acid_pair in res:
-                res[k_spaced_nucleic_acid_pair] += 1
-            else:
-                res[k_spaced_nucleic_acid_pair] = 1
+            res[k_spaced_nucleic_acid_pair] += 1
 
         if normalize:
             N = sum(res.values())
@@ -180,13 +173,10 @@ class DNADescriptor:
         :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
         :return: dictionary with values of kmer
         """
-        res = {}
+        res = {''.join(i): 0 for i in product('ATCG', repeat=k)}
 
         for i in range(len(self.dna_sequence) - k + 1):
-            if(self.dna_sequence[i:i+k] in res):
-                res[self.dna_sequence[i:i+k]] += 1
-            else:
-                res[self.dna_sequence[i:i+k]] = 1
+            res[self.dna_sequence[i:i+k]] += 1
 
         if reverse:
             for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
@@ -276,12 +266,89 @@ class DNADescriptor:
         }
         return [binary[i] for i in self.dna_sequence]
 
-    # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
+    # --------------------------  Autocorrelation  -------------------------- #
 
-    def get_pseudo_dinucleotide_composition(self):
+    def get_DAC():
         pass
 
-    def get_pseudo_k_tupler_composition(self):
+    def get_DCC():
+        pass
+
+    def get_DACC():
+        pass
+
+    def get_TAC():
+        pass
+
+    def get_TCC():
+        pass
+
+    def get_DACC():
+        pass
+
+    # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
+
+    def get_PseDNC(self, lamda=3, w=0.05, normalize=False):
+        """
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Calculates the Pseudo Dinucleotide Composition Descriptor of DNA sequences
+        :param lamda: value of lambda
+        :param w: value of w
+        :param normalize: default value is False. If True, this method returns the frequencies of each Pseudo Dinucleotide Composition Descriptor.
+        :return: dictionary with values of Pseudo Dinucleotide Composition Descriptor
+        """
+        d = {'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
+             'AC': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+             'AG': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+             'AT': [1.07, 0.22, 0.62, -1.02, 2.51, 1.17],
+             'CA': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+             'CC': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+             'CG': [-1.66, -1.22, -0.44, -0.82, -0.29, -1.39],
+             'CT': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+             'GA': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+             'GC': [-0.08, 0.22, 1.33, -0.35, 0.65, 1.59],
+             'GG': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+             'GT': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+             'TA': [-1.23, -2.37, -0.44, -2.24, -1.51, -1.39],
+             'TC': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+             'TG': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+             'TT': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11]}
+
+        fk = self.get_dinucleotide_composition(normalize=True)
+        all_possibilites = [''.join(i) for i in product('ATCG', repeat=2)]
+
+        thetas = []
+        L = len(self.dna_sequence)
+        for i in range(lamda):
+            big_somatorio = 0
+            for j in range(L-i-2):
+                somatorio = 0
+                first_dinucleotide = self.dna_sequence[j:j+2]
+                second_dinucleotide = self.dna_sequence[j+i+1:j+i+1+2]
+                for k in range(6):
+                    val = (d[first_dinucleotide][k] -
+                           d[second_dinucleotide][k])**2
+                    somatorio += val
+
+                big_somatorio += somatorio/6
+
+            # Theta calculation
+            theta = big_somatorio / (L-2-i)
+            thetas.append(theta)
+
+        # --------------------------------------------
+
+        res = {}
+        for i in all_possibilites:
+            res[i] = round(fk[i] / (1 + w * sum(thetas)), 3)
+
+        for i in range(lamda):
+            res["lambda."+str(i+1)] = round(w * thetas[i] /
+                                            (1 + w * sum(thetas)), 3)
+
+        return res
+
+    def get_PseKNC(self):
         pass
 
     # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
