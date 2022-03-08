@@ -6,7 +6,7 @@ It contains descriptors from packages pydpi, biopython, pfeature and modlamp.
 
 Authors: Miguel Barros
 
-Date: 02/2022
+Date: 03/2022
 
 Email:
 
@@ -45,7 +45,7 @@ class ParDescritors:
         self.col = col
         self.result = dataset
 
-    def par_lenght(self, n_jobs: int = 4, merge: bool = True):
+    def par_lenght(self, n_jobs: int = 4):
         """
         Calculates lenght of sequence (number of aa)
         :return: dictionary with the value of lenght
@@ -53,11 +53,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_lenght)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge:
-            self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_charge(self, ph: float = 7.4, amide: bool = False, n_jobs: int = 4, merge: bool = True):
+    def par_charge(self, ph: float = 7.4, amide: bool = False, n_jobs: int = 4):
         """
         Calculates charge of sequence (1 value) from modlamp
         :param ph: ph considered to calculate. 7.4 by default
@@ -68,10 +66,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_charge)(seq, ph, amide) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_charge_density(self, ph: float = 7.0, amide: bool = False, n_jobs: int = 4, merge: bool = True):
+    def par_charge_density(self, ph: float = 7.0, amide: bool = False, n_jobs: int = 4):
         """
         Calculates charge density of sequence (1 value) from modlamp
         :param ph: ph considered to calculate. 7 by default
@@ -82,10 +79,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_charge_density)(seq, ph, amide) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_formula(self, amide: bool = False, n_jobs: int = 4, merge: bool = True):
+    def par_formula(self, amide: bool = False, n_jobs: int = 4):
         """
         Calculates number of C,H,N,O and S of the aa of sequence (5 values) from modlamp
         :param amide: by default is not considered an amide protein sequence.
@@ -95,10 +91,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_formula)(seq, amide) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_bond(self, n_jobs: int = 4, merge: bool = True):
+    def par_bond(self, n_jobs: int = 4):
         """
         This function gives the sum of the bond composition for each type of bond
         For bond composition four types of bonds are considered
@@ -109,10 +104,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_bond)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_mw(self, n_jobs: int = 4, merge: bool = True):
+    def par_mw(self, n_jobs: int = 4):
         """
         Calculates molecular weight of sequence (1 value) from modlamp
         :return: dictionary with the value of molecular weight
@@ -121,10 +115,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_mw)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_gravy(self, n_jobs: int = 4, merge: bool = True):
+    def par_gravy(self, n_jobs: int = 4):
         """
         Calculates Gravy from sequence (1 value) from biopython
         :return: dictionary with the value of gravy
@@ -133,10 +126,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_gravy)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_aromacity(self, n_jobs: int = 4, merge: bool = True):
+    def par_aromacity(self, n_jobs: int = 4):
         """
         Calculates Aromacity from sequence (1 value) from biopython
         :return: dictionary with the value of aromacity
@@ -145,10 +137,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_aromacity)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_isoelectric_point(self, n_jobs: int = 4, merge: bool = True):
+    def par_isoelectric_point(self, n_jobs: int = 4):
         """
         Calculates Isolectric Point from sequence (1 value) from biopython
         :return: dictionary with the value of Isolectric Point
@@ -157,10 +148,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_isoelectric_point)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_instability_index(self, n_jobs: int = 4, merge: bool = True):
+    def par_instability_index(self, n_jobs: int = 4):
         """
         Calculates Instability index from sequence (1 value) from biopython
         :return: dictionary with the value of Instability index
@@ -169,10 +159,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_instability_index)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_sec_struct(self, n_jobs: int = 4, merge: bool = True):
+    def par_sec_struct(self, n_jobs: int = 4):
         """
         Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython
         :return: dictionary with the 3 value of helix, turn, sheet
@@ -181,10 +170,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_sec_struct)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_molar_extinction_coefficient(self, n_jobs: int = 4, merge: bool = True):
+    def par_molar_extinction_coefficient(self, n_jobs: int = 4):
         # [reduced, oxidized] # with reduced cysteines / # with disulfid bridges
         """
         Calculates the molar extinction coefficient (2 values) from biopython
@@ -194,10 +182,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_molar_extinction_coefficient)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_flexibility(self, n_jobs: int = 4, merge: bool = True):
+    def par_flexibility(self, n_jobs: int = 4):
         """
         Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython
         :return: dictionary with proteinsequencelenght-9 values of flexiblity
@@ -206,10 +193,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_flexibility)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_aliphatic_index(self, n_jobs: int = 4, merge: bool = True):
+    def par_aliphatic_index(self, n_jobs: int = 4):
         """
         Calculates aliphatic index of sequence (1 value) from modlamp
         :return: dictionary with the value of aliphatic index
@@ -218,10 +204,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_aliphatic_index)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_boman_index(self, n_jobs: int = 4, merge: bool = True):
+    def par_boman_index(self, n_jobs: int = 4):
         """
         Calculates boman index of sequence (1 value) from modlamp
         :return: dictionary with the value of boman index
@@ -230,10 +215,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_boman_index)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_hydrophobic_ratio(self, n_jobs: int = 4, merge: bool = True):
+    def par_hydrophobic_ratio(self, n_jobs: int = 4):
         """
         Calculates hydrophobic ratio of sequence (1 value) from modlamp
         :return: dictionary with the value of hydrophobic ratio
@@ -242,12 +226,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_hydrophobic_ratio)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     ################## AMINO ACID COMPOSITION ##################
 
-    def par_aa_comp(self, n_jobs: int = 4, merge: bool = True):
+    def par_aa_comp(self, n_jobs: int = 4):
         """
         Calculates amino acid compositon (20 values)  from pydpi
         :return: dictionary with the fractions of all 20 aa(keys are the aa)
@@ -256,10 +239,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_aa_comp)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_dp_comp(self, n_jobs: int = 4, merge: bool = True):
+    def par_dp_comp(self, n_jobs: int = 4):
         """
         Calculates dipeptide composition (400 values) from pydpi
         :return: dictionary with the fractions of all 400 possible combiinations of 2 aa
@@ -268,10 +250,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_dp_comp)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_tp_comp(self, n_jobs: int = 4, merge: bool = True):
+    def par_tp_comp(self, n_jobs: int = 4):
         """
             Calculates tripeptide composition (8000 values) from pydpi
             :return: dictionary with the fractions of all 8000 possible combinations of 3 aa
@@ -280,12 +261,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_tp_comp)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     ################## PSEUDO AMINO ACID COMPOSITION ##################
 
-    def par_paac(self, lamda: int = 10, weight: float = 0.05, n_jobs: int = 4, merge: bool = True):
+    def par_paac(self, lamda: int = 10, weight: float = 0.05, n_jobs: int = 4):
         """
         Calculates Type I Pseudo amino acid composition (default is 30, depends on lamda) from pydpi
         :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
@@ -295,14 +275,12 @@ class ParDescritors:
                     The user can select any value within the region from 0.05 to 0.7 for the weight factor.
         :return: dictionary with the fractions of all PAAC (keys are the PAAC). Number of keys depends on lamda
         """
-
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_paac)(seq, lamda, weight) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_paac_p(self, lamda: int = 10, weight: float = 0.05, AAP=None, n_jobs: int = 4, merge: bool = True):
+    def par_paac_p(self, lamda: int = 10, weight: float = 0.05, AAP=None, n_jobs: int = 4):
         """
         Calculates Type I Pseudo amino acid composition for a given property (default is 30, depends on lamda) from pydpi
         :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
@@ -318,10 +296,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_paac_p)(seq, lamda, weight, AAP) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_apaac(self, lamda: int = 10, weight: float = 0.5, n_jobs: int = 4, merge: bool = True):
+    def par_apaac(self, lamda: int = 10, weight: float = 0.5, n_jobs: int = 4):
         """
         Calculates Type II Pseudo amino acid composition - Amphiphilic (default is 30, depends on lamda) from pydpi
         :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
@@ -335,12 +312,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_apaac)(seq, lamda, weight) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # ################# AUTOCORRELATION DESCRIPTORS ##################
 
-    def par_moreau_broto_auto(self, n_jobs: int = 4, merge: bool = True):
+    def par_moreau_broto_auto(self, n_jobs: int = 4):
         """
         Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi
         :return: dictionary with the 240 descriptors
@@ -349,10 +325,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_moreau_broto_auto)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_moran_auto(self, n_jobs: int = 4, merge: bool = True):
+    def par_moran_auto(self, n_jobs: int = 4):
         """
         Calculates  Moran autocorrelation (240 values) from pydpi
         :return: dictionary with the 240 descriptors
@@ -361,10 +336,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_moran_auto)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_geary_auto(self, n_jobs: int = 4, merge: bool = True):
+    def par_geary_auto(self, n_jobs: int = 4):
         """
         Calculates  Geary autocorrelation (240 values) from pydpi
         :return: dictionary with the 240 descriptors
@@ -373,12 +347,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_geary_auto)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # ################# COMPOSITION, TRANSITION, DISTRIBUTION ##################
 
-    def par_ctd(self, n_jobs: int = 4, merge: bool = True):
+    def par_ctd(self, n_jobs: int = 4):
         """
         Calculates the Composition Transition Distribution descriptors (147 values) from pydpi
         :return: dictionary with the 147 descriptors
@@ -387,12 +360,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_ctd)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # ################# CONJOINT TRIAD ##################
 
-    def par_conj_t(self, n_jobs: int = 4, merge: bool = True):
+    def par_conj_t(self, n_jobs: int = 4):
         """
         Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi
         :return: dictionary with the 343 descriptors
@@ -401,12 +373,11 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_conj_t)(seq) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # #################  SEQUENCE ORDER  ##################
 
-    def par_socn(self, maxlag: int = 45, n_jobs: int = 4, merge: bool = True):
+    def par_socn(self, maxlag: int = 45, n_jobs: int = 4):
         """
         Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
         :param maxlag: maximum lag. Smaller than length of the protein
@@ -416,10 +387,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_socn)(seq, maxlag) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_socn_p(self, maxlag: int = 45, distancematrix=None, n_jobs: int = 4, merge: bool = True):
+    def par_socn_p(self, maxlag: int = 45, distancematrix=None, n_jobs: int = 4):
         """
         Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
         :param maxlag: maximum lag. Smaller than length of the protein
@@ -430,10 +400,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_socn_p)(seq, maxlag, distancematrix) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def par_qso(self, maxlag: int = 30, weight: float = 0.1, n_jobs: int = 4, merge: bool = True):
+    def par_qso(self, maxlag: int = 30, weight: float = 0.1, n_jobs: int = 4):
         """
         Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
         :param maxlag: maximum lag. Smaller than length of the protein
@@ -444,11 +413,10 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_qso)(seq, maxlag, weight) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     def par_qso_p(self, maxlag: int = 30, weight: float = 0.1, distancematrix=None, n_jobs: int = 4,
-                  merge: bool = True):
+            ):
         """
         Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
         :param maxlag: maximum lag. Smaller than length of the protein
@@ -461,7 +429,6 @@ class ParDescritors:
             res = parallel(
                 delayed(adjuv_qso_p)(seq, maxlag, weight, distancematrix) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # ################# BASE CLASS PEPTIDE DESCRIPTOR ##################
@@ -471,7 +438,7 @@ class ParDescritors:
     amino acid sclaes include AASI, argos, bulkiness, charge_phys, charge_acid, eisenberg and others."""
 
     def calculate_moment(self, window: int = 1000, angle: int = 100, modality: str = 'max',
-                         scalename: str = 'Eisenberg', n_jobs: int = 4, merge: bool = True):
+                         scalename: str = 'Eisenberg', n_jobs: int = 4):
         """
         Calculates moment of sequence (1 value) from modlamp
         :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken
@@ -492,11 +459,10 @@ class ParDescritors:
             res = parallel(delayed(adjuv_calculate_moment)(seq, window, angle, modality, scalename)
                            for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     def calculate_global(self, window: int = 1000, modality: str = 'max', scalename: str = 'Eisenberg', n_jobs: int = 4,
-                         merge: bool = True):
+                    ):
         """
         Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp
         :param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
@@ -512,11 +478,10 @@ class ParDescritors:
             res = parallel(delayed(adjuv_calculate_global)(seq, window, modality, scalename)
                            for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     def calculate_profile(self, prof_type: str = 'uH', window: int = 7, scalename: str = 'Eisenberg', n_jobs: int = 4,
-                          merge: bool = True):
+                    ):
         """
         Calculates hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercep
         (2 values) from modlamp
@@ -533,10 +498,9 @@ class ParDescritors:
             res = parallel(delayed(adjuv_calculate_profile)(seq, prof_type, window, scalename) for seq in
                            self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def calculate_arc(self, modality: str = "max", scalename: str = 'peparc', n_jobs: int = 4, merge: bool = True):
+    def calculate_arc(self, modality: str = "max", scalename: str = 'peparc', n_jobs: int = 4):
         """
         Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only (5 values) from modlamp
         :param modality: maximum or mean
@@ -551,10 +515,9 @@ class ParDescritors:
                 delayed(adjuv_calculate_arc)(seq, modality, scalename)
                 for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def calculate_autocorr(self, window: int = 7, scalename: str = 'Eisenberg', n_jobs: int = 4, merge: bool = True):
+    def calculate_autocorr(self, window: int = 7, scalename: str = 'Eisenberg', n_jobs: int = 4):
         """
         Calculates autocorrelation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
         :param window: correlation window for descriptor calculation in a sliding window approach
@@ -565,10 +528,9 @@ class ParDescritors:
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_calculate_autocorr)(seq, window, scalename) for seq in self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
-    def calculate_crosscorr(self, window: int = 7, scalename: str = 'Eisenberg', n_jobs: int = 4, merge: bool = True):
+    def calculate_crosscorr(self, window: int = 7, scalename: str = 'Eisenberg', n_jobs: int = 4):
         """
         Calculates cross correlation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
         :param window:correlation window for descriptor calculation in a sliding window approach
@@ -580,47 +542,46 @@ class ParDescritors:
             res = parallel(delayed(adjuv_calculate_crosscorr)(seq, window, scalename) for seq in
                            self.dataset[self.col])
         res = pd.DataFrame(res)
-        if merge: self.result = self.result.merge(res, how='left', on='sequence', suffixes=('', '_DROP')).filter(regex='^(?!.*_DROP)')
         return res
 
     # ################# GET ALL FUNCTIONS ##################
 
-    def par_all_physicochemical(self, ph: float = 7, amide: bool = False, n_jobs: int = 4, merge: bool = True):
+    def par_all_physicochemical(self, ph: float = 7, amide: bool = False, n_jobs: int = 4):
         """
         Calculate all 15 geral descriptors functions derived from biopython and modlpam
         :param ph: for functions Charge, charge density and formula
         :param amide: for functions Charge, charge density and formula
         :return: dictionary with variable number of descriptors
         """
-        self.par_lenght(n_jobs=n_jobs, merge=merge)
-        self.par_charge(ph, amide, n_jobs=n_jobs, merge=merge)
-        self.par_charge_density(ph, amide, n_jobs=n_jobs, merge=merge)
-        self.par_formula(amide, n_jobs=n_jobs, merge=merge)
-        self.par_bond(n_jobs=n_jobs, merge=merge)
-        self.par_mw(n_jobs=n_jobs, merge=merge)
-        self.par_gravy(n_jobs=n_jobs, merge=merge)
-        self.par_aromacity(n_jobs=n_jobs, merge=merge)
-        self.par_isoelectric_point(n_jobs=n_jobs, merge=merge)
-        self.par_instability_index(n_jobs=n_jobs, merge=merge)
-        self.par_sec_struct(n_jobs=n_jobs, merge=merge)
-        self.par_molar_extinction_coefficient(n_jobs=n_jobs, merge=merge)
-        self.par_aliphatic_index(n_jobs=n_jobs, merge=merge)
-        self.par_boman_index(n_jobs=n_jobs, merge=merge)
-        self.par_hydrophobic_ratio(n_jobs=n_jobs, merge=merge)
+        self.par_lenght(n_jobs=n_jobs)
+        self.par_charge(ph, amide, n_jobs=n_jobs)
+        self.par_charge_density(ph, amide, n_jobs=n_jobs)
+        self.par_formula(amide, n_jobs=n_jobs)
+        self.par_bond(n_jobs=n_jobs)
+        self.par_mw(n_jobs=n_jobs)
+        self.par_gravy(n_jobs=n_jobs)
+        self.par_aromacity(n_jobs=n_jobs)
+        self.par_isoelectric_point(n_jobs=n_jobs)
+        self.par_instability_index(n_jobs=n_jobs)
+        self.par_sec_struct(n_jobs=n_jobs)
+        self.par_molar_extinction_coefficient(n_jobs=n_jobs)
+        self.par_aliphatic_index(n_jobs=n_jobs)
+        self.par_boman_index(n_jobs=n_jobs)
+        self.par_hydrophobic_ratio(n_jobs=n_jobs)
         return self.result
 
-    def par_all_aac(self, n_jobs: int = 4, merge: bool = True):
+    def par_all_aac(self, n_jobs: int = 4):
         """
         Calculate all descriptors from Amino Acid Composition
         :return: dictionary with values from AAC, DPC and TPC
         """
-        self.par_aa_comp(n_jobs=n_jobs, merge=merge)
-        self.par_dp_comp(n_jobs=n_jobs, merge=merge)
-        self.par_tp_comp(n_jobs=n_jobs, merge=merge)
+        self.par_aa_comp(n_jobs=n_jobs)
+        self.par_dp_comp(n_jobs=n_jobs)
+        self.par_tp_comp(n_jobs=n_jobs)
         return self.result
 
     def par_all_paac(self, lamda_paac: int = 10, weight_paac: float = 0.05, lamda_apaac: int = 10,
-                     weight_apaac: float = 0.05, n_jobs: int = 4, merge: bool = True):
+                     weight_apaac: float = 0.05, n_jobs: int = 4):
         """
         Calculate all descriptors from Pseudo Amino Acid Composition
         :param lamda_paac: parameter for PAAC default 10
@@ -629,12 +590,12 @@ class ParDescritors:
         :param weight_apaac: parameter for APAAC default 0.05
         :return: dictionary with values from PAAC and APAAC
         """
-        self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs, merge=merge)
-        self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs, merge=merge)
+        self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs)
+        self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs)
         return self.result
 
     def par_all_sequenceorder(self, maxlag_socn: int = 45, maxlag_qso: int = 30, weight_qso: float = 0.1,
-                              n_jobs: int = 4, merge: bool = True):
+                              n_jobs: int = 4):
         """
         Calculate all values for sequence order descriptors
         :param maxlag_socn: parameter for SOCN default 45
@@ -642,23 +603,23 @@ class ParDescritors:
         :param weight_qso: parameter for QSO default 0.1
         :return: dictionary with values for quasi sequence order and sequence order couplig numbers
         """
-        self.par_socn(maxlag_socn, n_jobs=n_jobs, merge=merge)
-        self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs, merge=merge)
+        self.par_socn(maxlag_socn, n_jobs=n_jobs)
+        self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs)
         return self.result
 
-    def par_all_correlation(self, n_jobs: int = 4, merge: bool = True):
+    def par_all_correlation(self, n_jobs: int = 4):
         """
         Calculate all descriptors from Autocorrelation
         :return: values for the funtions Moreau Broto, Moran and Geary autocorrelation
         """
-        self.par_moreau_broto_auto(n_jobs=n_jobs, merge=merge)
-        self.par_moran_auto(n_jobs=n_jobs, merge=merge)
-        self.par_geary_auto(n_jobs=n_jobs, merge=merge)
+        self.par_moreau_broto_auto(n_jobs=n_jobs)
+        self.par_moran_auto(n_jobs=n_jobs)
+        self.par_geary_auto(n_jobs=n_jobs)
         return self.result
 
     def par_all_base_class(self, window: int = 7, scalename: str = 'Eisenberg', scalename_arc: str = 'peparc',
                            angle: int = 100, modality: str = 'max',
-                           prof_type: str = 'uH', n_jobs: int = 4, merge: bool = True):
+                           prof_type: str = 'uH', n_jobs: int = 4):
         """
         Calculate all functions from Base class
         :param window:
@@ -676,12 +637,12 @@ class ParDescritors:
         if angle != 100 and angle != 180: raise Exception(
             "Parameter angle must be 100 (alpha helices) or 180 (beta sheets)")
 
-        self.calculate_autocorr(window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_crosscorr(window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_global(window, modality, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs, merge=merge)
+        self.calculate_autocorr(window, scalename, n_jobs=n_jobs)
+        self.calculate_crosscorr(window, scalename, n_jobs=n_jobs)
+        self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs)
+        self.calculate_global(window, modality, scalename, n_jobs=n_jobs)
+        self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs)
+        self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs)
         return self.result
 
     def par_all(self, ph: float = 7, amide: bool = False, lamda_paac: int = 10,
@@ -689,7 +650,7 @@ class ParDescritors:
                 maxlag_qso: int = 30, weight_qso: float = 0.1, window: int = 7,
                 scalename: str = 'Eisenberg', scalename_arc: str = 'peparc', angle: int = 100,
                 modality: str = 'max',
-                prof_type: str = 'uH', tricomp: bool = False, n_jobs: int = 4, merge: bool = True):
+                prof_type: str = 'uH', tricomp: bool = False, n_jobs: int = 4):
 
         """
         Calculate all descriptors from pydpi_py3 except tri-peptide pydpi_py3 and binary profiles
@@ -711,47 +672,47 @@ class ParDescritors:
         :return:dictionary with all features (value is variable)
         :param tricomp: true or false to calculate or not tri-peptide pydpi_py3
         """
-        self.par_lenght(n_jobs=n_jobs, merge=merge)
-        self.par_charge(ph, amide, n_jobs=n_jobs, merge=merge)
-        self.par_charge_density(ph, amide, n_jobs=n_jobs, merge=merge)
-        self.par_formula(amide, n_jobs=n_jobs, merge=merge)
-        self.par_bond(n_jobs=n_jobs, merge=merge)
-        self.par_mw(n_jobs=n_jobs, merge=merge)
-        self.par_gravy(n_jobs=n_jobs, merge=merge)
-        self.par_aromacity(n_jobs=n_jobs, merge=merge)
-        self.par_isoelectric_point(n_jobs=n_jobs, merge=merge)
-        self.par_instability_index(n_jobs=n_jobs, merge=merge)
-        self.par_sec_struct(n_jobs=n_jobs, merge=merge)
-        self.par_molar_extinction_coefficient(n_jobs=n_jobs, merge=merge)
+        self.par_lenght(n_jobs=n_jobs)
+        self.par_charge(ph, amide, n_jobs=n_jobs)
+        self.par_charge_density(ph, amide, n_jobs=n_jobs)
+        self.par_formula(amide, n_jobs=n_jobs)
+        self.par_bond(n_jobs=n_jobs)
+        self.par_mw(n_jobs=n_jobs)
+        self.par_gravy(n_jobs=n_jobs)
+        self.par_aromacity(n_jobs=n_jobs)
+        self.par_isoelectric_point(n_jobs=n_jobs)
+        self.par_instability_index(n_jobs=n_jobs)
+        self.par_sec_struct(n_jobs=n_jobs)
+        self.par_molar_extinction_coefficient(n_jobs=n_jobs)
 
-        self.par_aliphatic_index(n_jobs=n_jobs, merge=merge)
-        self.par_boman_index(n_jobs=n_jobs, merge=merge)
-        self.par_hydrophobic_ratio(n_jobs=n_jobs, merge=merge)
+        self.par_aliphatic_index(n_jobs=n_jobs)
+        self.par_boman_index(n_jobs=n_jobs)
+        self.par_hydrophobic_ratio(n_jobs=n_jobs)
 
         # pydpi_base
-        self.par_aa_comp(n_jobs=n_jobs, merge=merge)
-        self.par_dp_comp(n_jobs=n_jobs, merge=merge)
-        if tricomp == True: self.par_tp_comp(n_jobs=n_jobs, merge=merge)
-        self.par_moreau_broto_auto(n_jobs=n_jobs, merge=merge)
-        self.par_moran_auto(n_jobs=n_jobs, merge=merge)
-        self.par_geary_auto(n_jobs=n_jobs, merge=merge)
+        self.par_aa_comp(n_jobs=n_jobs)
+        self.par_dp_comp(n_jobs=n_jobs)
+        if tricomp == True: self.par_tp_comp(n_jobs=n_jobs)
+        self.par_moreau_broto_auto(n_jobs=n_jobs)
+        self.par_moran_auto(n_jobs=n_jobs)
+        self.par_geary_auto(n_jobs=n_jobs)
 
-        self.par_ctd(n_jobs=n_jobs, merge=merge)
-        self.par_conj_t(n_jobs=n_jobs, merge=merge)
+        self.par_ctd(n_jobs=n_jobs)
+        self.par_conj_t(n_jobs=n_jobs)
 
-        self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs, merge=merge)
-        self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs, merge=merge)
-        self.par_socn(maxlag_socn, n_jobs=n_jobs, merge=merge)
+        self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs)
+        self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs)
+        self.par_socn(maxlag_socn, n_jobs=n_jobs)
 
-        self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs, merge=merge)
+        self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs)
 
         # base class
-        self.calculate_autocorr(window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_crosscorr(window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_global(window, modality, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs, merge=merge)
-        self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs, merge=merge)
+        self.calculate_autocorr(window, scalename, n_jobs=n_jobs)
+        self.calculate_crosscorr(window, scalename, n_jobs=n_jobs)
+        self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs)
+        self.calculate_global(window, modality, scalename, n_jobs=n_jobs)
+        self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs)
+        self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs)
         return self.result
 
     def par_adaptable(self, list_of_functions=None, ph: float = 7, amide: bool = False, lamda_paac: int = 10,
@@ -759,7 +720,7 @@ class ParDescritors:
                       maxlag_socn: int = 45, maxlag_qso: int = 30, weight_qso: float = 0.1, distancematrix=None,
                       window: int = 7, scalename: str = 'Eisenberg', scalename_arc: str = 'peparc',
                       angle: int = 100, modality: str = 'max', prof_type: str = 'uH', tricomp: bool = False,
-                      n_jobs: int = 4, merge: bool = True):
+                      n_jobs: int = 4):
         """
         Function for parallelize the calculation of the user selected descriptors
 
@@ -785,68 +746,66 @@ class ParDescritors:
 		:return: pandas dataframe with all features
         """
         for function in list_of_functions:
-            if function == 1: self.par_lenght(n_jobs=n_jobs, merge=merge)
-            if function == 2: self.par_charge(ph, amide, n_jobs=n_jobs, merge=merge)
-            if function == 3: self.par_charge_density(ph, amide, n_jobs=n_jobs, merge=merge)
-            if function == 4: self.par_formula(amide, n_jobs=n_jobs, merge=merge)
-            if function == 5: self.par_bond(n_jobs=n_jobs, merge=merge)
-            if function == 6: self.par_mw(n_jobs=n_jobs, merge=merge)
-            if function == 7: self.par_gravy(n_jobs=n_jobs, merge=merge)
-            if function == 8: self.par_aromacity(n_jobs=n_jobs, merge=merge)
-            if function == 9: self.par_isoelectric_point(n_jobs=n_jobs, merge=merge)
-            if function == 10: self.par_instability_index(n_jobs=n_jobs, merge=merge)
-            if function == 11: self.par_sec_struct(n_jobs=n_jobs, merge=merge)
-            if function == 12: self.par_molar_extinction_coefficient(n_jobs=n_jobs, merge=merge)
-            if function == 13: self.par_flexibility(n_jobs=n_jobs, merge=merge)
-            if function == 14: self.par_aliphatic_index(n_jobs=n_jobs, merge=merge)
-            if function == 15: self.par_boman_index(n_jobs=n_jobs, merge=merge)
-            if function == 16: self.par_hydrophobic_ratio(n_jobs=n_jobs, merge=merge)
-            if function == 17: self.par_all_physicochemical(ph, amide, n_jobs=n_jobs, merge=merge)
+            if function == 1:  self.result = self.result.merge(self.par_lenght(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 2: self.result = self.result.merge(self.par_charge(ph, amide, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 3: self.result = self.result.merge(self.par_charge_density(ph, amide, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 4: self.result = self.result.merge(self.par_formula(amide, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 5: self.result = self.result.merge(self.par_bond(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 6: self.result = self.result.merge(self.par_mw(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 7: self.result = self.result.merge(self.par_gravy(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 8: self.result = self.result.merge(self.par_aromacity(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 9: self.result = self.result.merge(self.par_isoelectric_point(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 10: self.result = self.result.merge(self.par_instability_index(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 11: self.result = self.result.merge(self.par_sec_struct(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 12: self.result = self.result.merge(self.par_molar_extinction_coefficient(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 13: self.result = self.result.merge(self.par_flexibility(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 14: self.result = self.result.merge(self.par_aliphatic_index(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 15: self.result = self.result.merge(self.par_boman_index(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 16: self.result = self.result.merge(self.par_hydrophobic_ratio(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 17: self.result = self.result.merge(self.par_all_physicochemical(ph, amide, n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 18: self.par_aa_comp(n_jobs=n_jobs, merge=merge)
-            if function == 19: self.par_dp_comp(n_jobs=n_jobs, merge=merge)
-            if function == 20: self.par_tp_comp(n_jobs=n_jobs, merge=merge)
-            if function == 21: self.par_all_aac(n_jobs=n_jobs, merge=merge)
+            if function == 18: self.result = self.result.merge(self.par_aa_comp(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 19: self.result = self.result.merge(self.par_dp_comp(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 20: self.result = self.result.merge(self.par_tp_comp(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 21: self.result = self.result.merge(self.par_all_aac(n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 22: self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs, merge=merge)
-            if function == 23: self.par_paac_p(lamda_paac, weight_paac, AAP, n_jobs=n_jobs, merge=merge)
+            if function == 22: self.result = self.result.merge(self.par_paac(lamda_paac, weight_paac, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 23: self.result = self.result.merge(self.par_paac_p(lamda_paac, weight_paac, AAP, n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 24: self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs, merge=merge)
-            if function == 25: self.par_all_paac(lamda_paac, weight_paac, lamda_apaac, weight_apaac, n_jobs=n_jobs,
-                                                 merge=merge)
+            if function == 24: self.result = self.result.merge(self.par_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 25: self.result = self.result.merge(self.par_all_paac(lamda_paac, weight_paac, lamda_apaac, weight_apaac, n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 26: self.par_moreau_broto_auto(n_jobs=n_jobs, merge=merge)
-            if function == 27: self.par_moran_auto(n_jobs=n_jobs, merge=merge)
-            if function == 28: self.par_geary_auto(n_jobs=n_jobs, merge=merge)
-            if function == 29: self.par_all_correlation(n_jobs=n_jobs, merge=merge)
+            if function == 26: self.result = self.result.merge(self.par_moreau_broto_auto(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 27: self.result = self.result.merge(self.par_moran_auto(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 28: self.result = self.result.merge(self.par_geary_auto(n_jobs=n_jobs), how='left', on='sequence')
+            if function == 29: self.result = self.result.merge(self.par_all_correlation(n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 30: self.par_ctd(n_jobs=n_jobs, merge=merge)
+            if function == 30: self.result = self.result.merge(self.par_ctd(n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 31: self.par_conj_t(n_jobs=n_jobs, merge=merge)
+            if function == 31: self.result = self.result.merge(self.par_conj_t(n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 32: self.par_socn(maxlag_socn, n_jobs=n_jobs, merge=merge)
-            if function == 33: self.par_socn_p(maxlag_socn, distancematrix, n_jobs=n_jobs, merge=merge)
+            if function == 32: self.result = self.result.merge(self.par_socn(maxlag_socn, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 33: self.result = self.result.merge(self.par_socn_p(maxlag_socn, distancematrix, n_jobs=n_jobs), how='left', on='sequence')
 
-            if function == 34: self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs, merge=merge)
-            if function == 35: self.par_qso_p(maxlag_qso, weight_qso, distancematrix, n_jobs=n_jobs, merge=merge)
-            if function == 36: self.par_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso, n_jobs=n_jobs,
-                                                          merge=merge)
+            if function == 34: self.result = self.result.merge(self.par_qso(maxlag_qso, weight_qso, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 35: self.result = self.result.merge(self.par_qso_p(maxlag_qso, weight_qso, distancematrix, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 36: self.result = self.result.merge(self.par_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso, n_jobs=n_jobs), how='left', on='sequence')
 
             # base class can take some time to run
-            if function == 37: self.calculate_autocorr(window, scalename, n_jobs=n_jobs, merge=merge)
-            if function == 38: self.calculate_crosscorr(window, scalename, n_jobs=n_jobs, merge=merge)
-            if function == 39: self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs, merge=merge)
-            if function == 40: self.calculate_global(window, modality, scalename, n_jobs=n_jobs, merge=merge)
-            if function == 41: self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs, merge=merge)
-            if function == 42: self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs, merge=merge)
-            if function == 43: self.par_all_base_class(window, scalename, scalename_arc, angle, modality,
-                                                       prof_type, n_jobs=n_jobs, merge=merge)
+            if function == 37: self.result = self.result.merge(self.calculate_autocorr(window, scalename, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 38: self.result = self.result.merge(self.calculate_crosscorr(window, scalename, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 39: self.result = self.result.merge(self.calculate_moment(window, angle, modality, scalename, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 40: self.result = self.result.merge(self.calculate_global(window, modality, scalename, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 41: self.result = self.result.merge(self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 42: self.result = self.result.merge(self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs), how='left', on='sequence')
+            if function == 43: self.result = self.result.merge(self.par_all_base_class(window, scalename, scalename_arc, angle, modality,
+                                                       prof_type, n_jobs=n_jobs), how='left', on='sequence')
             if function == 44:
-                self.par_all(ph, amide, lamda_paac,
+                self.result = self.result.merge(self.par_all(ph, amide, lamda_paac,
                              weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
                              maxlag_qso, weight_qso, window, scalename,
                              scalename_arc, angle, modality,
-                             prof_type, tricomp, n_jobs=n_jobs, merge=merge)
+                             prof_type, tricomp, n_jobs=n_jobs), how='left', on='sequence')
 
         return self.result
 

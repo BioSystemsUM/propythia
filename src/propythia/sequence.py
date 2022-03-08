@@ -14,7 +14,7 @@ The class allows to:
 
 Authors:Ana Marta Sequeira, Miguel Barros
 
-Date: 01/2019
+Date: 01/2019 ALTERED 03/2022
 
 Email:
 

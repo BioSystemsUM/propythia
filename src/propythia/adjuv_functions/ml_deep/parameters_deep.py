@@ -14,7 +14,7 @@ Email:
 
 ##############################################################################
 """
-import keras
+from tensorflow.keras import optimizers
 
 # https://blog.usejournal.com/a-comparison-of-grid-search-and-randomized-search-using-scikit-learn-29823179bc85
 # https://blog.usejournal.com/a-comparison-of-grid-search-and-randomized-search-using-scikit-learn-29823179bc85
@@ -46,14 +46,14 @@ import keras
 
 
 # OPTIMIZERS
-lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=1e-2, decay_steps=10000, decay_rate=0.9)
-opt1 = keras.optimizers.SGD(learning_rate=lr_schedule)
-opt2 = keras.optimizers.SGD(learning_rate=0.001)
-opt3 = keras.optimizers.Adam(learning_rate=lr_schedule)
-opt4 = keras.optimizers.Adam(learning_rate=0.001)
-opt5 = keras.optimizers.Adam(learning_rate=0.01)
-opt6 = keras.optimizers.RMSprop(learning_rate=lr_schedule)
-opt7 = keras.optimizers.RMSprop(learning_rate=0.001)
+lr_schedule = optimizers.schedules.ExponentialDecay(initial_learning_rate=1e-2, decay_steps=10000, decay_rate=0.9)
+opt1 = optimizers.SGD(learning_rate=lr_schedule)
+opt2 = optimizers.SGD(learning_rate=0.001)
+opt3 = optimizers.Adam(learning_rate=lr_schedule)
+opt4 = optimizers.Adam(learning_rate=0.001)
+opt5 = optimizers.Adam(learning_rate=0.01)
+opt6 = optimizers.RMSprop(learning_rate=lr_schedule)
+opt7 = optimizers.RMSprop(learning_rate=0.001)
 
 
 def param_deep():
