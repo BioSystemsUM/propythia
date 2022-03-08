@@ -288,31 +288,32 @@ class DNADescriptor:
 
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
-    def get_PseDNC(self, lamda=3, w=0.05, normalize=False):
+    def get_PseDNC(self, lamda=3, w=0.05):
         """
         From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
         Calculates the Pseudo Dinucleotide Composition Descriptor of DNA sequences
         :param lamda: value of lambda
         :param w: value of w
-        :param normalize: default value is False. If True, this method returns the frequencies of each Pseudo Dinucleotide Composition Descriptor.
         :return: dictionary with values of Pseudo Dinucleotide Composition Descriptor
         """
-        d = {'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
-             'AC': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
-             'AG': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
-             'AT': [1.07, 0.22, 0.62, -1.02, 2.51, 1.17],
-             'CA': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
-             'CC': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
-             'CG': [-1.66, -1.22, -0.44, -0.82, -0.29, -1.39],
-             'CT': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
-             'GA': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
-             'GC': [-0.08, 0.22, 1.33, -0.35, 0.65, 1.59],
-             'GG': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
-             'GT': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
-             'TA': [-1.23, -2.37, -0.44, -2.24, -1.51, -1.39],
-             'TC': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
-             'TG': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
-             'TT': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11]}
+        d = {
+            'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
+            'AC': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+            'AG': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+            'AT': [1.07, 0.22, 0.62, -1.02, 2.51, 1.17],
+            'CA': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+            'CC': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+            'CG': [-1.66, -1.22, -0.44, -0.82, -0.29, -1.39],
+            'CT': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+            'GA': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+            'GC': [-0.08, 0.22, 1.33, -0.35, 0.65, 1.59],
+            'GG': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+            'GT': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+            'TA': [-1.23, -2.37, -0.44, -2.24, -1.51, -1.39],
+            'TC': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+            'TG': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+            'TT': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11]
+        }
 
         fk = self.get_dinucleotide_composition(normalize=True)
         all_possibilites = [''.join(i) for i in product('ATCG', repeat=2)]
@@ -348,8 +349,63 @@ class DNADescriptor:
 
         return res
 
-    def get_PseKNC(self):
-        pass
+    def get_PseKNC(self, k=3, lamda=1, w=0.5):
+        """
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Calculates the Pseudo K Composition Descriptor of DNA sequences
+        :param lamda: value of lambda
+        :param w: value of w
+        :return: dictionary with values of Pseudo K Composition Descriptor
+        """
+        d = {
+            'AA': [0.06, 0.5, 0.09, 1.59, 0.11, -0.11],
+            'AC': [1.50, 0.50, 1.19, 0.13, 1.29, 1.04],
+            'AG': [0.78, 0.36, -0.28, 0.68, -0.24, -0.62],
+            'AT': [1.07, 0.22, 0.83, -1.02, 2.51, 1.17],
+            'CA': [-1.38, -1.36, -1.01, -0.86, -0.62, -1.25],
+            'CC': [0.06, 1.08, -0.28, 0.56, -0.82, 0.24],
+            'CG': [-1.66, -1.22, -1.38, -0.82, -0.29, -1.39],
+            'CT': [0.78, 0.36, -0.28, 0.68, -0.24, -0.62],
+            'GA': [-0.08, 0.5, 0.09, 0.13, -0.39, 0.71],
+            'GC': [-0.08, 0.22, 2.3, -0.35, 0.65, 1.59],
+            'GG': [0.06, 1.08, -0.28, 0.56, -0.82, 0.24],
+            'GT': [1.50, 0.50, 1.19, 0.13, 1.29, 1.04],
+            'TA': [-1.23, -2.37, -1.38, -2.24, -1.51, -1.39],
+            'TC': [-0.08, 0.5, 0.09, 0.13, -0.39, 0.71],
+            'TG': [-1.38, -1.36, -1.01, -0.86, -0.62, -1.25],
+            'TT': [0.06, 0.5, 0.09, 1.59, 0.11, -0.11]
+        }
+        fk = self.get_kmer(k=k, normalize=True)
+        all_possibilites = [''.join(i) for i in product('ATCG', repeat=k)]
+
+        thetas = []
+        L = len(self.dna_sequence)
+        for i in range(lamda):
+            big_somatorio = 0
+            for j in range(L-lamda-1):
+                somatorio = 0
+                first_dinucleotide = self.dna_sequence[j:j+2]
+                second_dinucleotide = self.dna_sequence[j+i+1:j+i+1+2]
+                for k in range(6):
+                    val = (d[first_dinucleotide][k] -
+                           d[second_dinucleotide][k])**2
+                    somatorio += val
+                big_somatorio += somatorio/6
+
+            # Theta calculation
+            theta = big_somatorio / (L-i-2)
+            thetas.append(theta)
+
+        # --------------------------------------------
+
+        res = {}
+        for i in all_possibilites:
+            res[i] = round(fk[i] / (1 + w * sum(thetas)), 3)
+
+        for i in range(lamda):
+            res["lambda."+str(i+1)] = round(w * thetas[i] /
+                                            (1 + w * sum(thetas)), 3)
+        return res
 
     # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
 
