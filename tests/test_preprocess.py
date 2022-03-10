@@ -20,7 +20,7 @@ import pandas as pd
 
 class Test_preprocessing(TestCase):
 
-    # ################# PHYSICO CHEMICAL DESCRIPTORS  ##################
+    ################## PHYSICO CHEMICAL DESCRIPTORS  ##################
 
     def setUp(self):
         test_data = {'sequence': {0: 'MSYKPIAPAPSSTPGSSTPGPGTPVPTGSVPSPSGSVPGAGAPFRPLFNDFGPPSMGYVQAMKPPGAQGSQSTYTDLLSVIEEMGKEIRPTYAGSKSAMERLKRGIIHARALVRECLAETERNART',
@@ -36,10 +36,6 @@ class Test_preprocessing(TestCase):
                      'TCDB_ID': {0: '0', 1: '0', 2: '0', 3: '0', 4: '0', 5: '0', 6: '0', 7: '0', 8: '0', 9: '0'}}
 
         self.dataset = pd.DataFrame(test_data)
-        # sequence = ReadSequence()  # create the object to process the sequencedsic
-        # dataset = sequence.par_preprocessing_20AA(dataset, 'sequence')
-        # self.dataset = ParDescritors(dataset, 'sequence')  # creating object to calculate descriptors
-
     def test_preprocessing20AA(self):
         protein = "ARNDCEQGHILKMFPSTWYVBZUOJX"
         res1 = 'ARNDCEQGHILKMFPSTWYVNQCKI'
