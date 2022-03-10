@@ -6,7 +6,7 @@ It contains descriptors from packages pydpi, biopython, pfeature and modlamp.
 
 Authors: Miguel Barros
 
-Date: 02/2022
+Date: 03/2022
 
 Email:
 
@@ -58,7 +58,7 @@ class ProteinDescritors:
         Calculates lenght of sequence (number of aa)
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of lenght
+        :return: Dataframe with the value of lenght for each sequence in the dataset
         """
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_lenght)(seq) for seq in self.dataset[self.col])
@@ -72,7 +72,7 @@ class ProteinDescritors:
         :param ph: ph considered to calculate. 7.4 by default
         :param amide: by default is not considered an amide protein sequence.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of charge
+        :return: Dataframe with the value of charge for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -87,7 +87,7 @@ class ProteinDescritors:
         :param ph: ph considered to calculate. 7 by default
         :param amide: by default is not considered an amide protein sequence.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of charge density
+        :return: Dataframe with the value of charge density for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -101,7 +101,7 @@ class ProteinDescritors:
 
         :param amide: by default is not considered an amide protein sequence.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 5 values of C,H,N,O and S
+        :return: Dataframe with the 5 values of C,H,N,O and S for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -116,7 +116,7 @@ class ProteinDescritors:
         total number of bonds (including aromatic), hydrogen bond, single bond and double bond.
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with 4 values
+        :return: Dataframe with 4 values for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -129,7 +129,7 @@ class ProteinDescritors:
         Calculates molecular weight of sequence (1 value) from modlamp
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of molecular weight
+        :return: Dataframe with the value of molecular weight for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -142,7 +142,7 @@ class ProteinDescritors:
         Calculates Gravy from sequence (1 value) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of gravy
+        :return: Dataframe with the value of gravy for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -155,7 +155,7 @@ class ProteinDescritors:
         Calculates Aromacity from sequence (1 value) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of aromacity
+        :return: Dataframe with the value of aromacity for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -168,7 +168,7 @@ class ProteinDescritors:
         Calculates Isolectric Point from sequence (1 value) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of Isolectric Point
+        :return: Dataframe with the value of Isolectric Point for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -181,7 +181,7 @@ class ProteinDescritors:
         Calculates Instability index from sequence (1 value) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of Instability index
+        :return: Dataframe with the value of Instability index  for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -194,7 +194,7 @@ class ProteinDescritors:
         Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 3 value of helix, turn, sheet
+        :return: Dataframe with the 3 value of helix, turn, sheet for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -208,7 +208,7 @@ class ProteinDescritors:
         Calculates the molar extinction coefficient (2 values) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)
+        :return: Dataframe with the value of reduced cysteins and oxidized (with disulfid bridges) for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -221,7 +221,7 @@ class ProteinDescritors:
         Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with proteinsequencelenght-9 values of flexiblity
+        :return: Dataframe with proteinsequencelenght-9 values of flexiblity for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -234,7 +234,7 @@ class ProteinDescritors:
         Calculates aliphatic index of sequence (1 value) from modlamp
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of aliphatic index
+        :return: Dataframe with the value of aliphatic index for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -247,7 +247,7 @@ class ProteinDescritors:
         Calculates boman index of sequence (1 value) from modlamp
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of boman index
+        :return: Dataframe with the value of boman index for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -260,7 +260,7 @@ class ProteinDescritors:
         Calculates hydrophobic ratio of sequence (1 value) from modlamp
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the value of hydrophobic ratio
+        :return: Dataframe with the value of hydrophobic ratio for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -275,7 +275,7 @@ class ProteinDescritors:
         Calculates amino acid compositon (20 values)  from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all 20 aa(keys are the aa)
+        :return: Dataframe with the fractions of all 20 aa(keys are the aa) for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -288,7 +288,7 @@ class ProteinDescritors:
         Calculates dipeptide composition (400 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all 400 possible combiinations of 2 aa
+        :return: Dataframe with the fractions of all 400 possible combiinations of 2 aa for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -301,7 +301,7 @@ class ProteinDescritors:
         Calculates tripeptide composition (8000 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all 8000 possible combinations of 3 aa
+        :return: Dataframe with the fractions of all 8000 possible combinations of 3 aa for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -321,7 +321,7 @@ class ProteinDescritors:
         :param weight: weight on the additional PseAA components. with respect to the conventional AA components.
                     The user can select any value within the region from 0.05 to 0.7 for the weight factor.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all PAAC (keys are the PAAC). Number of keys depends on lamda
+        :return: Dataframe with the fractions of all PAAC (keys are the PAAC) for each sequence in the dataset. Number of keys depends on lamda
         """
         with Parallel(n_jobs=n_jobs) as parallel:
             res = parallel(delayed(adjuv_paac)(seq, lamda, weight) for seq in self.dataset[self.col])
@@ -341,7 +341,7 @@ class ProteinDescritors:
                 PseudoAAC._Hydrophobicity,PseudoAAC._hydrophilicity, PseudoAAC._residuemass,PseudoAAC._pK1,
                 PseudoAAC._pK2,PseudoAAC._pI
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
+        :return: Dataframe with the fractions of all PAAC(keys are the PAAC) for each sequence in the dataset. Number of keys depends on lamda
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -359,7 +359,7 @@ class ProteinDescritors:
         :param weight: weight on the additional PseAA components. with respect to the conventional AA components.
                     The user can select any value within the region from 0.05 to 0.7 for the weight factor.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the fractions of all PAAC(keys are the PAAC). Number of keys depends on lamda
+        :return: Dataframe with the fractions of all PAAC(keys are the PAAC) for each sequence in the dataset. Number of keys depends on lamda
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -374,7 +374,7 @@ class ProteinDescritors:
         Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 240 descriptors
+        :return: Dataframe with the 240 descriptors for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -387,7 +387,7 @@ class ProteinDescritors:
         Calculates  Moran autocorrelation (240 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 240 descriptors
+        :return: Dataframe with the 240 descriptors for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -400,7 +400,7 @@ class ProteinDescritors:
         Calculates  Geary autocorrelation (240 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 240 descriptors
+        :return: Dataframe with the 240 descriptors for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -415,7 +415,7 @@ class ProteinDescritors:
         Calculates the Composition Transition Distribution descriptors (147 values) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 147 descriptors
+        :return: Dataframe with the 147 descriptors for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -430,7 +430,7 @@ class ProteinDescritors:
         Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the 343 descriptors
+        :return: Dataframe with the 343 descriptors for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -446,7 +446,7 @@ class ProteinDescritors:
 
         :param maxlag: maximum lag. Smaller than length of the protein
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the descriptors (90 descriptors)
+        :return: Dataframe with the descriptors (90 descriptors) for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -461,7 +461,7 @@ class ProteinDescritors:
         :param maxlag: maximum lag. Smaller than length of the protein
         :param distancematrix: dict form containing 400 distance values
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the descriptors (90 descriptors)
+        :return: Dataframe with the descriptors (90 descriptors) for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -476,7 +476,7 @@ class ProteinDescritors:
         :param maxlag: maximum lag. Smaller than length of the protein
         :param weight:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the descriptors (100 descriptors)
+        :return: Dataframe with the descriptors (100 descriptors) for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -493,7 +493,7 @@ class ProteinDescritors:
         :param weight:
         :param distancematrix: dict form containing 400 distance values
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with the descriptors (100 descriptors)
+        :return: Dataframe with the descriptors (100 descriptors)
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -505,7 +505,7 @@ class ProteinDescritors:
     # ################# BASE CLASS PEPTIDE DESCRIPTOR ##################
 
     """amino acid descriptor scales available are the ones from modlamo. 
-    For more information please check:  https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
+    For more information please check: https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor
     amino acid sclaes include AASI, argos, bulkiness, charge_phys, charge_acid, eisenberg and others."""
 
     def calculate_moment(self, window: int = 1000, angle: int = 100, modality: str = 'max',
@@ -519,7 +519,7 @@ class ProteinDescritors:
         :param modality: maximum or mean hydrophobic moment
         :param scalename:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with one value of moment
+        :return: Dataframe with one value of moment for each sequence in the dataset
         """
         if modality != 'max' and modality != 'mean' and modality != 'all': raise Exception(
             "Parameter modality must be 'max' (maximum), 'mean' (mean) or 'all'")
@@ -543,7 +543,7 @@ class ProteinDescritors:
         :param modality: maximum or mean hydrophobic moment
         :param scalename:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with one value
+        :return: Dataframe with one value for each sequence in the dataset
         """
         if modality != 'max' and modality != 'mean' and modality != 'all': raise Exception(
             "Parameter modality must be 'max' (maximum), 'mean' (mean) or 'all'")
@@ -564,7 +564,7 @@ class ProteinDescritors:
         :param window: size of sliding window used (odd-numbered)
         :param scalename:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with two value
+        :return: Dataframe with two value for each sequence in the dataset
         """
         if prof_type != 'H' and prof_type != 'uH': raise Exception(
             "Parameter prof_type must be 'H' (hydrophobicity) or 'uH' (hydrophobic)")
@@ -582,7 +582,7 @@ class ProteinDescritors:
         :param modality: maximum or mean
         :param scalename: binary amino acid scales only
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with 5 values
+        :return: Dataframe with 5 values for each sequence in the dataset
         """
         if modality != 'max' and modality != 'mean' and modality != 'all': raise Exception(
             "Parameter modality must be 'max' (maximum), 'mean' (mean) or 'all'")
@@ -601,7 +601,7 @@ class ProteinDescritors:
         :param window: correlation window for descriptor calculation in a sliding window approach
         :param scalename:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with values of autocorrelation
+        :return: Dataframe with values of autocorrelation for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -616,7 +616,7 @@ class ProteinDescritors:
         :param window:correlation window for descriptor calculation in a sliding window approach
         :param scalename:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with values of crosscorrelation
+        :return: Dataframe with values of crosscorrelation for each sequence in the dataset
         """
 
         with Parallel(n_jobs=n_jobs) as parallel:
@@ -634,7 +634,7 @@ class ProteinDescritors:
         :param ph: for functions Charge, charge density and formula
         :param amide: for functions Charge, charge density and formula
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with variable number of descriptors
+        :return: Dataframe with variable number of descriptors for each sequence in the dataset
         """
         self.result = self.result.merge(self.get_lenght(n_jobs=n_jobs), how='left', on='sequence')
         self.result = self.result.merge(self.get_charge(ph, amide, n_jobs=n_jobs), how='left', on='sequence')
@@ -658,7 +658,7 @@ class ProteinDescritors:
         Calculate all descriptors from Amino Acid Composition
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with values from AAC, DPC and TPC
+        :return: Dataframe with values from AAC, DPC and TP for each sequence in the dataset
         """
         self.result = self.result.merge(self.get_aa_comp(n_jobs=n_jobs), how='left', on='sequence')
         self.result = self.result.merge(self.get_dp_comp(n_jobs=n_jobs), how='left', on='sequence')
@@ -675,7 +675,7 @@ class ProteinDescritors:
         :param lamda_apaac: parameter for APAAC default 10
         :param weight_apaac: parameter for APAAC default 0.05
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with values from PAAC and APAAC
+        :return: Dataframe with values from PAAC and APAAC  for each sequence in the dataset
         """
         self.result = self.result.merge(self.get_paac(lamda_paac, weight_paac, n_jobs=n_jobs), how='left',
                                         on='sequence')
@@ -692,7 +692,8 @@ class ProteinDescritors:
         :param maxlag_qso: parameter for QSO default 30
         :param weight_qso: parameter for QSO default 0.1
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with values for quasi sequence order and sequence order couplig numbers
+        :return: Dataframe with values for quasi sequence order and sequence order couplig numbers for each sequence
+            in the dataset
         """
         self.result = self.result.merge(self.get_socn(maxlag_socn, n_jobs=n_jobs), how='left', on='sequence')
         self.result = self.result.merge(self.get_qso(maxlag_qso, weight_qso, n_jobs=n_jobs), how='left', on='sequence')
@@ -703,7 +704,8 @@ class ProteinDescritors:
         Calculate all descriptors from Autocorrelation
 
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: values for the funtions Moreau Broto, Moran and Geary autocorrelation
+        :return: Datframe containing values for the funtions Moreau Broto, Moran and Geary autocorrelation for each
+            sequence in the dataset
         """
         self.result = self.result.merge(self.get_moreau_broto_auto(n_jobs=n_jobs), how='left', on='sequence')
         self.result = self.result.merge(self.get_moran_auto(n_jobs=n_jobs), how='left', on='sequence')
@@ -723,7 +725,7 @@ class ProteinDescritors:
         :param modality:
         :param prof_type:
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: dictionary with all 6 base class peptide descriptors (the value is variable)
+        :return: Dataframe with all 6 base class peptide descriptors (the value is variable) for each sequence in the dataset
         """
         if prof_type != 'H' and prof_type != 'uH': raise Exception(
             "Parameter prof_type must be 'H' (hydrophobicity) or 'uH' (hydrophobic)")
@@ -773,7 +775,7 @@ class ProteinDescritors:
         :param prof_type:parameters for base class descriptors
         :param tricomp: true or false to calculate or not tri-peptide pydpi_py3
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores.
-        :return:dictionary with all features (value is variable)
+        :return: Dataframe with all features (value is variable)  for each sequence in the dataset
         """
         self.result = self.result.merge(self.get_lenght(n_jobs=n_jobs), how='left', on='sequence')
         self.result = self.result.merge(self.get_charge(ph, amide, n_jobs=n_jobs), how='left', on='sequence')
@@ -854,10 +856,10 @@ class ProteinDescritors:
 		:param modality:parameters for base class descriptors
 		:param prof_type:parameters for base class descriptors
 		:param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-		:return: pandas dataframe with all features
+		:return: Dataframe with the selected features for each sequence in the dataset
         """
         for function in list_of_functions:
-            if function == 1:  self.result = self.result.merge(self.get_lenght(n_jobs=n_jobs), how='left',
+            if function == 1: self.result = self.result.merge(self.get_lenght(n_jobs=n_jobs), how='left',
                                                                on='sequence')
             if function == 2: self.result = self.result.merge(self.get_charge(ph, amide, n_jobs=n_jobs), how='left',
                                                               on='sequence')
@@ -1113,7 +1115,7 @@ def adjuv_sec_struct(protein_sequence):
 
 
 def adjuv_molar_extinction_coefficient(
-        protein_sequence):  # [reduced, oxidized] # with reduced cysteines / # with disulfid bridges
+        protein_sequence): # [reduced, oxidized] # with reduced cysteines / # with disulfid bridges
     """
     Calculates the molar extinction coefficient (2 values) from biopython
     :return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)
