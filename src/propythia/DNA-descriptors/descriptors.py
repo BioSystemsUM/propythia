@@ -15,7 +15,7 @@ Email:
 """
 
 
-from util import make_kmer_list, make_kmer_dict
+from util import make_kmer_list, make_kmer_dict, ready_acc, make_ac_vector, make_cc_vector
 from functools import reduce
 
 
@@ -280,35 +280,30 @@ class DNADescriptor:
         :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 2
-        from util import ready_acc, make_ac_vector
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
 
     def get_DCC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DCC vector.
 
-        :param input_data: file object or sequence list.
         :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
-                                   It means user-defined phyche_index.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 2
-        from util import ready_acc, make_cc_vector
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
 
     def get_DACC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DACC vector.
 
-        :param input_data: file object or sequence list.
         :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
-                                   It means user-defined phyche_index.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 2
-        from util import make_ac_vector, make_cc_vector, ready_acc
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         zipped = list(zip(make_ac_vector([self.dna_sequence], nlag, phyche_value, k),
                           make_cc_vector([self.dna_sequence], nlag, phyche_value, k)))
@@ -319,44 +314,37 @@ class DNADescriptor:
     def get_TAC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TAC vector.
 
-        :param input_data: file object or sequence list.
         :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
-                                   It means user-defined phyche_index.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 3
-        from util import ready_acc, make_ac_vector
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
-
         return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
 
     def get_TCC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TCC vector.
 
-        :param input_data: file object or sequence list.
         :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
-                                   It means user-defined phyche_index.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 3
-        from util import make_cc_vector, ready_acc
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
 
         return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
 
     def get_TACC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make DAC vector.
+        """Make get_TACC vector.
 
-        :param input_data: file object or sequence list.
         :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
-                                   It means user-defined phyche_index.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
         """
         k = 3
-        from util import make_ac_vector, make_cc_vector, ready_acc
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
 
         zipped = list(zip(make_ac_vector([self.dna_sequence], nlag, phyche_value, k),
@@ -506,11 +494,12 @@ class DNADescriptor:
         res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
         res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
         res['binary'] = self.get_binary()
+        res['DAC'] = self.get_DAC()
+        res['DCC'] = self.get_DCC()
+        res['DACC'] = self.get_DACC()
+        res['TAC'] = self.get_TAC()
+        res['TCC'] = self.get_TCC()
+        res['TACC'] = self.get_TACC()
+        res['PseDNC'] = self.get_PseDNC()
+        res['PseKNC'] = self.get_PseKNC()
         return res
-
-
-if __name__ == '__main__':
-    dna = DNADescriptor('GACTGAACTGCACTTTGGTTTCATATTATTTGCTC')
-    print(dna.get_TAC())
-    print(dna.get_TCC())
-    print(dna.get_TACC())
