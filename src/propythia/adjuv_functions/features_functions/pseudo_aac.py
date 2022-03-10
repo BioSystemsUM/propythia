@@ -356,7 +356,7 @@ def get_a_pseudo_aac2(protein_sequence, lamda=30, weight=0.5):
     result = {}
     temp = 1 + weight * sum(rightpart)
     for index in range(20, 20 + 2 * lamda):
-        result['PAAC' + str(index + 1)] = round(weight * rightpart[index - 20] / temp * 100, 3)
+        result['APAAC' + str(index + 1)] = round(weight * rightpart[index - 20] / temp * 100, 3)
 
     return result
 
