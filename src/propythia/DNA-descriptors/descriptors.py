@@ -15,7 +15,8 @@ Email:
 """
 
 
-from itertools import product
+from util import make_kmer_list, make_kmer_dict
+from functools import reduce
 
 
 class DNADescriptor:
@@ -26,6 +27,8 @@ class DNADescriptor:
         'G': 'C',
         'C': 'G'
     }
+
+    ALPHABET = 'ACGT'
 
     """
     The Descriptor class collects all descriptor calculation functions into a simple class.
@@ -75,7 +78,7 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
         :return: dictionary with values of nucleic acid composition
         """
-        res = {''.join(i): 0 for i in product('ATCG', repeat=1)}
+        res = make_kmer_dict(1)
         for letter in self.dna_sequence:
             res[letter] += 1
 
@@ -116,7 +119,7 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each dinucleotide.
         :return: dictionary with values of dinucleotide composition
         """
-        res = {''.join(i): 0 for i in product('ATCG', repeat=2)}
+        res = make_kmer_dict(2)
         for i in range(len(self.dna_sequence) - 1):
             dinucleotide = self.dna_sequence[i:i+2]
             res[dinucleotide] += 1
@@ -133,7 +136,7 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each trinucleotide.
         :return: dictionary with values of trinucleotide composition
         """
-        res = {''.join(i): 0 for i in product('ATCG', repeat=3)}
+        res = make_kmer_dict(3)
         for i in range(len(self.dna_sequence) - 2):
             trinucleotide = self.dna_sequence[i:i+3]
             res[trinucleotide] += 1
@@ -152,7 +155,7 @@ class DNADescriptor:
         :param normalize: default value is False. If True, this method returns the frequencies of each k-spaced nucleic acid pair.
         :return: dictionary with values of k-spaced nucleic acid pairs
         """
-        res = {''.join(i): 0 for i in product('ATCG', repeat=2)}
+        res = make_kmer_dict(2)
         for i in range(len(self.dna_sequence) - k - 1):
             k_spaced_nucleic_acid_pair = self.dna_sequence[i] + \
                 self.dna_sequence[i+k+1]
@@ -173,7 +176,7 @@ class DNADescriptor:
         :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
         :return: dictionary with values of kmer
         """
-        res = {''.join(i): 0 for i in product('ATCG', repeat=k)}
+        res = make_kmer_dict(k)
 
         for i in range(len(self.dna_sequence) - k + 1):
             res[self.dna_sequence[i:i+k]] += 1
@@ -268,23 +271,99 @@ class DNADescriptor:
 
     # --------------------------  Autocorrelation  -------------------------- #
 
-    def get_DAC():
-        pass
+    def get_DAC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make DAC vector.
 
-    def get_DCC():
-        pass
+        :param phyche_index: physicochemical properties list.
+        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+        """
+        k = 2
+        from util import ready_acc, make_ac_vector
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
 
-    def get_DACC():
-        pass
+    def get_DCC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make DCC vector.
 
-    def get_TAC():
-        pass
+        :param input_data: file object or sequence list.
+        :param phyche_index: physicochemical properties list.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
+                                   It means user-defined phyche_index.
+        """
+        k = 2
+        from util import ready_acc, make_cc_vector
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
 
-    def get_TCC():
-        pass
+    def get_DACC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make DACC vector.
 
-    def get_DACC():
-        pass
+        :param input_data: file object or sequence list.
+        :param phyche_index: physicochemical properties list.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
+                                   It means user-defined phyche_index.
+        """
+        k = 2
+        from util import make_ac_vector, make_cc_vector, ready_acc
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+        zipped = list(zip(make_ac_vector([self.dna_sequence], nlag, phyche_value, k),
+                          make_cc_vector([self.dna_sequence], nlag, phyche_value, k)))
+        vector = [reduce(lambda x, y: x + y, e) for e in zipped]
+
+        return vector
+
+    def get_TAC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make TAC vector.
+
+        :param input_data: file object or sequence list.
+        :param phyche_index: physicochemical properties list.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
+                                   It means user-defined phyche_index.
+        """
+        k = 3
+        from util import ready_acc, make_ac_vector
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+
+        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
+
+    def get_TCC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make TCC vector.
+
+        :param input_data: file object or sequence list.
+        :param phyche_index: physicochemical properties list.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
+                                   It means user-defined phyche_index.
+        """
+        k = 3
+        from util import make_cc_vector, ready_acc
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+
+        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
+
+    def get_TACC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
+        """Make DAC vector.
+
+        :param input_data: file object or sequence list.
+        :param phyche_index: physicochemical properties list.
+        :param all_property: bool, choose all physicochemical properties or not.
+        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list.
+                                   It means user-defined phyche_index.
+        """
+        k = 3
+        from util import make_ac_vector, make_cc_vector, ready_acc
+        phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
+
+        zipped = list(zip(make_ac_vector([self.dna_sequence], nlag, phyche_value, k),
+                          make_cc_vector([self.dna_sequence], nlag, phyche_value, k)))
+        vector = [reduce(lambda x, y: x + y, e) for e in zipped]
+
+        return vector
 
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
@@ -316,7 +395,7 @@ class DNADescriptor:
         }
 
         fk = self.get_dinucleotide_composition(normalize=True)
-        all_possibilites = [''.join(i) for i in product('ATCG', repeat=2)]
+        all_possibilites = make_kmer_list(2)
 
         thetas = []
         L = len(self.dna_sequence)
@@ -376,7 +455,7 @@ class DNADescriptor:
             'TT': [0.06, 0.5, 0.09, 1.59, 0.11, -0.11]
         }
         fk = self.get_kmer(k=k, normalize=True)
-        all_possibilites = [''.join(i) for i in product('ATCG', repeat=k)]
+        all_possibilites = make_kmer_list(k)
 
         thetas = []
         L = len(self.dna_sequence)
@@ -428,3 +507,10 @@ class DNADescriptor:
         res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
         res['binary'] = self.get_binary()
         return res
+
+
+if __name__ == '__main__':
+    dna = DNADescriptor('GACTGAACTGCACTTTGGTTTCATATTATTTGCTC')
+    print(dna.get_TAC())
+    print(dna.get_TCC())
+    print(dna.get_TACC())
