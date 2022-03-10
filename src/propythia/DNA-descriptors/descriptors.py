@@ -274,6 +274,8 @@ class DNADescriptor:
     def get_DAC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DAC vector.
 
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
+
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
@@ -286,6 +288,8 @@ class DNADescriptor:
     def get_DCC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DCC vector.
 
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
+
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
@@ -297,6 +301,8 @@ class DNADescriptor:
 
     def get_DACC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DACC vector.
+
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
 
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
@@ -314,6 +320,8 @@ class DNADescriptor:
     def get_TAC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TAC vector.
 
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
+
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
         :param all_property: bool, choose all physicochemical properties or not.
@@ -325,6 +333,8 @@ class DNADescriptor:
 
     def get_TCC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TCC vector.
+
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
 
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
@@ -338,6 +348,8 @@ class DNADescriptor:
 
     def get_TACC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make get_TACC vector.
+
+        CODE FROM repDNA (https://github.com/liufule12/repDNA)
 
         :param phyche_index: physicochemical properties list.
         :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
