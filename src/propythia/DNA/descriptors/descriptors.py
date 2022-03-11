@@ -15,7 +15,7 @@ Email:
 """
 
 
-from util import make_kmer_list, make_kmer_dict, ready_acc, make_ac_vector, make_cc_vector
+from utils import make_kmer_list, make_kmer_dict, ready_acc, make_ac_vector, make_cc_vector
 from functools import reduce
 
 

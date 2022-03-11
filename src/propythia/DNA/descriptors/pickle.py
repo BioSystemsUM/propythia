@@ -1,3 +1,10 @@
+'''
+
+CODE FROM repDNA (https://github.com/liufule12/repDNA)
+
+'''
+
+
 """Create portable serialized representations of Python objects.
 
 See module copyreg for a mechanism for registering custom picklers.
@@ -23,6 +30,7 @@ Misc variables:
 
 """
 
+
 from types import FunctionType
 from copyreg import dispatch_table
 from copyreg import _extension_registry, _inverted_registry, _extension_cache
@@ -35,7 +43,6 @@ import re
 import io
 import codecs
 import _compat_pickle
-
 __all__ = ["PickleError", "PicklingError", "UnpicklingError", "Pickler",
            "Unpickler", "dump", "dumps", "load", "loads"]
 
