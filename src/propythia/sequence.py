@@ -14,7 +14,7 @@ The class allows to:
 
 Authors:Ana Marta Sequeira, Miguel Barros
 
-Date: 01/2019 ALTERED 03/2022
+Date: 01/2019
 
 Email:
 
@@ -23,7 +23,7 @@ Email:
 from joblib import Parallel, delayed
 from propythia.adjuv_functions.sequence.get_sequence import get_protein_sequence, get_protein_sequence_from_txt
 from propythia.adjuv_functions.sequence.pro_check import protein_check
-from propythia.adjuv_functions.sequence.preprocess_seq import protein_preprocessing_20AA, protein_preprocessing_removeX, protein_preprocessing_X
+from propythia.adjuv_functions.sequence.preprocess_seq import protein_preprocessing
 from propythia.adjuv_functions.sequence.get_sized_seq import seq_equal_lenght
 from propythia.adjuv_functions.sequence.get_sub_seq import sub_seq_sliding_window, sub_seq_to_aa, sub_seq_split,sub_seq_terminals
 import pandas as pd
@@ -109,88 +109,52 @@ class ReadSequence:
     ##########################################
     # preprocessing sequence
 
-    def get_preprocessing_20AA(self, ProteinSequence: str):
+    def get_preprocessing(self, ProteinSequence: str, B :str ='N', Z : str = 'Q', U :str = 'C', O: str = 'K', J : str = 'I', X :str = ''):
         '''
-        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(G), Selenocysteine (U) and
-         Pyrrolysine (O) for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(Z), Selenocysteine (U) and
+         Pyrrolysine (O), by default they are replaced for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
          Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
-         aminoacid (J) to a Isoleucine (I). Use with caution.
+         aminoacid (J), by default it is replaced for Isoleucine (I). Use with caution.
 
         :param ProteinSequence: Protein sequence
+        :param B: One-letter aminoacid code to replace Asparagine (B). Default amino acid is Asparagine (N)
+        :param Z: One-letter aminoacid code to replace Glutamine(Z). Default amino acid is Glutamine (Q)
+        :param U: One-letter aminoacid code to replace Selenocysteine (U). Default amino acid is Cysteinen(C)
+        :param O: One-letter aminoacid code to replace Pyrrolysine (O). Default amino acid is Lysine (K)
+        :param J: One-letter aminoacid code to replace ambiguous aminoacid (J). Default amino acid is Isoleucine (I)
+        :param X: One-letter aminoacid code to replace ambiguous aminoacid (X), by default it is removed.
         :return: transformed protein sequence
         '''
-        return protein_preprocessing_20AA(ProteinSequence)
-
-    def get_preprocessing_X(self, ProteinSequence: str):
-        '''
-        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(G),
-        Selenocysteine (U) and Pyrrolysine (O) by an ambiguous aminoacid (X). It also alters the ambiguos J by X.
-
-        :param ProteinSequence: Protein sequence
-        :return: transformed protein sequence
-        '''
-        return protein_preprocessing_X(ProteinSequence)
-
-    def get_preprocessing_removeX(self, ProteinSequence : str):
-        '''
-        Transforms the protein sequence by  removing the ambiguous aminoacid (X).
-
-        :param ProteinSequence: Protein sequence
-        :return: transformed protein sequence
-        '''
-        return protein_preprocessing_removeX(ProteinSequence)
+        return protein_preprocessing(ProteinSequence,B, Z, U, O, J,X)
 
 ##########################################
     # parallelized preprocessing sequence
 
-    def par_preprocessing_20AA(self, dataset, col: str, n_jobs : int = 4):
+    def par_preprocessing(self, dataset, col: str, B :str ='N', Z : str = 'Q', U :str = 'C', O: str = 'K', J : str = 'I', X :str = '', n_jobs : int = 4):
         '''
-        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G), Selenocysteine (U) and
-         Pyrrolysine (O) for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(Z), Selenocysteine (U) and
+         Pyrrolysine (O), by default they are replaced for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
          Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
-         aminoacid (J) to a Isoleucine (I). Use with caution.
+         aminoacid (J), by default it is replaced for Isoleucine (I). Use with caution.
 
         :param dataset: Pandas dataframe containing the sequences
         :param col: Column where the sequences are present
+        :param B: One-letter aminoacid code to replace Asparagine (B). Default amino acid is Asparagine (N)
+        :param Z: One-letter aminoacid code to replace Glutamine(Z). Default amino acid is Glutamine (Q)
+        :param U: One-letter aminoacid code to replace Selenocysteine (U). Default amino acid is Cysteinen(C)
+        :param O: One-letter aminoacid code to replace Pyrrolysine (O). Default amino acid is Lysine (K)
+        :param J: One-letter aminoacid code to replace ambiguous aminoacid (J). Default amino acid is Isoleucine (I)
+        :param X: One-letter aminoacid code to replace ambiguous aminoacid (X), by default it is removed.
         :param n_jobs: number of CPU cores to use
         :return: transformed Pandas dataframe
         '''
+
         if isinstance(dataset, pd.DataFrame):
-            res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_20AA)(seq) for seq in dataset[col])
+            res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing)(seq, B, Z, U, O, J,X) for seq in dataset[col])
             dataset[col] = res
             return dataset
         else: raise Exception('Parameter dataframe must be a pandas dataframe')
 
-    def par_preprocessing_X(self, dataset, col: str, n_jobs : int = 4):
-        '''
-        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(G),
-        Selenocysteine (U) and Pyrrolysine (O) by an ambiguous aminoacid (X). It also alters the ambiguos J by X.
-
-        :param dataset: Pandas dataframe containing the sequences
-        :param col: Column where the sequences are present
-        :param n_jobs: number of CPU cores to use
-        :return: transformed Pandas dataframe
-        '''
-        if isinstance(dataset, pd.DataFrame):
-            res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_X)(seq) for seq in dataset[col])
-            dataset[col] = res
-            return dataset
-        else: raise Exception('Parameter dataframe must be a pandas dataframe')
-
-    def par_preprocessing_removeX(self, dataset, col: str, n_jobs : int = 4):
-        '''
-        Transforms the protein sequence in the dataset by  removing the ambiguous aminoacid (X).
-
-        :param dataset: Pandas dataframe containing the sequences
-        :param col: Column where the sequences are present
-        :param n_jobs: number of CPU cores to use
-        :return: transformed Pandas dataframe
-        '''
-        if isinstance(dataset, pd.DataFrame):
-            res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing_removeX)(seq) for seq in dataset[col])
-            dataset[col] = res
-            return dataset
-        else: raise Exception('Parameter dataframe must be a pandas dataframe')
 
 ##########################################
     # Get equal size sequences
