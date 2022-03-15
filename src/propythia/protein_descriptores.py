@@ -518,8 +518,9 @@ class ProteinDescritors:
         :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window,
             the length of the sequence is taken
         :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
-        :param modality: maximum or mean hydrophobic moment
-        :param scalename:
+        :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with one value of moment for each sequence in the dataset
         """
@@ -541,9 +542,10 @@ class ProteinDescritors:
         """
         Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp
 
-        :param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
-        :param modality: maximum or mean hydrophobic moment
-        :param scalename:
+        :param window: size of sliding window used amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
+        :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with one value for each sequence in the dataset
         """
@@ -563,8 +565,9 @@ class ProteinDescritors:
         (2 values) from modlamp
 
         :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
-        :param window: size of sliding window used (odd-numbered)
-        :param scalename:
+        :param window:size of sliding window used amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with two value for each sequence in the dataset
         """
@@ -581,8 +584,9 @@ class ProteinDescritors:
         """
         Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only (5 values) from modlamp
 
-        :param modality: maximum or mean
-        :param scalename: binary amino acid scales only
+        :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values only binary scales. By default peparc.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with 5 values for each sequence in the dataset
         """
@@ -601,7 +605,8 @@ class ProteinDescritors:
         Calculates autocorrelation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
 
         :param window: correlation window for descriptor calculation in a sliding window approach
-        :param scalename:
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with values of autocorrelation for each sequence in the dataset
         """
@@ -616,7 +621,8 @@ class ProteinDescritors:
         Calculates cross correlation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
 
         :param window:correlation window for descriptor calculation in a sliding window approach
-        :param scalename:
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with values of crosscorrelation for each sequence in the dataset
         """
@@ -720,12 +726,14 @@ class ProteinDescritors:
         """
         Calculate all functions from Base class
 
-        :param window:
-        :param scalename:
-        :param scalename_arc:
-        :param angle:
-        :param modality:
-        :param prof_type:
+        :param window: size of sliding window used amino acid window. If the sequence is shorter than the window, the length of the sequence is taken.
+        :param scalename: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
+        :param scalename_arc: name of the amino acid scale (one in
+        https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values only binary scales. By default peparc.
+        :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
+        :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+        :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
         :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
         :return: Dataframe with all 6 base class peptide descriptors (the value is variable) for each sequence in the dataset
         """
@@ -846,11 +854,13 @@ class ProteinDescritors:
 		:param weight_paac: parameters for PAAC weightPAAC=0.05
 		:param lamda_apaac: parmeters for APAAC lamdaAPAAC=5 IT SHOULD NOT BE LARGER THAN LENGHT SEQUENCE
 		:param weight_apaac:parmeters for APAAC weightAPAAC=0.05
-		:param AAP:
+		:param AAP: list of properties. each of which is a dict form.
+                PseudoAAC._Hydrophobicity,PseudoAAC._hydrophilicity, PseudoAAC._residuemass,PseudoAAC._pK1,
+                PseudoAAC._pK2,PseudoAAC._pI
 		:param maxlag_socn: parameters for SOCN: maxlagSOCN=45
 		:param maxlag_qso:parameters for QSO maxlagQSO=30
 		:param weight_qso:parameters for  weightQSO=0.1
-		:param distancematrix:
+		:param distancematrix: dict form containing 400 distance values
 		:param window:parameters for base class descriptors
 		:param scalename:parameters for base class descriptors
 		:param scalename_arc:parameters for base class descriptors
@@ -959,6 +969,9 @@ class ProteinDescritors:
 def adjuv_lenght(protein_sequence : str, col : str):
     """
     Calculates lenght of sequence (number of aa)
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of lenght
     """
     res = {col : protein_sequence}
@@ -969,6 +982,9 @@ def adjuv_lenght(protein_sequence : str, col : str):
 def adjuv_charge(protein_sequence : str, col : str, ph: float = 7.4, amide: bool = False):
     """
     Calculates charge of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param ph: ph considered to calculate. 7.4 by default
     :param amide: by default is not considered an amide protein sequence.
     :return: dictionary with the value of charge
@@ -983,6 +999,9 @@ def adjuv_charge(protein_sequence : str, col : str, ph: float = 7.4, amide: bool
 def adjuv_charge_density(protein_sequence : str, col : str, ph: float = 7.0, amide: bool = False):
     """
     Calculates charge density of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param ph: ph considered to calculate. 7 by default
     :param amide: by default is not considered an amide protein sequence.
     :return: dictionary with the value of charge density
@@ -998,6 +1017,9 @@ def adjuv_charge_density(protein_sequence : str, col : str, ph: float = 7.0, ami
 def adjuv_formula(protein_sequence : str, col : str, amide: bool = False):
     """
     Calculates number of C,H,N,O and S of the aa of sequence (5 values) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param amide: by default is not considered an amide protein sequence.
     :return: dictionary with the 5 values of C,H,N,O and S
     """
@@ -1025,6 +1047,9 @@ def adjuv_bond(protein_sequence : str, col : str):
     This function gives the sum of the bond composition for each type of bond
     For bond composition four types of bonds are considered
     total number of bonds (including aromatic), hydrogen bond, single bond and double bond.
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with 4 values
     """
     res = {col : protein_sequence}
@@ -1035,6 +1060,9 @@ def adjuv_bond(protein_sequence : str, col : str):
 def adjuv_mw(protein_sequence : str, col : str):
     """
     Calculates molecular weight of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of molecular weight
     """
 
@@ -1048,6 +1076,9 @@ def adjuv_mw(protein_sequence : str, col : str):
 def adjuv_gravy(protein_sequence : str, col : str):
     """
     Calculates Gravy from sequence (1 value) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of gravy
     """
 
@@ -1060,6 +1091,9 @@ def adjuv_gravy(protein_sequence : str, col : str):
 def adjuv_aromacity(protein_sequence : str, col : str):
     """
     Calculates Aromacity from sequence (1 value) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of aromacity
     """
 
@@ -1072,6 +1106,9 @@ def adjuv_aromacity(protein_sequence : str, col : str):
 def adjuv_isoelectric_point(protein_sequence : str, col : str):
     """
     Calculates Isolectric Point from sequence (1 value) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of Isolectric Point
     """
 
@@ -1084,6 +1121,9 @@ def adjuv_isoelectric_point(protein_sequence : str, col : str):
 def adjuv_instability_index(protein_sequence : str, col : str):
     """
     Calculates Instability index from sequence (1 value) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of Instability index
     """
     res = {col : protein_sequence}
@@ -1095,6 +1135,9 @@ def adjuv_instability_index(protein_sequence : str, col : str):
 def adjuv_sec_struct(protein_sequence : str, col : str):
     """
     Calculates the fraction of amino acids which tend to be in helix, turn or sheet (3 value) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 3 value of helix, turn, sheet
     """
     res = {col : protein_sequence}
@@ -1108,6 +1151,9 @@ def adjuv_sec_struct(protein_sequence : str, col : str):
 def adjuv_molar_extinction_coefficient(protein_sequence : str, col : str): # [reduced, oxidized] # with reduced cysteines / # with disulfid bridges
     """
     Calculates the molar extinction coefficient (2 values) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of reduced cysteins and oxidized (with disulfid bridges)
     """
     res = {col : protein_sequence}
@@ -1120,6 +1166,9 @@ def adjuv_molar_extinction_coefficient(protein_sequence : str, col : str): # [re
 def adjuv_flexibility(protein_sequence : str, col : str):
     """
     Calculates the flexibility according to Vihinen, 1994 (return proteinsequencelenght-9 values ) from biopython
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with proteinsequencelenght-9 values of flexiblity
     """
 
@@ -1134,6 +1183,9 @@ def adjuv_flexibility(protein_sequence : str, col : str):
 def adjuv_aliphatic_index(protein_sequence : str, col : str):
     """
     Calculates aliphatic index of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of aliphatic index
     """
     res = {col : protein_sequence}
@@ -1146,6 +1198,9 @@ def adjuv_aliphatic_index(protein_sequence : str, col : str):
 def adjuv_boman_index(protein_sequence : str, col : str):
     """
     Calculates boman index of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of boman index
     """
     res = {col : protein_sequence}
@@ -1158,6 +1213,9 @@ def adjuv_boman_index(protein_sequence : str, col : str):
 def adjuv_hydrophobic_ratio(protein_sequence : str, col : str):
     """
     Calculates hydrophobic ratio of sequence (1 value) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the value of hydrophobic ratio
     """
     res = {col : protein_sequence}
@@ -1172,6 +1230,9 @@ def adjuv_hydrophobic_ratio(protein_sequence : str, col : str):
 def adjuv_aa_comp(protein_sequence : str, col : str):
     """
     Calculates amino acid compositon (20 values)  from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the fractions of all 20 aa(keys are the aa)
     """
     res = {col : protein_sequence}
@@ -1182,6 +1243,9 @@ def adjuv_aa_comp(protein_sequence : str, col : str):
 def adjuv_dp_comp(protein_sequence : str, col : str):
     """
     Calculates dipeptide composition (400 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the fractions of all 400 possible combiinations of 2 aa
     """
     res = {col : protein_sequence}
@@ -1191,8 +1255,11 @@ def adjuv_dp_comp(protein_sequence : str, col : str):
 
 def adjuv_tp_comp(protein_sequence : str, col : str):
     """
-        Calculates tripeptide composition (8000 values) from pydpi
-        :return: dictionary with the fractions of all 8000 possible combinations of 3 aa
+    Calculates tripeptide composition (8000 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
+    :return: dictionary with the fractions of all 8000 possible combinations of 3 aa
     """
     res = {col : protein_sequence}
     res.update(get_spectrum_dict(protein_sequence))
@@ -1204,6 +1271,9 @@ def adjuv_tp_comp(protein_sequence : str, col : str):
 def adjuv_paac(protein_sequence : str, col : str, lamda: int = 10, weight: float = 0.05):
     """
     Calculates Type I Pseudo amino acid composition (default is 30, depends on lamda) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
                 should NOT be larger than the length of input protein sequence
                 when lamda =0, the output of PseAA server is the 20-D amino acid composition
@@ -1219,6 +1289,9 @@ def adjuv_paac(protein_sequence : str, col : str, lamda: int = 10, weight: float
 def adjuv_paac_p(protein_sequence : str, col : str, lamda: int = 10, weight: float = 0.05, AAP=None):
     """
     Calculates Type I Pseudo amino acid composition for a given property (default is 30, depends on lamda) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
                 should NOT be larger than the length of input protein sequence
                 when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
@@ -1236,6 +1309,9 @@ def adjuv_paac_p(protein_sequence : str, col : str, lamda: int = 10, weight: flo
 def adjuv_apaac(protein_sequence : str, col : str, lamda: int = 10, weight: float = 0.5):
     """
     Calculates Type II Pseudo amino acid composition - Amphiphilic (default is 30, depends on lamda) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param lamda: reflects the rank of correlation and is a non-Negative integer, such as 10.
                 should NOT be larger than the length of input protein sequence
                 when lamda =0, theoutput of PseAA server is the 20-D amino acid composition
@@ -1253,6 +1329,9 @@ def adjuv_apaac(protein_sequence : str, col : str, lamda: int = 10, weight: floa
 def adjuv_moreau_broto_auto(protein_sequence : str, col : str):
     """
     Calculates Normalized Moreau-Broto autocorrelation (240 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 240 descriptors
     """
     res = {col : protein_sequence}
@@ -1263,6 +1342,9 @@ def adjuv_moreau_broto_auto(protein_sequence : str, col : str):
 def adjuv_moran_auto(protein_sequence : str, col : str):
     """
     Calculates  Moran autocorrelation (240 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 240 descriptors
     """
     res = {col : protein_sequence}
@@ -1273,6 +1355,9 @@ def adjuv_moran_auto(protein_sequence : str, col : str):
 def adjuv_geary_auto(protein_sequence : str, col : str):
     """
     Calculates  Geary autocorrelation (240 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 240 descriptors
     """
     res = {col : protein_sequence}
@@ -1285,6 +1370,9 @@ def adjuv_geary_auto(protein_sequence : str, col : str):
 def adjuv_ctd(protein_sequence : str, col : str):
     """
     Calculates the Composition Transition Distribution descriptors (147 values) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 147 descriptors
     """
     res = {col : protein_sequence}
@@ -1297,6 +1385,9 @@ def adjuv_ctd(protein_sequence : str, col : str):
 def adjuv_conj_t(protein_sequence : str, col : str):
     """
     Calculates the Conjoint Triad descriptors (343 descriptors) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :return: dictionary with the 343 descriptors
     """
     res = {col : protein_sequence}
@@ -1309,6 +1400,9 @@ def adjuv_conj_t(protein_sequence : str, col : str):
 def adjuv_socn(protein_sequence : str, col : str, maxlag: int = 45):
     """
     Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param maxlag: maximum lag. Smaller than length of the protein
     :return: dictionary with the descriptors (90 descriptors)
     """
@@ -1322,6 +1416,9 @@ def adjuv_socn(protein_sequence : str, col : str, maxlag: int = 45):
 def adjuv_socn_p(protein_sequence : str, col : str, maxlag: int = 45, distancematrix=None):
     """
     Calculates the Sequence order coupling numbers  (retrieves 90 values by default) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param maxlag: maximum lag. Smaller than length of the protein
     :param distancematrix: dict form containing 400 distance values
     :return: dictionary with the descriptors (90 descriptors)
@@ -1336,6 +1433,9 @@ def adjuv_socn_p(protein_sequence : str, col : str, maxlag: int = 45, distancema
 def adjuv_qso(protein_sequence : str, col : str, maxlag: int = 30, weight: float = 0.1):
     """
     Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param maxlag: maximum lag. Smaller than length of the protein
     :param weight:
     :return: dictionary with the descriptors (100 descriptors)
@@ -1350,6 +1450,9 @@ def adjuv_qso(protein_sequence : str, col : str, maxlag: int = 30, weight: float
 def adjuv_qso_p(protein_sequence : str, col : str, maxlag: int = 30, weight: float = 0.1, distancematrix=None):
     """
     Calculates the Quasi sequence order  (retrieves 100 values by default) from pydpi
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param maxlag: maximum lag. Smaller than length of the protein
     :param weight:
     :param distancematrix: dict form containing 400 distance values
@@ -1369,10 +1472,15 @@ def adjuv_calculate_moment(protein_sequence : str, col : str, window: int = 1000
                            scalename: str = 'Eisenberg'):
     """
     Calculates moment of sequence (1 value) from modlamp
-    :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window, the length of the sequence is taken
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
+    :param window: amino acid window in which to calculate the moment. If the sequence is shorter than the window,
+            the length of the sequence is taken
     :param angle: angle in which to calculate the moment. 100 for alpha helices, 180 for beta sheets
-    :param modality: maximum or mean hydrophobic moment
-    :param scalename:
+    :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
     :return: dictionary with one value of moment
     """
     res = {col : protein_sequence}
@@ -1385,9 +1493,13 @@ def adjuv_calculate_moment(protein_sequence : str, col : str, window: int = 1000
 def adjuv_calculate_global(protein_sequence : str, col : str, window: int = 1000, modality: str = 'max', scalename: str = 'Eisenberg'):
     """
     Calculates a global / window averaging descriptor value of a given AA scale of sequence (1 value) from modlamp
-    :param window: amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
-    :param modality: maximum or mean hydrophobic moment
-    :param scalename:
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
+    :param window: size of sliding window used amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
+    :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
     :return: dictionary with one value
     """
     res = {col : protein_sequence}
@@ -1401,9 +1513,13 @@ def adjuv_calculate_profile(protein_sequence : str, col : str, prof_type: str = 
     """
     Calculates hydrophobicity or hydrophobic moment profiles for given sequences and fitting for slope and intercep
     (2 values) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param prof_type: prof_type of profile, ‘H’ for hydrophobicity or ‘uH’ for hydrophobic moment
-    :param window: size of sliding window used (odd-numbered)
-    :param scalename:
+    :param window:size of sliding window used amino acid window. If the sequence is shorter than the window, the length of the sequence is taken
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
     :return: dictionary with two value
     """
     res = {col : protein_sequence}
@@ -1418,8 +1534,12 @@ def adjuv_calculate_profile(protein_sequence : str, col : str, prof_type: str = 
 def adjuv_calculate_arc(protein_sequence : str, col : str, modality: str = "max", scalename: str = 'peparc'):
     """
     Calculates arcs as seen in the helical wheel plot. Use for binary amino acid scales only (5 values) from modlamp
-    :param modality: maximum or mean
-    :param scalename: binary amino acid scales only
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
+    :param modality: maximum (max), mean (mean) or both (all) hydrophobic moment
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values only binary scales. By default peparc.
     :return: dictionary with 5 values
     """
     res = {col : protein_sequence}
@@ -1434,8 +1554,12 @@ def adjuv_calculate_arc(protein_sequence : str, col : str, modality: str = "max"
 def adjuv_calculate_autocorr(protein_sequence : str, col : str, window: int = 7, scalename: str = 'Eisenberg'):
     """
     Calculates autocorrelation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param window: correlation window for descriptor calculation in a sliding window approach
-    :param scalename:
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
     :return: dictionary with values of autocorrelation
     """
     res = {col : protein_sequence}
@@ -1450,8 +1574,12 @@ def adjuv_calculate_autocorr(protein_sequence : str, col : str, window: int = 7,
 def adjuv_calculate_crosscorr(protein_sequence : str, col : str, window: int = 7, scalename: str = 'Eisenberg'):
     """
     Calculates cross correlation of amino acid values for a given descriptor scale ( variable >>>>>>values) from modlamp
+
+    :protein_sequence: Protein sequence to be processed
+    :param col: name of the collum for the original protein sequences.
     :param window:correlation window for descriptor calculation in a sliding window approach
-    :param scalename:
+    :param scalename: name of the amino acid scale (one in
+    https://modlamp.org/modlamp.html#modlamp.descriptors.PeptideDescriptor) used to calculate the descriptor values. By default Eisenberg.
     :return: dictionary with values of crosscorrelation
     """
     res = {col : protein_sequence}
