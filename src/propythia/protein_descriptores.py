@@ -50,7 +50,9 @@ class ProteinDescritors:
             self.dataset = pd.DataFrame(data)
         else:
             raise Exception('Parameter dataframe is not an string, list or pandas Dataframe')
+
         self.col = col
+        self.dataset.drop_duplicates(subset=self.col, keep='first', inplace=True)
         self.result = self.dataset
 
     def get_lenght(self, n_jobs: int = 4):
@@ -828,7 +830,7 @@ class ProteinDescritors:
                                         on = self.col)
         return self.result
 
-    def get_adaptable(self, list_of_functions=None, ph: float = 7, amide: bool = False, lamda_paac: int = 10,
+    def get_adaptable(self, list_of_functions : list, ph: float = 7, amide: bool = False, lamda_paac: int = 10,
                       weight_paac: float = 0.05, lamda_apaac: int = 10, weight_apaac: float = 0.05, AAP=None,
                       maxlag_socn: int = 45, maxlag_qso: int = 30, weight_qso: float = 0.1, distancematrix=None,
                       window: int = 7, scalename: str = 'Eisenberg', scalename_arc: str = 'peparc',
@@ -888,8 +890,7 @@ class ProteinDescritors:
                                                                on = self.col)
             if function == 16: self.result = self.result.merge(self.get_hydrophobic_ratio(n_jobs=n_jobs), how='left',
                                                                on = self.col)
-            if function == 17: self.result = self.result.merge(self.get_all_physicochemical(ph, amide, n_jobs=n_jobs),
-                                                               how='left', on = self.col)
+            if function == 17: self.get_all_physicochemical(ph, amide, n_jobs=n_jobs)
 
             if function == 18: self.result = self.result.merge(self.get_aa_comp(n_jobs=n_jobs), how='left',
                                                                on = self.col)
@@ -897,8 +898,7 @@ class ProteinDescritors:
                                                                on = self.col)
             if function == 20: self.result = self.result.merge(self.get_tp_comp(n_jobs=n_jobs), how='left',
                                                                on = self.col)
-            if function == 21: self.result = self.result.merge(self.get_all_aac(n_jobs=n_jobs), how='left',
-                                                               on = self.col)
+            if function == 21: self.get_all_aac(n_jobs=n_jobs)
 
             if function == 22: self.result = self.result.merge(self.get_paac(lamda_paac, weight_paac, n_jobs=n_jobs),
                                                                how='left', on = self.col)
@@ -907,9 +907,7 @@ class ProteinDescritors:
 
             if function == 24: self.result = self.result.merge(self.get_apaac(lamda_apaac, weight_apaac, n_jobs=n_jobs),
                                                                how='left', on = self.col)
-            if function == 25: self.result = self.result.merge(
-                self.get_all_paac(lamda_paac, weight_paac, lamda_apaac, weight_apaac, n_jobs=n_jobs), how='left',
-                on = self.col)
+            if function == 25: self.get_all_paac(lamda_paac, weight_paac, lamda_apaac, weight_apaac, n_jobs=n_jobs)
 
             if function == 26: self.result = self.result.merge(self.get_moreau_broto_auto(n_jobs=n_jobs), how='left',
                                                                on = self.col)
@@ -917,8 +915,7 @@ class ProteinDescritors:
                                                                on = self.col)
             if function == 28: self.result = self.result.merge(self.get_geary_auto(n_jobs=n_jobs), how='left',
                                                                on = self.col)
-            if function == 29: self.result = self.result.merge(self.get_all_correlation(n_jobs=n_jobs), how='left',
-                                                               on = self.col)
+            if function == 29: self.get_all_correlation(n_jobs=n_jobs)
 
             if function == 30: self.result = self.result.merge(self.get_ctd(n_jobs=n_jobs), how='left', on = self.col)
 
@@ -934,9 +931,7 @@ class ProteinDescritors:
                                                                how='left', on = self.col)
             if function == 35: self.result = self.result.merge(
                 self.get_qso_p(maxlag_qso, weight_qso, distancematrix, n_jobs=n_jobs), how='left', on = self.col)
-            if function == 36: self.result = self.result.merge(
-                self.get_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso, n_jobs=n_jobs), how='left',
-                on = self.col)
+            if function == 36: self.get_all_sequenceorder(maxlag_socn, maxlag_qso, weight_qso, n_jobs=n_jobs)
 
             # base class can take some time to run
             if function == 37: self.result = self.result.merge(
@@ -951,16 +946,12 @@ class ProteinDescritors:
                 self.calculate_profile(prof_type, window, scalename, n_jobs=n_jobs), how='left', on = self.col)
             if function == 42: self.result = self.result.merge(
                 self.calculate_arc(modality, scalename_arc, n_jobs=n_jobs), how='left', on = self.col)
-            if function == 43: self.result = self.result.merge(
-                self.get_all_base_class(window, scalename, scalename_arc, angle, modality,
-                                        prof_type, n_jobs=n_jobs), how='left', on = self.col)
+            if function == 43: self.get_all_base_class(window, scalename, scalename_arc, angle, modality,
+                                        prof_type, n_jobs=n_jobs)
             if function == 44:
-                self.result = self.result.merge(self.get_all(ph, amide, lamda_paac,
-                                                             weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
-                                                             maxlag_qso, weight_qso, window, scalename,
-                                                             scalename_arc, angle, modality,
-                                                             prof_type, tricomp, n_jobs=n_jobs), how='left',
-                                                on = self.col)
+                self.get_all(ph, amide, lamda_paac,weight_paac, lamda_apaac, weight_apaac, maxlag_socn,
+                             maxlag_qso, weight_qso, window, scalename,scalename_arc, angle, modality,
+                             prof_type, tricomp, n_jobs=n_jobs)
 
         return self.result
 
