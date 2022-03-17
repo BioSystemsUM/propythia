@@ -4,9 +4,9 @@
 A class  used for computing different types of protein descriptors parallelized.
 It contains descriptors from packages pydpi, biopython, pfeature and modlamp.
 
-Authors: Miguel Barros
+Authors: Ana Marta Sequeira, Miguel Barros
 
-Date: 03/2022
+Date: 05/2019 ALTERED 03/2022
 
 Email:
 
