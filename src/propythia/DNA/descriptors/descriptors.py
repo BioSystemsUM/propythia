@@ -7,7 +7,7 @@ It contains descriptors from packages iLearn, iDNA4mC, rDNAse, ...
 
 Authors: João Nuno Abreu
 
-Date: 02/2021
+Date: 02/2022
 
 Email:
 

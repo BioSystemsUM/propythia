@@ -5,27 +5,15 @@ import sys
 
 ALPHABET = 'ACGT'
 
+# -----------------------------------------------------------------------------
 
-''' def parse_csv_dinucleotides():
-    filename = "38_dinucleotide_physicochemical_indices.csv"
-    with open(filename, 'r') as f:
-        lines = f.readlines()
+def checker(sequence):
+    """
+    Checks if the input sequence is a valid DNA sequence.
+    """
+    return all(i in ALPHABET for i in sequence)
 
-    lines = [line.strip() for line in lines]
-
-    # Process headers
-    headers = lines[0].split(";")
-    d = {}
-    for i in headers[1:]:
-        d[i] = []
-
-    # Process data
-    for i in lines[1:]:
-        data = i.split(";")
-        for j in range(1, len(data)):
-            d[headers[j]].append((data[0], data[j]))
-
-    return d '''
+# -----------------------------------------------------------------------------
 
 
 def make_kmer_list(k):
