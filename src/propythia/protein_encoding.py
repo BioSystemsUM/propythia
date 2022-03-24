@@ -259,9 +259,9 @@ class Encoding:
             if function == 1:
                 self.result = self.result.merge(self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
                 if use_padded: self.col = 'padded_sequence'
-            if function == 2: self.result = self.result = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
-            if function == 3: self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
-            if function == 4: self.result = self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
+            if function == 2: self.result  = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
+            if function == 3: self.result = self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
+            if function == 4: self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
             if function == 5: self.result = self.result.merge(self.get_nlf(n_jobs), how='left', on=self.col)
             if function == 6: self.result = self.result.merge(self.get_zscale(n_jobs), how='left', on=self.col)
             if function == 7: self.get_all(alphabet, seq_len, padding_truncating, blosum, use_padded, n_jobs)
@@ -363,7 +363,7 @@ def seq_hot_encoded(ProteinSequence : str, col: str, char_to_int: dict):
     """
     integer_encoded = [char_to_int[char] for char in ProteinSequence]
 
-    hot_enc = to_categorical(integer_encoded)
+    hot_enc = to_categorical(integer_encoded).tolist()
     res = {col : ProteinSequence}
     res['One_hot_encoding'] = hot_enc
     return res
@@ -389,7 +389,7 @@ def seq_padded_hot(ProteinSequence : str, col: str, char_to_int: dict, int_to_ch
     char_paded = [int_to_char[i] for i in list_of_sequences_length[0]]
     pad_aa = ''.join(char_paded)
 
-    hot_enc = to_categorical(list_of_sequences_length[0])
+    hot_enc = to_categorical(list_of_sequences_length[0]).tolist()
 
     res = {col: ProteinSequence}
     res['padded_sequence'] = pad_aa
