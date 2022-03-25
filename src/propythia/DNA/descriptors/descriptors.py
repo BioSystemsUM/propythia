@@ -253,22 +253,6 @@ class DNADescriptor:
             res.append(x)
         return res
 
-    # -------------------------------  Binary  ------------------------------ #
-
-    def get_binary(self):
-        """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
-        :return: list with values of binary encoding
-        """
-        binary = {
-            'A': [1, 0, 0, 0],
-            'C': [0, 1, 0, 0],
-            'G': [0, 0, 1, 0],
-            'T': [0, 0, 0, 1]
-        }
-        return [binary[i] for i in self.dna_sequence]
-
     # --------------------------  Autocorrelation  -------------------------- #
 
     def get_DAC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
@@ -515,3 +499,13 @@ class DNADescriptor:
         res['PseDNC'] = self.get_PseDNC()
         res['PseKNC'] = self.get_PseKNC()
         return res
+
+    def run(self):
+        for i in range(3000):
+            if(i % 100 == 0):
+                print(i)
+            self.get_all_descriptors()
+
+
+dna = DNADescriptor('cagtcacatctgtaatcacaatacgttgggaggctgaggcaggaggatcacttgagtccaggagttgaggctgcagtgagctgtgatcacaccactgcactctagtgtgggtgacagtgagaccctgtctcaaaaaaaaaaaaaaaaagaTACATTCAAAGAAGTCAAAATAAAACAGTATAAAACCTATCTCCC')
+dna.run()

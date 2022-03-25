@@ -20,7 +20,7 @@ import sys
 import os
 import numpy as np
 import getopt
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 
 
 def bin_aa_ct(seq, alphabet = "ARNDCEQGHILKMFPSTWYV"):

@@ -17,43 +17,35 @@ Email:
 ##############################################################################
 """
 
+import glob
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from utils import checker
 
-class ReadDNA:
 
+class ReadDNA:
     """
     The ReadDNA class aims to read the input and transform it into a sequence that can be used to calculate Descriptors.
     """
 
     def __init__(self):
-        pass
-        
+        self.d = {}
+
     def read_fasta(self, filename):
         """
         Reads the input file in fasta format. It reads all sequences. 
         """
-        self.d = {}
+        d = {}
         with open(filename) as handle:
             for values in SimpleFastaParser(handle):
-                if(checker(values[1])):
-                    self.d[values[0]] = values[1]
+                if(checker(values[1].upper())):
+                    d[values[0]] = values[1].upper()
                 else:
                     print("Error! Invalid character in sequence.")
-        return self.d
+        return d
 
-    def read_one_sequence_fasta(self, filename):
+    def read_fasta_in_folder(self, folder):
         """
-        Reads the input file in fasta format. It only reads one sequence.
+        Reads all files in a folder in fasta format. It reads all sequences. 
         """
-        with open(filename) as handle:
-            for index, values in enumerate(SimpleFastaParser(handle)):
-                if(index != 0):
-                    print("Error! Please input only one sequence.")
-                    break
-                
-                if(checker(values[1])):
-                        self.dna_sequence = values[1]
-                else:
-                    print("Error! Invalid character in sequence.")
-        return self.dna_sequence
+        for filename in glob.glob(folder + '/*.fasta'):
+            self.d[filename[len(folder)+1:-6]] = self.read_fasta(filename)
