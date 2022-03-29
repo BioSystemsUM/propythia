@@ -15,6 +15,7 @@ Email:
 ##############################################################################
 """
 import keras
+import tensorflow as tf
 
 # https://blog.usejournal.com/a-comparison-of-grid-search-and-randomized-search-using-scikit-learn-29823179bc85
 # https://blog.usejournal.com/a-comparison-of-grid-search-and-randomized-search-using-scikit-learn-29823179bc85
@@ -46,14 +47,15 @@ import keras
 
 
 # OPTIMIZERS
-lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=1e-2, decay_steps=10000, decay_rate=0.9)
-opt1 = keras.optimizers.SGD(learning_rate=lr_schedule)
-opt2 = keras.optimizers.SGD(learning_rate=0.001)
-opt3 = keras.optimizers.Adam(learning_rate=lr_schedule)
-opt4 = keras.optimizers.Adam(learning_rate=0.001)
-opt5 = keras.optimizers.Adam(learning_rate=0.01)
-opt6 = keras.optimizers.RMSprop(learning_rate=lr_schedule)
-opt7 = keras.optimizers.RMSprop(learning_rate=0.001)
+lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate=1e-2, decay_steps=10000, decay_rate=0.9)
+opt1 = tf.keras.optimizers.SGD(learning_rate=lr_schedule)
+opt2 = tf.keras.optimizers.SGD(learning_rate=0.001)
+opt3 = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+opt4 = tf.keras.optimizers.Adam(learning_rate=0.001)
+opt5 = tf.keras.optimizers.Adam(learning_rate=0.01)
+opt6 = tf.keras.optimizers.RMSprop(learning_rate=lr_schedule)
+opt7 = tf.keras.optimizers.RMSprop(learning_rate=0.001)
 
 
 def param_deep():
@@ -77,7 +79,7 @@ def param_deep():
                         'l2': [0, 1e-3, 1e-4, 1e-5],
                         # 'batch_size': [128, 256, 512,1024],
                     }],
-            },
+             },
         'run_dnn_embedding':
             {'param_grid':
                 [{
@@ -99,7 +101,7 @@ def param_deep():
                         'l2': [0, 1e-3, 1e-4, 1e-5],
                         # 'batch_size': [128, 256, 512,1024],
                     }],
-            },
+             },
         'run_lstm_simple':
             {'param_grid':
                 [{
@@ -125,7 +127,7 @@ def param_deep():
                         'dropout_rate_dense': [(0.0,), (0.1,), (0.2,), (0.25,), (0.3,), (0.35,), (0.4,), (0.5,)],
                         # 'batch_size': [256, 512,1024],
                     }],
-            },
+             },
 
         'run_lstm_embedding':
             {'param_grid':
@@ -154,7 +156,7 @@ def param_deep():
                         'dropout_rate_dense': [(0.0,), (0.1,), (0.2,), (0.25,), (0.3,), (0.35,), (0.4,), (0.5,)],
                         # 'batch_size': [256, 512,1024],
                     }],
-            },
+             },
         'run_cnn_1D':
             {'param_grid':
                 [{
@@ -179,7 +181,7 @@ def param_deep():
                         'l1': [0, 1e-4, 1e-5],
                         'l2': [0, 1e-4, 1e-5],
                     }],
-            },
+             },
 
         'run_cnn_2D':
             {'param_grid':
@@ -207,7 +209,7 @@ def param_deep():
                         'l1': [0, 1e-4, 1e-5],
                         'l2': [0, 1e-4, 1e-5],
                     }],
-            },
+             },
         'run_cnn_lstm':
             {'param_grid':
                 [{
@@ -238,6 +240,6 @@ def param_deep():
                         'dense_layers': [(32,), (64,), (64, 32)],
                         'dropout_rate_dense': [(0.0,), (0.1,), (0.2,), (0.3,), (0.4,), (0.5,)]
                     }],
-            },
+             },
     }
     return param

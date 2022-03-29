@@ -21,7 +21,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import umap
-import umap.plot
+#import umap.plot
 from sklearn.manifold import TSNE
 from propythia.adjuv_functions.ml_deep.utils import timer
 sns.set()
