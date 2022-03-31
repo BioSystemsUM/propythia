@@ -240,33 +240,6 @@ class Encoding:
 
         return self.result
 
-    def get_adaptable(self, list_of_functions : list, alphabet: str = "XARNDCEQGHILKMFPSTWYV", seq_len: int = 600, padding_truncating='post',
-                blosum: str = 'blosum62', use_padded: bool = False, n_jobs: int = 4):
-        """
-        It allows to run a selected set of encoding functions for the protein sequences.
-
-        :param list_of_functions: A list with the fuctions to run.
-        :param alphabet: The alphabet of aminoacids to be used.
-        :param seq_len: The maximum length for all sequences. By default the length is 600 amino acids
-        :param padding_truncating: 'pre' or 'post' pad either before or after each sequence, also removes values from sequences larger than seq_len. By default padding is after each sequence.
-        :param blosum: blosum matrix to use either 'blosum62' or 'blosum50'. by default 'blosum62'
-        :param use_padded: A bool argument, if true it uses the padded sequences for the one-hot, blosum and z-scale encoding.
-        :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: Dataframe with all encodings for each sequence.
-        """
-
-        for function in list_of_functions:
-            if function == 1:
-                self.result = self.result.merge(self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
-                if use_padded: self.col = 'padded_sequence'
-            if function == 2: self.result  = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
-            if function == 3: self.result = self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
-            if function == 4: self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
-            if function == 5: self.result = self.result.merge(self.get_nlf(n_jobs), how='left', on=self.col)
-            if function == 6: self.result = self.result.merge(self.get_zscale(n_jobs), how='left', on=self.col)
-            if function == 7: self.get_all(alphabet, seq_len, padding_truncating, blosum, use_padded, n_jobs)
-
-        return self.result
 
 def seq_blosum_encoding(ProteinSequence: str, col: str, encoding: dict):
     """
