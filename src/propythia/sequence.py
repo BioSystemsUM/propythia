@@ -7,11 +7,12 @@ The main objective is to create sequence objects to calculate descriptors
 The class allows to:
      1)Read sequences from string or from uniprot ID (is also possible retrieve sequences fom txt with uniprot IDs)
      2)Check if the protein sequence is a valid sequence
-     3)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals
-     4)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the
+     3) Preprocessing methods to transform the protein sequences
+     4)Obtain a sized sequence of list of sequences, adding or cutting from both n and c terminals
+     5)From one sequence generate list of subsequences based on sliding window approach, from specific aa, from the
      the terminals or divide the sequence in parts
 
-Authors:Ana Marta Sequeira
+Authors:Ana Marta Sequeira, Miguel Barros
 
 Date: 01/2019
 
@@ -19,11 +20,13 @@ Email:
 
 ##############################################################################
 """
-
+from joblib import Parallel, delayed
 from propythia.adjuv_functions.sequence.get_sequence import get_protein_sequence, get_protein_sequence_from_txt
 from propythia.adjuv_functions.sequence.pro_check import protein_check
+from propythia.adjuv_functions.sequence.preprocess_seq import protein_preprocessing
 from propythia.adjuv_functions.sequence.get_sized_seq import seq_equal_lenght
 from propythia.adjuv_functions.sequence.get_sub_seq import sub_seq_sliding_window, sub_seq_to_aa, sub_seq_split,sub_seq_terminals
+import pandas as pd
 
 
 class ReadSequence:
@@ -102,6 +105,56 @@ class ReadSequence:
             print("Please input a correct protein.")
         else:
             print('sequence valid')
+
+    ##########################################
+    # preprocessing sequence
+
+    def get_preprocessing(self, ProteinSequence: str, B :str ='N', Z : str = 'Q', U :str = 'C', O: str = 'K', J : str = 'I', X :str = ''):
+        '''
+        Transforms the protein sequence by replacing aminoacids like Asparagine (B),  Glutamine(Z), Selenocysteine (U) and
+         Pyrrolysine (O), by default they are replaced for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+         Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
+         aminoacid (J), by default it is replaced for Isoleucine (I). Use with caution.
+
+        :param ProteinSequence: Protein sequence
+        :param B: One-letter aminoacid code to replace Asparagine (B). Default amino acid is Asparagine (N)
+        :param Z: One-letter aminoacid code to replace Glutamine(Z). Default amino acid is Glutamine (Q)
+        :param U: One-letter aminoacid code to replace Selenocysteine (U). Default amino acid is Cysteinen(C)
+        :param O: One-letter aminoacid code to replace Pyrrolysine (O). Default amino acid is Lysine (K)
+        :param J: One-letter aminoacid code to replace ambiguous aminoacid (J). Default amino acid is Isoleucine (I)
+        :param X: One-letter aminoacid code to replace ambiguous aminoacid (X), by default it is removed.
+        :return: transformed protein sequence
+        '''
+        return protein_preprocessing(ProteinSequence,B, Z, U, O, J,X)
+
+##########################################
+    # parallelized preprocessing sequence
+
+    def par_preprocessing(self, dataset, col: str, B :str ='N', Z : str = 'Q', U :str = 'C', O: str = 'K', J : str = 'I', X :str = '', n_jobs : int = 4):
+        '''
+        Transforms the protein sequence in the dataset by replacing aminoacids like Asparagine (B),  Glutamine(Z), Selenocysteine (U) and
+         Pyrrolysine (O), by default they are replaced for the closest aminoacid residue if is present in the sequence, Asparagine (N), Glutamine (Q),
+         Cysteinen(C) and Lysine (K), respectively. It also removes the ambiguous aminoacid (X) and alters the ambiguous
+         aminoacid (J), by default it is replaced for Isoleucine (I). Use with caution.
+
+        :param dataset: Pandas dataframe containing the sequences
+        :param col: Column where the sequences are present
+        :param B: One-letter aminoacid code to replace Asparagine (B). Default amino acid is Asparagine (N)
+        :param Z: One-letter aminoacid code to replace Glutamine(Z). Default amino acid is Glutamine (Q)
+        :param U: One-letter aminoacid code to replace Selenocysteine (U). Default amino acid is Cysteinen(C)
+        :param O: One-letter aminoacid code to replace Pyrrolysine (O). Default amino acid is Lysine (K)
+        :param J: One-letter aminoacid code to replace ambiguous aminoacid (J). Default amino acid is Isoleucine (I)
+        :param X: One-letter aminoacid code to replace ambiguous aminoacid (X), by default it is removed.
+        :param n_jobs: number of CPU cores to use
+        :return: transformed Pandas dataframe
+        '''
+
+        if isinstance(dataset, pd.DataFrame):
+            res = Parallel(n_jobs=n_jobs)(delayed(protein_preprocessing)(seq, B, Z, U, O, J,X) for seq in dataset[col])
+            dataset[col] = res
+            return dataset
+        else: raise Exception('Parameter dataframe must be a pandas dataframe')
+
 
 ##########################################
     # Get equal size sequences

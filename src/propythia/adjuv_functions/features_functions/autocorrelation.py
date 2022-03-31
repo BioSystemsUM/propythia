@@ -39,7 +39,7 @@ Email: oriental-cds@163.com
 Altered to python 3.6 by Ana Marta Sequeira 05/2019
 """
 
-import math,string
+import math
 
 
 AALetter=["A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V"]

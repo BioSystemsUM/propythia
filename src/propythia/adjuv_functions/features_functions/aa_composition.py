@@ -60,7 +60,6 @@ def calculate_aa_composition(protein_sequence):
 	return result
 #############################################################################################
 
-
 def calculate_dipeptide_composition(protein_sequence):
 	"""
 	Calculate the composition of dipeptidefor a given protein sequence.

@@ -1,5 +1,4 @@
 from unittest import TestCase
-from propythia.protein_descriptores import ProteinDescritors
 from propythia.sequence import ReadSequence
 import pandas as pd
 
@@ -20,51 +19,23 @@ class Test_preprocessing(TestCase):
                                   9: 'MDNIRNFSIIAHIDHGKSTLADRIIQLCGGLSDREMEAQVLDSMDIEKERGITIKAQTAALSYKARDGKVYNLNLIDTPGHVDFSYEVSRSLSACEGALLVVDASQGVEAQTVANCYTAIELGVEVVPVLNKIDLPAADPDNAIQEIEDVIGIDAADATRCSAKTGEGVADVLEALIAKVPAPKGDPAAPLQALIIDSWFDNYVGVVMLVRVVNGTLRAKDKVLLMATGAQHLVEQVGVFSPKSVPRESLSAGQVGFVIAGIKELKAAKVGDTITHVAPRKAEAPLPGFKEVKPQVFAGLYPVEANQYEALRESLEKLKLNDASLQYEPEVSQALGFGFRCGFLGLLHMEIVQERLEREFDMDLITTAPTVVYQVQLRDGTMVQVENPAKMPADPSKIEAILEPIVTVNLYMPQEYVGAVITLCEQKRGSQINMSYHGRQVQLTYEIPMGEIVLDFFDRLKSVSRGYASMDYEFKEYRVSDVVKVDILINGDKVDALSIIVHRSNSTYRGREVAAKMREIIPRQMYDVAIQAAIGANVIARENVKALRKNVLAKCYGGDISRKKKLLEKQKEGKKRMKQVGTVEIPQEAFLAILRVEEK'},
                      'TCDB_ID': {0: '0', 1: '0', 2: '0', 3: '0', 4: '0', 5: '0', 6: '0', 7: '0', 8: '0', 9: '0'}}
 
-        dataset = pd.DataFrame(test_data)
-        sequence = ReadSequence()  # create the object to process the sequencedsic
-        self.dataset = sequence.par_preprocessing(dataset, 'sequence')
+        self.dataset = pd.DataFrame(test_data)
+        # sequence = ReadSequence()  # create the object to process the sequencedsic
+        # dataset = sequence.par_preprocessing_20AA(dataset, 'sequence')
+        # self.dataset = ParDescritors(dataset, 'sequence')  # creating object to calculate descriptors
 
-    def test_all_physicochemical(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_physicochemical()
-        self.assertEqual(res1, data.shape[0])
+    def test_preprocessing20AA(self):
+        protein = "ARNDCEQGHILKMFPSTWYVBZUOJX"
+        res1 = 'ARNDCEQGHILKMFPSTWYVNQCKI'
+        trans = ReadSequence()
+        res = trans.get_preprocessing(protein)
+        self.assertEqual(res,res1)
 
-    def test_all_aac(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_aac()
-        self.assertEqual(res1, data.shape[0])
-
-    def test_all_paac(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_paac()
-        self.assertEqual(res1, data.shape[0])
-
-    def test_all_sequenceorder(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_sequenceorder()
-        self.assertEqual(res1, data.shape[0])
-
-    def test_all_correlation(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_correlation()
-        self.assertEqual(res1, data.shape[0])
-
-    def test_all_base_class(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all_base_class()
-        self.assertEqual(res1, data.shape[0])
-
-    def test_all(self):
-        res1 = self.dataset.shape[0]
-        desc = ProteinDescritors(self.dataset, 'sequence')
-        data = desc.get_all()
-        self.assertEqual(res1, data.shape[0])
+    def test_par_preprocessing20AA(self):
+        res1 = self.dataset.shape
+        trans = ReadSequence()
+        res = trans.par_preprocessing(self.dataset, 'sequence')
+        self.assertEqual(res.shape,res1)
 
     # def test_lenght(self):
     #     pass
@@ -191,3 +162,23 @@ class Test_preprocessing(TestCase):
     # def descriptor_calculate_crosscorr(self):
     #     pass
     #
+    # def test_all_physicochemical(self):
+    #     pass
+    #
+    # def test_all_aac(self):
+    #     pass
+    #
+    # def test_all_paac(self):
+    #     pass
+    #
+    # def test_all_sequenceorder(self):
+    #     pass
+    #
+    # def test_all_correlation(self):
+    #     pass
+    #
+    # def test_all_base_class(self):
+    #     pass
+    #
+    # def test_all(self):
+    #     pass

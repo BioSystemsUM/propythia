@@ -15,17 +15,17 @@ Email:
 
 ##############################################################################
 """
-import pandas as pd
-import sys
-import os
-import numpy as np
-import getopt
-from keras.utils import to_categorical
+# import pandas as pd
+# import sys
+# import os
+# import numpy as np
+# import getopt
+from tensorflow.keras.utils import to_categorical
 
 
 def bin_aa_ct(seq, alphabet = "ARNDCEQGHILKMFPSTWYV"):
     """
-    Transform sequency in binary profile. If the alphabet providednot include the B, Z, U and O but these aminoacids
+    Transform sequency in binary profile. If the alphabet provided not include the B, Z, U and O but these aminoacids
     are present in sequence they will be substitute for the closest aa ( N, Q, C and K respectively). If X is presented
     in sequence but not in the alphabet given, it will be eliminated.
     :param alphabet: alphabet to consider. by defult a 20 aa alphabet "ARNDCEQGHILKMFPSTWYV"

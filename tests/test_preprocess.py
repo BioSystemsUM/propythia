@@ -3,54 +3,110 @@
 
 File containing tests functions to check if all functions from preprocess module are properly working
 
-Authors: Ana Marta Sequeira
+Authors: Ana Marta Sequeira, Miguel Barros
 
-Date: 06/2019
+Date: 06/2019 ALTERED 03/2022
 
 Email:
 
 ##############################################################################
 """
 from propythia.preprocess import Preprocess
+
+from unittest import TestCase
+from propythia.Par_descriptores import ParDescritors
+from propythia.sequence import ReadSequence
 import pandas as pd
 
+class Test_preprocessing(TestCase):
 
-def test_preprocess():
-    dataset = pd.read_csv(r'datasets/dataset_test.csv', delimiter=',', encoding='latin-1')
-    # print(dataset.describe())
-    # print(dataset.shape)
+    ################## PHYSICO CHEMICAL DESCRIPTORS  ##################
 
-    # separate labels
-    labels = dataset['labels']
-    dataset = dataset.loc[:, dataset.columns != 'labels']
+    def setUp(self):
+        test_data = {'sequence': {0: 'MSYKPIAPAPSSTPGSSTPGPGTPVPTGSVPSPSGSVPGAGAPFRPLFNDFGPPSMGYVQAMKPPGAQGSQSTYTDLLSVIEEMGKEIRPTYAGSKSAMERLKRGIIHARALVRECLAETERNART',
+                                  1: 'MSDDLPIDIHSSKLLDWLVSRRHCNKDWQKSVVAIREKIKHAILDMPESPKIVELLQGAYINYFHCCQIIEILRDTEKDTKNFLGFYSSQRMKDWQEIEGMYKKDNVYLAEAAQILQRLAQYEIPALRKQISKMDQSVTDAIRKHSEYGKQAEDGRKQFEKEISRMQLKGVHLRKELLELAADLPAFYEKITAEIRKISAARDYFQAFRDYMSLGAAPKDAAPILPIIGLIGERGLDVTTYEWKYNQKPDKVEKPNFEMLLTAAEDSDEIDFGGGDEIDFGIAAEDDAVIDFSAVVDLVADDTGAVGEAIASGQDALHLLENSEAQKAVKHELIELLAFLSMRLDDETRETTADVLIRGAEKRPDGVAAVTEKRLKTWITEVEGILKELENPQKVHLFKIRGSPQYVEQVVEELEKKRDMEHRYKRLQTLMTENQETARQSVTKSNVELKTIVESTRVLQKQIEAEISKKYNGRRVNLMGGINQALGGN',
+                                  2: 'MPFDPAASPLSPSQARVLATLMEKARTVPDSYPMSLNGLLTGCNQKTSRDPVMALSEAQVQEALAALERLALVFENSGYRSPRWEHNFQRGAGVPEQSAVLLGLLMLRGPQTAAELRTNAERWYRFADISSVEAFLDELQQRSADKGGPLAVPLPRSPGTREQRWAHLLCGPVDAGRSNAGVEPVPAGVETLQERIGTLESELASLRATVQWLCQELGITPAPASMPQPGLPAGNGSPGS',
+                                  3: 'MIHFTKMHGLGNDFMVVDGVTQNVFFSPEQIRRLADRNFGIGFDQLLLVEPPYDPDLDFHYRIFNADGSEVEQCGNGARCFARFVRNKGLTQKNKIRVSTNSGKITLRIERDGNVTVNMGVPVIEPSQIPFKAKKSEKTYLLQTPMQTYLCGAISMGNPHCVIQVEDVQTVNVDEIGSSLTRHERFPKGVNVGFMQVINPGHIKLRVYERGAAETLACGTGACAAAAVGQLQDKLDKQVRVDLPGGSLIINWEGEGKPLWMTGPAEHVYDGQIQL',
+                                  4: 'MGSSTTEPDVGTTSNIETTTTLQNKNVNEVDQNKKSEQSNPSFKEVVLKDIGLGEATDLENVSDDVFNNYLAIRLERERKEIELLKESNLEKLSVIIKNCIECNSFTDETMKRLINLVDNNYNNSVHFSPKSKRRKLESTSPPMSSSSVPNKETNNIQQSNSYQLRNNYDEEQENQKSQTQGSKSLLSRPNIYSFPPKQTQPASQQHVQLAAIVQRQSTLTTPLSSTYGSNSNNSMNTQLPLSDKSLRSNVQEKIVQQGSMSQRDIINGSNMSSQYSSQVYPPGYYQTRYGQQMVVVYPDSDSPQINQTSTIQHQQQLPHTYPPHYHQQQQLHQNQLVPQQHQQLQQQSISKHQLFGQKNPMSPQSHYLPNNESQNLGVINHRRSFSSGTYPVVNSRSKSPDRSMPLTVQKQMNFLIHTPKHPPPT',
+                                  5: 'MSTNPIQPLLDVLYQGKSLNREQTAELFGALIRGEMSEAAMAGMLVALKMRGETIDEISGAADAMRAAAKPFPCPERNNNPLHNGIVDIVGTGGDGFNTINISTTAAFVAAAAGAKVAKHGNRSVSSKSGSSDLLAQFGIDLTMSPETASRCLDALNLCFLFAPHYHGGVKHAVPVRQALKTRTLFNVLGPLINPARPEFMLLGVYSPELVLPIAKVLKALGTKRAMVVHGSGLDEVALHGNTQVAELKDGDIVEYQLTPADLGVPLAQITDLEGGEPAQNALITEAILKGRGTEAHANAVAINAGCALYVCGIADSVKAGTLLALATIQSGKAFELLSQLAKVSGEALVNGQEKGR',
+                                  6: 'MPQRFIVVTGGVLSGIGKGIFSASLARILKDSGVNVNILKIDPYLNVDAGTMNPNQHGEVFVTDDGYEADLDLGHYERFLGINVSRKNNITAGQIYYSVIKREREGKYLGSTVQIVPHVTSEIKDRIKTMDGDLLVIEIGGTVGDIEGEVFLEAVRELAFEIGREKFHFVHVTYVPYLRTTNEFKTKPTQQSVQLLRRIGIHPDTIIVRTEMPIDANSLFKVSLFSGVPRNRVINLPDASNVYEVPDVLHSLNLHKLIAKELDIDINDRFNWSYPKSFELLKIGIVGKYLGTDDAYKSIIESIYLSGAQKPIVIDAQELEDMTDEQIKNYLDDFDALIIPGGFGRRGIEGKIKAIKYARENKKPILGICLGMQLMAIEFARNVGKLEGANSTEFDENTPYPVVNMMESQKEVLNLGGTMRLGAQKTQIMKGTLLSRIYDGQEVVYERHRHRYEVDAEAFPQLFKNPGEEGYKLTISARSDFVEAVELDDHPFFVGIQYHPEYKSKVGKPHPIFKWLVKAAGGKIND',
+                                  7: 'MTSLADLPVDVSPRHEGERIRSGDMYVELAGPKSFGAELFKVVDPDEIEPDKVEVIGPDIDEMEEGGRYPFAIYVKAAGEELEEDVEGVLERRIHEFCNYVEGFMHLNQRDQIWCRVSKNVTEKGFRLEHLGIALRELYKEEFGNVIDSVEVTIMTDEEKVEEFLEYARRVYKKRDERAKGLSEEDVNEFYVCLMCQSFAPTHVCVITPDRPSLCGSITWHDAKAAYKIDPEGPIFPIEKGECLDPEAGEYEGVNEAVKEHSQGTVERVYLHSCLEYPHTSCGCFQAVVFYIPEVDGFGIVDREYPGETPIGLPFSTMAGEASGGEQQPGFVGVSYGYMESDKFLQYDGGWERVVWMPKALKERMKHAIPDELYDKIATEEDATTVEELREFLEKVEHPVVERWAEEEEEEEEKAPEEEAPAEEPTMEVKELPIAPGGGLNVKIVLKNAKIYAEKVIIKRADREDKS',
+                                  8: 'MGSADDRRFEVLRAIVADFVATKEPIGSKTLVERHNLGVSSATVRNDMAVLEAEGYITQPHTSSGRVPTEKGYREFVDRIDNVKPLSSSERRAILNFLESGVDLDDVLRRAVRLLAQLTRQVAIVQYPTLSTSSVRHLEVVALTPARLLLVVITDTGRVDQRIVELGDAIDEHELSKLRDMLGQAMEGKPLAQASIAVSDLASHLNGSDRLGDAVGRAATVLVETLVEHTEERLLLGGTANLTRNTADFGGSLRSVLEALEEQVVVLRLLAAQQEAGKVTVRIGHETEAEQMAGASVVSTAYGSSGKVYGGMGVVGPTRMDYPGTIANVAAVALYIGEVLGSR',
+                                  9: 'MDNIRNFSIIAHIDHGKSTLADRIIQLCGGLSDREMEAQVLDSMDIEKERGITIKAQTAALSYKARDGKVYNLNLIDTPGHVDFSYEVSRSLSACEGALLVVDASQGVEAQTVANCYTAIELGVEVVPVLNKIDLPAADPDNAIQEIEDVIGIDAADATRCSAKTGEGVADVLEALIAKVPAPKGDPAAPLQALIIDSWFDNYVGVVMLVRVVNGTLRAKDKVLLMATGAQHLVEQVGVFSPKSVPRESLSAGQVGFVIAGIKELKAAKVGDTITHVAPRKAEAPLPGFKEVKPQVFAGLYPVEANQYEALRESLEKLKLNDASLQYEPEVSQALGFGFRCGFLGLLHMEIVQERLEREFDMDLITTAPTVVYQVQLRDGTMVQVENPAKMPADPSKIEAILEPIVTVNLYMPQEYVGAVITLCEQKRGSQINMSYHGRQVQLTYEIPMGEIVLDFFDRLKSVSRGYASMDYEFKEYRVSDVVKVDILINGDKVDALSIIVHRSNSTYRGREVAAKMREIIPRQMYDVAIQAAIGANVIARENVKALRKNVLAKCYGGDISRKKKLLEKQKEGKKRMKQVGTVEIPQEAFLAILRVEEK'},
+                     'TCDB_ID': {0: '0', 1: '0', 2: '0', 3: '0', 4: '0', 5: '0', 6: '0', 7: '0', 8: '0', 9: '0'}}
 
-    # Create Preprocess object
-    prepro = Preprocess()
+        self.dataset = pd.DataFrame(test_data)
+    def test_preprocessing20AA(self):
+        protein = "ARNDCEQGHILKMFPSTWYVBZUOJX"
+        res1 = 'ARNDCEQGHILKMFPSTWYVNQCKI'
+        trans = ReadSequence()
+        res = trans.get_preprocessing_20AA(protein)
+        self.assertEqual(res,res1)
 
-    # CHECK IF NAN
-    prepro.missing_data(dataset)
+    def test_preprocessingX(self):
+        protein = "ARNDCEQGHILKMFPSTWYVBZUOJX"
+        res1 = 'ARNDCEQGHILKMFPSTWYVXXXXXX'
+        trans = ReadSequence()
+        res = trans.get_preprocessing_X(protein)
+        self.assertEqual(res,res1)
 
-    dataset_zero, colum_Zero = prepro.remove_columns_all_zeros(dataset, True)  # remove zero columns
-    # print(colum_Zero)
-    # print(dataset_zero.shape)
-    dataset_without_duplicate, column_duplicated = prepro.remove_duplicate_columns(dataset_zero,
-                                                                                   True)  # DUPLICATED COLUMNS
-    # print(column_duplicated)
-    # print(dataset_without_duplicate.shape)
-    # REMOVE ZERO VARIANCE COLUMNS
-    dataset_clean, column_not_variable = prepro.remove_low_variance(dataset_without_duplicate, standard=True,
-                                                                    columns_names=True)
-    # print(column_not_variable)
-    # print(dataset_clean.shape)
+    def test_preprocessingremoveX(self):
+        protein = "ARNDCEQGHILKMFPSTWYVBZUOJX"
+        res1= "ARNDCEQGHILKMFPSTWYVBZUOJ"
+        trans = ReadSequence()
+        res = trans.get_preprocessing_removeX(protein)
+        self.assertEqual(res,res1)
 
-    ######OR
+    def test_par_preprocessing20AA(self):
+        res1 = self.dataset.shape
+        trans = ReadSequence()
+        res = trans.par_preprocessing_20AA(self.dataset, 'sequence')
+        self.assertEqual(res.shape,res1)
 
-    dataset_clean, columns_deleted = prepro.preprocess(dataset, columns_names=True, threshold=0, standard=True)
+    def test_par_preprocessingX(self):
+        res1 = self.dataset.shape
+        trans = ReadSequence()
+        res = trans.par_preprocessing_X(self.dataset, 'sequence')
+        self.assertEqual(res.shape,res1)
 
-    # put labels back
-    dataset_clean['labels'] = labels
-    print(dataset_clean.shape)
+    def test_par_preprocessingremoveX(self):
+        res1 = self.dataset.shape
+        trans = ReadSequence()
+        res = trans.par_preprocessing_removeX(self.dataset, 'sequence')
+        self.assertEqual(res.shape, res1)
 
+    def test_preprocess(self):
+        dataset = pd.read_csv(r'datasets/dataset_test.csv', delimiter=',', encoding='latin-1')
+        # print(dataset.describe())
+        # print(dataset.shape)
 
-if __name__ == "__main__":
-    test_preprocess()
+        # separate labels
+        labels = dataset['labels']
+        dataset = dataset.loc[:, dataset.columns != 'labels']
+
+        # Create Preprocess object
+        prepro = Preprocess()
+
+        # CHECK IF NAN
+        prepro.missing_data(dataset)
+
+        dataset_zero, colum_Zero = prepro.remove_columns_all_zeros(dataset, True)  # remove zero columns
+        # print(colum_Zero)
+        # print(dataset_zero.shape)
+        dataset_without_duplicate, column_duplicated = prepro.remove_duplicate_columns(dataset_zero,
+                                                                                       True)  # DUPLICATED COLUMNS
+        # print(column_duplicated)
+        # print(dataset_without_duplicate.shape)
+        # REMOVE ZERO VARIANCE COLUMNS
+        dataset_clean, column_not_variable = prepro.remove_low_variance(dataset_without_duplicate, standard=True,
+                                                                        columns_names=True)
+        # print(column_not_variable)
+        # print(dataset_clean.shape)
+
+        ######OR
+
+        dataset_clean, columns_deleted = prepro.preprocess(dataset, columns_names=True, threshold=0, standard=True)
+
+        # put labels back
+        dataset_clean['labels'] = labels
+        print(dataset_clean.shape)

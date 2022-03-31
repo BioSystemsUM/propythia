@@ -59,7 +59,6 @@ Altered and converted to python 3.6 by Ana Marta Sequeira 05/2019
 #########################################################################################
 """
 
-import string
 import math
 
 # import scipy
@@ -129,7 +128,7 @@ def normalize_each_aap(aap):
 	:return: dict form containing the normalized properties of 20 amino acids.
 	"""
     if len(list(aap.values())) != 20:
-        print('You can not input the correct number of properities of Amino acids!')
+        raise Exception('You can not input the correct number of properties of Amino acids!')
     else:
         Result = {}
         for i, j in list(aap.items()):
@@ -146,7 +145,7 @@ def normalize_each_aap(aap):
 #############################################################################################
 
 
-def _get_correlation_function(Ri='S', Rj='D', aap=[_Hydrophobicity, _hydrophilicity, _residuemass]):
+def _get_correlation_function(Ri='S', Rj='D', aap=None):
     """
 	Computing the correlation between two given amino acids using the above three properties.
 
@@ -155,7 +154,8 @@ def _get_correlation_function(Ri='S', Rj='D', aap=[_Hydrophobicity, _hydrophilic
 	:param aap:
 	:return: correlation value between two amino acids.
 	"""
-
+    if aap is None:
+        aap = (_Hydrophobicity, _hydrophilicity, _residuemass)
     hydrophobicity = normalize_each_aap(aap[0])
     hydrophilicity = normalize_each_aap(aap[1])
     residuemass = normalize_each_aap(aap[2])
@@ -273,7 +273,7 @@ def _get_pseudo_aac(ProteinSequence, lamda=10, weight=0.05):
 #############################################################################################
 
 
-def _get_correlation_function_for_apaac(Ri='S', Rj='D', AAP=[_Hydrophobicity, _hydrophilicity]):
+def _get_correlation_function_for_apaac(Ri='S', Rj='D', AAP=None):
     """
 	Computing the correlation between two given amino acids using the above two	properties for APAAC (type II PseAAC).
 
@@ -282,7 +282,8 @@ def _get_correlation_function_for_apaac(Ri='S', Rj='D', AAP=[_Hydrophobicity, _h
 	:param AAP:
 	:return:  correlation value between two amino acids
 	"""
-
+    if AAP is None:
+        AAP= (_Hydrophobicity, _hydrophilicity)
     hydrophobicity = normalize_each_aap(AAP[0])
     hydrophilicity = normalize_each_aap(AAP[1])
     theta1 = round(hydrophobicity[Ri] * hydrophobicity[Rj], 3)
@@ -355,7 +356,7 @@ def get_a_pseudo_aac2(protein_sequence, lamda=30, weight=0.5):
     result = {}
     temp = 1 + weight * sum(rightpart)
     for index in range(20, 20 + 2 * lamda):
-        result['PAAC' + str(index + 1)] = round(weight * rightpart[index - 20] / temp * 100, 3)
+        result['APAAC' + str(index + 1)] = round(weight * rightpart[index - 20] / temp * 100, 3)
 
     return result
 
@@ -390,7 +391,7 @@ def get_a_pseudo_aac(protein_sequence, lamda=30, weight=0.5):
 #############################based on different properties###################################
 #############################################################################################
 #############################################################################################
-def get_correlation_function(Ri='S', Rj='D', AAP=[]):
+def get_correlation_function(Ri='S', Rj='D', AAP= None):
     """
 	Computing the correlation between two given amino acids using the given properties.
 
@@ -399,8 +400,8 @@ def get_correlation_function(Ri='S', Rj='D', AAP=[]):
 	:param AAP: list form containing the properties, each of which is a dict form
 	:return: correlation value between two amino acids
 	"""
-
-    AAP = [_Hydrophobicity, _hydrophilicity, _residuemass, _pK1, _pK2, _pI]
+    if AAP is None:
+        AAP = [_Hydrophobicity, _hydrophilicity, _residuemass, _pK1, _pK2, _pI]
     NumAAP = len(AAP)
     theta = 0.0
     for i in range(NumAAP):
@@ -410,7 +411,7 @@ def get_correlation_function(Ri='S', Rj='D', AAP=[]):
     return result
 
 
-def get_sequence_order_correlation_factor(protein_sequence, k=1, AAP=[]):
+def get_sequence_order_correlation_factor(protein_sequence, k=1, AAP=None):
     """
 	Computing the Sequence order correlation factor with gap equal to k based on the given properities.
 
@@ -430,7 +431,7 @@ def get_sequence_order_correlation_factor(protein_sequence, k=1, AAP=[]):
     return result
 
 
-def get_pseudo_aac1(protein_sequence, lamda=30, weight=0.05, AAP=[]):
+def get_pseudo_aac1(protein_sequence, lamda=30, weight=0.05, AAP=None):
     """
 	Computing the first 20 of type I pseudo-amino acid compostion based on the given properties.
 
@@ -453,7 +454,7 @@ def get_pseudo_aac1(protein_sequence, lamda=30, weight=0.05, AAP=[]):
     return result
 
 
-def get_pseudo_aac2(protein_sequence, lamda=30, weight=0.05, AAP=[]):
+def get_pseudo_aac2(protein_sequence, lamda=30, weight=0.05, AAP=None):
     """
 	Computing the last lamda of type I pseudo-amino acid compostion based on the given properties.
 
@@ -475,7 +476,7 @@ def get_pseudo_aac2(protein_sequence, lamda=30, weight=0.05, AAP=[]):
     return result
 
 
-def get_pseudo_aac(protein_sequence, lamda=30, weight=0.05, AAP=[]):
+def get_pseudo_aac(protein_sequence, lamda=30, weight=0.05, AAP=None):
     """
     Computing all of type I pseudo-amino acid compostion based on the given
     properties. Note that the number of PAAC strongly depends on the lamda value. if lamda = 20,
@@ -501,7 +502,6 @@ def get_pseudo_aac(protein_sequence, lamda=30, weight=0.05, AAP=[]):
 
 
 if __name__ == "__main__":
-    import string
 
     protein = "MTDRARLRLHDTAAGVVRDFVPLRPGHVSIYLCGATVQGLPHIGHVRSGVAFDILRRWLL\
 ARGYDVAFIRNVTDIEDKILAKAAAAGRPWWEWAATHERAFTAAYDALDVLPPSAEPRAT\
@@ -512,40 +512,10 @@ SMLEFSETAMQDAVKAYVGLEDFLHRVRTRVGAVCPGDPTPRFAEALDDDLSVPIALAEI\
 HHVRAEGNRALDAGDHDGALRSASAIRAMMGILGCDPLDQRWESRDETSAALAAVDVLVQ\
 AELQNREKAREQRNWALADEIRGRLKRAGIEVTDTADGPQWSLLGGDTK"
     protein = str.strip(protein)
-    PAAC = get_pseudo_aac(protein, lamda=5, AAP=[])
+    PAAC = get_pseudo_aac(protein, lamda=5, AAP=None)
 
     for i in PAAC:
         print(i, PAAC[i])
-
-    #	temp=_get_correlation_function('S','D')
-    #	print temp
-    #
-    #	print _get_sequence_order_correlation_factor(protein,k=4)
-    #
-    #	PAAC1=_get_pseudo_aac1(protein,lamda=4)
-    #	for i in PAAC1:
-    #		print i, PAAC1[i]
-    #	PAAC2=_get_pseudo_aac2(protein,lamda=4)
-    #	for i in PAAC2:
-    #		print i, PAAC2[i]
-    #	print len(PAAC1)
-    #	print _GetSequenceOrderCorrelationFactorForAPAAC(protein,k=1)
-    #	APAAC1=_GetAPseudoAAC1(protein,lamda=4)
-    #	for i in APAAC1:
-    #		print i, APAAC1[i]
-
-    #	APAAC2=get_a_pseudo_aac2(protein,lamda=4)
-    #	for i in APAAC2:
-    #		print i, APAAC2[i]
-    #	APAAC=get_a_pseudo_aac(protein,lamda=4)
-    #
-    #	for i in APAAC:
-    #		print i, APAAC[i]
-
-    # PAAC=get_pseudo_aac(protein,lamda=5,AAP=[_Hydrophobicity,_hydrophilicity])
-    #
-    # for i in PAAC:
-    # 	print(i, PAAC[i])
 
     protein = "AAGMGFFGAR"
     protein = str.strip(protein)
@@ -554,4 +524,3 @@ AELQNREKAREQRNWALADEIRGRLKRAGIEVTDTADGPQWSLLGGDTK"
     for i in PAAC:
         print(i, PAAC[i])
 
-# [_Hydrophobicity,_hydrophilicity,_residuemass,_pK1,_pK2,_pI]
