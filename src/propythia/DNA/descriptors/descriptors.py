@@ -56,7 +56,7 @@ class DNADescriptor:
         for letter in self.dna_sequence:
             if letter == 'G' or letter == 'C':
                 gc_content += 1
-        return gc_content / self.get_length()
+        return round(gc_content / self.get_length(), 3)
 
     def get_at_content(self):
         """
@@ -67,7 +67,7 @@ class DNADescriptor:
         for letter in self.dna_sequence:
             if letter == 'A' or letter == 'T':
                 at_content += 1
-        return at_content / self.get_length()
+        return round(at_content / self.get_length(), 3)
 
     # ----------------------- NUCLEIC ACID COMPOSITION ----------------------- #
 
@@ -249,7 +249,7 @@ class DNADescriptor:
         aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
         for i in range(len(self.dna_sequence)):
             aux_d[self.dna_sequence[i]] += 1
-            x = aux_d[self.dna_sequence[i]] / (i + 1)
+            x = round(aux_d[self.dna_sequence[i]] / (i + 1), 3)
             res.append(x)
         return res
 
@@ -489,7 +489,6 @@ class DNADescriptor:
         res['kmer'] = self.get_kmer()
         res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
         res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
-        res['binary'] = self.get_binary()
         res['DAC'] = self.get_DAC()
         res['DCC'] = self.get_DCC()
         res['DACC'] = self.get_DACC()
@@ -499,13 +498,3 @@ class DNADescriptor:
         res['PseDNC'] = self.get_PseDNC()
         res['PseKNC'] = self.get_PseKNC()
         return res
-
-    def run(self):
-        for i in range(3000):
-            if(i % 100 == 0):
-                print(i)
-            self.get_all_descriptors()
-
-
-dna = DNADescriptor('cagtcacatctgtaatcacaatacgttgggaggctgaggcaggaggatcacttgagtccaggagttgaggctgcagtgagctgtgatcacaccactgcactctagtgtgggtgacagtgagaccctgtctcaaaaaaaaaaaaaaaaagaTACATTCAAAGAAGTCAAAATAAAACAGTATAAAACCTATCTCCC')
-dna.run()
