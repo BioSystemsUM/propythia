@@ -13,6 +13,8 @@ Email:
 ##############################################################################
 """
 import os
+
+import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -240,6 +242,33 @@ class Encoding:
 
         return self.result
 
+    def get_adaptable(self, list_of_functions : list, alphabet: str = "XARNDCEQGHILKMFPSTWYV", seq_len: int = 600, padding_truncating='post',
+                blosum: str = 'blosum62', use_padded: bool = False, n_jobs: int = 4):
+        """
+        It allows to run a selected set of encoding functions for the protein sequences.
+
+        :param list_of_functions: A list with the fuctions to run.
+        :param alphabet: The alphabet of aminoacids to be used.
+        :param seq_len: The maximum length for all sequences. By default the length is 600 amino acids
+        :param padding_truncating: 'pre' or 'post' pad either before or after each sequence, also removes values from sequences larger than seq_len. By default padding is after each sequence.
+        :param blosum: blosum matrix to use either 'blosum62' or 'blosum50'. by default 'blosum62'
+        :param use_padded: A bool argument, if true it uses the padded sequences for the one-hot, blosum and z-scale encoding.
+        :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
+        :return: Dataframe with all encodings for each sequence.
+        """
+
+        for function in list_of_functions:
+            if function == 1:
+                self.result = self.result.merge(self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
+                if use_padded: self.col = 'padded_sequence'
+            if function == 2: self.result  = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
+            if function == 3: self.result = self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
+            if function == 4: self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
+            if function == 5: self.result = self.result.merge(self.get_nlf(n_jobs), how='left', on=self.col)
+            if function == 6: self.result = self.result.merge(self.get_zscale(n_jobs), how='left', on=self.col)
+            if function == 7: self.get_all(alphabet, seq_len, padding_truncating, blosum, use_padded, n_jobs)
+
+        return self.result
 
 def seq_blosum_encoding(ProteinSequence: str, col: str, encoding: dict):
     """
@@ -335,10 +364,10 @@ def seq_hot_encoded(ProteinSequence : str, col: str, char_to_int: dict):
     :return: Dict form with the one-hot-encoding for the sequence.
     """
     integer_encoded = [char_to_int[char] for char in ProteinSequence]
-
-    hot_enc = to_categorical(integer_encoded).tolist()
+    integer_encoded.append(len(char_to_int.keys()) - 1)
+    hot_enc = to_categorical(integer_encoded)
     res = {col : ProteinSequence}
-    res['One_hot_encoding'] = hot_enc
+    res['One_hot_encoding'] = hot_enc[:len(hot_enc)-1]
     return res
 
 def seq_padded_hot(ProteinSequence : str, col: str, char_to_int: dict, int_to_char: dict, seq_len: int,
@@ -359,14 +388,15 @@ def seq_padded_hot(ProteinSequence : str, col: str, char_to_int: dict, int_to_ch
     list_of_sequences_length = pad_sequences([integer_encoded], maxlen=seq_len, dtype='int32',
                                              padding=padding_truncating, truncating=padding_truncating, value=0)
 
-    char_paded = [int_to_char[i] for i in list_of_sequences_length[0]]
+    integer_padded = np.append(list_of_sequences_length[0], [len(char_to_int.keys()) - 1])
+    char_paded = [int_to_char[i] for i in integer_padded]
     pad_aa = ''.join(char_paded)
 
-    hot_enc = to_categorical(list_of_sequences_length[0]).tolist()
+    hot_enc = to_categorical(integer_padded).tolist()
 
     res = {col: ProteinSequence}
-    res['padded_sequence'] = pad_aa
-    res['One_hot_encoding'] = hot_enc
+    res['padded_sequence'] = pad_aa[:len(pad_aa)-1]
+    res['One_hot_encoding'] = hot_enc[:len(hot_enc)-1]
 
     return res
 
