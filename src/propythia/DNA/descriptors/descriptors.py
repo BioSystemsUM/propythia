@@ -470,31 +470,57 @@ class DNADescriptor:
                                             (1 + w * sum(thetas)), 3)
         return res
 
+    # ----------------------  Encodings (remove later)  ---------------------- #
+
+    def get_binary(self):
+        """
+        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
+        :return: list with values of binary encoding
+        """
+        binary = {
+            'A': [1, 0, 0, 0],
+            'C': [0, 1, 0, 0],
+            'G': [0, 0, 1, 0],
+            'T': [0, 0, 0, 1]
+        }
+        return [binary[i] for i in self.dna_sequence]
+
     # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
 
-    def get_all_descriptors(self):
+    def get_descriptors(self, specifics=[]):
         """
         Calculates all descriptors
         :return: dictionary with values of all descriptors
         """
         res = {}
-        res['length'] = self.get_length()
-        res['gc_content'] = self.get_gc_content()
-        res['at_content'] = self.get_at_content()
-        res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
-        res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
-        res['dinucleotide_composition'] = self.get_dinucleotide_composition()
-        res['trinucleotide_composition'] = self.get_trinucleotide_composition()
-        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
-        res['kmer'] = self.get_kmer()
-        res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
-        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
-        res['DAC'] = self.get_DAC()
-        res['DCC'] = self.get_DCC()
-        res['DACC'] = self.get_DACC()
-        res['TAC'] = self.get_TAC()
-        res['TCC'] = self.get_TCC()
-        res['TACC'] = self.get_TACC()
-        res['PseDNC'] = self.get_PseDNC()
-        res['PseKNC'] = self.get_PseKNC()
+        if specifics == []:
+            res['length'] = self.get_length()
+            res['gc_content'] = self.get_gc_content()
+            res['at_content'] = self.get_at_content()
+            res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
+            res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
+            res['dinucleotide_composition'] = self.get_dinucleotide_composition()
+            res['trinucleotide_composition'] = self.get_trinucleotide_composition()
+            res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
+            res['kmer'] = self.get_kmer()
+            res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
+            res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
+            res['DAC'] = self.get_DAC()
+            res['DCC'] = self.get_DCC()
+            res['DACC'] = self.get_DACC()
+            res['TAC'] = self.get_TAC()
+            res['TCC'] = self.get_TCC()
+            res['TACC'] = self.get_TACC()
+            res['PseDNC'] = self.get_PseDNC()
+            res['PseKNC'] = self.get_PseKNC()
+
+            # ---
+            res['binary'] = self.get_binary()
+            # ---
+
+        else:
+            for i in specifics:
+                func = getattr(self, "get_"+i)
+                res[i] = func()
         return res
