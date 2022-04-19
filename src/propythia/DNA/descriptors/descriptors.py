@@ -15,7 +15,7 @@ Email:
 """
 
 
-from utils import make_kmer_list, make_kmer_dict, ready_acc, make_ac_vector, make_cc_vector
+from utils import *
 from functools import reduce
 
 
@@ -83,9 +83,7 @@ class DNADescriptor:
             res[letter] += 1
 
         if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
+            res = normalize_dict(res)
         return res
 
     def get_enhanced_nucleic_acid_composition(self, window_size=5, normalize=False):
@@ -104,9 +102,7 @@ class DNADescriptor:
                 aux_d[letter] += 1
 
             if normalize:
-                N = sum(aux_d.values())
-                for key in aux_d:
-                    aux_d[key] = aux_d[key] / N
+                aux_d = normalize_dict(aux_d)
 
             res.append(aux_d)
 
@@ -124,9 +120,7 @@ class DNADescriptor:
             dinucleotide = self.dna_sequence[i:i+2]
             res[dinucleotide] += 1
         if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
+            res = normalize_dict(res)
         return res
 
     def get_trinucleotide_composition(self, normalize=False):
@@ -142,9 +136,7 @@ class DNADescriptor:
             res[trinucleotide] += 1
 
         if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
+            res = normalize_dict(res)
         return res
 
     def get_k_spaced_nucleic_acid_pairs(self, k=0, normalize=False):
@@ -162,9 +154,7 @@ class DNADescriptor:
             res[k_spaced_nucleic_acid_pair] += 1
 
         if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
+            res = normalize_dict(res)
         return res
 
     def get_kmer(self, k=2, normalize=False, reverse=False):
@@ -206,9 +196,7 @@ class DNADescriptor:
                     del res[bigger]
 
         if normalize:
-            N = sum(res.values())
-            for key in res:
-                res[key] = res[key] / N
+            res = normalize_dict(res)
 
         return res
 
@@ -498,12 +486,12 @@ class DNADescriptor:
             res['length'] = self.get_length()
             res['gc_content'] = self.get_gc_content()
             res['at_content'] = self.get_at_content()
-            res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
-            res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
-            res['dinucleotide_composition'] = self.get_dinucleotide_composition()
-            res['trinucleotide_composition'] = self.get_trinucleotide_composition()
-            res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
-            res['kmer'] = self.get_kmer()
+            res['nucleic_acid_composition'] = self.get_nucleic_acid_composition(normalize=True)
+            res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition(normalize=True)
+            res['dinucleotide_composition'] = self.get_dinucleotide_composition(normalize=True)
+            res['trinucleotide_composition'] = self.get_trinucleotide_composition(normalize=True)
+            res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs(normalize=True)
+            res['kmer'] = self.get_kmer(normalize=True)
             res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
             res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
             res['DAC'] = self.get_DAC()

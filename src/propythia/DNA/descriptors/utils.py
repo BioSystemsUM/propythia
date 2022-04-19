@@ -7,6 +7,7 @@ ALPHABET = 'ACGT'
 
 # -----------------------------------------------------------------------------
 
+
 def checker(sequence):
     """
     Checks if the input sequence is a valid DNA sequence.
@@ -14,6 +15,14 @@ def checker(sequence):
     return all(i in ALPHABET for i in sequence)
 
 # -----------------------------------------------------------------------------
+
+
+def normalize_dict(dic):
+    """Normalize the value of a dictionary."""
+    N = sum(dic.values())
+    for key in dic:
+        dic[key] = round(dic[key] / N, 3)
+    return dic
 
 
 def make_kmer_list(k):
