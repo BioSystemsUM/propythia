@@ -37,7 +37,10 @@ class DNADescriptor:
 
     def __init__(self, dna_sequence):
         """	Constructor """
-        self.dna_sequence = dna_sequence.strip().upper()
+        if(checker(dna_sequence)):
+            self.dna_sequence = dna_sequence.strip().upper()
+        else:
+            print("Invalid DNA sequence")
 
     def get_length(self):
         """
