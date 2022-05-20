@@ -32,10 +32,11 @@ class DNAEncoding:
                 
         self.df = df
 
-    def one_hot_encode(self):
+    def one_hot_encode(self, enconde_target: bool = False):
         """
         From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
         Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
+        :param enconde_target: If True, the target column will be encoded.
         :return: list with values of binary encoding
         """
         binary = {
@@ -43,10 +44,15 @@ class DNAEncoding:
             'C': [0, 1, 0, 0],
             'G': [0, 0, 1, 0],
             'T': [0, 0, 0, 1],
+            1: [1, 0],
+            0: [0, 1]
         }
 
         if(self.df is not None):
-            self.df['sequence'] = self.df['sequence'].apply(lambda x: np.array([binary[i] for i in x], dtype=np.float32))
+            self.df['sequence'] = self.df['sequence'].apply(lambda x: np.array([binary[i] for i in x]))
+            if(enconde_target):
+                self.df['label'] = self.df['label'].apply(lambda x: np.array(binary[x]))
             return self.df
         else:
             return [binary[i] for i in self.dna_sequence]
+        
