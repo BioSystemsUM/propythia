@@ -1,6 +1,14 @@
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 import csv
 
+def read_csv(filename):
+    arr = []
+    with open(filename) as file:
+        reader = csv.DictReader(file, delimiter=';')
+        for row in reader:
+            arr.append(row['sequence'])
+    return arr
+
 def read_fasta(filename):
     d = {}
     with open(filename) as handle:
@@ -48,9 +56,13 @@ def remove_essential_genes(d):
 
 
 def main():
-    genes = read_fasta("datasets/mart_export_unspliced.fa")
-    print(len(genes.values()), len(set(genes.values()))) 
-    write_to_csv(genes)
+    # genes = read_fasta("datasets/mart_export_unspliced.fa")
+    # print(len(genes.values()), len(set(genes.values()))) 
+    # write_to_csv(genes)
+    
+    d = read_csv("datasets/essential_genes.csv")
+    print(len(d))
+    print(len(set(d)))
     
     
 if __name__ == "__main__":
