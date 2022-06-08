@@ -1,5 +1,6 @@
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 import csv
+import pandas as pd
 
 def read_csv(filename):
     arr = []
@@ -54,15 +55,51 @@ def remove_essential_genes(d):
         counter += 1
     print("len(non_essential_dataset):", len(non_essential_dataset), ", removed:", len(ensembl_genes) - len(non_essential_dataset))
 
+def create_non_essential_sequences(unique_deg_sequences, ensembl_dataset):
+    non_essential_sequences = {}
+    for key, big_seq in ensembl_dataset.items():
+        if(big_seq in unique_deg_sequences):
+            non_essential_sequences[key] = big_seq
+    return non_essential_sequences
+
+def create_dict_of_occurrences(d):
+    result = {}
+    for key, value in d.items():
+        key = key.split("|")[0]
+        if(key in result):
+            result[key].append(value)
+        else:
+            result[key] = [value]
+    return result
 
 def main():
-    # genes = read_fasta("datasets/mart_export_unspliced.fa")
-    # print(len(genes.values()), len(set(genes.values()))) 
-    # write_to_csv(genes)
+    ensembl_dataset = read_fasta("datasets/mart_export.fa")
+    print(len(ensembl_dataset.values()), len(set(ensembl_dataset.values()))) 
     
-    d = read_csv("datasets/essential_genes.csv")
+    deg_dataset = pd.read_csv("datasets/essential_genes.csv", sep=';')
+    unique_deg_sequences = set(deg_dataset["sequence"])
+    print("unique deg sequences:", len(unique_deg_sequences))
+    
+    eg_seqs = create_non_essential_sequences(unique_deg_sequences, ensembl_dataset)
+    print("----------")
+    print("eg_seqs", len(eg_seqs.values()))
+    print("eg_seqs uniques", len(set(eg_seqs.values())))
+    
+    first_ids = [i.split("|")[0] for i in eg_seqs.keys()]
+    red_flag_ids = set(first_ids)
+    
+    d = create_dict_of_occurrences(ensembl_dataset)
+    
+    for i in red_flag_ids:
+        del d[i]
+            
     print(len(d))
-    print(len(set(d)))
+    all_sequences = [j for i in d.values() for j in i]
+    print(len(all_sequences))
+    print(len(set(all_sequences)))
+            
+    
+    # print(len(ensembl_dataset), len(ensembl_dataset.values()), len(set(ensembl_dataset.values()))) 
     
     
 if __name__ == "__main__":
