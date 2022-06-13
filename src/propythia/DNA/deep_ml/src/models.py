@@ -27,3 +27,7 @@ class Net(nn.Module):
         x = self.act3(x)
 
         return x
+
+# Build a model that includes one input layer, three hidden layers, and one output layer. All the hidden layers utilize the ReLU activation function. The output layer uses sigmoid activation.
+
+
