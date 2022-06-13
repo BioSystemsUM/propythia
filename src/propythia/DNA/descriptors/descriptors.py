@@ -14,8 +14,7 @@ Email:
 ##############################################################################
 """
 
-
-from utils import *
+import sys
 from functools import reduce
 
 
@@ -40,7 +39,9 @@ class DNADescriptor:
         if(checker(dna_sequence)):
             self.dna_sequence = dna_sequence.strip().upper()
         else:
-            print("Invalid DNA sequence")
+            seq = dna_sequence.strip().upper()
+            self.dna_sequence = ''.join([letter for letter in seq if letter in self.ALPHABET])
+            
 
     def get_length(self):
         """
@@ -515,3 +516,10 @@ class DNADescriptor:
                 func = getattr(self, "get_"+i)
                 res[i] = func()
         return res
+
+
+
+if __name__ == "__main__" or print(sys.path[0].split("/")[-1]) == "descriptors":
+    from utils import *
+else:
+    from .utils import *
