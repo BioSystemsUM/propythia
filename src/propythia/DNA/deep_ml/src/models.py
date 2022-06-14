@@ -28,6 +28,19 @@ class Net(nn.Module):
 
         return x
 
-# Build a model that includes one input layer, three hidden layers, and one output layer. All the hidden layers utilize the ReLU activation function. The output layer uses sigmoid activation.
+class MLP(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(MLP, self).__init__()
+        # one input layer
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        # three hidden layers
+        self.fc2 = nn.Linear(hidden_size, hidden_size * 2)
+        self.fc3 = nn.Linear(hidden_size * 2, hidden_size * 4)
+        # one output layer
+        self.fc4 = nn.Linear(hidden_size * 4, output_size)
+            
 
+if __name__ == '__main__':
+    net = MLP(input_size=153, hidden_size=128, output_size=2)
+    print(net)
 
