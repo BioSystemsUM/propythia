@@ -1,5 +1,6 @@
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+import sys
 
 def traindata(device, model, epochs, optimizer, loss_function, train_loader, valid_loader, patience):
     # Early stopping
@@ -23,6 +24,9 @@ def traindata(device, model, epochs, optimizer, loss_function, train_loader, val
             # Show progress
             if i % 100 == 0 or i == len(train_loader):
                 print(f'[{epoch}/{epochs}, {i}/{len(train_loader)}] loss: {loss.item():.8}')
+                
+            sys.exit()
+                
 
         # Early stopping
         current_loss = validation(model, device, valid_loader, loss_function)

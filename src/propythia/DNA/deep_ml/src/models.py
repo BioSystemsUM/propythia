@@ -31,34 +31,45 @@ class Net(nn.Module):
 class MLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size, dropout):
         super(MLP, self).__init__()
-        # one input layer
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        # three hidden layers
-        self.fc2 = nn.Linear(hidden_size, hidden_size * 2)
-        self.fc3 = nn.Linear(hidden_size * 2, hidden_size * 4)
-        # one output layer
-        self.fc4 = nn.Linear(hidden_size * 4, output_size)
         
-        # All the hidden layers utilize the ReLU activation function. The output layer uses sigmoid activation function to perform discrete classification.  A dropout layer is used after each hidden layer.
+        self.fc1 = nn.Linear(input_size, hidden_size)
         self.relu1 = nn.ReLU()
-        self.relu2 = nn.ReLU()
-        self.relu3 = nn.ReLU()
-        self.sigmoid = nn.Sigmoid()
         self.dropout1 = nn.Dropout(dropout)
+        
+        self.fc2 = nn.Linear(hidden_size, hidden_size * 2)
+        self.relu2 = nn.ReLU()
         self.dropout2 = nn.Dropout(dropout)
+        
+        self.fc3 = nn.Linear(hidden_size * 2, hidden_size * 4)
+        self.relu3 = nn.ReLU()
         self.dropout3 = nn.Dropout(dropout)
+        
+        self.fc4 = nn.Linear(hidden_size * 4, output_size)        
+        self.sigmoid = nn.Sigmoid()
+    
     
     def forward(self, x):
+        print("Break 0\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc1(x)
+        print("Break 1\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu1(x)
+        print("Break 2\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout1(x)
+        print("Break 3\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc2(x)
+        print("Break 4\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu2(x)
+        print("Break 5\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout2(x)
+        print("Break 6\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc3(x)
+        print("Break 7\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu3(x)
+        print("Break 8\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout3(x)
+        print("Break 9\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc4(x)
+        print("Break 10\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.sigmoid(x)
+        print("Break 11\n", x.shape, "\n", x, "\n", "-" * 50)
         return x
-
