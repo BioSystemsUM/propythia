@@ -111,28 +111,6 @@ def match_sequences_to_DEG(d, deg_data):
         if(i in unique_sequences_deg):
             arr.append(i)
     return arr
-
-def create_negative_dataset_unspliced(d):
-    filename = "datasets/mart_export_unspliced.fa"
-    ensembl_dataset = read_fasta(filename)
-    
-    # removing extra headers
-    new_ensembl_dataset = {}
-    for i in ensembl_dataset.keys():
-        new_key = i.split("|")[0]
-        new_ensembl_dataset[new_key] = ensembl_dataset[i]
-    
-    res = {}
-    for i in d.keys():
-        res[i] = new_ensembl_dataset[i]
-        
-    # write to csv
-    with open("datasets/essential_genes_negative.csv", "w") as f:
-        headers = ["id", "sequence"]
-        writer = csv.writer(f, delimiter=",")
-        writer.writerow(headers)
-        for i in res.keys():
-            writer.writerow([i, res[i]])
     
     
 def create_negative_dataset(d):
@@ -146,9 +124,6 @@ def create_negative_dataset(d):
     all_sequences = [j for i in res.values() for j in i]
     print("negative dataset:", len(d), "keys", len(
         all_sequences), "seqs", len(set(all_sequences)), "unique")
-
-    print("keys with len of value == 1:", len([i for i in res.keys() if len(res[i]) == 1]))
-    print("keys with len of value == 2:", len([i for i in res.keys() if len(res[i]) == 2]))
 
     with open("datasets/essential_genes_negative.csv", "w") as f:
         headers = ["id", "sequence"]
