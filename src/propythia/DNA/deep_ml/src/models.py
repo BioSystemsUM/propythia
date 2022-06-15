@@ -29,7 +29,7 @@ class Net(nn.Module):
         return x
 
 class MLP(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, output_size, dropout):
         super(MLP, self).__init__()
         # one input layer
         self.fc1 = nn.Linear(input_size, hidden_size)
@@ -38,9 +38,27 @@ class MLP(nn.Module):
         self.fc3 = nn.Linear(hidden_size * 2, hidden_size * 4)
         # one output layer
         self.fc4 = nn.Linear(hidden_size * 4, output_size)
-            
-
-if __name__ == '__main__':
-    net = MLP(input_size=153, hidden_size=128, output_size=2)
-    print(net)
+        
+        # All the hidden layers utilize the ReLU activation function. The output layer uses sigmoid activation function to perform discrete classification.  A dropout layer is used after each hidden layer.
+        self.relu1 = nn.ReLU()
+        self.relu2 = nn.ReLU()
+        self.relu3 = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+        self.dropout1 = nn.Dropout(dropout)
+        self.dropout2 = nn.Dropout(dropout)
+        self.dropout3 = nn.Dropout(dropout)
+    
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu1(x)
+        x = self.dropout1(x)
+        x = self.fc2(x)
+        x = self.relu2(x)
+        x = self.dropout2(x)
+        x = self.fc3(x)
+        x = self.relu3(x)
+        x = self.dropout3(x)
+        x = self.fc4(x)
+        x = self.sigmoid(x)
+        return x
 

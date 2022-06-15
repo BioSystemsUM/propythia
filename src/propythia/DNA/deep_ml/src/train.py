@@ -1,10 +1,9 @@
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
-def traindata(device, model, epochs, optimizer, loss_function, train_loader, valid_loader):
+def traindata(device, model, epochs, optimizer, loss_function, train_loader, valid_loader, patience):
     # Early stopping
     last_loss = 100
-    patience = 2
     scheduler = ReduceLROnPlateau(optimizer, 'min')
     for epoch in range(1, epochs+1):
         model.train()
