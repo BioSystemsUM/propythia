@@ -75,8 +75,8 @@ def process(fps_x):
 
 def main():
     # calculate("datasets/testing_head.csv")
-    # features = pd.read_csv('datasets/head.csv')
-    features = pd.read_csv('datasets/essential_genes_features.csv', nrows=5)
+    features = pd.read_csv('datasets/head.csv')
+    # features = pd.read_csv('datasets/essential_genes_features.csv', nrows=5)
     for i in features.columns[4:]:
         features[i] = features[i].apply(lambda x: ast.literal_eval(x)) 
     

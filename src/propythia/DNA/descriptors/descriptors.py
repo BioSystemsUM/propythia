@@ -259,7 +259,7 @@ class DNADescriptor:
         """
         k = 2
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
-        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
+        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
     def get_DCC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DCC vector.
@@ -273,7 +273,7 @@ class DNADescriptor:
         """
         k = 2
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
-        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
+        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
     def get_DACC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make DACC vector.
@@ -291,7 +291,7 @@ class DNADescriptor:
                           make_cc_vector([self.dna_sequence], nlag, phyche_value, k)))
         vector = [reduce(lambda x, y: x + y, e) for e in zipped]
 
-        return vector
+        return vector[0]
 
     def get_TAC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TAC vector.
@@ -305,7 +305,7 @@ class DNADescriptor:
         """
         k = 3
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
-        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)
+        return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
     def get_TCC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make TCC vector.
@@ -320,7 +320,7 @@ class DNADescriptor:
         k = 3
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
 
-        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)
+        return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
     def get_TACC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
         """Make get_TACC vector.
@@ -339,7 +339,7 @@ class DNADescriptor:
                           make_cc_vector([self.dna_sequence], nlag, phyche_value, k)))
         vector = [reduce(lambda x, y: x + y, e) for e in zipped]
 
-        return vector
+        return vector[0]
 
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
@@ -389,7 +389,10 @@ class DNADescriptor:
                 big_somatorio += somatorio/6
 
             # Theta calculation
-            theta = big_somatorio / (L-2-i)
+            if(L-i-2 == 0):
+                theta = 0
+            else:
+                theta = big_somatorio / (L-i-2)
             thetas.append(theta)
 
         # --------------------------------------------
@@ -448,7 +451,10 @@ class DNADescriptor:
                 big_somatorio += somatorio/6
 
             # Theta calculation
-            theta = big_somatorio / (L-i-2)
+            if(L-i-2 == 0):
+                theta = 0
+            else:
+                theta = big_somatorio / (L-i-2)
             thetas.append(theta)
 
         # --------------------------------------------
@@ -517,9 +523,7 @@ class DNADescriptor:
                 res[i] = func()
         return res
 
-
-
-if __name__ == "__main__" or print(sys.path[0].split("/")[-1]) == "descriptors":
+if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
     from utils import *
 else:
     from .utils import *
