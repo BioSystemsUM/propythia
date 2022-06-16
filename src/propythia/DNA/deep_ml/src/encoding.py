@@ -52,3 +52,32 @@ class DNAEncoding:
         else:
             print("Error! No labels or sequences were provided.")
             sys.exit(1)
+            
+    def get_nucleotide_chemical_property(self):
+        """
+        NEEDS TO BE IMPLEMENTED IN THIS CLASS
+        
+        From: https://academic.oup.com/bioinformatics/article/33/22/3518/4036387
+
+        Calculates nucleotide chemical property
+
+        Chemical property | Class	   | Nucleotides
+        -------------------------------------------
+        Ring structure 	  | Purine 	   | A, G
+                          | Pyrimidine | C, T
+        -------------------------------------------
+        Hydrogen bond 	  | Strong 	   | C, G
+                          | Weak 	   | A, T
+        -------------------------------------------
+        Functional group  | Amino 	   | A, C
+                          | Keto 	   | G, T
+
+        :return: list with values of nucleotide chemical property
+        """
+        chemical_property = {
+            'A': [1, 1, 1],
+            'C': [0, 1, 0],
+            'G': [1, 0, 0],
+            'T': [0, 0, 1],
+        }
+        return [chemical_property[i] for i in self.dna_sequence]

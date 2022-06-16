@@ -79,24 +79,28 @@ def split_standardizer_dataloader(fps_x,fps_y,):
         
     return trainloader, testloader, validloader
 
+
+# loading fps_x and fps_y anyways (TEMP)
+print('Loading fps_x and fps_y from pickle...')
+with open("datasets/fps_x.pkl", "rb") as f:
+    fps_x = pickle.load(f)
+with open("datasets/fps_y.pkl", "rb") as f:
+    fps_y = pickle.load(f)
+    
+print("fps_x.shape, fps_y.shape:", fps_x.shape, fps_y.shape)
+
 paramDict = {
     'epoch': 100,
     'batch_size': 32,
     'dropout': 0.2,
-    'loss': nn.BCELoss(),
-    'input_size': 227271,
+    'loss': nn.CrossEntropyLoss(),
+    'input_size': fps_x.shape[1],
     'hidden_size': 128,
     'output_size': 2,
     'patience': 15
 }
 
 if exists('datasets/trainloader_descriptors.pkl') == False:
-    print('Loading fps_x and fps_y from pickle...')
-    with open("datasets/fps_x.pkl", "rb") as f:
-        fps_x = pickle.load(f)
-    with open("datasets/fps_y.pkl", "rb") as f:
-        fps_y = pickle.load(f)
-    
     trainloader, testloader, validloader = split_standardizer_dataloader(fps_x,fps_y)
 else:
     print('Loading dataloaders...')

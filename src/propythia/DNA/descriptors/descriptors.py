@@ -204,33 +204,6 @@ class DNADescriptor:
 
         return res
 
-    def get_nucleotide_chemical_property(self):
-        """
-        From: https://academic.oup.com/bioinformatics/article/33/22/3518/4036387
-
-        Calculates nucleotide chemical property
-
-        Chemical property | Class	   | Nucleotides
-        -------------------------------------------
-        Ring structure 	  | Purine 	   | A, G
-                          | Pyrimidine | C, T
-        -------------------------------------------
-        Hydrogen bond 	  | Strong 	   | C, G
-                          | Weak 	   | A, T
-        -------------------------------------------
-        Functional group  | Amino 	   | A, C
-                          | Keto 	   | G, T
-
-        :return: list with values of nucleotide chemical property
-        """
-        chemical_property = {
-            'A': [1, 1, 1],
-            'C': [0, 1, 0],
-            'G': [1, 0, 0],
-            'T': [0, 0, 1],
-        }
-        return [chemical_property[i] for i in self.dna_sequence]
-
     def get_accumulated_nucleotide_frequency(self):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
@@ -243,6 +216,28 @@ class DNADescriptor:
             aux_d[self.dna_sequence[i]] += 1
             x = round(aux_d[self.dna_sequence[i]] / (i + 1), 3)
             res.append(x)
+        return res
+    
+    def get_accumulated_nucleotide_frequency_25_50_75(self):
+        """
+        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
+        Calculates accumulated nucleotide frequency at 25%, 50% and 75%
+        :return: list with values of accumulated nucleotide frequency
+        """
+        res = []
+        aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+        for i in range(len(self.dna_sequence)):
+            aux_d[self.dna_sequence[i]] += 1
+            x = round(aux_d[self.dna_sequence[i]] / (i + 1), 3)
+            if(i == int(len(self.dna_sequence) * 0.25)):
+                print("25%", aux_d, self.dna_sequence[i])
+                res.append(x)
+            elif(i == int(len(self.dna_sequence) * 0.5)):
+                print("50%",aux_d, self.dna_sequence[i])
+                res.append(x)
+            elif(i == int(len(self.dna_sequence) * 0.75)):
+                print("75%",aux_d, self.dna_sequence[i])
+                res.append(x)
         return res
 
     # --------------------------  Autocorrelation  -------------------------- #
@@ -468,62 +463,41 @@ class DNADescriptor:
                                             (1 + w * sum(thetas)), 3)
         return res
 
-    # ----------------------  Encodings (remove later)  ---------------------- #
-
-    def get_binary(self):
-        """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
-        :return: list with values of binary encoding
-        """
-        binary = {
-            'A': [1, 0, 0, 0],
-            'C': [0, 1, 0, 0],
-            'G': [0, 0, 1, 0],
-            'T': [0, 0, 0, 1]
-        }
-        return [binary[i] for i in self.dna_sequence]
-
     # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
 
-    def get_descriptors(self, specifics=[]):
+    def get_descriptors(self):
         """
         Calculates all descriptors
         :return: dictionary with values of all descriptors
         """
         res = {}
-        if specifics == []:
-            res['length'] = self.get_length()
-            res['gc_content'] = self.get_gc_content()
-            res['at_content'] = self.get_at_content()
-            res['nucleic_acid_composition'] = self.get_nucleic_acid_composition(normalize=True)
-            res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition(normalize=True)
-            res['dinucleotide_composition'] = self.get_dinucleotide_composition(normalize=True)
-            res['trinucleotide_composition'] = self.get_trinucleotide_composition(normalize=True)
-            res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs(normalize=True)
-            res['kmer'] = self.get_kmer(normalize=True)
-            res['nucleotide_chemical_property'] = self.get_nucleotide_chemical_property()
-            res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
-            res['DAC'] = self.get_DAC()
-            res['DCC'] = self.get_DCC()
-            res['DACC'] = self.get_DACC()
-            res['TAC'] = self.get_TAC()
-            res['TCC'] = self.get_TCC()
-            res['TACC'] = self.get_TACC()
-            res['PseDNC'] = self.get_PseDNC()
-            res['PseKNC'] = self.get_PseKNC()
-
-            # ---
-            res['binary'] = self.get_binary()
-            # ---
-
-        else:
-            for i in specifics:
-                func = getattr(self, "get_"+i)
-                res[i] = func()
+        res['length'] = self.get_length()
+        res['gc_content'] = self.get_gc_content()
+        res['at_content'] = self.get_at_content()
+        res['nucleic_acid_composition'] = self.get_nucleic_acid_composition(normalize=True)
+        # res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition(normalize=True)
+        res['dinucleotide_composition'] = self.get_dinucleotide_composition(normalize=True)
+        res['trinucleotide_composition'] = self.get_trinucleotide_composition(normalize=True)
+        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs(normalize=True)
+        res['kmer'] = self.get_kmer(normalize=True)
+        # res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
+        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_75_50()
+        res['DAC'] = self.get_DAC()
+        res['DCC'] = self.get_DCC()
+        res['DACC'] = self.get_DACC()
+        res['TAC'] = self.get_TAC()
+        res['TCC'] = self.get_TCC()
+        res['TACC'] = self.get_TACC()
+        res['PseDNC'] = self.get_PseDNC()
+        res['PseKNC'] = self.get_PseKNC()
         return res
 
 if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
     from utils import *
+    # seq = "ACGTTGGATC"
+    seq = "ACGTTGGATCAA"
+    print(seq)
+    dna = DNADescriptor(seq)
+    print(dna.get_accumulated_nucleotide_frequency_25_50_75())
 else:
     from .utils import *
