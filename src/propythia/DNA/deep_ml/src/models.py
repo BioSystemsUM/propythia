@@ -1,6 +1,9 @@
 from torch import nn
-
+ 
 class Net(nn.Module):
+    """
+    Implementation of https://github.com/onceupon/deep_learning_DNA/blob/master/learnseq.ipynb
+    """
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv1d(4, 20, 10, stride=1, padding=0)
@@ -29,6 +32,9 @@ class Net(nn.Module):
         return x
 
 class MLP(nn.Module):
+    """
+    Implementation of DeepHe's MLP model
+    """
     def __init__(self, input_size, hidden_size, output_size, dropout):
         super(MLP, self).__init__()
         

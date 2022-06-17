@@ -1,8 +1,23 @@
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-import sys
+import torch.nn as nn
 
 def traindata(device, model, epochs, optimizer, loss_function, train_loader, valid_loader, patience):
+    """
+    Train the model for a number of epochs.
+    :param device: torch.device, the device to use.
+    :param model: torch.nn.Module, the model to train.
+    :param epochs: int, the number of epochs to train for.
+    :param optimizer: torch.optim.Optimizer, the optimizer to use.
+    :param loss_function: torch.nn.modules.loss, the loss function to use.
+    """
+    
+    
+    if(loss_function == 'bce'):
+        loss_function = nn.BCELoss()
+    else:
+        loss_function = nn.CrossEntropyLoss()
+    
     # Early stopping
     last_loss = 100
     scheduler = ReduceLROnPlateau(optimizer, 'min')
@@ -25,7 +40,6 @@ def traindata(device, model, epochs, optimizer, loss_function, train_loader, val
             if i % 100 == 0 or i == len(train_loader):
                 print(f'[{epoch}/{epochs}, {i}/{len(train_loader)}] loss: {loss.item():.8}')
                 
-
         # Early stopping
         current_loss = validation(model, device, valid_loader, loss_function)
         print('The Current Loss:', current_loss)
