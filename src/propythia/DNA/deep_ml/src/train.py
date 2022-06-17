@@ -12,12 +12,6 @@ def traindata(device, model, epochs, optimizer, loss_function, train_loader, val
     :param loss_function: torch.nn.modules.loss, the loss function to use.
     """
     
-    
-    if(loss_function == 'bce'):
-        loss_function = nn.BCELoss()
-    else:
-        loss_function = nn.CrossEntropyLoss()
-    
     # Early stopping
     last_loss = 100
     scheduler = ReduceLROnPlateau(optimizer, 'min')
