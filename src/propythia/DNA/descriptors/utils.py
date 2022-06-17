@@ -2,6 +2,7 @@ from itertools import product
 import os
 import pickle
 import sys
+import math
 
 ALPHABET = 'ACGT'
 
@@ -15,6 +16,15 @@ def checker(sequence):
     return all(i in ALPHABET for i in sequence)
 
 # -----------------------------------------------------------------------------
+
+
+def normal_round(n):
+    """
+    Equivalent to python's round but its rounds up if it ends up with 0.5.
+    """
+    if n - math.floor(n) < 0.5:
+        return math.floor(n)
+    return math.ceil(n)
 
 
 def normalize_dict(dic):

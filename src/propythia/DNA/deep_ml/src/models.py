@@ -49,27 +49,15 @@ class MLP(nn.Module):
     
     
     def forward(self, x):
-        print("Break 0\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc1(x)
-        print("Break 1\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu1(x)
-        print("Break 2\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout1(x)
-        print("Break 3\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc2(x)
-        print("Break 4\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu2(x)
-        print("Break 5\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout2(x)
-        print("Break 6\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc3(x)
-        print("Break 7\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.relu3(x)
-        print("Break 8\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.dropout3(x)
-        print("Break 9\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.fc4(x)
-        print("Break 10\n", x.shape, "\n", x, "\n", "-" * 50)
         x = self.sigmoid(x)
-        print("Break 11\n", x.shape, "\n", x, "\n", "-" * 50)
         return x

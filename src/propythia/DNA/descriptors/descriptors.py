@@ -17,7 +17,6 @@ Email:
 import sys
 from functools import reduce
 
-
 class DNADescriptor:
 
     pairs = {
@@ -75,7 +74,7 @@ class DNADescriptor:
 
     # ----------------------- NUCLEIC ACID COMPOSITION ----------------------- #
 
-    def get_nucleic_acid_composition(self, normalize=False):
+    def get_nucleic_acid_composition(self, normalize=True):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates nucleic acid composition
@@ -90,7 +89,7 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_enhanced_nucleic_acid_composition(self, window_size=5, normalize=False):
+    def get_enhanced_nucleic_acid_composition(self, window_size=5, normalize=True):
         """
         From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6216033/#SM0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
         Calculates enhanced nucleic acid composition
@@ -112,7 +111,7 @@ class DNADescriptor:
 
         return res
 
-    def get_dinucleotide_composition(self, normalize=False):
+    def get_dinucleotide_composition(self, normalize=True):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates dinucleotide composition
@@ -127,7 +126,7 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_trinucleotide_composition(self, normalize=False):
+    def get_trinucleotide_composition(self, normalize=True):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates trinucleotide composition
@@ -143,7 +142,7 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_k_spaced_nucleic_acid_pairs(self, k=0, normalize=False):
+    def get_k_spaced_nucleic_acid_pairs(self, k=0, normalize=True):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/
         Calculates k-spaced nucleic acid pairs
@@ -161,7 +160,7 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_kmer(self, k=2, normalize=False, reverse=False):
+    def get_kmer(self, k=2, normalize=True, reverse=False):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
         Calculates Kmer
@@ -218,26 +217,29 @@ class DNADescriptor:
             res.append(x)
         return res
     
-    def get_accumulated_nucleotide_frequency_25_50_75(self):
+    def get_accumulated_nucleotide_frequency_25_50_75(self, normalize=True):
         """
         From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
         Calculates accumulated nucleotide frequency at 25%, 50% and 75%
         :return: list with values of accumulated nucleotide frequency
         """
         res = []
-        aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
-        for i in range(len(self.dna_sequence)):
-            aux_d[self.dna_sequence[i]] += 1
-            x = round(aux_d[self.dna_sequence[i]] / (i + 1), 3)
-            if(i == int(len(self.dna_sequence) * 0.25)):
-                print("25%", aux_d, self.dna_sequence[i])
-                res.append(x)
-            elif(i == int(len(self.dna_sequence) * 0.5)):
-                print("50%",aux_d, self.dna_sequence[i])
-                res.append(x)
-            elif(i == int(len(self.dna_sequence) * 0.75)):
-                print("75%",aux_d, self.dna_sequence[i])
-                res.append(x)
+        d1 = make_kmer_dict(1)
+        d2 = make_kmer_dict(1)
+        d3 = make_kmer_dict(1)
+        
+        for letter in self.dna_sequence[:normal_round(len(self.dna_sequence) * 0.25)]:
+            d1[letter] += 1
+            
+        for letter in self.dna_sequence[:normal_round(len(self.dna_sequence) * 0.50)]:
+            d2[letter] += 1
+        
+        for letter in self.dna_sequence[:normal_round(len(self.dna_sequence) * 0.75)]:
+            d3[letter] += 1
+        res = [d1,d2,d3]
+
+        if normalize:
+            res = [normalize_dict(d1),normalize_dict(d2),normalize_dict(d3)]
         return res
 
     # --------------------------  Autocorrelation  -------------------------- #
@@ -474,14 +476,14 @@ class DNADescriptor:
         res['length'] = self.get_length()
         res['gc_content'] = self.get_gc_content()
         res['at_content'] = self.get_at_content()
-        res['nucleic_acid_composition'] = self.get_nucleic_acid_composition(normalize=True)
-        # res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition(normalize=True)
-        res['dinucleotide_composition'] = self.get_dinucleotide_composition(normalize=True)
-        res['trinucleotide_composition'] = self.get_trinucleotide_composition(normalize=True)
-        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs(normalize=True)
-        res['kmer'] = self.get_kmer(normalize=True)
+        res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
+        # res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
+        res['dinucleotide_composition'] = self.get_dinucleotide_composition()
+        res['trinucleotide_composition'] = self.get_trinucleotide_composition()
+        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
+        res['kmer'] = self.get_kmer()
         # res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
-        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_75_50()
+        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_50_75()
         res['DAC'] = self.get_DAC()
         res['DCC'] = self.get_DCC()
         res['DACC'] = self.get_DACC()
@@ -494,10 +496,5 @@ class DNADescriptor:
 
 if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
     from utils import *
-    # seq = "ACGTTGGATC"
-    seq = "ACGTTGGATCAA"
-    print(seq)
-    dna = DNADescriptor(seq)
-    print(dna.get_accumulated_nucleotide_frequency_25_50_75())
 else:
     from .utils import *
