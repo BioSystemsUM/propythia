@@ -4,8 +4,9 @@ from .encoding import DNAEncoding
 import torch
 import torch.utils.data as data_utils
 import torch.nn as nn
+import pickle
 
-def prepare_data(fps_x, fps_y, mode, batch_size, train_size=0.6, test_size=0.2, validation_size=0.2):
+def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
     Prepare data for training and testing.
     :param fps_x: list of file paths of x data. 
@@ -18,6 +19,14 @@ def prepare_data(fps_x, fps_y, mode, batch_size, train_size=0.6, test_size=0.2, 
     
     :return:
     """
+    
+    try:
+        with open(data_dir + '/fps_x.pkl', 'rb') as f:
+            fps_x = pickle.load(f)
+        with open(data_dir + '/fps_y.pkl', 'rb') as f:
+            fps_y = pickle.load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError("Could not find fps_x.pkl and fps_y.pkl in", data_dir, ".")
     
     if(train_size + test_size + validation_size != 1):
         raise ValueError("The sum of train_size, test_size and validation_size must be 1.")
@@ -52,13 +61,6 @@ def prepare_data(fps_x, fps_y, mode, batch_size, train_size=0.6, test_size=0.2, 
         y_train = y_train.to_numpy()
         y_test = y_test.to_numpy()
         y_cv = y_cv.to_numpy()
-
-    print("x_train.shape:", x_train.shape)
-    print("y_train.shape:", y_train.shape)
-    print("x_test.shape:", x_test.shape)
-    print("y_test.shape:", y_test.shape)
-    print("x_cv.shape:", x_cv.shape)
-    print("y_cv.shape:", y_cv.shape)
     
     train_data = data_utils.TensorDataset(
         torch.tensor(x_train, dtype=torch.float),
@@ -89,4 +91,4 @@ def prepare_data(fps_x, fps_y, mode, batch_size, train_size=0.6, test_size=0.2, 
         batch_size=batch_size
     )
     
-    return trainloader, testloader, validloader
+    return trainloader, testloader, validloader, fps_x.shape[1]
