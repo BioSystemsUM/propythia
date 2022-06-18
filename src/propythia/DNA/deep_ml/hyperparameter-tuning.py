@@ -101,14 +101,3 @@ print("--------------------")
 print('Accuracy: %.3f' % acc)
 print('MCC: %.3f' % mcc)
 print(report)
-
-# ----------------------------------------------------------------------
-
-
-# model = traindata(device, trainloader, validloader, fixed_vals, config)
-
-# # Test
-# acc, mcc, report = test(device, model, testloader)
-# print('Accuracy: %.3f' % acc)
-# print('MCC: %.3f' % mcc)
-# print(report)

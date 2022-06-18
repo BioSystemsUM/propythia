@@ -11,11 +11,11 @@ import os
 def traindata(config, device, fixed_vals, checkpoint_dir=None):
     """
     Train the model for a number of epochs.
-    :param device: torch.device, the device to use.
-    :param trainloader: torch.utils.data.DataLoader, the training data.
-    :param validloader: torch.utils.data.DataLoader, the validation data.
-    :param fixed_vals: dict, the fixed values to use.
-    :param config: dict, the hyperparameters to use and tune.
+    :param config: Dictionary of hyperparameters to be tuned.
+    :param device: Device to be used for training.
+    :param fixed_vals: Dictionary of fixed parameters.
+    :param checkpoint_dir: Directory to save the model.
+    
     """
     
     # ------------------------------------------------------------------------------------------------
@@ -113,6 +113,14 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
 
 def validation(model, device, validloader, loss_function):
+    """
+    Validate the model.
+    :param model: Model to be validated.
+    :param device: Device to be used for validation.
+    :param validloader: Data loader for validation.
+    :param loss_function: Loss function to be used.
+    :return: The loss, accuracy and mcc of the model.
+    """
     model.eval()
     loss_total = 0
 

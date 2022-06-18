@@ -34,6 +34,8 @@ class Net(nn.Module):
 class MLP(nn.Module):
     """
     Implementation of DeepHe's MLP model
+    - Paper: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008229
+    - Code using Keras: https://github.com/xzhang2016/DeepHE/blob/master/DNN.py
     """
     def __init__(self, input_size, hidden_size, output_size, dropout):
         super(MLP, self).__init__()

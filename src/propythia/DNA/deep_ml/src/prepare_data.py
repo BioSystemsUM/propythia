@@ -3,21 +3,21 @@ from sklearn.preprocessing import StandardScaler
 from .encoding import DNAEncoding
 import torch
 import torch.utils.data as data_utils
-import torch.nn as nn
 import pickle
 
 def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
     Prepare data for training and testing.
-    :param fps_x: list of file paths of x data. 
-    :param fps_y: list of file paths of y data.
-    :param mode: str, 'one_hot' or 'descriptors'.
-    :param batch_size: int, batch size.
-    :param train_size: float, the proportion of training data.
-    :param test_size: float, the proportion of testing data.
-    :param validation_size: float, the proportion of validation data.
-    
-    :return:
+    :param data_dir: str, the path to the data directory.
+    :param mode: str, the mode to use. Must be either 'descriptor' or 'one_hot'.
+    :param batch_size: int, the batch size to use.
+    :param train_size: float, the proportion of the data to use for training.
+    :param test_size: float, the proportion of the data to use for testing.
+    :param validation_size: float, the proportion of the data to use for validation.
+    :return: trainloader: torch.utils.data.DataLoader, the training data.
+    :return: testloader: torch.utils.data.DataLoader, the testing data.
+    :return: validloader: torch.utils.data.DataLoader, the validation data.
+    :return: input_size: int, the size of the input.
     """
     
     try:

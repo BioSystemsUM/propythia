@@ -4,6 +4,13 @@ from numpy import vstack
 from sklearn.metrics import accuracy_score, matthews_corrcoef, confusion_matrix
 
 def test(device, model, test_loader):
+    """
+    Test the model.
+    :param model: Model to be tested.
+    :param device: Device to be used for testing.
+    :param test_loader: Data loader for testing.
+    :return: The accuracy, mcc and confusion matrix of the model.
+    """
     model.eval()
     predictions, actuals = list(), list()
     with torch.no_grad():
