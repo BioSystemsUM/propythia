@@ -15,7 +15,6 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     :param device: Device to be used for training.
     :param fixed_vals: Dictionary of fixed parameters.
     :param checkpoint_dir: Directory to save the model.
-    
     """
     
     # ------------------------------------------------------------------------------------------------
@@ -42,7 +41,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     if(model_label == 'mlp'):
         model = MLP(input_size, hidden_size, output_size, dropout).to(device)
     elif(model_label == 'net'):
-        model = Net().to(device)
+        model = Net(input_size, hidden_size, output_size, dropout).to(device)
     else:
         raise ValueError("model_label must be 'mlp' or 'net'.")
     

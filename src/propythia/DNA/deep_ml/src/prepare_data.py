@@ -26,7 +26,7 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         with open(data_dir + '/fps_y.pkl', 'rb') as f:
             fps_y = pickle.load(f)
     except FileNotFoundError:
-        raise FileNotFoundError("Could not find fps_x.pkl and fps_y.pkl in", data_dir, ".")
+        raise FileNotFoundError("Could not find fps_x.pkl and fps_y.pkl in" + data_dir)
     
     if(train_size + test_size + validation_size != 1):
         raise ValueError("The sum of train_size, test_size and validation_size must be 1.")
@@ -90,5 +90,4 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         shuffle=True,
         batch_size=batch_size
     )
-    
-    return trainloader, testloader, validloader, fps_x.shape[1]
+    return trainloader, testloader, validloader, x_train.shape[-1]

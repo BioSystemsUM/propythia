@@ -4,17 +4,18 @@ class Net(nn.Module):
     """
     Implementation of https://github.com/onceupon/deep_learning_DNA/blob/master/learnseq.ipynb
     """
-    def __init__(self):
+    def __init__(self, input_size, hidden_size, output_size, dropout):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv1d(4, 20, 10, stride=1, padding=0)
-        self.fc1 = nn.Linear(940, 10)
-        self.dropout1 = nn.Dropout(0.5)
-        self.fc2 = nn.Linear(10, 2)
-
-        self.max_pool = nn.MaxPool1d(10, stride=5)
-
+        
+        self.conv1 = nn.Conv1d(input_size, hidden_size, 10, stride=1, padding=0)
         self.act1 = nn.ReLU()
+        self.max_pool = nn.MaxPool1d(10, stride=5)
+        
+        self.fc1 = nn.Linear(hidden_size * 47, (hidden_size // 4))
         self.act2 = nn.ReLU()
+        self.dropout1 = nn.Dropout(dropout)
+        
+        self.fc2 = nn.Linear((hidden_size // 4), output_size)
         self.act3 = nn.Softmax(dim=1)
 
     def forward(self, x):

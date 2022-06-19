@@ -2,7 +2,7 @@ import torch
 import os
 from .train import traindata
 from .test import test
-from .models import MLP
+from .models import MLP, Net
 from .prepare_data import prepare_data
 from ray import tune
 from ray.tune.schedulers import ASHAScheduler
@@ -18,6 +18,13 @@ def hyperparameter_tuning(device, fixed_vals, config):
     :param config: The configuration for the model.
     """
 
+    cpus_per_trial = 2
+    gpus_per_trial = 2
+    num_samples = 15
+    fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
+    
+    # ------------------------------------------------------------------------------------------
+
     scheduler = ASHAScheduler(
         metric="loss",
         mode="min",
@@ -29,12 +36,6 @@ def hyperparameter_tuning(device, fixed_vals, config):
     reporter = CLIReporter(
         metric_columns=["loss", "accuracy", "training_iteration", 'mcc']
     )
-
-    # ------------------
-    cpus_per_trial = 2
-    gpus_per_trial = 2
-    num_samples = 15
-    # ------------------
 
     result = tune.run(
         partial(
@@ -63,7 +64,14 @@ def hyperparameter_tuning(device, fixed_vals, config):
         mode=fixed_vals['mode'],
         batch_size=best_trial.config['batch_size'],
     )
-    best_trained_model = MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
+    if(fixed_vals['model_label'] == 'mlp'):
+        best_trained_model = MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
+    elif(fixed_vals['model_label'] == 'net'):
+        best_trained_model = Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
+    else:
+        raise ValueError("model_label must be 'mlp' or 'net'.")
+        
+        
     best_trained_model.to(device)
 
     best_checkpoint_dir = best_trial.checkpoint.value
