@@ -1,4 +1,7 @@
+import torch
 from torch import nn
+import torch.autograd as autograd
+
  
 class Net(nn.Module):
     """
@@ -70,3 +73,64 @@ class MLP(nn.Module):
         x = self.fc4(x)
         x = self.sigmoid(x)
         return x
+    
+class CNN(nn.Module):
+    """
+    Implementation of Primer's CNN model (https://github.com/abidlabs/deep-learning-genomics-primer/blob/master/A_Primer_on_Deep_Learning_in_Genomics_Public.ipynb)
+    """
+    def __init__(self, sequence_length, input_size, hidden_size, output_size):
+        super(CNN, self).__init__()
+        
+        # ------------------- Calculation of max pool output size -------------------
+        Conv1_padding = 0
+        Conv1_dilation = 1
+        Conv1_kernel_size = 12
+        Conv1_stride = 1
+
+        L_out = ((sequence_length + 2*Conv1_padding - Conv1_dilation*(Conv1_kernel_size-1) -1)/Conv1_stride +1)
+        MaxPool_padding = 0
+        MaxPool_dilation = 1
+        MaxPool_stride = 5
+        MaxPool_kernel_size = 12
+        max_pool_output = int((L_out+2*MaxPool_padding-MaxPool_dilation*(MaxPool_kernel_size-1)-1)/MaxPool_stride+1)
+        
+        max_pool_output *= hidden_size
+        # ---------------------------------------------------------------------------
+        
+        self.conv1 = nn.Conv1d(input_size, hidden_size, kernel_size=Conv1_kernel_size, stride=Conv1_stride, padding=Conv1_padding, dilation=Conv1_dilation)
+        self.maxpool = nn.MaxPool1d(kernel_size=MaxPool_kernel_size, stride=MaxPool_stride, padding=MaxPool_padding, dilation=MaxPool_dilation)
+        self.fc1 = nn.Linear(max_pool_output, hidden_size)
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, output_size)
+        self.softmax = nn.Softmax(dim=1)
+        
+    def forward(self, x):
+        x = x.permute(0, 2, 1)
+        x = self.conv1(x)
+        x = self.maxpool(x)
+        x = x.reshape(x.shape[0], -1)
+        x = self.fc1(x)
+        x = self.relu1(x)
+        x = self.fc2(x)
+        x = self.softmax(x)
+        return x
+
+class RNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(RNN, self).__init__()
+
+        self.hidden_size = hidden_size
+
+        self.i2h = nn.Linear(input_size + hidden_size, hidden_size)
+        self.i2o = nn.Linear(input_size + hidden_size, output_size)
+        self.softmax = nn.LogSoftmax(dim=1)
+
+    def forward(self, input, hidden):
+        combined = torch.cat((input, hidden), 1)
+        hidden = self.i2h(combined)
+        output = self.i2o(combined)
+        output = self.softmax(output)
+        return output, hidden
+
+    def initHidden(self):
+        return torch.zeros(1, self.hidden_size)

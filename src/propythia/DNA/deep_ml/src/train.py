@@ -19,7 +19,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     
     # ------------------------------------------------------------------------------------------------
     
-    trainloader, testloader, validloader, input_size = prepare_data(
+    trainloader, _, validloader, input_size, sequence_length = prepare_data(
         data_dir=fixed_vals['data_dir'],
         mode=fixed_vals['mode'],
         batch_size=config['batch_size'],
@@ -42,8 +42,10 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         model = MLP(input_size, hidden_size, output_size, dropout).to(device)
     elif(model_label == 'net'):
         model = Net(input_size, hidden_size, output_size, dropout).to(device)
+    elif(model_label == 'cnn'):
+        model = CNN(sequence_length, input_size, hidden_size, output_size).to(device)
     else:
-        raise ValueError("model_label must be 'mlp' or 'net'.")
+        raise ValueError("model_label must be 'mlp', 'net', 'cnn' or 'rnn'.")
     
     if(optimizer_label == 'adam'):
         optimizer = Adam(model.parameters(), lr=config['lr'])
@@ -131,6 +133,6 @@ def validation(model, device, validloader, loss_function):
             loss = loss_function(output, targets)
             loss_total += loss.item()
             
-    acc, mcc, report = test(device, model, validloader)
+    acc, mcc, _ = test(device, model, validloader)
 
     return loss_total / len(validloader), acc, mcc

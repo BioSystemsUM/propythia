@@ -1,5 +1,5 @@
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from .encoding import DNAEncoding
 import torch
 import torch.utils.data as data_utils
@@ -9,7 +9,7 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
     """
     Prepare data for training and testing.
     :param data_dir: str, the path to the data directory.
-    :param mode: str, the mode to use. Must be either 'descriptor' or 'one_hot'.
+    :param mode: str, the mode to use. Must be either 'descriptor', 'one_hot' or 'chemical'.
     :param batch_size: int, the batch size to use.
     :param train_size: float, the proportion of the data to use for training.
     :param test_size: float, the proportion of the data to use for testing.
@@ -18,12 +18,16 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
     :return: testloader: torch.utils.data.DataLoader, the testing data.
     :return: validloader: torch.utils.data.DataLoader, the validation data.
     :return: input_size: int, the size of the input.
+    :return: sequence_length: int, the size of the length of sequence.
     """
     
+    fps_x_file = data_dir + '/fps_x_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_x.pkl'
+    fps_y_file = data_dir + '/fps_y_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_y.pkl'
+    
     try:
-        with open(data_dir + '/fps_x.pkl', 'rb') as f:
+        with open(fps_x_file, 'rb') as f:
             fps_x = pickle.load(f)
-        with open(data_dir + '/fps_y.pkl', 'rb') as f:
+        with open(fps_y_file, 'rb') as f:
             fps_y = pickle.load(f)
     except FileNotFoundError:
         raise FileNotFoundError("Could not find fps_x.pkl and fps_y.pkl in" + data_dir)
@@ -44,16 +48,14 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         stratify=y
     )
     
-    if(mode == 'one_hot'):
+    if(mode == 'one_hot' or mode == 'chemical'):
         encoder = DNAEncoding(x_train)
-        x_train = encoder.one_hot_encode()
-
+        x_train = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
         encoder = DNAEncoding(x_test)
-        x_test = encoder.one_hot_encode()
-
+        x_test = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
         encoder = DNAEncoding(x_cv)
-        x_cv = encoder.one_hot_encode()
-    else:
+        x_cv = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
+    elif(mode == 'descriptor'):
         scaler = StandardScaler().fit(x_train)
         x_train = scaler.transform(x_train)
         x_test = scaler.transform(x_test)
@@ -61,6 +63,8 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         y_train = y_train.to_numpy()
         y_test = y_test.to_numpy()
         y_cv = y_cv.to_numpy()
+    else:
+        raise ValueError("mode must be either 'one_hot', 'descriptor' or 'chemical'.")
     
     train_data = data_utils.TensorDataset(
         torch.tensor(x_train, dtype=torch.float),
@@ -90,4 +94,4 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         shuffle=True,
         batch_size=batch_size
     )
-    return trainloader, testloader, validloader, x_train.shape[-1]
+    return trainloader, testloader, validloader, x_train.shape[-1], x_train.shape[1]

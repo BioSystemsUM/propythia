@@ -11,25 +11,37 @@ Email:
 import sys
 import numpy as np
 sys.path.append('../')
-from descriptors.utils import checker
+from descriptors.utils import checker, checker_N
 
 class DNAEncoding:
-    def __init__(self, dna_sequence: str):
-        if(checker(dna_sequence)):
-            self.dna_sequence = dna_sequence.strip().upper()
-
-    def __init__(self, column: np.ndarray):
-        arr = column.tolist()
-        
-        if(all(x == 1 or x == 0 for x in arr)):
-            self.labels = column
-            self.sequences = None
-        elif(all(checker(x) for x in arr)):
-            self.sequences = column
-            self.labels = None
+    
+    def __init__(self, *args):
+        if isinstance(args[0], str):
+            dna_sequence = args[0]
+            if(checker_N(dna_sequence)):
+                self.dna_sequence = dna_sequence.strip().upper()
+                self.labels = None
+                self.sequences = None
+            else:
+                print("Error! Letters of DNA don't belong to [A,C,T,G,N]:", dna_sequence)
+                sys.exit(1)
+        elif isinstance(args[0], np.ndarray):
+            column = args[0]
+            arr = column.tolist()
+            if(all(x in [0,1] for x in arr)):
+                self.labels = column
+                self.sequences = None
+            elif(all(checker_N(x) for x in arr)):
+                self.sequences = column
+                self.labels = None
+            else:
+                print("Error! All labels must be either 0 or 1.")
+                sys.exit(1)
         else:
-            print("Error! All labels must be either 0 or 1.")
+            print("Error! Invalid input type:", type(args[0]))
             sys.exit(1)
+            
+        
     
     def one_hot_encode(self):
         """
@@ -42,6 +54,7 @@ class DNAEncoding:
             'C': [0, 1, 0, 0],
             'G': [0, 0, 1, 0],
             'T': [0, 0, 0, 1],
+            'N': [0, 0, 0, 0],
             1: [1, 0],
             0: [0, 1]            
         }
@@ -49,14 +62,14 @@ class DNAEncoding:
             return np.array([binary[i] for i in self.labels])
         elif(self.sequences is not None):
             return np.array([[binary[i] for i in x] for x in self.sequences])
+        elif(self.dna_sequence is not None):
+            return np.array([binary[i] for i in self.dna_sequence])
         else:
             print("Error! No labels or sequences were provided.")
             sys.exit(1)
             
-    def get_nucleotide_chemical_property(self):
+    def chemical_encode(self):
         """
-        NEEDS TO BE IMPLEMENTED IN THIS CLASS
-        
         From: https://academic.oup.com/bioinformatics/article/33/22/3518/4036387
 
         Calculates nucleotide chemical property
@@ -79,5 +92,16 @@ class DNAEncoding:
             'C': [0, 1, 0],
             'G': [1, 0, 0],
             'T': [0, 0, 1],
+            'N': [0, 0, 0],
+            1: [1, 0],
+            0: [0, 1]
         }
-        return [chemical_property[i] for i in self.dna_sequence]
+        if(self.labels is not None):
+            return np.array([chemical_property[i] for i in self.labels])
+        elif(self.sequences is not None):
+            return np.array([[chemical_property[i] for i in x] for x in self.sequences])
+        elif(self.dna_sequence is not None):
+            return np.array([chemical_property[i] for i in self.dna_sequence])
+        else:
+            print("Error! No labels or sequences were provided.")
+            sys.exit(1)

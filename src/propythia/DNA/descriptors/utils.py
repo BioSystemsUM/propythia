@@ -5,6 +5,7 @@ import sys
 import math
 
 ALPHABET = 'ACGT'
+ALPHABET_WITH_N = 'ACGTN'
 
 # -----------------------------------------------------------------------------
 
@@ -14,6 +15,12 @@ def checker(sequence):
     Checks if the input sequence is a valid DNA sequence.
     """
     return all(i in ALPHABET for i in sequence)
+
+def checker_N(sequence):
+    """
+    Checks if the input sequence is a valid DNA sequence.
+    """
+    return all(i in ALPHABET_WITH_N for i in sequence)
 
 # -----------------------------------------------------------------------------
 

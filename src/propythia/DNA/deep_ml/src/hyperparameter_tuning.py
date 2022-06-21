@@ -2,7 +2,7 @@ import torch
 import os
 from .train import traindata
 from .test import test
-from .models import MLP, Net
+from .models import *
 from .prepare_data import prepare_data
 from ray import tune
 from ray.tune.schedulers import ASHAScheduler
@@ -20,7 +20,7 @@ def hyperparameter_tuning(device, fixed_vals, config):
 
     cpus_per_trial = 2
     gpus_per_trial = 2
-    num_samples = 15
+    num_samples = 10
     fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
     
     # ------------------------------------------------------------------------------------------
@@ -52,14 +52,11 @@ def hyperparameter_tuning(device, fixed_vals, config):
 
     best_trial = result.get_best_trial('mcc', 'max', 'last')
     print("Best trial config: {}".format(best_trial.config))
-    print("Best trial final validation loss: {}".format(
-        best_trial.last_result["loss"]))
-    print("Best trial final validation accuracy: {}".format(
-        best_trial.last_result["accuracy"]))
-    print("Best trial final validation mcc: {}".format(
-        best_trial.last_result["mcc"]))
+    print("Best trial final validation loss:", best_trial.last_result["loss"])
+    print("Best trial final validation accuracy:", best_trial.last_result["accuracy"])
+    print("Best trial final validation mcc:", best_trial.last_result["mcc"])
 
-    _, testloader, _, input_size = prepare_data(
+    _, testloader, _, input_size, sequence_length = prepare_data(
         data_dir=fixed_vals['data_dir'],
         mode=fixed_vals['mode'],
         batch_size=best_trial.config['batch_size'],
@@ -68,8 +65,10 @@ def hyperparameter_tuning(device, fixed_vals, config):
         best_trained_model = MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
     elif(fixed_vals['model_label'] == 'net'):
         best_trained_model = Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
+    elif(fixed_vals['model_label'] == 'cnn'):
+        best_trained_model = CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size'])  
     else:
-        raise ValueError("model_label must be 'mlp' or 'net'.")
+        raise ValueError("model_label must be 'mlp', 'net', 'cnn' or 'rnn'")
         
         
     best_trained_model.to(device)
