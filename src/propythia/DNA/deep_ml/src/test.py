@@ -3,6 +3,7 @@ from numpy import argmax
 from numpy import vstack
 from sklearn.metrics import accuracy_score, matthews_corrcoef, confusion_matrix
 
+
 def test(device, model, test_loader):
     """
     Test the model.

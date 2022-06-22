@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.optim import Adam, SGD
@@ -16,15 +17,15 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     :param fixed_vals: Dictionary of fixed parameters.
     :param checkpoint_dir: Directory to save the model.
     """
-    
+
     # ------------------------------------------------------------------------------------------------
-    
+
     trainloader, _, validloader, input_size, sequence_length = prepare_data(
         data_dir=fixed_vals['data_dir'],
         mode=fixed_vals['mode'],
         batch_size=config['batch_size'],
     )
-    
+
     # Fixed values
     output_size = fixed_vals['output_size']
     model_label = fixed_vals['model_label']
@@ -33,40 +34,44 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     patience = fixed_vals['patience']
     loss_function = fixed_vals['loss_function']
     last_loss = 100
-    
+
     # Hyperparameters to tune
     hidden_size = config['hidden_size']
     dropout = config['dropout']
-    
-    if(model_label == 'mlp'):
-        model = MLP(input_size, hidden_size, output_size, dropout).to(device)
-    elif(model_label == 'net'):
-        model = Net(input_size, hidden_size, output_size, dropout).to(device)
-    elif(model_label == 'cnn'):
-        model = CNN(sequence_length, input_size, hidden_size, output_size).to(device)
+
+    models = {
+        'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
+        'net': Net(input_size, hidden_size, output_size, dropout).to(device),
+        'cnn': CNN(sequence_length, input_size, hidden_size, output_size).to(device),
+        'rnn_lstm': RNN_LSTM(input_size, hidden_size, 2, output_size, sequence_length, device).to(device)
+    }
+
+    if(fixed_vals['model_label'] in models):
+        model = models[fixed_vals['model_label']]
     else:
-        raise ValueError("model_label must be 'mlp', 'net', 'cnn' or 'rnn'.")
-    
+        raise ValueError(
+            'Model label not implemented', fixed_vals['model_label'],
+            'only implemented models are', models.keys())
+
     if(optimizer_label == 'adam'):
         optimizer = Adam(model.parameters(), lr=config['lr'])
     elif(optimizer_label == 'sgd'):
         optimizer = SGD(model.parameters(), lr=config['lr'])
     else:
         raise ValueError("optimizer_label must be either 'adam' or 'sgd'")
-    
+
     scheduler = ReduceLROnPlateau(optimizer, 'min')
-    
+
     # ------------------------------------------------------------------------------------------------
-    
+
     if checkpoint_dir:
         model_state, optimizer_state = torch.load(
             os.path.join(checkpoint_dir, "checkpoint"))
         model.load_state_dict(model_state)
         optimizer.load_state_dict(optimizer_state)
-        
+
     # ------------------------------------------------------------------------------------------------
-    
-    
+
     for epoch in range(1, epochs+1):
         model.train()
 
@@ -85,7 +90,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
             # Show progress
             if i % 100 == 0 or i == len(trainloader):
                 print(f'[{epoch}/{epochs}, {i}/{len(trainloader)}] loss: {loss.item():.8}')
-                
+
         # Early stopping
         current_loss, val_acc, val_mcc = validation(model, device, validloader, loss_function)
         print('The Current Loss:', current_loss)
@@ -100,7 +105,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
                     path = os.path.join(checkpoint_dir, "checkpoint")
                     torch.save((model.state_dict(), optimizer.state_dict()), path)
                 tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
-                return 
+                return
 
         else:
             print('trigger times: 0')
@@ -112,6 +117,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
             path = os.path.join(checkpoint_dir, "checkpoint")
             torch.save((model.state_dict(), optimizer.state_dict()), path)
         tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
+
 
 def validation(model, device, validloader, loss_function):
     """
@@ -132,7 +138,7 @@ def validation(model, device, validloader, loss_function):
             output = model(inputs)
             loss = loss_function(output, targets)
             loss_total += loss.item()
-            
+
     acc, mcc, _ = test(device, model, validloader)
 
     return loss_total / len(validloader), acc, mcc

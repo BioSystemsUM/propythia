@@ -22,7 +22,7 @@ def hyperparameter_tuning(device, fixed_vals, config):
     gpus_per_trial = 2
     num_samples = 10
     fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
-    
+
     # ------------------------------------------------------------------------------------------
 
     scheduler = ASHAScheduler(
@@ -61,16 +61,21 @@ def hyperparameter_tuning(device, fixed_vals, config):
         mode=fixed_vals['mode'],
         batch_size=best_trial.config['batch_size'],
     )
-    if(fixed_vals['model_label'] == 'mlp'):
-        best_trained_model = MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
-    elif(fixed_vals['model_label'] == 'net'):
-        best_trained_model = Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout'])
-    elif(fixed_vals['model_label'] == 'cnn'):
-        best_trained_model = CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size'])  
+
+    models = {
+        'mlp': MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
+        'net': Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
+        'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size']),
+        'rnn_lstm': RNN_LSTM(input_size, best_trial.config['hidden_size'], 2, fixed_vals['output_size'], sequence_length, device)
+    }
+
+    if(fixed_vals['model_label'] in models):
+        best_trained_model = models[fixed_vals['model_label']]
     else:
-        raise ValueError("model_label must be 'mlp', 'net', 'cnn' or 'rnn'")
-        
-        
+        raise ValueError(
+            'Model label not implemented', fixed_vals['model_label'],
+            'only implemented models are', models.keys())
+
     best_trained_model.to(device)
 
     best_checkpoint_dir = best_trial.checkpoint.value
