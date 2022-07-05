@@ -1,5 +1,4 @@
 from Bio.SeqIO.FastaIO import SimpleFastaParser
-import pandas as pd
 import csv
 
 

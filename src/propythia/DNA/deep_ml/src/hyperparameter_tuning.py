@@ -51,7 +51,7 @@ def hyperparameter_tuning(device, fixed_vals, config):
     )
 
     best_trial = result.get_best_trial('mcc', 'max', 'last')
-    print("Best trial config: {}".format(best_trial.config))
+    print("Best trial config:", best_trial.config)
     print("Best trial final validation loss:", best_trial.last_result["loss"])
     print("Best trial final validation accuracy:", best_trial.last_result["accuracy"])
     print("Best trial final validation mcc:", best_trial.last_result["mcc"])

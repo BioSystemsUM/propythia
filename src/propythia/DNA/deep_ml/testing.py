@@ -11,8 +11,8 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
 def perform(model_label, mode, data_dir):
-    if(data_dir == 'essential_genes'):
-        class_weights = torch.tensor([1.0, 11.0]).to(device)
+    if('essential_genes' in data_dir):
+        class_weights = torch.tensor([1.0, 2.0]).to(device)
     else:
         class_weights = torch.tensor([1.0, 1.0]).to(device)
 
@@ -48,14 +48,16 @@ def perform(model_label, mode, data_dir):
 
     hyperparameter_tuning(device, fixed_vals, config)
 
-
+# perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs')
+# perform('mlp', 'descriptor', 'essential_genes/descriptors_filtered_20k')
+# perform('mlp', 'descriptor', 'essential_genes/descriptors_filtered_50k')
 # perform('mlp', 'descriptor', 'primer')
 # perform('mlp', 'descriptor', 'essential_genes')
 # perform('cnn', 'one_hot', 'primer')
 # perform('cnn', 'one_hot', 'essential_genes')
 # perform('cnn', 'chemical', 'primer')
 # perform('cnn', 'chemical', 'essential_genes')
-perform('rnn_lstm', 'one_hot', 'primer')
+# perform('rnn_lstm', 'one_hot', 'primer')
 # perform('rnn_lstm', 'one_hot', 'essential_genes')
-# perform('rnn_lstm', 'chemical', 'primer')
+perform('rnn_lstm', 'chemical', 'primer')
 # perform('rnn_lstm', 'chemical', 'essential_genes')
