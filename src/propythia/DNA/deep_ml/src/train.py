@@ -95,7 +95,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         current_loss, val_acc, val_mcc = validation(model, device, validloader, loss_function)
         print('The Current Loss:', current_loss)
 
-        if current_loss > last_loss:
+        if current_loss >= last_loss:
             trigger_times += 1
             print('Trigger Times:', trigger_times)
 

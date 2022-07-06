@@ -18,9 +18,9 @@ def hyperparameter_tuning(device, fixed_vals, config):
     :param config: The configuration for the model.
     """
 
-    cpus_per_trial = 2
-    gpus_per_trial = 2
-    num_samples = 10
+    cpus_per_trial = fixed_vals['cpus_per_trial']
+    gpus_per_trial = fixed_vals['gpus_per_trial']
+    num_samples = fixed_vals['num_samples']
     fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
 
     # ------------------------------------------------------------------------------------------
@@ -85,6 +85,10 @@ def hyperparameter_tuning(device, fixed_vals, config):
 
     acc, mcc, report = test(device, best_trained_model, testloader)
     print("Results in test set:")
+    print("--------------------")
+    print("- model:  ", fixed_vals['model_label'])
+    print("- mode:   ", fixed_vals['mode'])
+    print("- dataset:", fixed_vals['data_dir'].split("/")[-1])
     print("--------------------")
     print('Accuracy: %.3f' % acc)
     print('MCC: %.3f' % mcc)

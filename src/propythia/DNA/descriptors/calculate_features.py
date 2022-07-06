@@ -1,4 +1,4 @@
-from .descriptors import DNADescriptor
+from descriptors import DNADescriptor
 import pandas as pd
 
 
@@ -45,7 +45,37 @@ def process_lists_of_lists(fps_x, field):
     return small_processed
 
 
+
 def normalization(fps_x):
+    """
+    Even though we've computed all of the descriptors, we still need to normalize those who have dictionaries and lists because the model can't handle data in these types.
+
+    To normalize the data, dicts and lists need to "explode" into more columns. 
+
+    E.g. dicts:
+
+    | descriptor_hello |
+    | ---------------- |
+    | {'a': 1, 'b': 2} |
+
+    will be transformed into:
+
+    | descriptor_hello_a | descriptor_hello_b |
+    | ------------------ | ------------------ |
+    | 1                  | 2                  |
+
+    E.g. lists:
+
+    | descriptor_hello |
+    | ---------------- |
+    | [1, 2, 3]        |
+
+    will be transformed into:
+
+    | descriptor_hello_0 | descriptor_hello_1 | descriptor_hello_2 |
+    | ------------------ | ------------------ | ------------------ |
+    | 1                  | 2                  | 3                  |
+    """
     lists = ["nucleic_acid_composition", "dinucleotide_composition", "trinucleotide_composition",
              "k_spaced_nucleic_acid_pairs", "kmer", "PseDNC", "PseKNC", "DAC", "DCC", "DACC", "TAC", "TCC", "TACC"]
     lists_of_lists = [

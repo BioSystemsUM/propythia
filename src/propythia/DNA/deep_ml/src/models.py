@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-import torch.autograd as autograd
+import torch.nn.functional as F
 
 
 class Net(nn.Module):
