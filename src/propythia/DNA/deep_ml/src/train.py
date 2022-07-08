@@ -45,7 +45,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         'net': Net(input_size, hidden_size, output_size, dropout).to(device),
         'cnn': CNN(sequence_length, input_size, hidden_size, output_size).to(device),
         'lstm': LSTM(input_size, hidden_size, num_layers, output_size, sequence_length, device).to(device),
-        'cnn_lstm': CNN_LSTM(input_size, hidden_size, 1, num_layers, output_size, device).to(device)
+        'cnn_lstm': CNN_LSTM(input_size, hidden_size, 1, num_layers, sequence_length, output_size, device).to(device)
     }
 
     if(model_label in models):

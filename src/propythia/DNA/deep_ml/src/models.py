@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+import math
 
 
 class Net(nn.Module):
@@ -178,7 +179,7 @@ class LSTM(nn.Module):
         return out
 
 class CNN_LSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, num_directions, num_layers, no_classes, device):
+    def __init__(self, input_size, hidden_size, num_directions, num_layers, sequence_length, no_classes, device):
         super(CNN_LSTM, self).__init__()
         self.num_layers = num_layers
         self.hidden_size = hidden_size
@@ -194,7 +195,9 @@ class CNN_LSTM(nn.Module):
         )
         
         self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True)
-        self.linear = nn.Linear(hidden_size * 13, no_classes)
+        
+        linear_input = math.ceil((sequence_length // 2) / 2) * hidden_size 
+        self.linear = nn.Linear(linear_input, no_classes)
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
