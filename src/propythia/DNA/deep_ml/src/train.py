@@ -33,6 +33,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     epochs = fixed_vals['epochs']
     patience = fixed_vals['patience']
     loss_function = fixed_vals['loss_function']
+    num_layers = fixed_vals['num_layers']
     last_loss = 100
 
     # Hyperparameters to tune
@@ -43,14 +44,15 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
         'net': Net(input_size, hidden_size, output_size, dropout).to(device),
         'cnn': CNN(sequence_length, input_size, hidden_size, output_size).to(device),
-        'rnn_lstm': RNN_LSTM(input_size, hidden_size, 2, output_size, sequence_length, device).to(device)
+        'lstm': LSTM(input_size, hidden_size, num_layers, output_size, sequence_length, device).to(device),
+        'cnn_lstm': CNN_LSTM(input_size, hidden_size, 1, num_layers, output_size, device).to(device)
     }
 
-    if(fixed_vals['model_label'] in models):
-        model = models[fixed_vals['model_label']]
+    if(model_label in models):
+        model = models[model_label]
     else:
         raise ValueError(
-            'Model label not implemented', fixed_vals['model_label'],
+            'Model label not implemented', model_label,
             'only implemented models are', models.keys())
 
     if(optimizer_label == 'adam'):

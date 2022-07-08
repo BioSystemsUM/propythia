@@ -66,7 +66,8 @@ def hyperparameter_tuning(device, fixed_vals, config):
         'mlp': MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
         'net': Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
         'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size']),
-        'rnn_lstm': RNN_LSTM(input_size, best_trial.config['hidden_size'], 2, fixed_vals['output_size'], sequence_length, device)
+        'lstm': LSTM(input_size, best_trial.config['hidden_size'], fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
+        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], 1, fixed_vals['num_layers'], fixed_vals['output_size'], device)
     }
 
     if(fixed_vals['model_label'] in models):

@@ -30,7 +30,8 @@ def perform(model_label, mode, data_dir):
         'mlp': ['descriptor'],
         'net': ['one_hot', 'chemical'],
         'cnn': ['one_hot', 'chemical'],
-        'rnn_lstm': ['one_hot', 'chemical']
+        'rnn_lstm': ['one_hot', 'chemical'],
+        'cnn_lstm': ['one_hot', 'chemical']
     }
     if(model_label in combinations):
         if(mode not in combinations[model_label]):
@@ -49,7 +50,8 @@ def perform(model_label, mode, data_dir):
         'mode': mode,
         'cpus_per_trial':2,
         'gpus_per_trial':2,
-        'num_samples': 20
+        'num_samples': 20,
+        'num_layers': 2,
     }
 
     config = {
@@ -63,10 +65,11 @@ def perform(model_label, mode, data_dir):
 
 # --------------------------------- Primer ----------------------------------
 # perform('mlp', 'descriptor', 'primer')
-perform('cnn', 'one_hot', 'primer')
+# perform('cnn', 'one_hot', 'primer')
 # perform('cnn', 'chemical', 'primer')
 # perform('rnn_lstm', 'one_hot', 'primer')
 # perform('rnn_lstm', 'chemical', 'primer')
+perform('cnn_lstm', 'one_hot', 'primer')
 
 # ----------------------------- Essential genes -----------------------------
 # perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs')

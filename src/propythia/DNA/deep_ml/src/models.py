@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
 
 
 class Net(nn.Module):
@@ -150,13 +149,13 @@ class RNN(nn.Module):
         return out
 
 
-class RNN_LSTM(nn.Module):
+class LSTM(nn.Module):
     """
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
     def __init__(self, input_size, hidden_size, num_layers, num_classes, sequence_length, device):
-        super(RNN_LSTM, self).__init__()
+        super(LSTM, self).__init__()
         self.hidden_size = hidden_size
         self.device = device
         self.num_layers = num_layers
@@ -177,3 +176,38 @@ class RNN_LSTM(nn.Module):
         # Decode the hidden state of the last time step
         out = self.fc(out)
         return out
+
+class CNN_LSTM(nn.Module):
+    def __init__(self, input_size, hidden_size, num_directions, num_layers, no_classes, device):
+        super(CNN_LSTM, self).__init__()
+        self.num_layers = num_layers
+        self.hidden_size = hidden_size
+        self.device = device
+        
+        self.conv1 = nn.Sequential(
+            nn.Conv1d(in_channels=input_size, out_channels=16, kernel_size=5, stride=2, padding=2),
+            nn.ReLU(),
+        )
+        self.conv2 = nn.Sequential(
+            nn.Conv1d(in_channels=16, out_channels=32, kernel_size=5, stride=2, padding=2),
+            nn.ReLU(),
+        )
+        
+        self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True)
+        self.linear = nn.Linear(hidden_size * 13, no_classes)
+
+    def forward(self, x):
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+
+        x = x.permute(0, 2, 1)
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = x.permute(0, 2, 1)       
+        out, _ = self.lstm(
+            x, (h0, c0)
+        ) 
+        out = out.reshape(out.shape[0], -1)
+        y  = self.linear(out)
+        return y
+
