@@ -220,3 +220,75 @@ class CNN_LSTM(nn.Module):
         y  = self.linear(out)
         return y
 
+
+class Buckle_CNN_LSTM(nn.Module):
+    """
+    Daniel Buckle - Using Machine Learning Techniques for DNA Sequence Classification.pdf
+    Trying to replicate the following model:
+    
+    - model.add(Dropout(0.05, input_shape=(497,128))) 
+    - model.add(Conv1D(filters=16, kernel_sizes=51, padding='valid', activation='relu')) 
+    - model.add(BatchNormalization()) 
+    - model.add(MaxPooling1D(pool_size=2)) 
+    - model.add(Dropout(0.6))
+    - model.add(Conv1D(filters=18, kernel_size=51, padding='same', activation='relu'))
+    - model.add(BatchNormalization())
+    - model.add(MaxPooling1D(pool_size=2))
+    - model.add(Dropout(0.6))
+    - model.add(Bidirectional(LSTM(units=100), merge_mode='concat'))
+    - model.add(Dropout(0.25)) 
+    - model.add(Dense(units=2, activation='softmax'))
+
+    """
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, no_classes, device):
+        """
+        TODO: change kernel_size to 51
+        """
+        super(Buckle_CNN_LSTM, self).__init__()
+        
+        self.kernel_size = 5
+        self.num_directions = 2 if is_bidirectional else 1
+        self.num_layers = num_layers
+        self.hidden_size = hidden_size
+        self.device = device
+        
+        self.dropout1 = nn.Dropout(0.05)
+        self.conv1 = nn.Conv1d(in_channels=input_size, out_channels=16, kernel_size=self.kernel_size, padding='valid')
+        self.relu1 = nn.ReLU()
+        self.batchnorm1 = nn.BatchNorm1d(16)
+        self.maxpool1 = nn.MaxPool1d(2)
+        self.dropout2 = nn.Dropout(0.6)
+        self.conv2 = nn.Conv1d(in_channels=16, out_channels=18, kernel_size=self.kernel_size, padding='same')
+        self.relu2 = nn.ReLU()
+        self.batchnorm2 = nn.BatchNorm1d(18)
+        self.maxpool2 = nn.MaxPool1d(2)
+        self.dropout3 = nn.Dropout(0.6)
+        self.lstm = nn.LSTM(input_size=18, hidden_size=hidden_size, num_layers=num_layers, batch_first=True, bidirectional=is_bidirectional)
+        
+        linear_input = round((sequence_length - self.kernel_size) / 2 / 2) * hidden_size * self.num_directions
+        self.linear = nn.Linear(linear_input, no_classes)
+
+
+    def forward(self, x):
+        h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
+        c0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
+
+        x = x.permute(0, 2, 1)
+        x = self.dropout1(x)
+        x = self.conv1(x)
+        x = self.relu1(x)
+        x = self.batchnorm1(x)
+        x = self.maxpool1(x)
+        x = self.dropout2(x)
+        x = self.conv2(x)
+        x = self.relu2(x)
+        x = self.batchnorm2(x)
+        x = self.maxpool2(x)
+        x = self.dropout3(x)
+        x = x.permute(0, 2, 1)
+        out, _ = self.lstm(
+            x, (h0, c0)
+        )
+        out = out.reshape(out.shape[0], -1)
+        out  = self.linear(out)
+        return out

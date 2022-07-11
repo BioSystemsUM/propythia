@@ -34,6 +34,8 @@ def perform(model_label, mode, data_dir):
         'bi_lstm': ['one_hot', 'chemical'],
         'cnn_lstm': ['one_hot', 'chemical'],
         'cnn_bi_lstm': ['one_hot', 'chemical'],
+        'buckle_cnn_lstm': ['one_hot', 'chemical'],
+        'buckle_cnn_bi_lstm': ['one_hot', 'chemical'],
     }
     if(model_label in combinations):
         if(mode not in combinations[model_label]):
@@ -66,16 +68,27 @@ def perform(model_label, mode, data_dir):
     hyperparameter_tuning(device, fixed_vals, config)
 
 # --------------------------------- Primer ----------------------------------
+
+# --- Descriptors ---
 # perform('mlp', 'descriptor', 'primer')
+
+# --- One hot encoding ---
 # perform('cnn', 'one_hot', 'primer')
-# perform('cnn', 'chemical', 'primer')
 # perform('lstm', 'one_hot', 'primer')
-# perform('lstm', 'chemical', 'primer')
-perform('bi_lstm', 'one_hot', 'primer')
-# perform('bi_lstm', 'chemical', 'primer')
+# perform('bi_lstm', 'one_hot', 'primer')
 # perform('cnn_lstm', 'one_hot', 'primer')
-# perform('cnn_lstm', 'chemical', 'primer')
 # perform('cnn_bi_lstm', 'one_hot', 'primer')
+# perform('buckle_cnn_lstm', 'one_hot', 'primer')
+# perform('buckle_cnn_bi_lstm', 'one_hot', 'primer')
+
+# --- Chemical encoding ---
+# perform('cnn', 'chemical', 'primer')
+# perform('lstm', 'chemical', 'primer')
+# perform('bi_lstm', 'chemical', 'primer')
+# perform('cnn_lstm', 'chemical', 'primer')
+# perform('cnn_bi_lstm', 'chemical', 'primer')
+# perform('buckle_cnn_lstm', 'chemical', 'primer')
+# perform('buckle_cnn_bi_lstm', 'chemical', 'primer')
 
 # ----------------------------- Essential genes -----------------------------
 # perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs')
@@ -88,9 +101,24 @@ perform('bi_lstm', 'one_hot', 'primer')
 # perform('lstm', 'chemical', 'essential_genes')
 
 # ----------------------------------- H3 ------------------------------------
+
+# --- Descriptors ---
 # perform('mlp', 'descriptor', 'h3')
+
+# --- One hot encoding ---
 # perform('cnn', 'one_hot', 'h3')
-# perform('cnn', 'chemical', 'h3')
 # perform('lstm', 'one_hot', 'h3')
-# perform('lstm', 'chemical', 'h3')
+# perform('bi_lstm', 'one_hot', 'h3')
 # perform('cnn_lstm', 'one_hot', 'h3')
+# perform('cnn_bi_lstm', 'one_hot', 'h3')
+# perform('buckle_cnn_lstm', 'one_hot', 'h3')
+# perform('buckle_cnn_bi_lstm', 'one_hot', 'h3')
+
+# --- Chemical encoding ---
+# perform('cnn', 'chemical', 'h3')
+# perform('lstm', 'chemical', 'h3')
+# perform('bi_lstm', 'chemical', 'h3')
+# perform('cnn_lstm', 'chemical', 'h3')
+# perform('cnn_bi_lstm', 'one_hot', 'h3')
+# perform('buckle_cnn_lstm', 'chemical', 'h3')
+# perform('buckle_cnn_bi_lstm', 'chemical', 'h3')

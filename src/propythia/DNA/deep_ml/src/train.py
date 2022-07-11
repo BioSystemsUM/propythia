@@ -48,6 +48,8 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         'bi_lstm': LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, device).to(device),
         'cnn_lstm': CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
         'cnn_bi_lstm': CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
+        'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
+        'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
     }
 
     if(model_label in models):
