@@ -155,18 +155,19 @@ class LSTM(nn.Module):
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, num_layers, num_classes, sequence_length, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, num_classes, sequence_length, device):
         super(LSTM, self).__init__()
+        self.num_directions = 2 if is_bidirectional else 1
         self.hidden_size = hidden_size
         self.device = device
         self.num_layers = num_layers
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size * sequence_length, num_classes)
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, num_classes)
 
     def forward(self, x):
         # Set initial hidden and cell states
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
-        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
+        c0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
 
         # Forward propagate LSTM
         out, _ = self.lstm(
@@ -179,8 +180,13 @@ class LSTM(nn.Module):
         return out
 
 class CNN_LSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, num_directions, num_layers, sequence_length, no_classes, device):
+    """
+    https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
+    """
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, no_classes, device):
         super(CNN_LSTM, self).__init__()
+        
+        self.num_directions = 2 if is_bidirectional else 1
         self.num_layers = num_layers
         self.hidden_size = hidden_size
         self.device = device
@@ -194,14 +200,14 @@ class CNN_LSTM(nn.Module):
             nn.ReLU(),
         )
         
-        self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True)
+        self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
         
-        linear_input = math.ceil((sequence_length // 2) / 2) * hidden_size 
+        linear_input = (math.ceil((sequence_length // 2) / 2) * hidden_size ) * self.num_directions
         self.linear = nn.Linear(linear_input, no_classes)
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
-        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
+        c0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
 
         x = x.permute(0, 2, 1)
         x = self.conv1(x)

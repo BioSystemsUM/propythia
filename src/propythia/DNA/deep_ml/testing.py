@@ -30,14 +30,16 @@ def perform(model_label, mode, data_dir):
         'mlp': ['descriptor'],
         'net': ['one_hot', 'chemical'],
         'cnn': ['one_hot', 'chemical'],
-        'rnn_lstm': ['one_hot', 'chemical'],
-        'cnn_lstm': ['one_hot', 'chemical']
+        'lstm': ['one_hot', 'chemical'],
+        'bi_lstm': ['one_hot', 'chemical'],
+        'cnn_lstm': ['one_hot', 'chemical'],
+        'cnn_bi_lstm': ['one_hot', 'chemical'],
     }
     if(model_label in combinations):
         if(mode not in combinations[model_label]):
             raise ValueError(model_label, 'does not support', mode, ', please choose one of', combinations[model_label])
     else:
-        raise ValueError('Model label not implemented', model_label)
+        raise ValueError('Model label:', model_label, 'not implemented in', combinations.keys())
 
     fixed_vals = {
         'epochs': 50,
@@ -69,7 +71,11 @@ def perform(model_label, mode, data_dir):
 # perform('cnn', 'chemical', 'primer')
 # perform('lstm', 'one_hot', 'primer')
 # perform('lstm', 'chemical', 'primer')
+perform('bi_lstm', 'one_hot', 'primer')
+# perform('bi_lstm', 'chemical', 'primer')
 # perform('cnn_lstm', 'one_hot', 'primer')
+# perform('cnn_lstm', 'chemical', 'primer')
+# perform('cnn_bi_lstm', 'one_hot', 'primer')
 
 # ----------------------------- Essential genes -----------------------------
 # perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs')
@@ -87,4 +93,4 @@ def perform(model_label, mode, data_dir):
 # perform('cnn', 'chemical', 'h3')
 # perform('lstm', 'one_hot', 'h3')
 # perform('lstm', 'chemical', 'h3')
-perform('cnn_lstm', 'one_hot', 'h3')
+# perform('cnn_lstm', 'one_hot', 'h3')
