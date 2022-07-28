@@ -1,7 +1,7 @@
 """
 ##############################################################################
 
-Runs hyperparameter tuning for the given model and dataset.
+Runs hyperparameter tuning for the given model, feature mode, and data directory.
 
 ##############################################################################
 """
