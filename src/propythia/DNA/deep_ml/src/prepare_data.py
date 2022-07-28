@@ -5,12 +5,13 @@ import torch
 import torch.utils.data as data_utils
 import pickle
 
-def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, validation_size=0.2):
+def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
     Prepare data for training and testing.
     :param data_dir: str, the path to the data directory.
-    :param mode: str, the mode to use. Must be either 'descriptor', 'one_hot' or 'chemical'.
+    :param mode: str, the mode to use. Must be either 'descriptor', 'one_hot', 'chemical' or 'kmer_one_hot'.
     :param batch_size: int, the batch size to use.
+    :param k: int, value for the kmer one hot encoding.
     :param train_size: float, the proportion of the data to use for training.
     :param test_size: float, the proportion of the data to use for testing.
     :param validation_size: float, the proportion of the data to use for validation.
@@ -48,13 +49,23 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         stratify=y
     )
     
-    if(mode == 'one_hot' or mode == 'chemical'):
-        encoder = DNAEncoding(x_train)
-        x_train = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
-        encoder = DNAEncoding(x_test)
-        x_test = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
-        encoder = DNAEncoding(x_cv)
-        x_cv = encoder.one_hot_encode() if mode == 'one_hot' else encoder.chemical_encode()
+    if(mode == 'one_hot' or mode == 'chemical' or mode == 'kmer_one_hot'):
+        encoder_train = DNAEncoding(x_train)
+        encoder_test = DNAEncoding(x_test)
+        encoder_cv = DNAEncoding(x_cv)
+        
+        if(mode == 'one_hot'):
+            x_train = encoder_train.one_hot_encode()
+            x_test = encoder_test.one_hot_encode()
+            x_cv = encoder_cv.one_hot_encode()
+        elif(mode == 'chemical'):
+            x_train = encoder_train.chemical_encode()
+            x_test = encoder_test.chemical_encode()
+            x_cv = encoder_cv.chemical_encode()
+        else:
+            x_train = encoder_train.kmer_one_hot_encode(k=k)
+            x_test = encoder_test.kmer_one_hot_encode(k=k)
+            x_cv = encoder_cv.kmer_one_hot_encode(k=k)
     elif(mode == 'descriptor'):
         scaler = StandardScaler().fit(x_train)
         x_train = scaler.transform(x_train)
@@ -64,7 +75,7 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         y_test = y_test.to_numpy()
         y_cv = y_cv.to_numpy()
     else:
-        raise ValueError("mode must be either 'one_hot', 'descriptor' or 'chemical'.")
+        raise ValueError("mode must be either 'one_hot', 'descriptor', 'chemical' or 'kmer_one_hot_encode'.")
     
     train_data = data_utils.TensorDataset(
         torch.tensor(x_train, dtype=torch.float),
@@ -94,4 +105,5 @@ def prepare_data(data_dir, mode, batch_size, train_size=0.6, test_size=0.2, vali
         shuffle=True,
         batch_size=batch_size
     )
+    
     return trainloader, testloader, validloader, x_train.shape[-1], x_train.shape[1]

@@ -202,7 +202,7 @@ class CNN_LSTM(nn.Module):
         
         self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
         
-        linear_input = (math.ceil((sequence_length // 2) / 2) * hidden_size ) * self.num_directions
+        linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
         self.linear = nn.Linear(linear_input, no_classes)
 
     def forward(self, x):

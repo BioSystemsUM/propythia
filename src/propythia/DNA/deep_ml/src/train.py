@@ -24,6 +24,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
         data_dir=fixed_vals['data_dir'],
         mode=fixed_vals['mode'],
         batch_size=config['batch_size'],
+        k=fixed_vals['kmer_one_hot'],
     )
 
     # Fixed values

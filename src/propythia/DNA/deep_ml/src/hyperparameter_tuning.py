@@ -60,6 +60,7 @@ def hyperparameter_tuning(device, fixed_vals, config):
         data_dir=fixed_vals['data_dir'],
         mode=fixed_vals['mode'],
         batch_size=best_trial.config['batch_size'],
+        k=fixed_vals['kmer_one_hot'],
     )
 
     models = {

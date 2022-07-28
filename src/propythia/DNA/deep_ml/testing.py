@@ -28,14 +28,14 @@ def perform(model_label, mode, data_dir):
 
     combinations = {
         'mlp': ['descriptor'],
-        'net': ['one_hot', 'chemical'],
-        'cnn': ['one_hot', 'chemical'],
-        'lstm': ['one_hot', 'chemical'],
-        'bi_lstm': ['one_hot', 'chemical'],
-        'cnn_lstm': ['one_hot', 'chemical'],
-        'cnn_bi_lstm': ['one_hot', 'chemical'],
-        'buckle_cnn_lstm': ['one_hot', 'chemical'],
-        'buckle_cnn_bi_lstm': ['one_hot', 'chemical'],
+        'net': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'cnn': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'buckle_cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'buckle_cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
     }
     if(model_label in combinations):
         if(mode not in combinations[model_label]):
@@ -52,10 +52,11 @@ def perform(model_label, mode, data_dir):
         'model_label': model_label,
         'data_dir': data_dir,
         'mode': mode,
-        'cpus_per_trial':2,
+        'cpus_per_trial':2, 
         'gpus_per_trial':2,
-        'num_samples': 20,
+        'num_samples': 15,
         'num_layers': 2,
+        'kmer_one_hot': 3, # k value for the kmer one hot encoding
     }
 
     config = {
@@ -90,6 +91,15 @@ def perform(model_label, mode, data_dir):
 # perform('buckle_cnn_lstm', 'chemical', 'primer')
 # perform('buckle_cnn_bi_lstm', 'chemical', 'primer')
 
+# --- Kmer One hot encoding ---
+perform('cnn', 'kmer_one_hot', 'primer')
+perform('lstm', 'kmer_one_hot', 'primer')
+perform('bi_lstm', 'kmer_one_hot', 'primer')
+perform('cnn_lstm', 'kmer_one_hot', 'primer')
+perform('cnn_bi_lstm', 'kmer_one_hot', 'primer')
+perform('buckle_cnn_lstm', 'kmer_one_hot', 'primer')
+perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'primer')
+
 # ----------------------------- Essential genes -----------------------------
 # perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs')
 # perform('mlp', 'descriptor', 'essential_genes/descriptors_filtered_20k')
@@ -119,6 +129,15 @@ def perform(model_label, mode, data_dir):
 # perform('lstm', 'chemical', 'h3')
 # perform('bi_lstm', 'chemical', 'h3')
 # perform('cnn_lstm', 'chemical', 'h3')
-# perform('cnn_bi_lstm', 'one_hot', 'h3')
+# perform('cnn_bi_lstm', 'chemical', 'h3')
 # perform('buckle_cnn_lstm', 'chemical', 'h3')
 # perform('buckle_cnn_bi_lstm', 'chemical', 'h3')
+
+# --- Kmer One hot encoding ---
+# perform('cnn', 'kmer_one_hot', 'h3')
+# perform('lstm', 'kmer_one_hot', 'h3')
+# perform('bi_lstm', 'kmer_one_hot', 'h3')
+# perform('cnn_lstm', 'kmer_one_hot', 'h3')
+# perform('cnn_bi_lstm', 'kmer_one_hot', 'h3')
+# perform('buckle_cnn_lstm', 'kmer_one_hot', 'h3')
+# perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'h3')
