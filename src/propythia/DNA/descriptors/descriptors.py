@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
 """
-##############################################################################
+##########################################################################################
 
-A class used for computing different types of DNA descriptors.
+A class used for computing different types of DNA descriptors for a single DNA sequence.
 It contains descriptors from packages iLearn, iDNA4mC, rDNAse, ...
 
 Authors: João Nuno Abreu
-
 Date: 02/2022
-
 Email:
 
-##############################################################################
+##########################################################################################
 """
 
 import sys
@@ -19,28 +16,14 @@ from functools import reduce
 from typing import Dict, List, Tuple
 
 class DNADescriptor:
-
-    pairs = {
-        'A': 'T',
-        'T': 'A',
-        'G': 'C',
-        'C': 'G'
-    }
-
-    ALPHABET = 'ACGT'
-
     """
     The Descriptor class collects all descriptor calculation functions into a simple class.
     It returns the features in a dictionary object
     """
 
     def __init__(self, dna_sequence):
-        """	Constructor """
-        if(checker(dna_sequence)):
-            self.dna_sequence = dna_sequence.strip().upper()
-        else:
-            seq = dna_sequence.strip().upper()
-            self.dna_sequence = ''.join([letter for letter in seq if letter in self.ALPHABET])
+        # it is assumed that the sequence is a string with valid alphabet
+        self.dna_sequence = dna_sequence.strip().upper()
             
 
     def get_length(self) -> int:
@@ -201,7 +184,7 @@ class DNADescriptor:
 
         if reverse:
             for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
-                reverse_val = "".join([self.pairs[i] for i in kmer[::-1]])
+                reverse_val = "".join([pairs[i] for i in kmer[::-1]])
 
                 # calculate alphabet order between kmer and reverse compliment
                 if(kmer < reverse_val):
@@ -572,31 +555,44 @@ class DNADescriptor:
             res["lambda."+str(i+1)] = round(w * thetas[i] / (1 + w * sum(thetas)), 3)
         return res
 
-    # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
+    # ----------------------  CALCULATE DESCRIPTORS  ---------------------- #
 
-    def get_descriptors(self):
+    def get_descriptors(self, descriptor_list = []):
         """
         Calculates all descriptors
-        :return: dictionary with values of all descriptors
+        Parameters
+        ----------
+        descriptor_list : List of str
+            List of descriptors to be calculated the user wants to calculate. The list must be a subset of the
+            descriptors in the list of descriptors. If the list is empty, all descriptors will be calculated.
+        Returns
+        -------
+        Dict
+            Dictionary with values of all descriptors
         """
         res = {}
-        res['length'] = self.get_length()
-        res['gc_content'] = self.get_gc_content()
-        res['at_content'] = self.get_at_content()
-        res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
-        res['dinucleotide_composition'] = self.get_dinucleotide_composition()
-        res['trinucleotide_composition'] = self.get_trinucleotide_composition()
-        res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
-        res['kmer'] = self.get_kmer()
-        res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_50_75()
-        res['DAC'] = self.get_DAC()
-        res['DCC'] = self.get_DCC()
-        res['DACC'] = self.get_DACC()
-        res['TAC'] = self.get_TAC()
-        res['TCC'] = self.get_TCC()
-        res['TACC'] = self.get_TACC()
-        res['PseDNC'] = self.get_PseDNC()
-        res['PseKNC'] = self.get_PseKNC()
+        if(descriptor_list == []):
+            res['length'] = self.get_length()
+            res['gc_content'] = self.get_gc_content()
+            res['at_content'] = self.get_at_content()
+            res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
+            res['dinucleotide_composition'] = self.get_dinucleotide_composition()
+            res['trinucleotide_composition'] = self.get_trinucleotide_composition()
+            res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
+            res['kmer'] = self.get_kmer()
+            res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_50_75()
+            res['DAC'] = self.get_DAC()
+            res['DCC'] = self.get_DCC()
+            res['DACC'] = self.get_DACC()
+            res['TAC'] = self.get_TAC()
+            res['TCC'] = self.get_TCC()
+            res['TACC'] = self.get_TACC()
+            res['PseDNC'] = self.get_PseDNC()
+            res['PseKNC'] = self.get_PseKNC()
+        else:
+            for descriptor in descriptor_list:
+                function = getattr(self, 'get_' + descriptor)
+                res[descriptor] = function()
         return res
 
 if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
