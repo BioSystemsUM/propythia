@@ -9,7 +9,7 @@ from ray import tune
 import os
 
 
-def traindata(config, device, fixed_vals, checkpoint_dir=None):
+def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
     """
     Train the model for a number of epochs.
     :param config: Dictionary of hyperparameters to be tuned.
@@ -18,7 +18,9 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
     :param checkpoint_dir: Directory to save the model.
     """
 
-    # ------------------------------------------------------------------------------------------------
+    # in the case of tuning, this step was already done 
+    if is_tuning == False:
+        fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
 
     trainloader, _, validloader, input_size, sequence_length = prepare_data(
         data_dir=fixed_vals['data_dir'],
@@ -72,7 +74,7 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
 
     # ------------------------------------------------------------------------------------------------
 
-    if checkpoint_dir:
+    if is_tuning and checkpoint_dir:
         model_state, optimizer_state = torch.load(
             os.path.join(checkpoint_dir, "checkpoint"))
         model.load_state_dict(model_state)
@@ -105,15 +107,18 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
 
         if current_loss >= last_loss:
             trigger_times += 1
-            print('Trigger Times:', trigger_times)
+            print('trigger Times:', trigger_times)
 
             if trigger_times >= patience:
                 print('Early stopping!\nStart to test process.')
-                with tune.checkpoint_dir(epoch) as checkpoint_dir:
-                    path = os.path.join(checkpoint_dir, "checkpoint")
-                    torch.save((model.state_dict(), optimizer.state_dict()), path)
-                tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
-                return
+                if is_tuning:
+                    with tune.checkpoint_dir(epoch) as checkpoint_dir:
+                        path = os.path.join(checkpoint_dir, "checkpoint")
+                        torch.save((model.state_dict(), optimizer.state_dict()), path)
+                    tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
+                    return
+                else:
+                    return model
 
         else:
             print('trigger times: 0')
@@ -121,10 +126,15 @@ def traindata(config, device, fixed_vals, checkpoint_dir=None):
 
         last_loss = current_loss
         scheduler.step(current_loss)
-        with tune.checkpoint_dir(epoch) as checkpoint_dir:
-            path = os.path.join(checkpoint_dir, "checkpoint")
-            torch.save((model.state_dict(), optimizer.state_dict()), path)
-        tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
+        if is_tuning:
+            with tune.checkpoint_dir(epoch) as checkpoint_dir:
+                path = os.path.join(checkpoint_dir, "checkpoint")
+                torch.save((model.state_dict(), optimizer.state_dict()), path)
+            tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
+        
+    if is_tuning == False:
+        return model
+        
 
 
 def validation(model, device, validloader, loss_function):

@@ -1,15 +1,19 @@
 """
-##############################################################################
+########################################################################
 
-Runs hyperparameter tuning for the given model, feature mode, and data directory.
+Runs a combination of hyperparameters or performs hyperparameter tuning
+for the given model, feature mode, and data directory.
 
-##############################################################################
+########################################################################
 """
 
 import torch
 from torch import nn
 import os
+from src.prepare_data import prepare_data
+from src.test import test
 from src.hyperparameter_tuning import hyperparameter_tuning
+from src.train import traindata
 from ray import tune
 import numpy
 
@@ -20,7 +24,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
-def perform(model_label, mode, data_dir):
+def perform(model_label, mode, data_dir, do_tuning):
     if('essential_genes' in data_dir):
         class_weights = torch.tensor([1.0, 2.0]).to(device)
     else:
@@ -48,7 +52,7 @@ def perform(model_label, mode, data_dir):
         'epochs': 500,
         'optimizer_label': 'adam',
         'loss_function': nn.CrossEntropyLoss(weight=class_weights),
-        'patience': 10,
+        'patience': 8,
         'output_size': 2,
         'model_label': model_label,
         'data_dir': data_dir,
@@ -60,14 +64,35 @@ def perform(model_label, mode, data_dir):
         'kmer_one_hot': 3, # k value for the kmer one hot encoding
     }
 
-    config = {
-        "hidden_size": tune.choice([32, 64, 128, 256]),
-        "lr": tune.loguniform(1e-5, 1e-2),
-        "batch_size": tune.choice([8, 16, 32]),
-        "dropout": tune.uniform(0.3, 0.5)
-    }
+    if do_tuning:
+        config = {
+            "hidden_size": tune.choice([32, 64, 128, 256]),
+            "lr": tune.loguniform(1e-5, 1e-2),
+            "batch_size": tune.choice([8, 16, 32]),
+            "dropout": tune.uniform(0.3, 0.5)
+        }
 
-    hyperparameter_tuning(device, fixed_vals, config)
+        hyperparameter_tuning(device, fixed_vals, config)
+    else:
+        config = {
+            "hidden_size": 32,
+            "lr": 1e-3,
+            "batch_size": 32,
+            "dropout": 0.35
+        }
+        model = traindata(config, device, fixed_vals, is_tuning=False)
+        
+        _, testloader, _, _, _ = prepare_data(
+            data_dir=fixed_vals['data_dir'],
+            mode=fixed_vals['mode'],
+            batch_size=config['batch_size'],
+            k=fixed_vals['kmer_one_hot'],
+        )
+        
+        acc, mcc, report = test(device, model, testloader)
+        print('Accuracy: %.3f' % acc)
+        print('MCC: %.3f' % mcc)
+        print(report)
 
 # --------------------------------- Primer ----------------------------------
 
@@ -75,7 +100,7 @@ def perform(model_label, mode, data_dir):
 # perform('mlp', 'descriptor', 'primer')
 
 # --- One hot encoding ---
-# perform('cnn', 'one_hot', 'primer')
+perform('cnn', 'one_hot', 'primer', do_tuning=False)
 # perform('lstm', 'one_hot', 'primer')
 # perform('gru', 'one_hot', 'primer')
 # perform('bi_lstm', 'one_hot', 'primer')
@@ -133,14 +158,14 @@ def perform(model_label, mode, data_dir):
 # perform('buckle_cnn_bi_lstm', 'chemical', 'essential_genes')
 
 # --- Kmer One hot encoding ---
-perform('cnn', 'kmer_one_hot', 'essential_genes')
-perform('lstm', 'kmer_one_hot', 'essential_genes')
-perform('gru', 'kmer_one_hot', 'essential_genes')
-perform('bi_lstm', 'kmer_one_hot', 'essential_genes')
-perform('cnn_lstm', 'kmer_one_hot', 'essential_genes')
-perform('cnn_bi_lstm', 'kmer_one_hot', 'essential_genes')
-perform('buckle_cnn_lstm', 'kmer_one_hot', 'essential_genes')
-perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'essential_genes')
+# perform('cnn', 'kmer_one_hot', 'essential_genes')
+# perform('lstm', 'kmer_one_hot', 'essential_genes')
+# perform('gru', 'kmer_one_hot', 'essential_genes')
+# perform('bi_lstm', 'kmer_one_hot', 'essential_genes')
+# perform('cnn_lstm', 'kmer_one_hot', 'essential_genes')
+# perform('cnn_bi_lstm', 'kmer_one_hot', 'essential_genes')
+# perform('buckle_cnn_lstm', 'kmer_one_hot', 'essential_genes')
+# perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'essential_genes')
 
 # ----------------------------------- H3 ------------------------------------
 

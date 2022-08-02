@@ -42,6 +42,7 @@ def hyperparameter_tuning(device, fixed_vals, config):
             traindata,
             device=device,
             fixed_vals=fixed_vals,
+            is_tuning=True
         ),
         resources_per_trial={"cpu": cpus_per_trial, "gpu": gpus_per_trial},
         config=config,
