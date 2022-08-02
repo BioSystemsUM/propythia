@@ -4,3 +4,5 @@ src_old
 run.py
 log
 tmp.py
+.vscode/
+.mypy_cache/

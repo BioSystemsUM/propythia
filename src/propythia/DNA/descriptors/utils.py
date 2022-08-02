@@ -76,18 +76,6 @@ def ready_acc(k, phyche_index=None, all_property=False, extra_phyche_index=None)
     return phyche_value
 
 
-def ready_acc(k, phyche_index=None, all_property=False, extra_phyche_index=None):
-    """Public function for get sequence_list and phyche_value.
-    """
-    if phyche_index is None:
-        phyche_index = []
-    if extra_phyche_index is None:
-        extra_phyche_index = {}
-    phyche_value = generate_phyche_value(k, phyche_index, all_property, extra_phyche_index)
-
-    return phyche_value
-
-
 def generate_phyche_value(k, phyche_index=None, all_property=False, extra_phyche_index=None):
     """Combine the user selected phyche_list, is_all_property and extra_phyche_index to a new standard phyche_value."""
     if phyche_index is None:

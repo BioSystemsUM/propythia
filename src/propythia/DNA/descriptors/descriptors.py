@@ -16,6 +16,7 @@ Email:
 
 import sys
 from functools import reduce
+from typing import Dict, List, Tuple
 
 class DNADescriptor:
 
@@ -42,18 +43,29 @@ class DNADescriptor:
             self.dna_sequence = ''.join([letter for letter in seq if letter in self.ALPHABET])
             
 
-    def get_length(self):
+    def get_length(self) -> int:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
-        Calculates lenght of sequence (number of aa)
-        :return: value of length
+        Returns the length of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Parameters
+        ----------
+        
+        Returns
+        -------
+        int
+            The length of the sequence.
         """
         return len(self.dna_sequence)
 
-    def get_gc_content(self):
+    def get_gc_content(self) -> float:
         """
-        Calculates gc content
-        :return: value of gc content
+        Returns the GC content of the sequence.
+        Parameters
+        ----------
+        
+        Returns
+        -------
+        float
+            The GC content of the sequence.
         """
         gc_content = 0
         for letter in self.dna_sequence:
@@ -61,10 +73,16 @@ class DNADescriptor:
                 gc_content += 1
         return round(gc_content / self.get_length(), 3)
 
-    def get_at_content(self):
+    def get_at_content(self) -> float:
         """
-        Calculates at content
-        :return: value of at content
+        Returns the AT content of the sequence.
+        Parameters
+        ----------
+
+        Returns
+        -------
+        float
+            The AT content of the sequence.
         """
         at_content = 0
         for letter in self.dna_sequence:
@@ -74,12 +92,17 @@ class DNADescriptor:
 
     # ----------------------- NUCLEIC ACID COMPOSITION ----------------------- #
 
-    def get_nucleic_acid_composition(self, normalize=True):
+    def get_nucleic_acid_composition(self, normalize: bool = True) -> Dict[str, float]:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
-        Calculates nucleic acid composition
-        :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
-        :return: dictionary with values of nucleic acid composition
+        Calculates the Nucleic Acid Composition of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Parameters
+        ----------
+        normalize : bool (default=True)
+            Default value is False. If True, this method returns the frequencies of each nucleic acid.
+        Returns
+        -------
+        Dict of str:float
+            Dictionary with values of nucleic acid composition
         """
         res = make_kmer_dict(1)
         for letter in self.dna_sequence:
@@ -89,34 +112,17 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_enhanced_nucleic_acid_composition(self, window_size=5, normalize=True):
+    def get_dinucleotide_composition(self, normalize: bool = True) -> Dict[str, float]:
         """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6216033/#SM0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates enhanced nucleic acid composition
-        :param normalize: default value is False. If True, this method returns the frequencies of each nucleic acid.
-        :return: dictionary with values of enhanced nucleic acid composition
-        """
-        res = []
-        for i in range(len(self.dna_sequence) - window_size + 1):
-            aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
-            segment = self.dna_sequence[i:i+window_size]
-
-            for letter in segment:
-                aux_d[letter] += 1
-
-            if normalize:
-                aux_d = normalize_dict(aux_d)
-
-            res.append(aux_d)
-
-        return res
-
-    def get_dinucleotide_composition(self, normalize=True):
-        """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
-        Calculates dinucleotide composition
-        :param normalize: default value is False. If True, this method returns the frequencies of each dinucleotide.
-        :return: dictionary with values of dinucleotide composition
+        Calculates the Dinucleotide Composition of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Parameters
+        ----------
+        normalize : bool (default=True)
+            Default value is False. If True, this method returns the frequencies of each dinucleotide.
+        Returns
+        -------
+        Dict of str:float
+            Dictionary with values of dinucleotide composition
         """
         res = make_kmer_dict(2)
         for i in range(len(self.dna_sequence) - 1):
@@ -126,12 +132,17 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_trinucleotide_composition(self, normalize=True):
+    def get_trinucleotide_composition(self, normalize: bool = True) -> Dict[str, float]:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
-        Calculates trinucleotide composition
-        :param normalize: default value is False. If True, this method returns the frequencies of each trinucleotide.
-        :return: dictionary with values of trinucleotide composition
+        Calculates the Trinucleotide Composition of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Parameters
+        ----------
+        normalize : bool (default=True)
+            Default value is False. If True, this method returns the frequencies of each trinucleotide.
+        Returns
+        -------
+        Dict of str:float
+            Dictionary with values of trinucleotide composition
         """
         res = make_kmer_dict(3)
         for i in range(len(self.dna_sequence) - 2):
@@ -142,13 +153,19 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_k_spaced_nucleic_acid_pairs(self, k=0, normalize=True):
+    def get_k_spaced_nucleic_acid_pairs(self, k: int = 0, normalize: bool = True) -> Dict[str, float]:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/
-        Calculates k-spaced nucleic acid pairs
-        :param k: value of k
-        :param normalize: default value is False. If True, this method returns the frequencies of each k-spaced nucleic acid pair.
-        :return: dictionary with values of k-spaced nucleic acid pairs
+        Calculates the K-Spaced Nucleic Acid Pairs of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/
+        Parameters
+        ----------
+        k : int (default=0)
+            The number of nucleic acids to pair together.
+        normalize: bool (default=True)
+            Default value is False. If True, this method returns the frequencies of each k-spaced nucleic acid pair.
+        Returns
+        -------
+        Dict of str:float
+            Dictionary with values of k-spaced nucleic acid pairs
         """
         res = make_kmer_dict(2)
         for i in range(len(self.dna_sequence) - k - 1):
@@ -160,15 +177,23 @@ class DNADescriptor:
             res = normalize_dict(res)
         return res
 
-    def get_kmer(self, k=2, normalize=True, reverse=False):
+    def get_kmer(self, k: int = 2, normalize: bool = True, reverse: bool = False) -> Dict[str, float]:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
-        Calculates Kmer
-        :param k: value of k
-        :param normalize: default value is False. If True, this method returns the frequencies of all kmers.
-        :param reverse: default value is False. If True, this method returns the reverse compliment kmer.
-        :return: dictionary with values of kmer
+        Calculates the K-Mer of the sequence. From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://rdrr.io/cran/rDNAse/
+        Parameters 
+        ----------
+        k : int (default=2)
+            The number of nucleic acids to pair together.
+        normalize: bool (default=True)
+            Default value is False. If True, this method returns the frequencies of all kmers.
+        reverse : bool (default=False)
+            Whether to calculate the reverse complement kmer or not.
+        Returns
+        -------
+        Dict of str:float
+            Dictionary with values of kmer
         """
+        
         res = make_kmer_dict(k)
 
         for i in range(len(self.dna_sequence) - k + 1):
@@ -176,14 +201,14 @@ class DNADescriptor:
 
         if reverse:
             for kmer, _ in sorted(res.items(), key=lambda x: x[0]):
-                reverse = "".join([self.pairs[i] for i in kmer[::-1]])
+                reverse_val = "".join([self.pairs[i] for i in kmer[::-1]])
 
                 # calculate alphabet order between kmer and reverse compliment
-                if(kmer < reverse):
+                if(kmer < reverse_val):
                     smaller = kmer
-                    bigger = reverse
+                    bigger = reverse_val
                 else:
-                    smaller = reverse
+                    smaller = reverse_val
                     bigger = kmer
 
                 # create in dict if they dont exist
@@ -202,26 +227,18 @@ class DNADescriptor:
             res = normalize_dict(res)
 
         return res
-
-    def get_accumulated_nucleotide_frequency(self):
-        """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
-        Calculates accumulated nucleotide frequency
-        :return: list with values of accumulated nucleotide frequency
-        """
-        res = []
-        aux_d = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
-        for i in range(len(self.dna_sequence)):
-            aux_d[self.dna_sequence[i]] += 1
-            x = round(aux_d[self.dna_sequence[i]] / (i + 1), 3)
-            res.append(x)
-        return res
     
-    def get_accumulated_nucleotide_frequency_25_50_75(self, normalize=True):
+    def get_accumulated_nucleotide_frequency_25_50_75(self, normalize: bool = True) -> List[Dict[str, float]]:
         """
-        From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
-        Calculates accumulated nucleotide frequency at 25%, 50% and 75%
-        :return: list with values of accumulated nucleotide frequency
+        Calculates the Accumulated Nucleotide Frequency of the sequence at 25%, 50% and 75%. From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
+        Parameters
+        ----------
+        normalize: bool (default=True)
+            Default value is False. If True, this method returns the frequencies of all accumulated nucleotide frequencies.
+        Returns
+        -------
+        list of dicts of str:float
+            The Accumulated Nucleotide Frequency of the sequence at 25%, 50% and 75%.
         """
         res = []
         d1 = make_kmer_dict(1)
@@ -244,43 +261,76 @@ class DNADescriptor:
 
     # --------------------------  Autocorrelation  -------------------------- #
 
-    def get_DAC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make DAC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_DAC(self, phyche_index: List[str] = ["Twist", "Tilt"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Dinucleotide Based Auto Covariance of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str (default=["Twist", "Tilt"])
+            The physicochemical properties list.
+        nlag : int (default=2)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            dinucleotide, and its corresponding value is a list with a pair of physicochemical indices and its new
+            value.
+        Returns
+        -------
+        list of float
+            The Dinucleotide Based Auto Covariance of the sequence.
         """
         k = 2
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
-    def get_DCC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make DCC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_DCC(self, phyche_index: List[str] = ["Twist", "Tilt"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Dinucleotide Based Cross Covariance (DCC) of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str (default=["Twist", "Tilt"])
+            The physicochemical properties list.
+        nlag : int (default=2)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            dinucleotide, and its corresponding value is a list with a pair of physicochemical indices and its new
+            value.
+        Returns
+        -------
+        list of float
+            The Dinucleotide Based Cross Covariance of the sequence.
         """
         k = 2
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
-    def get_DACC(self, phyche_index=["Twist", "Tilt"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make DACC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_DACC(self, phyche_index: List[str] = ["Twist", "Tilt"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Dinucleotide Based Auto Cross Covariance of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str, optional (default=["Twist", "Tilt"])
+            The physicochemical properties list.
+        nlag : int, optional (default=2)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool, optional (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float, optional (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            dinucleotide, and its corresponding value is a list with a pair of physicochemical indices and it's new
+            value.
+        Returns
+        -------
+        list of float
+            The Dinucleotide Based Auto Cross Covariance of the sequence.
         """
         k = 2
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
@@ -290,44 +340,77 @@ class DNADescriptor:
 
         return vector[0]
 
-    def get_TAC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make TAC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_TAC(self, phyche_index: List[str] = ["Dnase I", "Nucleosome"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Trinucleotide Based Auto Covariance of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str, optional (default=["Dnase I", "Nucleosome"])
+            The physicochemical properties list.
+        nlag : int, optional (default=3)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool, optional (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float, optional (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            trinucleotide, and its corresponding value is a list with a pair of physicochemical indices and it's new
+            value.
+        Returns
+        -------
+        list of float
+            The Trinucleotide Based Auto Covariance of the sequence.
         """
         k = 3
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
         return make_ac_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
-    def get_TCC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make TCC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_TCC(self, phyche_index: List[str] = ["Dnase I", "Nucleosome"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Trinucleotide Based Auto Covariance of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str, optional (default=None)
+            The physicochemical properties list.
+        nlag : int, optional (default=3)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool, optional (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float, optional (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            trinucleotide, and its corresponding value is a list with a pair of physicochemical indices and it's new
+            value.
+        Returns
+        -------
+        list of float
+            The Trinucleotide Based Cross Covariance of the sequence.
         """
         k = 3
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
 
         return make_cc_vector([self.dna_sequence], nlag, phyche_value, k)[0]
 
-    def get_TACC(self, phyche_index=["Dnase I", "Nucleosome"], nlag=2, all_property=False, extra_phyche_index=None):
-        """Make get_TACC vector.
-
-        CODE FROM repDNA (https://github.com/liufule12/repDNA)
-
-        :param phyche_index: physicochemical properties list.
-        :nlag: an integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA sequence in the dataset). It represents the distance between two dinucleotides.
-        :param all_property: bool, choose all physicochemical properties or not.
-        :param extra_phyche_index: dict, the key is the dinucleotide (string), and its corresponding value is a list. It means user-defined phyche_index.
+    def get_TACC(self, phyche_index: List[str] = ["Dnase I", "Nucleosome"], nlag: int = 2, all_property: bool = False, extra_phyche_index: Dict[str, List[Tuple[str, float]]] = None) -> List[float]:
+        """
+        Calculates the Dinucleotide Based Auto Cross Covariance of the sequence. CODE FROM repDNA (https://github.com/liufule12/repDNA)
+        Parameters
+        ----------
+        phyche_index : list of str, optional (default=None)
+            The physicochemical properties list.
+        nlag : int, optional (default=2)
+            An integer larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest DNA
+            sequence in the dataset). It represents the distance between two dinucleotides.
+        all_property : bool, optional (default=False)
+            If True, returns all properties.
+        extra_phyche_index : dict of str and list of float, optional (default=None)
+            The extra phyche index to use for the calculation. It means user-defined phyche_index. The key is
+            trinucleotide, and its corresponding value is a list with a pair of physicochemical indices and it's new
+            value.
+        Returns
+        -------
+        list of float
+            The Dinucleotide Based Auto Cross Covariance of the sequence.
         """
         k = 3
         phyche_value = ready_acc(k, phyche_index, all_property, extra_phyche_index)
@@ -340,13 +423,20 @@ class DNADescriptor:
 
     # --------------------  PSEUDO NUCLEOTIDE COMPOSITION  -------------------- #
 
-    def get_PseDNC(self, lamda=3, w=0.05):
+    def get_PseDNC(self, lamda: int = 3, w: float = 0.05) -> Dict[str, float]:
         """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates the Pseudo Dinucleotide Composition Descriptor of DNA sequences
-        :param lamda: value of lambda
-        :param w: value of w
-        :return: dictionary with values of Pseudo Dinucleotide Composition Descriptor
+        Calculates the Pseudo Dinucleotide Composition of the sequence. From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Parameters
+        ----------
+        lamda : int, optional (default=3)
+            Value larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest sequence
+            in the dataset). It represents the highest counted rank (or tier) of the correlation along a DNA sequence.
+        w : float, optional (default=0.05)
+            The weight factor ranged from 0 to 1.
+        Returns
+        -------
+        Dict of str:float
+            The Pseudo Dinucleotide Composition of the sequence.
         """
         d = {
             'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
@@ -378,9 +468,9 @@ class DNADescriptor:
         thetas = []
         L = len(self.dna_sequence)
         for i in range(lamda):
-            big_somatorio = 0
+            big_somatorio = 0.0
             for j in range(L-i-2):
-                somatorio = 0
+                somatorio = 0.0
                 first_dinucleotide = self.dna_sequence[j:j+2]
                 second_dinucleotide = self.dna_sequence[j+i+1:j+i+1+2]
                 for k in range(6):
@@ -392,7 +482,7 @@ class DNADescriptor:
 
             # Theta calculation
             if(L-i-2 == 0):
-                theta = 0
+                theta = 0.0
             else:
                 theta = big_somatorio / (L-i-2)
             thetas.append(theta)
@@ -400,8 +490,8 @@ class DNADescriptor:
         # --------------------------------------------
 
         res = {}
-        for i in all_possibilites:
-            res[i] = round(fk[i] / (1 + w * sum(thetas)), 3)
+        for dinucleotide in all_possibilites:
+            res[dinucleotide] = round(fk[dinucleotide] / (1 + w * sum(thetas)), 3)
 
         for i in range(lamda):
             res["lambda."+str(i+1)] = round(w * thetas[i] /
@@ -409,13 +499,22 @@ class DNADescriptor:
 
         return res
 
-    def get_PseKNC(self, k=3, lamda=1, w=0.5):
+    def get_PseKNC(self, k: int = 3, lamda: int = 1, w: float = 0.5) -> Dict[str, float]:
         """
-        From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
-        Calculates the Pseudo K Composition Descriptor of DNA sequences
-        :param lamda: value of lambda
-        :param w: value of w
-        :return: dictionary with values of Pseudo K Composition Descriptor
+        Calculates the Pseudo K Composition of the sequence. From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
+        Parameters
+        ----------
+        k : int, optional (default=3)
+            Value larger than 0 represents the k-tuple.
+        lamda : int, optional (default=1)
+            Value larger than or equal to 0 and less than or equal to L-2 (L means the length of the shortest sequence
+            in the dataset). It represents the highest counted rank (or tier) of the correlation along a DNA sequence.
+        w : float, optional (default=0.5)
+            The weight factor ranged from 0 to 1.
+        Returns
+        -------
+        Dict of str:float
+            The Pseudo K Composition of the sequence.
         """
         d = {
             'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
@@ -441,25 +540,24 @@ class DNADescriptor:
             counts[k_mer] += 1
             
         fk = {k: v / sum(counts.values()) for k, v in counts.items()}
-        all_possibilites = make_kmer_list(k)
+        all_possibilites: List[str] = make_kmer_list(k)
 
         thetas = []
         L = len(self.dna_sequence)
         for i in range(lamda):
-            big_somatorio = 0
+            big_somatorio = 0.0
             for j in range(L-i-2):
-                somatorio = 0
+                somatorio = 0.0
                 first_dinucleotide = self.dna_sequence[j:j+2]
                 second_dinucleotide = self.dna_sequence[j+i+1:j+i+1+2]
                 for k in range(6):
-                    val = (d[first_dinucleotide][k] -
-                           d[second_dinucleotide][k])**2
+                    val = (d[first_dinucleotide][k] - d[second_dinucleotide][k])**2
                     somatorio += val
                 big_somatorio += somatorio/6
 
             # Theta calculation
             if(L-i-2 == 0):
-                theta = 0
+                theta = 0.0
             else:
                 theta = big_somatorio / (L-i-2)
             thetas.append(theta)
@@ -467,12 +565,11 @@ class DNADescriptor:
         # --------------------------------------------
 
         res = {}
-        for i in all_possibilites:
-            res[i] = round(fk[i] / (1 + w * sum(thetas)), 3)
+        for k_tuple in all_possibilites:
+            res[k_tuple] = round(fk[k_tuple] / (1 + w * sum(thetas)), 3)
 
         for i in range(lamda):
-            res["lambda."+str(i+1)] = round(w * thetas[i] /
-                                            (1 + w * sum(thetas)), 3)
+            res["lambda."+str(i+1)] = round(w * thetas[i] / (1 + w * sum(thetas)), 3)
         return res
 
     # ----------------------  CALCULATE ALL DESCRIPTORS  ---------------------- #
@@ -487,12 +584,10 @@ class DNADescriptor:
         res['gc_content'] = self.get_gc_content()
         res['at_content'] = self.get_at_content()
         res['nucleic_acid_composition'] = self.get_nucleic_acid_composition()
-        # res['enhanced_nucleic_acid_composition'] = self.get_enhanced_nucleic_acid_composition()
         res['dinucleotide_composition'] = self.get_dinucleotide_composition()
         res['trinucleotide_composition'] = self.get_trinucleotide_composition()
         res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
         res['kmer'] = self.get_kmer()
-        # res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
         res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_50_75()
         res['DAC'] = self.get_DAC()
         res['DCC'] = self.get_DCC()
@@ -506,5 +601,9 @@ class DNADescriptor:
 
 if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
     from utils import *
+    dna = DNADescriptor('GACTGAACTGCACTTTGGTTTCATATTATTTGCTC')
+    res = dna.get_descriptors()
+    for key, val in res.items():
+        print(key, val)
 else:
     from .utils import *
