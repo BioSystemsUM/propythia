@@ -20,16 +20,16 @@ class ReadDNA:
     def __init__(self):
         pass
 
-    def read_sequence(self, sequence: str):
+    def read_sequence(self, sequence: str) -> str:
         """
         Reads a sequence, checks if it's valid and returns a dataframe with the sequence.
         """
         if checker(sequence):
-            return pd.DataFrame([sequence], columns=['sequence'])
+            return sequence.strip().upper()
         else:
             raise ValueError("Error! Invalid character in sequence:", sequence)
 
-    def read_fasta(self, filename: str, with_labels: bool = False):
+    def read_fasta(self, filename: str, with_labels: bool = False) -> pd.DataFrame:
         """
         Reads the input file in fasta format. 
         It always reads sequences, and labels if the user wants.
@@ -52,7 +52,7 @@ class ReadDNA:
                         labels.append(label)
                 
                 # get sequence and check if it's valid
-                sequence = sequence.upper()
+                sequence = sequence.strip().upper()
                 if checker(sequence):
                     sequences.append(sequence)      
                 else:
@@ -65,7 +65,7 @@ class ReadDNA:
             return pd.DataFrame(sequences, columns=['sequence'])
             
     
-    def read_csv(self, filename: str, with_labels: bool = False):
+    def read_csv(self, filename: str, with_labels: bool = False) -> pd.DataFrame:
         """
         Reads the input file in csv format. 
         It always reads sequences, and labels if the user wants. 
@@ -89,7 +89,7 @@ class ReadDNA:
         valid_sequences = []
         for sequence in sequences:
             if checker(sequence):
-                valid_sequences.append(sequence)  
+                valid_sequences.append(sequence.strip().upper())  
             else:
                 raise ValueError("Error! Invalid character in sequence:", sequence)
             

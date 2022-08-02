@@ -23,7 +23,7 @@ class DNADescriptor:
 
     def __init__(self, dna_sequence):
         # it is assumed that the sequence is a string with valid alphabet
-        self.dna_sequence = dna_sequence.strip().upper()
+        self.dna_sequence = dna_sequence
             
 
     def get_length(self) -> int:
@@ -211,7 +211,7 @@ class DNADescriptor:
 
         return res
     
-    def get_accumulated_nucleotide_frequency_25_50_75(self, normalize: bool = True) -> List[Dict[str, float]]:
+    def get_accumulated_nucleotide_frequency(self, normalize: bool = True) -> List[Dict[str, float]]:
         """
         Calculates the Accumulated Nucleotide Frequency of the sequence at 25%, 50% and 75%. From: https://pubmed.ncbi.nlm.nih.gov/31067315/, https://www.nature.com/articles/srep13859?proof=t%252Btarget%253D
         Parameters
@@ -580,7 +580,7 @@ class DNADescriptor:
             res['trinucleotide_composition'] = self.get_trinucleotide_composition()
             res['k_spaced_nucleic_acid_pairs'] = self.get_k_spaced_nucleic_acid_pairs()
             res['kmer'] = self.get_kmer()
-            res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency_25_50_75()
+            res['accumulated_nucleotide_frequency'] = self.get_accumulated_nucleotide_frequency()
             res['DAC'] = self.get_DAC()
             res['DCC'] = self.get_DCC()
             res['DACC'] = self.get_DACC()

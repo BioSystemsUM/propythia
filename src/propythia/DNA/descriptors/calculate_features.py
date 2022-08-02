@@ -1,9 +1,10 @@
+from fileinput import filename
 from descriptors import DNADescriptor
 import pandas as pd
 from typing import List
 
 
-def calculate_descriptors(data: pd.DataFrame, descriptor_list: List) -> pd.DataFrame:
+def _calculate_descriptors(data: pd.DataFrame, descriptor_list: List) -> pd.DataFrame:
     """
     From a dataset of sequences and labels, this function calculates the descriptors and returns a dataframe with them.
     The user can also specify which descriptors to calculate.
@@ -59,7 +60,7 @@ def _process_lists_of_lists(fps_x, field):
 
 def normalization(fps_x, descriptor_list):
     """
-    Because the model cannot process data in these forms, the descriptors that produce dictionaries and lists must still be normalized.
+    Because the model cannot process data in dictionaries and lists, the descriptors that produce these forms must still be normalized.
 
     To normalize the data, dicts and lists need to "explode" into more columns. 
 
@@ -115,7 +116,7 @@ def calculate_and_normalize(data: pd.DataFrame, descriptor_list: list = []) -> p
     """
     This function calculates the descriptors and normalizes the data all at once from a dataframe of sequences and labels. The user can also specify which descriptors to calculate.
     """
-    features = calculate_descriptors(data, descriptor_list)
+    features = _calculate_descriptors(data, descriptor_list)
     fps_y = data['label']
     fps_x = features.loc[:, features.columns != 'label']
     fps_x = fps_x.loc[:, fps_x.columns != 'sequence']
@@ -124,7 +125,7 @@ def calculate_and_normalize(data: pd.DataFrame, descriptor_list: list = []) -> p
 
 if __name__ == "__main__":
     from read_sequence import ReadDNA
-    reader = ReadDNA("../deep_ml/datasets/primer/dataset.csv")
-    data = reader.read_csv()
+    reader = ReadDNA()
+    data = reader.read_csv(filename='../deep_ml/datasets/primer/dataset.csv', with_labels=True)
     fps_x, fps_y = calculate_and_normalize(data)
-    print(fps_x.shape)
+    print(fps_x)
