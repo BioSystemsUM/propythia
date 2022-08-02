@@ -367,7 +367,12 @@ class DNADescriptor:
             'TT': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11]
         }
 
-        fk = self.get_dinucleotide_composition(normalize=True)
+        counts = make_kmer_dict(2)
+        for i in range(len(self.dna_sequence) - 1):
+            dinucleotide = self.dna_sequence[i:i + 2]
+            counts[dinucleotide] += 1
+            
+        fk = {k: v / sum(counts.values()) for k, v in counts.items()}
         all_possibilites = make_kmer_list(2)
 
         thetas = []
@@ -413,31 +418,36 @@ class DNADescriptor:
         :return: dictionary with values of Pseudo K Composition Descriptor
         """
         d = {
-            'AA': [0.06, 0.5, 0.09, 1.59, 0.11, -0.11],
-            'AC': [1.50, 0.50, 1.19, 0.13, 1.29, 1.04],
-            'AG': [0.78, 0.36, -0.28, 0.68, -0.24, -0.62],
-            'AT': [1.07, 0.22, 0.83, -1.02, 2.51, 1.17],
-            'CA': [-1.38, -1.36, -1.01, -0.86, -0.62, -1.25],
-            'CC': [0.06, 1.08, -0.28, 0.56, -0.82, 0.24],
-            'CG': [-1.66, -1.22, -1.38, -0.82, -0.29, -1.39],
-            'CT': [0.78, 0.36, -0.28, 0.68, -0.24, -0.62],
-            'GA': [-0.08, 0.5, 0.09, 0.13, -0.39, 0.71],
-            'GC': [-0.08, 0.22, 2.3, -0.35, 0.65, 1.59],
-            'GG': [0.06, 1.08, -0.28, 0.56, -0.82, 0.24],
-            'GT': [1.50, 0.50, 1.19, 0.13, 1.29, 1.04],
-            'TA': [-1.23, -2.37, -1.38, -2.24, -1.51, -1.39],
-            'TC': [-0.08, 0.5, 0.09, 0.13, -0.39, 0.71],
-            'TG': [-1.38, -1.36, -1.01, -0.86, -0.62, -1.25],
-            'TT': [0.06, 0.5, 0.09, 1.59, 0.11, -0.11]
+            'AA': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11],
+            'AC': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+            'AG': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+            'AT': [1.07, 0.22, 0.62, -1.02, 2.51, 1.17],
+            'CA': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+            'CC': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+            'CG': [-1.66, -1.22, -0.44, -0.82, -0.29, -1.39],
+            'CT': [0.78, 0.36, 0.09, 0.68, -0.24, -0.62],
+            'GA': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+            'GC': [-0.08, 0.22, 1.33, -0.35, 0.65, 1.59],
+            'GG': [0.06, 1.08, 0.09, 0.56, -0.82, 0.24],
+            'GT': [1.50, 0.50, 0.80, 0.13, 1.29, 1.04],
+            'TA': [-1.23, -2.37, -0.44, -2.24, -1.51, -1.39],
+            'TC': [-0.08, 0.5, 0.27, 0.13, -0.39, 0.71],
+            'TG': [-1.38, -1.36, -0.27, -0.86, -0.62, -1.25],
+            'TT': [0.06, 0.5, 0.27, 1.59, 0.11, -0.11]
         }
-        fk = self.get_kmer(k=k, normalize=True)
+        counts = make_kmer_dict(k)
+        for i in range(len(self.dna_sequence) - k + 1):
+            k_mer = self.dna_sequence[i:i + k]
+            counts[k_mer] += 1
+            
+        fk = {k: v / sum(counts.values()) for k, v in counts.items()}
         all_possibilites = make_kmer_list(k)
 
         thetas = []
         L = len(self.dna_sequence)
         for i in range(lamda):
             big_somatorio = 0
-            for j in range(L-lamda-1):
+            for j in range(L-i-2):
                 somatorio = 0
                 first_dinucleotide = self.dna_sequence[j:j+2]
                 second_dinucleotide = self.dna_sequence[j+i+1:j+i+1+2]
