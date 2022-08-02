@@ -1,9 +1,11 @@
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from .encoding import DNAEncoding
+import os
+import pandas as pd
 import torch
 import torch.utils.data as data_utils
 import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from .encoding import DNAEncoding
 
 def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
@@ -25,13 +27,19 @@ def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, v
     fps_x_file = data_dir + '/fps_x_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_x.pkl'
     fps_y_file = data_dir + '/fps_y_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_y.pkl'
     
-    try:
+    # check if fps_x_file and fps_y_file exist
+    if not os.path.isfile(fps_x_file) or not os.path.isfile(fps_y_file):
+        if mode == 'descriptor':
+            print("TO BE IMPLEMENTED. CALCULATE DESCRIPTORS IF THEY DO NOT EXIST.")
+        else:
+            data = pd.read_csv(data_dir + '/dataset.csv')
+            fps_y = data['label'].values
+            fps_x = data['sequence'].values
+    else:
         with open(fps_x_file, 'rb') as f:
             fps_x = pickle.load(f)
         with open(fps_y_file, 'rb') as f:
             fps_y = pickle.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError("Could not find", fps_x.pkl, "and", fps_y.pkl, "in" + data_dir)
     
     if(train_size + test_size + validation_size != 1):
         raise ValueError("The sum of train_size, test_size and validation_size must be 1.")

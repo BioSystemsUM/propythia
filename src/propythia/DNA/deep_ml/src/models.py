@@ -122,34 +122,6 @@ class CNN(nn.Module):
         x = self.softmax(x)
         return x
 
-
-class RNN(nn.Module):
-    """
-    https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
-    """
-
-    def __init__(self, input_size, hidden_size, num_layers, num_classes, sequence_length, device):
-        super(RNN, self).__init__()
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-        self.device = device
-
-        self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size * sequence_length, num_classes)
-
-    def forward(self, x):
-        # Set initial hidden and cell states
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
-
-        # Forward propagate LSTM
-        out, _ = self.rnn(x, h0)
-        out = out.reshape(out.shape[0], -1)
-
-        # Decode the hidden state of the last time step
-        out = self.fc(out)
-        return out
-
-
 class LSTM(nn.Module):
     """
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
@@ -173,6 +145,32 @@ class LSTM(nn.Module):
         out, _ = self.lstm(
             x, (h0, c0)
         )  # out: tensor of shape (batch_size, seq_length, hidden_size)
+        out = out.reshape(out.shape[0], -1)
+
+        # Decode the hidden state of the last time step
+        out = self.fc(out)
+        return out
+
+class GRU(nn.Module):
+    """
+    https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
+    """
+
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, sequence_length, device):
+        super(GRU, self).__init__()
+        self.hidden_size = hidden_size
+        self.num_layers = num_layers
+        self.device = device
+
+        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size * sequence_length, num_classes)
+
+    def forward(self, x):
+        # Set initial hidden and cell states
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+
+        # Forward propagate LSTM
+        out, _ = self.gru(x, h0)
         out = out.reshape(out.shape[0], -1)
 
         # Decode the hidden state of the last time step
