@@ -601,9 +601,5 @@ class DNADescriptor:
 
 if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
     from utils import *
-    dna = DNADescriptor('GACTGAACTGCACTTTGGTTTCATATTATTTGCTC')
-    res = dna.get_descriptors()
-    for key, val in res.items():
-        print(key, val)
 else:
     from .utils import *
