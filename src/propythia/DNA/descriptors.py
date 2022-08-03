@@ -11,7 +11,7 @@ Email:
 ##########################################################################################
 """
 
-import sys
+from utils import *
 from functools import reduce
 from typing import Dict, List, Tuple
 
@@ -594,8 +594,3 @@ class DNADescriptor:
                 function = getattr(self, 'get_' + descriptor)
                 res[descriptor] = function()
         return res
-
-if __name__ == "__main__" or sys.path[0].split("/")[-1] == "descriptors":
-    from utils import *
-else:
-    from .utils import *

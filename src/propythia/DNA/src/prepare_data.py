@@ -31,9 +31,8 @@ def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, v
     # check if fps_x_file and fps_y_file exist
     if not os.path.isfile(fps_x_file) or not os.path.isfile(fps_y_file):
         if mode == 'descriptor':
-            sys.path.append("../")
-            from descriptors.calculate_features import calculate_and_normalize
-            from descriptors.read_sequence import ReadDNA
+            from calculate_features import calculate_and_normalize
+            from read_sequence import ReadDNA
             reader = ReadDNA()
             data = reader.read_csv(filename=data_dir + '/dataset.csv', with_labels=True)
             fps_x, fps_y = calculate_and_normalize(data)

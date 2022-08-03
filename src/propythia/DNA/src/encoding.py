@@ -23,7 +23,7 @@ class DNAEncoding:
                 self.labels = None
                 self.sequences = None
             else:
-                print("Error! Letters of DNA don't belong to [A,C,T,G,N]:", dna_sequence)
+                print("Error! Letters of DNA don't belong to [A,C,T,G]:", dna_sequence)
                 sys.exit(1)
         elif isinstance(args[0], np.ndarray):
             column = args[0]
@@ -52,7 +52,6 @@ class DNAEncoding:
             'C': [0, 1, 0, 0],
             'G': [0, 0, 1, 0],
             'T': [0, 0, 0, 1],
-            'N': [0, 0, 0, 0],
             1: [1, 0],
             0: [0, 1]            
         }
@@ -90,7 +89,6 @@ class DNAEncoding:
             'C': [0, 1, 0],
             'G': [1, 0, 0],
             'T': [0, 0, 1],
-            'N': [0, 0, 0],
             1: [1, 0],
             0: [0, 1]
         }

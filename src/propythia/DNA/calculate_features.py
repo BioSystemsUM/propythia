@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import List
-
+from descriptors import DNADescriptor
 
 def _calculate_descriptors(data: pd.DataFrame, descriptor_list: List) -> pd.DataFrame:
     """
@@ -123,10 +123,7 @@ def calculate_and_normalize(data: pd.DataFrame, descriptor_list: list = []) -> p
 
 if __name__ == "__main__":
     from read_sequence import ReadDNA
-    from descriptors import DNADescriptor
     reader = ReadDNA()
     data = reader.read_csv(filename='../deep_ml/datasets/primer/dataset.csv', with_labels=True)
     fps_x, fps_y = calculate_and_normalize(data)
     print(fps_x)
-else:
-    from .descriptors import DNADescriptor

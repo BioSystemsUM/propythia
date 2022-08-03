@@ -1,8 +1,6 @@
+__pycache__/
 .ipynb_checkpoints/
+.mypy_cache/
+.vscode/
 datasets/
 src_old
-run.py
-log
-tmp.py
-.vscode/
-.mypy_cache/
