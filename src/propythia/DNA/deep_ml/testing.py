@@ -97,7 +97,7 @@ def perform(model_label, mode, data_dir, do_tuning):
 # --------------------------------- Primer ----------------------------------
 
 # --- Descriptors ---
-# perform('mlp', 'descriptor', 'primer')
+# perform('mlp', 'descriptor', 'primer', do_tuning=False)
 
 # --- One hot encoding ---
 perform('cnn', 'one_hot', 'primer', do_tuning=False)

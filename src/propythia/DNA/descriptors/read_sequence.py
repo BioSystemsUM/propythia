@@ -13,8 +13,6 @@ Email:
 
 import pandas as pd
 from Bio.SeqIO.FastaIO import SimpleFastaParser
-from utils import checker
-
 
 class ReadDNA:
     def __init__(self):
@@ -110,10 +108,13 @@ class ReadDNA:
             
         
 if __name__ == "__main__":
+    from utils import checker
     reader = ReadDNA()
     data = reader.read_csv('data/dataset.csv', with_labels=True)
     print(data)
     
     data = reader.read_fasta('data/dataset.fasta', with_labels=True)
     print(data)
+else:
+    from .utils import checker
     
