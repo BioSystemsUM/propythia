@@ -1,11 +1,11 @@
-from itertools import product
 import os
 import pickle
 import sys
 import math
+import numpy as np
+from itertools import product
 
 ALPHABET = 'ACGT'
-ALPHABET_WITH_N = 'ACGTN'
 pairs = {
     'A': 'T',
     'T': 'A',
@@ -21,15 +21,6 @@ def checker(sequence):
     Checks if the input sequence is a valid DNA sequence.
     """
     return all(i in ALPHABET for i in sequence)
-
-def checker_N(sequence):
-    """
-    Checks if the input sequence is a valid DNA sequence.
-    """
-    return all(i in ALPHABET_WITH_N for i in sequence)
-
-# -----------------------------------------------------------------------------
-
 
 def normal_round(n):
     """
@@ -69,6 +60,24 @@ def make_kmer_dict(k):
         print("TypeError: k must be an inter and larger than 0")
         raise ValueError
 
+def calculate_kmer_onehot(k):
+    nucleotides = [''.join(i) for i in product(ALPHABET, repeat=k)]
+    encoded = []
+    for i in range(4 ** k):
+        encoded.append(np.zeros(4 ** k).tolist())
+        encoded[i][i] = 1.0
+        
+    return {nucleotides[i]: encoded[i] for i in range(len(nucleotides))}
+
+def calculate_kmer_list(sequence, k):
+    l = []
+    for i in range(len(sequence) - k + 1):
+        l.append(sequence[i:i+k])
+    return l
+
+# ----------------------------------------------------------------------------------------------------
+# ------------------- The following functions were retrieved from repDNA package ---------------------
+# ----------------------------------------------------------------------------------------------------
 
 def ready_acc(k, phyche_index=None, all_property=False, extra_phyche_index=None):
     """Public function for get sequence_list and phyche_value.

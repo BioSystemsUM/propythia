@@ -11,7 +11,7 @@ Email:
 import sys
 import numpy as np
 sys.path.append('../')
-from .utils import checker, calculate_kmer_onehot, calculate_kmer_list
+from utils import checker, calculate_kmer_onehot, calculate_kmer_list
 
 class DNAEncoding:
     
@@ -38,7 +38,7 @@ class DNAEncoding:
                 print("Error! All labels must be either 0 or 1.")
                 sys.exit(1)
         else:
-            print("Error! Invalid input type:", type(args[0]))
+            print("Error! Invalid input type:", type(args[0]), "Expected: str or np.ndarray")
             sys.exit(1)
               
     def one_hot_encode(self):
@@ -133,3 +133,6 @@ class DNAEncoding:
             print("Error! No labels or sequences were provided.")
             sys.exit(1)
 
+if __name__ == "__main__":
+    encoder = DNAEncoding("ATGC")
+    print(encoder.one_hot_encode())

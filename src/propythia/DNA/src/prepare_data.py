@@ -5,7 +5,7 @@ import torch.utils.data as data_utils
 import pickle
 import sys
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import StandardScaler
 from .encoding import DNAEncoding
 
 def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, validation_size=0.2):

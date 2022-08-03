@@ -110,10 +110,10 @@ class ReadDNA:
         
 if __name__ == "__main__":
     reader = ReadDNA()
-    data = reader.read_csv('data/dataset.csv', with_labels=True)
+    data = reader.read_csv('datasets/primer/dataset.csv', with_labels=True)
     print(data)
     
-    data = reader.read_fasta('data/dataset.fasta', with_labels=True)
+    data = reader.read_fasta('datasets/primer/dataset.fasta', with_labels=True)
     print(data)
     
     
