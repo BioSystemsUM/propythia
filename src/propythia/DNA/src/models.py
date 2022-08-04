@@ -3,41 +3,6 @@ from torch import nn
 import math
 
 
-class Net(nn.Module):
-    """
-    TODO: calculate output size of max pool layer, similar to CNN model.
-    Implementation of https://github.com/onceupon/deep_learning_DNA/blob/master/learnseq.ipynb
-    """
-
-    def __init__(self, input_size, hidden_size, output_size, dropout):
-        super(Net, self).__init__()
-
-        self.conv1 = nn.Conv1d(input_size, hidden_size, 10, stride=1, padding=0)
-        self.act1 = nn.ReLU()
-        self.max_pool = nn.MaxPool1d(10, stride=5)
-
-        self.fc1 = nn.Linear(hidden_size * 47, (hidden_size // 4))
-        self.act2 = nn.ReLU()
-        self.dropout1 = nn.Dropout(dropout)
-
-        self.fc2 = nn.Linear((hidden_size // 4), output_size)
-        self.act3 = nn.Softmax(dim=1)
-
-    def forward(self, x):
-        x = x.permute(0, 2, 1)
-        x = self.conv1(x)
-        x = self.act1(x)
-        x = self.max_pool(x)
-        x = x.reshape(x.shape[0], -1)
-        x = self.fc1(x)
-        x = self.act2(x)
-        x = self.dropout1(x)
-        x = self.fc2(x)
-        x = self.act3(x)
-
-        return x
-
-
 class MLP(nn.Module):
     """
     Implementation of DeepHe's MLP model
@@ -214,6 +179,44 @@ class CNN_LSTM(nn.Module):
         out, _ = self.lstm(
             x, (h0, c0)
         ) 
+        out = out.reshape(out.shape[0], -1)
+        y  = self.linear(out)
+        return y
+    
+class CNN_GRU(nn.Module):
+    """
+    https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
+    """
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, no_classes, device):
+        super(CNN_GRU, self).__init__()
+        
+        self.num_directions = 2 if is_bidirectional else 1
+        self.num_layers = num_layers
+        self.hidden_size = hidden_size
+        self.device = device
+        
+        self.conv1 = nn.Sequential(
+            nn.Conv1d(in_channels=input_size, out_channels=16, kernel_size=5, stride=2, padding=2),
+            nn.ReLU(),
+        )
+        self.conv2 = nn.Sequential(
+            nn.Conv1d(in_channels=16, out_channels=32, kernel_size=5, stride=2, padding=2),
+            nn.ReLU(),
+        )
+        
+        self.gru = nn.GRU(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        
+        linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
+        self.linear = nn.Linear(linear_input, no_classes)
+
+    def forward(self, x):
+        h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
+
+        x = x.permute(0, 2, 1)
+        x = self.conv1(x)
+        x = self.conv2(x)
+        x = x.permute(0, 2, 1)       
+        out, _ = self.gru(x, h0)
         out = out.reshape(out.shape[0], -1)
         y  = self.linear(out)
         return y

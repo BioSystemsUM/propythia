@@ -45,13 +45,14 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
 
     models = {
         'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
-        'net': Net(input_size, hidden_size, output_size, dropout).to(device),
         'cnn': CNN(sequence_length, input_size, hidden_size, output_size).to(device),
         'lstm': LSTM(input_size, hidden_size, False, num_layers, output_size, sequence_length, device).to(device),
         'bi_lstm': LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, device).to(device),
         'gru': GRU(input_size, hidden_size, num_layers, output_size, sequence_length, device).to(device),
         'cnn_lstm': CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
         'cnn_bi_lstm': CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
+        'cnn_gru': CNN_GRU(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
+        'cnn_bi_gru': CNN_GRU(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
         'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
         'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
     }

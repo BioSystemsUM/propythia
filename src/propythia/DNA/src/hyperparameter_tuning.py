@@ -66,13 +66,14 @@ def hyperparameter_tuning(device, fixed_vals, config):
 
     models = {
         'mlp': MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
-        'net': Net(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
         'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size']),
         'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
         'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
         'gru': GRU(input_size, best_trial.config['hidden_size'], fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
         'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
         'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
+        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
+        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
         'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
         'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
     }

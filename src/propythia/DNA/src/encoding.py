@@ -13,7 +13,7 @@ import numpy as np
 sys.path.append('../')
 from utils import checker, calculate_kmer_onehot, calculate_kmer_list
 
-class DNAEncoding:
+class DNAEncoder:
     
     def __init__(self, *args):
         if isinstance(args[0], str):
@@ -76,8 +76,8 @@ class DNAEncoding:
         Ring structure 	  | Purine 	   | A, G
                           | Pyrimidine | C, T
         -------------------------------------------
-        Hydrogen bond 	  | Strong 	   | C, G
-                          | Weak 	   | A, T
+        Hydrogen bond     | Weak 	   | A, T
+         	              | Strong 	   | C, G
         -------------------------------------------
         Functional group  | Amino 	   | A, C
                           | Keto 	   | G, T
@@ -86,9 +86,9 @@ class DNAEncoding:
         """
         chemical_property = {
             'A': [1, 1, 1],
-            'C': [0, 1, 0],
+            'C': [0, 0, 1],
             'G': [1, 0, 0],
-            'T': [0, 0, 1],
+            'T': [0, 1, 0],
             1: [1, 0],
             0: [0, 1]
         }
@@ -134,5 +134,7 @@ class DNAEncoding:
             sys.exit(1)
 
 if __name__ == "__main__":
-    encoder = DNAEncoding("ATGC")
+    encoder = DNAEncoder("ACGT")
     print(encoder.one_hot_encode())
+    print(encoder.chemical_encode())
+    print(encoder.kmer_one_hot_encode(2))

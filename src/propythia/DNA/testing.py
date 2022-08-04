@@ -30,13 +30,14 @@ def perform(model_label, mode, data_dir, do_tuning):
 
     combinations = {
         'mlp': ['descriptor'],
-        'net': ['one_hot', 'chemical', 'kmer_one_hot'],
         'cnn': ['one_hot', 'chemical', 'kmer_one_hot'],
         'lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
         'gru': ['one_hot', 'chemical', 'kmer_one_hot'],
         'bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
         'cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
         'cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'cnn_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
+        'cnn_bi_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
         'buckle_cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
         'buckle_cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
     }
@@ -88,22 +89,29 @@ def perform(model_label, mode, data_dir, do_tuning):
         )
 
         acc, mcc, report = test(device, model, testloader)
+        print("Results in test set:")
+        print("--------------------")
+        print("- model:  ", fixed_vals['model_label'])
+        print("- mode:   ", fixed_vals['mode'])
+        print("- dataset:", fixed_vals['data_dir'].split("/")[-1])
+        print("--------------------")
         print('Accuracy: %.3f' % acc)
         print('MCC: %.3f' % mcc)
         print(report)
-
 # --------------------------------- Primer ----------------------------------
 
 # --- Descriptors ---
-perform('mlp', 'descriptor', 'primer', do_tuning=False)
+# perform('mlp', 'descriptor', 'primer', do_tuning=False)
 
 # --- One hot encoding ---
-# perform('cnn', 'one_hot', 'primer', do_tuning=False)
+perform('cnn', 'one_hot', 'primer', do_tuning=False)
 # perform('lstm', 'one_hot', 'primer', do_tuning=False)
 # perform('gru', 'one_hot', 'primer', do_tuning=False)
 # perform('bi_lstm', 'one_hot', 'primer', do_tuning=False)
 # perform('cnn_lstm', 'one_hot', 'primer', do_tuning=False)
 # perform('cnn_bi_lstm', 'one_hot', 'primer', do_tuning=False)
+# perform('cnn_gru', 'one_hot', 'primer', do_tuning=False)
+# perform('cnn_bi_gru', 'one_hot', 'primer', do_tuning=False)
 # perform('buckle_cnn_lstm', 'one_hot', 'primer', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'one_hot', 'primer', do_tuning=False)
 
@@ -114,6 +122,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'chemical', 'primer', do_tuning=False)
 # perform('cnn_lstm', 'chemical', 'primer', do_tuning=False)
 # perform('cnn_bi_lstm', 'chemical', 'primer', do_tuning=False)
+# perform('cnn_gru', 'chemical', 'primer', do_tuning=False)
+# perform('cnn_bi_gru', 'chemical', 'primer', do_tuning=False)
 # perform('buckle_cnn_lstm', 'chemical', 'primer', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'chemical', 'primer', do_tuning=False)
 
@@ -124,6 +134,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
 # perform('cnn_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
 # perform('cnn_bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
+# perform('cnn_gru', 'kmer_one_hot', 'primer', do_tuning=False)
+# perform('cnn_bi_gru', 'kmer_one_hot', 'primer', do_tuning=False)
 # perform('buckle_cnn_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
 
@@ -142,6 +154,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
 # perform('cnn_lstm', 'one_hot', 'essential_genes', do_tuning=False)
 # perform('cnn_bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
+# perform('cnn_gru', 'one_hot', 'essential_genes', do_tuning=False)
+# perform('cnn_bi_gru', 'one_hot', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_lstm', 'one_hot', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
 
@@ -152,6 +166,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
 # perform('cnn_lstm', 'chemical', 'essential_genes', do_tuning=False)
 # perform('cnn_bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
+# perform('cnn_gru', 'chemical', 'essential_genes', do_tuning=False)
+# perform('cnn_bi_gru', 'chemical', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_lstm', 'chemical', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
 
@@ -162,6 +178,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
 # perform('cnn_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
 # perform('cnn_bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
+# perform('cnn_gru', 'kmer_one_hot', 'essential_genes', do_tuning=False)
+# perform('cnn_bi_gru', 'kmer_one_hot', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
 
@@ -177,6 +195,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'one_hot', 'h3', do_tuning=False)
 # perform('cnn_lstm', 'one_hot', 'h3', do_tuning=False)
 # perform('cnn_bi_lstm', 'one_hot', 'h3', do_tuning=False)
+# perform('cnn_gru', 'one_hot', 'h3', do_tuning=False)
+# perform('cnn_bi_gru', 'one_hot', 'h3', do_tuning=False)
 # perform('buckle_cnn_lstm', 'one_hot', 'h3', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'one_hot', 'h3', do_tuning=False)
 
@@ -187,6 +207,8 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'chemical', 'h3', do_tuning=False)
 # perform('cnn_lstm', 'chemical', 'h3', do_tuning=False)
 # perform('cnn_bi_lstm', 'chemical', 'h3', do_tuning=False)
+# perform('cnn_gru', 'chemical', 'h3', do_tuning=False)
+# perform('cnn_bi_gru', 'chemical', 'h3', do_tuning=False)
 # perform('buckle_cnn_lstm', 'chemical', 'h3', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'chemical', 'h3', do_tuning=False)
 
@@ -197,5 +219,7 @@ perform('mlp', 'descriptor', 'primer', do_tuning=False)
 # perform('bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
 # perform('cnn_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
 # perform('cnn_bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
+# perform('cnn_gru', 'kmer_one_hot', 'h3', do_tuning=False)
+# perform('cnn_bi_gru', 'kmer_one_hot', 'h3', do_tuning=False)
 # perform('buckle_cnn_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
 # perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False) 

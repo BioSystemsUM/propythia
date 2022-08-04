@@ -7,7 +7,59 @@ from calculate_features import calculate_and_normalize
 from read_sequence import ReadDNA
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from .encoding import DNAEncoding
+from .encoding import DNAEncoder
+
+def data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size):
+    """
+    Split data into train, test and validation sets.
+    """
+    
+    if(train_size + test_size + validation_size != 1):
+        raise ValueError("The sum of train_size, test_size and validation_size must be 1.")
+    
+    x, x_test, y, y_test = train_test_split(
+        fps_x, fps_y,
+        test_size=test_size,
+        train_size=train_size + validation_size,
+        stratify=fps_y
+    )
+    x_train, x_cv, y_train, y_cv = train_test_split(
+        x, y,
+        test_size=validation_size/(1-test_size),
+        train_size=1-(validation_size/(1-test_size)),
+        stratify=y
+    )
+    
+    train_data = data_utils.TensorDataset(
+        torch.tensor(x_train, dtype=torch.float),
+        torch.tensor(y_train, dtype=torch.long)
+    )
+    test_data = data_utils.TensorDataset(
+        torch.tensor(x_test, dtype=torch.float),
+        torch.tensor(y_test, dtype=torch.long)
+    )
+    valid_data = data_utils.TensorDataset(
+        torch.tensor(x_cv, dtype=torch.float),
+        torch.tensor(y_cv, dtype=torch.long)
+    )
+
+    trainloader = data_utils.DataLoader(
+        train_data,
+        shuffle=True,
+        batch_size=batch_size
+    )
+    testloader = data_utils.DataLoader(
+        test_data,
+        shuffle=True,
+        batch_size=batch_size
+    )
+    validloader = data_utils.DataLoader(
+        valid_data,
+        shuffle=True,
+        batch_size=batch_size
+    )
+    
+    return trainloader, testloader, validloader, x_train
 
 def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
@@ -55,77 +107,21 @@ def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, v
         with open(fps_y_file, 'rb') as f:
             fps_y = pickle.load(f)
     
-    if(train_size + test_size + validation_size != 1):
-        raise ValueError("The sum of train_size, test_size and validation_size must be 1.")
-    
-    x, x_test, y, y_test = train_test_split(
-        fps_x, fps_y,
-        test_size=test_size,
-        train_size=train_size + validation_size,
-        stratify=fps_y
-    )
-    x_train, x_cv, y_train, y_cv = train_test_split(
-        x, y,
-        test_size=validation_size/(1-test_size),
-        train_size=1-(validation_size/(1-test_size)),
-        stratify=y
-    )
-    
-    if(mode == 'one_hot' or mode == 'chemical' or mode == 'kmer_one_hot'):
-        encoder_train = DNAEncoding(x_train)
-        encoder_test = DNAEncoding(x_test)
-        encoder_cv = DNAEncoding(x_cv)
-        
-        if(mode == 'one_hot'):
-            x_train = encoder_train.one_hot_encode()
-            x_test = encoder_test.one_hot_encode()
-            x_cv = encoder_cv.one_hot_encode()
-        elif(mode == 'chemical'):
-            x_train = encoder_train.chemical_encode()
-            x_test = encoder_test.chemical_encode()
-            x_cv = encoder_cv.chemical_encode()
-        else:
-            x_train = encoder_train.kmer_one_hot_encode(k=k)
-            x_test = encoder_test.kmer_one_hot_encode(k=k)
-            x_cv = encoder_cv.kmer_one_hot_encode(k=k)
+    if(mode in ['one_hot', 'chemical', 'kmer_one_hot']):
+        encoder = DNAEncoder(fps_x)
+        possibilities = {
+            'one_hot': encoder.one_hot_encode,
+            'chemical': encoder.chemical_encode,
+            'kmer_one_hot': encoder.kmer_one_hot_encode
+        }
+        fps_x = possibilities[mode]() if mode != 'kmer_one_hot' else possibilities[mode](k)
     elif(mode == 'descriptor'):
-        scaler = StandardScaler().fit(x_train)
-        x_train = scaler.transform(x_train)
-        x_test = scaler.transform(x_test)
-        x_cv = scaler.transform(x_cv)
-        y_train = y_train.to_numpy()
-        y_test = y_test.to_numpy()
-        y_cv = y_cv.to_numpy()
+        scaler = StandardScaler().fit(fps_x)
+        fps_x = scaler.transform(fps_x)
+        fps_y = fps_y.to_numpy()
     else:
         raise ValueError("mode must be either 'one_hot', 'descriptor', 'chemical' or 'kmer_one_hot_encode'.")
     
-    train_data = data_utils.TensorDataset(
-        torch.tensor(x_train, dtype=torch.float),
-        torch.tensor(y_train, dtype=torch.long)
-    )
-    test_data = data_utils.TensorDataset(
-        torch.tensor(x_test, dtype=torch.float),
-        torch.tensor(y_test, dtype=torch.long)
-    )
-    valid_data = data_utils.TensorDataset(
-        torch.tensor(x_cv, dtype=torch.float),
-        torch.tensor(y_cv, dtype=torch.long)
-    )
-
-    trainloader = data_utils.DataLoader(
-        train_data,
-        shuffle=True,
-        batch_size=batch_size
-    )
-    testloader = data_utils.DataLoader(
-        test_data,
-        shuffle=True,
-        batch_size=batch_size
-    )
-    validloader = data_utils.DataLoader(
-        valid_data,
-        shuffle=True,
-        batch_size=batch_size
-    )
+    trainloader, testloader, validloader, x_train = data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size)
     
     return trainloader, testloader, validloader, x_train.shape[-1], x_train.shape[1]
