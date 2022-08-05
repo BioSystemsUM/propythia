@@ -1,0 +1,32 @@
+{
+    "combination":{
+        "model_label": "mlp",
+        "mode": "descriptor",
+        "data_dir": "primer"
+    },
+    "do_tuning": false,
+    "fixed_vals":{
+        "epochs": 500,
+        "optimizer_label": "adam",
+        "loss_function": "cross_entropy",
+        "patience": 8,
+        "output_size": 2,
+        "cpus_per_trial":1, 
+        "gpus_per_trial":0,
+        "num_samples": 15,
+        "num_layers": 2,
+        "kmer_one_hot": 3
+    },
+    "hyperparameters": {
+        "hidden_size": 32,
+        "lr": 1e-3,
+        "batch_size": 32,
+        "dropout": 0.35
+    },
+    "hyperparameter_search_space": {
+        "hidden_size": [32, 64, 128, 256],
+        "lr": [1e-5, 1e-2],
+        "batch_size": [8, 16, 32],
+        "dropout": [0.3, 0.5]
+    }
+}

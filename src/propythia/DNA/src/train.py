@@ -9,7 +9,7 @@ from ray import tune
 import os
 
 
-def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
+def traindata(config, device, config_from_json, checkpoint_dir=None):
     """
     Train the model for a number of epochs.
     :param config: Dictionary of hyperparameters to be tuned.
@@ -17,31 +17,33 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
     :param fixed_vals: Dictionary of fixed parameters.
     :param checkpoint_dir: Directory to save the model.
     """
-
-    # in the case of tuning, this step was already done 
-    if is_tuning == False:
-        fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
-
-    trainloader, _, validloader, input_size, sequence_length = prepare_data(
-        data_dir=fixed_vals['data_dir'],
-        mode=fixed_vals['mode'],
-        batch_size=config['batch_size'],
-        k=fixed_vals['kmer_one_hot'],
-    )
-
+    
     # Fixed values
-    output_size = fixed_vals['output_size']
-    model_label = fixed_vals['model_label']
-    optimizer_label = fixed_vals['optimizer_label']
-    epochs = fixed_vals['epochs']
-    patience = fixed_vals['patience']
-    loss_function = fixed_vals['loss_function']
-    num_layers = fixed_vals['num_layers']
+    do_tuning = config_from_json['do_tuning']
+    data_dir = config_from_json['combination']['data_dir']
+    mode = config_from_json['combination']['mode']
+    model_label = config_from_json['combination']['model_label']
+    kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
+    output_size = config_from_json['fixed_vals']['output_size']
+    optimizer_label = config_from_json['fixed_vals']['optimizer_label']
+    epochs = config_from_json['fixed_vals']['epochs']
+    patience = config_from_json['fixed_vals']['patience']
+    loss_function = config_from_json['fixed_vals']['loss_function']
+    num_layers = config_from_json['fixed_vals']['num_layers']
     last_loss = 100
 
     # Hyperparameters to tune
     hidden_size = config['hidden_size']
     dropout = config['dropout']
+    lr = config['lr']
+    batch_size = config['batch_size']
+
+    trainloader, _, validloader, input_size, sequence_length = prepare_data(
+        data_dir=data_dir,
+        mode=mode,
+        batch_size=batch_size,
+        k=kmer_one_hot,
+    )
 
     models = {
         'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
@@ -65,9 +67,9 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
             'only implemented models are', models.keys())
 
     if(optimizer_label == 'adam'):
-        optimizer = Adam(model.parameters(), lr=config['lr'])
+        optimizer = Adam(model.parameters(), lr=lr)
     elif(optimizer_label == 'sgd'):
-        optimizer = SGD(model.parameters(), lr=config['lr'])
+        optimizer = SGD(model.parameters(), lr=lr)
     else:
         raise ValueError("optimizer_label must be either 'adam' or 'sgd'")
 
@@ -75,7 +77,7 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
 
     # ------------------------------------------------------------------------------------------------
 
-    if is_tuning and checkpoint_dir:
+    if do_tuning and checkpoint_dir:
         model_state, optimizer_state = torch.load(
             os.path.join(checkpoint_dir, "checkpoint"))
         model.load_state_dict(model_state)
@@ -112,7 +114,7 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
 
             if trigger_times >= patience:
                 print('Early stopping!\nStart to test process.')
-                if is_tuning:
+                if do_tuning:
                     with tune.checkpoint_dir(epoch) as checkpoint_dir:
                         path = os.path.join(checkpoint_dir, "checkpoint")
                         torch.save((model.state_dict(), optimizer.state_dict()), path)
@@ -127,16 +129,15 @@ def traindata(config, device, fixed_vals, is_tuning, checkpoint_dir=None):
 
         last_loss = current_loss
         scheduler.step(current_loss)
-        if is_tuning:
+        if do_tuning:
             with tune.checkpoint_dir(epoch) as checkpoint_dir:
                 path = os.path.join(checkpoint_dir, "checkpoint")
                 torch.save((model.state_dict(), optimizer.state_dict()), path)
             tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
         
-    if is_tuning == False:
+    if do_tuning == False:
         return model
         
-
 
 def validation(model, device, validloader, loss_function):
     """

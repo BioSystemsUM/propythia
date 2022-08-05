@@ -10,25 +10,30 @@ from ray.tune import CLIReporter
 from functools import partial
 
 
-def hyperparameter_tuning(device, fixed_vals, config):
+def hyperparameter_tuning(device, config):
     """
     Hyperparameter tuning for the deep learning model.
     :param device: The device to use for the model.
-    :param fixed_vals: The fixed values for the model.
     :param config: The configuration for the model.
     """
 
-    cpus_per_trial = fixed_vals['cpus_per_trial']
-    gpus_per_trial = fixed_vals['gpus_per_trial']
-    num_samples = fixed_vals['num_samples']
-    fixed_vals['data_dir'] = os.path.abspath('datasets/' + fixed_vals['data_dir'])
+    cpus_per_trial = config['fixed_vals']['cpus_per_trial']
+    gpus_per_trial = config['fixed_vals']['gpus_per_trial']
+    num_samples = config['fixed_vals']['num_samples']
+    epochs = config['fixed_vals']['epochs']
+    model_label = config['combination']['model_label']
+    data_dir = config['combination']['data_dir']
+    mode = config['combination']['mode']
+    kmer_one_hot = config['fixed_vals']['kmer_one_hot']
+    output_size = config['fixed_vals']['output_size']
+    num_layers = config['fixed_vals']['num_layers']
 
     # ------------------------------------------------------------------------------------------
 
     scheduler = ASHAScheduler(
         metric="loss",
         mode="min",
-        max_t=fixed_vals['epochs'],
+        max_t=epochs,
         grace_period=1,
         reduction_factor=2
     )
@@ -41,11 +46,10 @@ def hyperparameter_tuning(device, fixed_vals, config):
         partial(
             traindata,
             device=device,
-            fixed_vals=fixed_vals,
-            is_tuning=True
+            config_from_json=config
         ),
         resources_per_trial={"cpu": cpus_per_trial, "gpu": gpus_per_trial},
-        config=config,
+        config=config['hyperparameter_search_space'],
         num_samples=num_samples,
         scheduler=scheduler,
         progress_reporter=reporter
@@ -58,31 +62,31 @@ def hyperparameter_tuning(device, fixed_vals, config):
     print("Best trial final validation mcc:", best_trial.last_result["mcc"])
 
     _, testloader, _, input_size, sequence_length = prepare_data(
-        data_dir=fixed_vals['data_dir'],
-        mode=fixed_vals['mode'],
+        data_dir=data_dir,
+        mode=mode,
         batch_size=best_trial.config['batch_size'],
-        k=fixed_vals['kmer_one_hot'],
+        k=kmer_one_hot,
     )
 
     models = {
-        'mlp': MLP(input_size, best_trial.config['hidden_size'], fixed_vals['output_size'], best_trial.config['dropout']),
-        'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], fixed_vals['output_size']),
-        'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
-        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
-        'gru': GRU(input_size, best_trial.config['hidden_size'], fixed_vals['num_layers'], fixed_vals['output_size'], sequence_length, device),
-        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
-        'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
-        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
-        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
-        'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], False, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
-        'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], True, fixed_vals['num_layers'], sequence_length, fixed_vals['output_size'], device),
+        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout']),
+        'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], output_size),
+        'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, output_size, sequence_length, device),
+        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, output_size, sequence_length, device),
+        'gru': GRU(input_size, best_trial.config['hidden_size'], num_layers, output_size, sequence_length, device),
+        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
+        'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
+        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
+        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
+        'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
+        'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
     }
 
-    if(fixed_vals['model_label'] in models):
-        best_trained_model = models[fixed_vals['model_label']]
+    if(model_label in models):
+        best_trained_model = models[model_label]
     else:
         raise ValueError(
-            'Model label not implemented', fixed_vals['model_label'],
+            'Model label not implemented', model_label,
             'only implemented models are', models.keys())
 
     best_trained_model.to(device)
@@ -95,9 +99,9 @@ def hyperparameter_tuning(device, fixed_vals, config):
     acc, mcc, report = test(device, best_trained_model, testloader)
     print("Results in test set:")
     print("--------------------")
-    print("- model:  ", fixed_vals['model_label'])
-    print("- mode:   ", fixed_vals['mode'])
-    print("- dataset:", fixed_vals['data_dir'].split("/")[-1])
+    print("- model:  ", model_label)
+    print("- mode:   ", mode)
+    print("- dataset:", data_dir.split("/")[-1])
     print("--------------------")
     print('Accuracy: %.3f' % acc)
     print('MCC: %.3f' % mcc)
