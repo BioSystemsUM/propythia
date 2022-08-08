@@ -28,14 +28,12 @@ def create_objects_from_config(config):
     config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss(weight=class_weights)
     
     # --------- create ray tune objects ---------
-    do_tuning = config['do_tuning']
-    if do_tuning:
-        config['hyperparameter_search_space'] = {
-            "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
-            "lr": tune.loguniform(config['hyperparameter_search_space']['lr'][0], config['hyperparameter_search_space']['lr'][1]),
-            "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
-            "dropout": tune.uniform(config['hyperparameter_search_space']['dropout'][0], config['hyperparameter_search_space']['dropout'][1])
-        }
+    config['hyperparameter_search_space'] = {
+        "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
+        "lr": tune.loguniform(config['hyperparameter_search_space']['lr'][0], config['hyperparameter_search_space']['lr'][1]),
+        "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
+        "dropout": tune.uniform(config['hyperparameter_search_space']['dropout'][0], config['hyperparameter_search_space']['dropout'][1])
+    }
     return config
 
 def read_config(filename='config.json'):
@@ -46,10 +44,10 @@ def read_config(filename='config.json'):
         config = json.load(f)
     
     current_path = os.getcwd()
-    current_path = current_path.replace("notebooks", "") # when running from notebook
+    current_path = current_path.replace("/notebooks", "") # when running from notebook
     
     # --------- check if data_dir exists ---------
-    config['combination']['data_dir'] = current_path + 'datasets/' + config['combination']['data_dir']
+    config['combination']['data_dir'] = current_path + '/datasets/' + config['combination']['data_dir']
     if not os.path.exists(config['combination']['data_dir']):
         raise ValueError("Data directory does not exist:", config['combination']['data_dir'])
 
