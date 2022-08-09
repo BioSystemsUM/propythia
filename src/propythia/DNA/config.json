@@ -1,7 +1,7 @@
 {
     "combination":{
-        "model_label": "mlp",
-        "mode": "descriptor",
+        "model_label": "cnn",
+        "mode": "one_hot",
         "data_dir": "primer"
     },
     "do_tuning": false,
@@ -9,10 +9,10 @@
         "epochs": 500,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
-        "patience": 8,
+        "patience": 7,
         "output_size": 2,
-        "cpus_per_trial":1, 
-        "gpus_per_trial":0,
+        "cpus_per_trial":2, 
+        "gpus_per_trial":2,
         "num_samples": 15,
         "num_layers": 2,
         "kmer_one_hot": 3
