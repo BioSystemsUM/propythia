@@ -81,7 +81,9 @@ class ReadDNA:
         
         # get sequences and labels
         sequences = dataset['sequence'].to_list()
-        labels = dataset['label'].to_list()
+        
+        if with_labels:
+            labels = dataset['label'].to_list()
         
         # check if sequences are valid
         count = 0

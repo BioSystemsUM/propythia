@@ -115,7 +115,10 @@ def calculate_and_normalize(data: pd.DataFrame, descriptor_list: list = []) -> p
     This function calculates the descriptors and normalizes the data all at once from a dataframe of sequences and labels. The user can also specify which descriptors to calculate.
     """
     features = _calculate_descriptors(data, descriptor_list)
-    fps_y = data['label']
+    if 'label' in data:
+        fps_y = data['label']
+    else:
+        fps_y = None
     fps_x = features.loc[:, features.columns != 'label']
     fps_x = fps_x.loc[:, fps_x.columns != 'sequence']
     fps_x = normalization(fps_x, descriptor_list)

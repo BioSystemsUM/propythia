@@ -15,12 +15,15 @@ from src.hyperparameter_tuning import hyperparameter_tuning
 from src.train import traindata
 from ray import tune
 import numpy
+from utils import combinations
+
 
 
 numpy.random.seed(2022)
 torch.manual_seed(2022)
-os.environ["CUDA_VISIBLE_DEVICES"] = '4,5'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+print("Training on:", device)
 
 def create_objects_from_config(config):
     # --------- create the cross entropy pytorch object ---------
@@ -49,21 +52,7 @@ def read_config(filename='config.json'):
     # --------- check if data_dir exists ---------
     config['combination']['data_dir'] = current_path + '/datasets/' + config['combination']['data_dir']
     if not os.path.exists(config['combination']['data_dir']):
-        raise ValueError("Data directory does not exist:", config['combination']['data_dir'])
-
-    combinations = {
-        'mlp': ['descriptor'],
-        'cnn': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'gru': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'cnn_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'cnn_bi_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'buckle_cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-        'buckle_cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
-    }
+        raise ValueError("Data directory does not exist:", config['combination']['data_dir'])    
 
     # --------- check if model and mode combination is valid ---------
     model_label = config['combination']['model_label']
@@ -92,9 +81,8 @@ def read_config(filename='config.json'):
     return config
 
 
-def perform():
-    config = read_config()
-
+def perform(config):
+    
     if config['do_tuning']:
         hyperparameter_tuning(device, config)
     else:
@@ -129,7 +117,16 @@ def perform():
         print(report)
         
 if __name__ == '__main__':
-    perform()
+    config = read_config()
+    if config['train_all_combinations']:
+        for model_label in combinations:
+            for mode in combinations[model_label]:
+                print("Training model:", model_label, "mode:", mode)
+                config['combination']['model_label'] = model_label
+                config['combination']['mode'] = mode
+                perform(config)
+    else:
+        perform(config)
 # --------------------------------- Primer ----------------------------------
 
 # --- Descriptors ---

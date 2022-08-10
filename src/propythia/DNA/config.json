@@ -28,5 +28,6 @@
         "lr": [1e-5, 1e-2],
         "batch_size": [8, 16, 32],
         "dropout": [0.3, 0.5]
-    }
+    },
+    "train_all_combinations": false
 }

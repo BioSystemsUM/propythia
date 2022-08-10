@@ -13,6 +13,18 @@ pairs = {
     'C': 'G'
 }
 
+combinations = {
+    'mlp': ['descriptor'],
+    'cnn': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'gru': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'cnn_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'cnn_bi_lstm': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'cnn_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
+    'cnn_bi_gru': ['one_hot', 'chemical', 'kmer_one_hot']
+}
+
 # -----------------------------------------------------------------------------
 
 

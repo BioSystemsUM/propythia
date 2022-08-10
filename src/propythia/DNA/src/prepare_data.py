@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 import torch
 import torch.utils.data as data_utils
 import pickle
@@ -92,8 +91,8 @@ def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, v
         if mode == 'descriptor':
             fps_x, fps_y = calculate_and_normalize(data)
         else:
-            fps_y = data['label'].values
             fps_x = data['sequence'].values
+            fps_y = data['label'].values
         
         # save fps_x and fps_y to files
         with open(fps_x_file, 'wb') as f:

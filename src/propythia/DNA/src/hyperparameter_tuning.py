@@ -77,9 +77,7 @@ def hyperparameter_tuning(device, config):
         'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
         'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
         'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
-        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
-        'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
-        'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
+        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device)
     }
 
     if(model_label in models):

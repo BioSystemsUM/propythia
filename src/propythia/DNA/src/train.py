@@ -54,9 +54,7 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
         'cnn_lstm': CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
         'cnn_bi_lstm': CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
         'cnn_gru': CNN_GRU(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
-        'cnn_bi_gru': CNN_GRU(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
-        'buckle_cnn_lstm': Buckle_CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
-        'buckle_cnn_bi_lstm': Buckle_CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
+        'cnn_bi_gru': CNN_GRU(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device)
     }
 
     if(model_label in models):
