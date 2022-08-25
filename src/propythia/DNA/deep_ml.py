@@ -17,8 +17,6 @@ from ray import tune
 import numpy
 from utils import combinations
 
-
-
 numpy.random.seed(2022)
 torch.manual_seed(2022)
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
@@ -35,7 +33,8 @@ def create_objects_from_config(config):
         "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
         "lr": tune.loguniform(config['hyperparameter_search_space']['lr'][0], config['hyperparameter_search_space']['lr'][1]),
         "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
-        "dropout": tune.uniform(config['hyperparameter_search_space']['dropout'][0], config['hyperparameter_search_space']['dropout'][1])
+        "dropout": tune.uniform(config['hyperparameter_search_space']['dropout'][0], config['hyperparameter_search_space']['dropout'][1]),
+        "num_layers": tune.choice(config['hyperparameter_search_space']['num_layers']),
     }
     return config
 
@@ -118,6 +117,7 @@ def perform(config):
         
 if __name__ == '__main__':
     config = read_config()
+    print("Starting training:", config['combination']['model_label'], config['combination']['mode'], config['combination']['data_dir'])
     if config['train_all_combinations']:
         for model_label in combinations:
             for mode in combinations[model_label]:
@@ -127,129 +127,3 @@ if __name__ == '__main__':
                 perform(config)
     else:
         perform(config)
-# --------------------------------- Primer ----------------------------------
-
-# --- Descriptors ---
-# perform('mlp', 'descriptor', 'primer', do_tuning=False)
-
-
-# --- One hot encoding ---
-# perform('cnn', 'one_hot', 'primer', do_tuning=False)
-# perform('lstm', 'one_hot', 'primer', do_tuning=False)
-# perform('gru', 'one_hot', 'primer', do_tuning=False)
-# perform('bi_lstm', 'one_hot', 'primer', do_tuning=False)
-# perform('cnn_lstm', 'one_hot', 'primer', do_tuning=False)
-# perform('cnn_bi_lstm', 'one_hot', 'primer', do_tuning=False)
-# perform('cnn_gru', 'one_hot', 'primer', do_tuning=False)
-# perform('cnn_bi_gru', 'one_hot', 'primer', do_tuning=False)
-# perform('buckle_cnn_lstm', 'one_hot', 'primer', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'one_hot', 'primer', do_tuning=False)
-
-# --- Chemical encoding ---
-# perform('cnn', 'chemical', 'primer', do_tuning=False)
-# perform('lstm', 'chemical', 'primer', do_tuning=False)
-# perform('gru', 'chemical', 'primer', do_tuning=False)
-# perform('bi_lstm', 'chemical', 'primer', do_tuning=False)
-# perform('cnn_lstm', 'chemical', 'primer', do_tuning=False)
-# perform('cnn_bi_lstm', 'chemical', 'primer', do_tuning=False)
-# perform('cnn_gru', 'chemical', 'primer', do_tuning=False)
-# perform('cnn_bi_gru', 'chemical', 'primer', do_tuning=False)
-# perform('buckle_cnn_lstm', 'chemical', 'primer', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'chemical', 'primer', do_tuning=False)
-
-# --- Kmer One hot encoding ---
-# perform('cnn', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('gru', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('cnn_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('cnn_bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('cnn_gru', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('cnn_bi_gru', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('buckle_cnn_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'primer', do_tuning=False)
-
-# ----------------------------- Essential genes -----------------------------
-
-# --- Descriptors ---
-# perform('mlp', 'descriptor', 'essential_genes/descriptors_all_small_seqs', do_tuning=False)
-# perform('mlp', 'descriptor', 'essential_genes/descriptors_filtered_20k', do_tuning=False)
-# perform('mlp', 'descriptor', 'essential_genes/descriptors_filtered_50k', do_tuning=False)
-# perform('mlp', 'descriptor', 'essential_genes', do_tuning=False)
-
-# --- One hot encoding ---
-# perform('cnn', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('lstm', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('gru', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_lstm', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_gru', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_gru', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_lstm', 'one_hot', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'one_hot', 'essential_genes', do_tuning=False)
-
-# --- Chemical encoding ---
-# perform('cnn', 'chemical', 'essential_genes', do_tuning=False)
-# perform('lstm', 'chemical', 'essential_genes', do_tuning=False)
-# perform('gru', 'chemical', 'essential_genes', do_tuning=False)
-# perform('bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
-# perform('cnn_lstm', 'chemical', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
-# perform('cnn_gru', 'chemical', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_gru', 'chemical', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_lstm', 'chemical', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'chemical', 'essential_genes', do_tuning=False)
-
-# --- Kmer One hot encoding ---
-# perform('cnn', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('gru', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_gru', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('cnn_bi_gru', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'essential_genes', do_tuning=False)
-
-# ----------------------------------- H3 ------------------------------------
-
-# --- Descriptors ---
-# perform('mlp', 'descriptor', 'h3', do_tuning=False)
-
-# --- One hot encoding ---
-# perform('cnn', 'one_hot', 'h3', do_tuning=False)
-# perform('lstm', 'one_hot', 'h3', do_tuning=False)
-# perform('gru', 'one_hot', 'h3', do_tuning=False)
-# perform('bi_lstm', 'one_hot', 'h3', do_tuning=False)
-# perform('cnn_lstm', 'one_hot', 'h3', do_tuning=False)
-# perform('cnn_bi_lstm', 'one_hot', 'h3', do_tuning=False)
-# perform('cnn_gru', 'one_hot', 'h3', do_tuning=False)
-# perform('cnn_bi_gru', 'one_hot', 'h3', do_tuning=False)
-# perform('buckle_cnn_lstm', 'one_hot', 'h3', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'one_hot', 'h3', do_tuning=False)
-
-# --- Chemical encoding ---
-# perform('cnn', 'chemical', 'h3', do_tuning=False)
-# perform('lstm', 'chemical', 'h3', do_tuning=False)
-# perform('gru', 'chemical', 'h3', do_tuning=False)
-# perform('bi_lstm', 'chemical', 'h3', do_tuning=False)
-# perform('cnn_lstm', 'chemical', 'h3', do_tuning=False)
-# perform('cnn_bi_lstm', 'chemical', 'h3', do_tuning=False)
-# perform('cnn_gru', 'chemical', 'h3', do_tuning=False)
-# perform('cnn_bi_gru', 'chemical', 'h3', do_tuning=False)
-# perform('buckle_cnn_lstm', 'chemical', 'h3', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'chemical', 'h3', do_tuning=False)
-
-# --- Kmer One hot encoding ---
-# perform('cnn', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('lstm', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('gru', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('cnn_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('cnn_bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('cnn_gru', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('cnn_bi_gru', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('buckle_cnn_lstm', 'kmer_one_hot', 'h3', do_tuning=False)
-# perform('buckle_cnn_bi_lstm', 'kmer_one_hot', 'h3', do_tuning=False)

@@ -29,7 +29,6 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     epochs = config_from_json['fixed_vals']['epochs']
     patience = config_from_json['fixed_vals']['patience']
     loss_function = config_from_json['fixed_vals']['loss_function']
-    num_layers = config_from_json['fixed_vals']['num_layers']
     last_loss = 100
 
     # Hyperparameters to tune
@@ -37,6 +36,7 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     dropout = config['dropout']
     lr = config['lr']
     batch_size = config['batch_size']
+    num_layers = config['num_layers']
 
     trainloader, _, validloader, input_size, sequence_length = prepare_data(
         data_dir=data_dir,
@@ -46,7 +46,7 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     )
 
     models = {
-        'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
+        'mlp': MLP(input_size, hidden_size, output_size, num_layers, dropout).to(device),
         'cnn': CNN(sequence_length, input_size, hidden_size, output_size).to(device),
         'lstm': LSTM(input_size, hidden_size, False, num_layers, output_size, sequence_length, device).to(device),
         'bi_lstm': LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, device).to(device),

@@ -10,35 +10,36 @@ class MLP(nn.Module):
     - Code using Keras: https://github.com/xzhang2016/DeepHE/blob/master/DNN.py
     """
 
-    def __init__(self, input_size, hidden_size, output_size, dropout):
+    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout):
         super(MLP, self).__init__()
 
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu1 = nn.ReLU()
-        self.dropout1 = nn.Dropout(dropout)
+        self.num_layers = num_layers
+        hidden_size = input_size
 
-        self.fc2 = nn.Linear(hidden_size, hidden_size * 2)
-        self.relu2 = nn.ReLU()
-        self.dropout2 = nn.Dropout(dropout)
+        for i in range(num_layers):
+            self.add_module(
+                'fc{}'.format(i),
+                nn.Linear(hidden_size, hidden_size * 2)
+            )
+            self.add_module(
+                'relu{}'.format(i),
+                nn.ReLU()
+            )
+            self.add_module(
+                'dropout{}'.format(i),
+                nn.Dropout(dropout)
+            )
+            hidden_size = hidden_size * 2
 
-        self.fc3 = nn.Linear(hidden_size * 2, hidden_size * 4)
-        self.relu3 = nn.ReLU()
-        self.dropout3 = nn.Dropout(dropout)
-
-        self.fc4 = nn.Linear(hidden_size * 4, output_size)
+        self.fc_last = nn.Linear(input_size * (2 ** num_layers), output_size)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu1(x)
-        x = self.dropout1(x)
-        x = self.fc2(x)
-        x = self.relu2(x)
-        x = self.dropout2(x)
-        x = self.fc3(x)
-        x = self.relu3(x)
-        x = self.dropout3(x)
-        x = self.fc4(x)
+        for i in range(self.num_layers):
+            x = getattr(self, 'fc{}'.format(i))(x)
+            x = getattr(self, 'relu{}'.format(i))(x)
+            x = getattr(self, 'dropout{}'.format(i))(x) 
+        x = self.fc_last(x)
         x = self.sigmoid(x)
         return x
 
@@ -52,25 +53,25 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
 
         # ------------------- Calculation of max pool output size -------------------
-        Conv1_padding = 0
-        Conv1_dilation = 1
-        Conv1_kernel_size = 12
-        Conv1_stride = 1
+        conv1_padding = 0
+        conv1_dilation = 1
+        conv1_kernel_size = 12
+        conv1_stride = 1
 
-        L_out = ((sequence_length + 2*Conv1_padding - Conv1_dilation*(Conv1_kernel_size-1) - 1)/Conv1_stride + 1)
-        MaxPool_padding = 0
-        MaxPool_dilation = 1
-        MaxPool_stride = 5
-        MaxPool_kernel_size = 12
-        max_pool_output = int((L_out+2*MaxPool_padding-MaxPool_dilation*(MaxPool_kernel_size-1)-1)/MaxPool_stride+1)
+        l_out = ((sequence_length + 2*conv1_padding - conv1_dilation*(conv1_kernel_size-1) - 1)/conv1_stride + 1)
+        maxpool_padding = 0
+        maxpool_dilation = 1
+        maxpool_stride = 5
+        maxpool_kernel_size = 12
+        max_pool_output = int((l_out+2*maxpool_padding-maxpool_dilation*(maxpool_kernel_size-1)-1)/maxpool_stride+1)
 
         max_pool_output *= hidden_size
         # ---------------------------------------------------------------------------
 
-        self.conv1 = nn.Conv1d(input_size, hidden_size, kernel_size=Conv1_kernel_size,
-                               stride=Conv1_stride, padding=Conv1_padding, dilation=Conv1_dilation)
-        self.maxpool = nn.MaxPool1d(kernel_size=MaxPool_kernel_size, stride=MaxPool_stride,
-                                    padding=MaxPool_padding, dilation=MaxPool_dilation)
+        self.conv1 = nn.Conv1d(input_size, hidden_size, kernel_size=conv1_kernel_size,
+                               stride=conv1_stride, padding=conv1_padding, dilation=conv1_dilation)
+        self.maxpool = nn.MaxPool1d(kernel_size=maxpool_kernel_size, stride=maxpool_stride,
+                                    padding=maxpool_padding, dilation=maxpool_dilation)
         self.fc1 = nn.Linear(max_pool_output, hidden_size)
         self.relu1 = nn.ReLU()
         self.fc2 = nn.Linear(hidden_size, output_size)
@@ -80,39 +81,35 @@ class CNN(nn.Module):
         x = x.permute(0, 2, 1)
         x = self.conv1(x)
         x = self.maxpool(x)
-        x = x.reshape(x.shape[0], -1)
+        x = torch.flatten(x, 1)
         x = self.fc1(x)
         x = self.relu1(x)
         x = self.fc2(x)
         x = self.softmax(x)
         return x
-
+    
 class LSTM(nn.Module):
     """
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, num_classes, sequence_length, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, device):
         super(LSTM, self).__init__()
         self.num_directions = 2 if is_bidirectional else 1
         self.hidden_size = hidden_size
         self.device = device
         self.num_layers = num_layers
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
-        self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, num_classes)
+        self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, output_size)
 
     def forward(self, x):
-        # Set initial hidden and cell states
         h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
         c0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
 
-        # Forward propagate LSTM
         out, _ = self.lstm(
             x, (h0, c0)
-        )  # out: tensor of shape (batch_size, seq_length, hidden_size)
+        )  
         out = out.reshape(out.shape[0], -1)
-
-        # Decode the hidden state of the last time step
         out = self.fc(out)
         return out
 
@@ -121,24 +118,20 @@ class GRU(nn.Module):
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, num_layers, num_classes, sequence_length, device):
+    def __init__(self, input_size, hidden_size, num_layers, output_size, sequence_length, device):
         super(GRU, self).__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.device = device
 
         self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size * sequence_length, num_classes)
+        self.fc = nn.Linear(hidden_size * sequence_length, output_size)
 
     def forward(self, x):
-        # Set initial hidden and cell states
         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
 
-        # Forward propagate LSTM
         out, _ = self.gru(x, h0)
         out = out.reshape(out.shape[0], -1)
-
-        # Decode the hidden state of the last time step
         out = self.fc(out)
         return out
 
@@ -146,7 +139,7 @@ class CNN_LSTM(nn.Module):
     """
     https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
     """
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, no_classes, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, device):
         super(CNN_LSTM, self).__init__()
         
         self.num_directions = 2 if is_bidirectional else 1
@@ -166,7 +159,7 @@ class CNN_LSTM(nn.Module):
         self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
         
         linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
-        self.linear = nn.Linear(linear_input, no_classes)
+        self.linear = nn.Linear(linear_input, output_size)
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
@@ -187,7 +180,7 @@ class CNN_GRU(nn.Module):
     """
     https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
     """
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, no_classes, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, device):
         super(CNN_GRU, self).__init__()
         
         self.num_directions = 2 if is_bidirectional else 1
@@ -207,7 +200,7 @@ class CNN_GRU(nn.Module):
         self.gru = nn.GRU(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
         
         linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
-        self.linear = nn.Linear(linear_input, no_classes)
+        self.linear = nn.Linear(linear_input, output_size)
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)

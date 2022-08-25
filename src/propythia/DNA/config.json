@@ -1,10 +1,11 @@
 {
     "combination":{
-        "model_label": "cnn",
+        "model_label": "lstm",
         "mode": "one_hot",
-        "data_dir": "primer"
+        "data_dir": "h3"
     },
     "do_tuning": false,
+    "train_all_combinations": false,
     "fixed_vals":{
         "epochs": 500,
         "optimizer_label": "adam",
@@ -14,20 +15,20 @@
         "cpus_per_trial":2, 
         "gpus_per_trial":2,
         "num_samples": 15,
-        "num_layers": 2,
         "kmer_one_hot": 3
     },
     "hyperparameters": {
         "hidden_size": 32,
         "lr": 1e-3,
         "batch_size": 32,
-        "dropout": 0.35
+        "dropout": 0.35,
+        "num_layers": 1
     },
     "hyperparameter_search_space": {
         "hidden_size": [32, 64, 128, 256],
         "lr": [1e-5, 1e-2],
         "batch_size": [8, 16, 32],
-        "dropout": [0.3, 0.5]
-    },
-    "train_all_combinations": false
+        "dropout": [0.3, 0.5],
+        "num_layers": [1, 2, 3]
+    }
 }

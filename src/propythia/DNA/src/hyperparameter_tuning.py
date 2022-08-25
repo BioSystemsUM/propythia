@@ -26,7 +26,6 @@ def hyperparameter_tuning(device, config):
     mode = config['combination']['mode']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
-    num_layers = config['fixed_vals']['num_layers']
 
     # ------------------------------------------------------------------------------------------
 
@@ -69,15 +68,15 @@ def hyperparameter_tuning(device, config):
     )
 
     models = {
-        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout']),
+        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['num_layers'], best_trial.config['dropout']),
         'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], output_size),
-        'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, output_size, sequence_length, device),
-        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, output_size, sequence_length, device),
-        'gru': GRU(input_size, best_trial.config['hidden_size'], num_layers, output_size, sequence_length, device),
-        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
-        'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device),
-        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, num_layers, sequence_length, output_size, device),
-        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, num_layers, sequence_length, output_size, device)
+        'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, device),
+        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, device),
+        'gru': GRU(input_size, best_trial.config['hidden_size'], best_trial.config['num_layers'], output_size, sequence_length, device),
+        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, device),
+        'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, device),
+        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, device),
+        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, device)
     }
 
     if(model_label in models):
