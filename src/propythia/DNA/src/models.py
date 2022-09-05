@@ -13,13 +13,17 @@ class MLP(nn.Module):
     def __init__(self, input_size, hidden_size, output_size, num_layers, dropout):
         super(MLP, self).__init__()
 
+        original_hidden_size = hidden_size
         self.num_layers = num_layers
-        hidden_size = input_size
 
         for i in range(num_layers):
+            if i == 0:
+                linear_input = input_size
+            else:
+                linear_input = hidden_size
             self.add_module(
                 'fc{}'.format(i),
-                nn.Linear(hidden_size, hidden_size * 2)
+                nn.Linear(linear_input, hidden_size * 2)
             )
             self.add_module(
                 'relu{}'.format(i),
@@ -31,7 +35,7 @@ class MLP(nn.Module):
             )
             hidden_size = hidden_size * 2
 
-        self.fc_last = nn.Linear(input_size * (2 ** num_layers), output_size)
+        self.fc_last = nn.Linear(original_hidden_size * (2 ** num_layers), output_size)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -49,8 +53,10 @@ class CNN(nn.Module):
     Implementation of Primer's CNN model (https://github.com/abidlabs/deep-learning-genomics-primer/blob/master/A_Primer_on_Deep_Learning_in_Genomics_Public.ipynb)
     """
 
-    def __init__(self, sequence_length, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout):
         super(CNN, self).__init__()
+        self.num_layers = num_layers
+        original_hidden_size = hidden_size
 
         # ------------------- Calculation of max pool output size -------------------
         conv1_padding = 0
@@ -72,9 +78,28 @@ class CNN(nn.Module):
                                stride=conv1_stride, padding=conv1_padding, dilation=conv1_dilation)
         self.maxpool = nn.MaxPool1d(kernel_size=maxpool_kernel_size, stride=maxpool_stride,
                                     padding=maxpool_padding, dilation=maxpool_dilation)
-        self.fc1 = nn.Linear(max_pool_output, hidden_size)
-        self.relu1 = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, output_size)
+        
+        
+        for i in range(num_layers):
+            if i == 0:
+                linear_input = max_pool_output
+            else:
+                linear_input = hidden_size
+            self.add_module(
+                'fc{}'.format(i),
+                nn.Linear(linear_input, hidden_size * 2)
+            )
+            self.add_module(
+                'relu{}'.format(i),
+                nn.ReLU()
+            )
+            self.add_module(
+                'dropout{}'.format(i),
+                nn.Dropout(dropout)
+            )
+            hidden_size = hidden_size * 2
+
+        self.fc_last = nn.Linear(original_hidden_size * (2 ** num_layers), output_size)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
@@ -82,9 +107,11 @@ class CNN(nn.Module):
         x = self.conv1(x)
         x = self.maxpool(x)
         x = torch.flatten(x, 1)
-        x = self.fc1(x)
-        x = self.relu1(x)
-        x = self.fc2(x)
+        for i in range(self.num_layers):
+            x = getattr(self, 'fc{}'.format(i))(x)
+            x = getattr(self, 'relu{}'.format(i))(x)
+            x = getattr(self, 'dropout{}'.format(i))(x)
+        x = self.fc_last(x)
         x = self.softmax(x)
         return x
     
@@ -99,6 +126,7 @@ class LSTM(nn.Module):
         self.hidden_size = hidden_size
         self.device = device
         self.num_layers = num_layers
+        
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
         self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, output_size)
 

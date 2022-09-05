@@ -1,7 +1,7 @@
 {
     "combination":{
-        "model_label": "lstm",
-        "mode": "one_hot",
+        "model_label": "mlp",
+        "mode": "descriptor",
         "data_dir": "h3"
     },
     "do_tuning": false,
@@ -22,7 +22,7 @@
         "lr": 1e-3,
         "batch_size": 32,
         "dropout": 0.35,
-        "num_layers": 1
+        "num_layers": 3
     },
     "hyperparameter_search_space": {
         "hidden_size": [32, 64, 128, 256],

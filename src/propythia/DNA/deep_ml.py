@@ -117,7 +117,7 @@ def perform(config):
         
 if __name__ == '__main__':
     config = read_config()
-    print("Starting training:", config['combination']['model_label'], config['combination']['mode'], config['combination']['data_dir'])
+    print("Starting training:", config['combination']['model_label'], config['combination']['mode'], config['combination']['data_dir'].split("/")[-1])
     if config['train_all_combinations']:
         for model_label in combinations:
             for mode in combinations[model_label]:

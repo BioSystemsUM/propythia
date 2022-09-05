@@ -69,7 +69,7 @@ def hyperparameter_tuning(device, config):
 
     models = {
         'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['num_layers'], best_trial.config['dropout']),
-        'cnn': CNN(sequence_length, input_size, best_trial.config['hidden_size'], output_size),
+        'cnn': CNN(input_size, best_trial.config['hidden_size'], output_size, sequence_length, best_trial.config['num_layers'], best_trial.config['dropout']),
         'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, device),
         'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, device),
         'gru': GRU(input_size, best_trial.config['hidden_size'], best_trial.config['num_layers'], output_size, sequence_length, device),
