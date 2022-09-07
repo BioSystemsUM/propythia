@@ -2,7 +2,6 @@ import torch
 from torch import nn
 import math
 
-
 class MLP(nn.Module):
     """
     Implementation of DeepHe's MLP model
@@ -10,11 +9,13 @@ class MLP(nn.Module):
     - Code using Keras: https://github.com/xzhang2016/DeepHE/blob/master/DNN.py
     """
 
-    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout):
+    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout, isHalf):
         super(MLP, self).__init__()
 
         original_hidden_size = hidden_size
         self.num_layers = num_layers
+        
+        convert = (lambda x, y: x // y) if isHalf else (lambda x,y: x * y)
 
         for i in range(num_layers):
             if i == 0:
@@ -23,7 +24,7 @@ class MLP(nn.Module):
                 linear_input = hidden_size
             self.add_module(
                 'fc{}'.format(i),
-                nn.Linear(linear_input, hidden_size * 2)
+                nn.Linear(linear_input, convert(hidden_size,2))
             )
             self.add_module(
                 'relu{}'.format(i),
@@ -33,9 +34,9 @@ class MLP(nn.Module):
                 'dropout{}'.format(i),
                 nn.Dropout(dropout)
             )
-            hidden_size = hidden_size * 2
+            hidden_size = convert(hidden_size,2)
 
-        self.fc_last = nn.Linear(original_hidden_size * (2 ** num_layers), output_size)
+        self.fc_last = nn.Linear(convert(original_hidden_size,(2 ** num_layers)), output_size)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -53,7 +54,7 @@ class CNN(nn.Module):
     Implementation of Primer's CNN model (https://github.com/abidlabs/deep-learning-genomics-primer/blob/master/A_Primer_on_Deep_Learning_in_Genomics_Public.ipynb)
     """
 
-    def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout):
+    def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout, isHalf):
         super(CNN, self).__init__()
         self.num_layers = num_layers
         original_hidden_size = hidden_size
@@ -146,17 +147,18 @@ class GRU(nn.Module):
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, num_layers, output_size, sequence_length, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, device):
         super(GRU, self).__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.device = device
+        self.num_directions = 2 if is_bidirectional else 1
 
-        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size * sequence_length, output_size)
+        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, output_size)
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(self.device)
+        h0 = torch.zeros(self.num_layers * self.num_directions, x.size(0), self.hidden_size).to(self.device)
 
         out, _ = self.gru(x, h0)
         out = out.reshape(out.shape[0], -1)

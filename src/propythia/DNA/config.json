@@ -10,7 +10,7 @@
         "epochs": 500,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
-        "patience": 7,
+        "patience": 5,
         "output_size": 2,
         "cpus_per_trial":2, 
         "gpus_per_trial":2,
@@ -22,7 +22,7 @@
         "lr": 1e-3,
         "batch_size": 32,
         "dropout": 0.35,
-        "num_layers": 3
+        "num_layers": 1
     },
     "hyperparameter_search_space": {
         "hidden_size": [32, 64, 128, 256],

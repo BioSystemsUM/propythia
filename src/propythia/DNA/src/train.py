@@ -46,11 +46,14 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     )
 
     models = {
-        'mlp': MLP(input_size, hidden_size, output_size, num_layers, dropout).to(device),
-        'cnn': CNN(input_size, hidden_size, output_size,sequence_length,  num_layers, dropout).to(device),
+        'mlp': MLP(input_size, hidden_size, output_size, num_layers, dropout, False).to(device),
+        'mlp_half': MLP(input_size, hidden_size, output_size, num_layers, dropout, True).to(device),
+        'cnn': CNN(input_size, hidden_size, output_size,sequence_length,  num_layers, dropout, False).to(device),
+        'cnn_half': CNN(input_size, hidden_size, output_size,sequence_length,  num_layers, dropout, True).to(device),
         'lstm': LSTM(input_size, hidden_size, False, num_layers, output_size, sequence_length, device).to(device),
         'bi_lstm': LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, device).to(device),
-        'gru': GRU(input_size, hidden_size, num_layers, output_size, sequence_length, device).to(device),
+        'gru': GRU(input_size, hidden_size, False, num_layers, output_size, sequence_length, device).to(device),
+        'bi_gru': GRU(input_size, hidden_size, True, num_layers, output_size, sequence_length, device).to(device),
         'cnn_lstm': CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
         'cnn_bi_lstm': CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, device).to(device),
         'cnn_gru': CNN_GRU(input_size, hidden_size, False, num_layers, sequence_length, output_size, device).to(device),
