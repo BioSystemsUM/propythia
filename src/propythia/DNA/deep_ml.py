@@ -14,26 +14,24 @@ from src.test import test
 from src.hyperparameter_tuning import hyperparameter_tuning
 from src.train import traindata
 from ray import tune
-import numpy
-from utils import combinations
+from utils import combinations, seed_everything
 
-numpy.random.seed(2022)
-torch.manual_seed(2022)
+# Set seed for reproducibility and set device
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-print("Training on:", device)
+seed_everything(42)
 
 def create_objects_from_config(config):
     # --------- create the cross entropy pytorch object ---------
-    class_weights = torch.tensor([1.0, 1.0]).to(device)
+    class_weights = torch.tensor(config['combination']['class_weights']).to(device)
     config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss(weight=class_weights)
     
     # --------- create ray tune objects ---------
     config['hyperparameter_search_space'] = {
         "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
-        "lr": tune.loguniform(config['hyperparameter_search_space']['lr'][0], config['hyperparameter_search_space']['lr'][1]),
+        "lr": tune.choice(config['hyperparameter_search_space']['lr']),
         "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
-        "dropout": tune.uniform(config['hyperparameter_search_space']['dropout'][0], config['hyperparameter_search_space']['dropout'][1]),
+        "dropout": tune.choice(config['hyperparameter_search_space']['dropout']),
         "num_layers": tune.choice(config['hyperparameter_search_space']['num_layers']),
     }
     return config
@@ -69,12 +67,6 @@ def read_config(filename='config.json'):
         raise ValueError(
             'Model is not binary classification, please set loss_function to cross_entropy and output_size to 2')
 
-    # --------- check if hyperparameters search space is valid ---------
-    if len(config['hyperparameter_search_space']['lr']) != 2:
-        raise ValueError('lr must be a list of length 2 and a random value between the two values will be chosen')
-    if len(config['hyperparameter_search_space']['dropout']) != 2:
-        raise ValueError('dropout must be a list of length 2 and a random value between the two values will be chosen')
-
     config = create_objects_from_config(config)
 
     return config
@@ -88,6 +80,7 @@ def perform(config):
         model_label = config['combination']['model_label']
         mode = config['combination']['mode']
         data_dir = config['combination']['data_dir']
+        class_weights = config['combination']['class_weights']
         batch_size = config['hyperparameters']['batch_size']
         kmer_one_hot = config['fixed_vals']['kmer_one_hot']
         hyperparameters = config['hyperparameters']
@@ -107,9 +100,10 @@ def perform(config):
         acc, mcc, report = test(device, model, testloader)
         print("Results in test set:")
         print("--------------------")
-        print("- model:  ", model_label)
-        print("- mode:   ", mode)
-        print("- dataset:", data_dir.split("/")[-1])
+        print("- model:        ", model_label)
+        print("- mode:         ", mode)
+        print("- dataset:      ", data_dir.split("/")[-1])
+        print("- class weights:", class_weights)
         print("--------------------")
         print('Accuracy: %.3f' % acc)
         print('MCC: %.3f' % mcc)
@@ -117,7 +111,7 @@ def perform(config):
         
 if __name__ == '__main__':
     config = read_config()
-    print("Starting training:", config['combination']['model_label'], config['combination']['mode'], config['combination']['data_dir'].split("/")[-1])
+    
     if config['train_all_combinations']:
         for model_label in combinations:
             for mode in combinations[model_label]:

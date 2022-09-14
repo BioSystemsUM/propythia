@@ -11,7 +11,7 @@ Email:
 #########################################################################################
 """
 
-from utils import checker
+from utils import checker, checker_cut
 import pandas as pd
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 
@@ -86,10 +86,11 @@ class ReadDNA:
             labels = dataset['label'].to_list()
         
         # check if sequences are valid
-        count = 0
         valid_sequences = []
         for sequence in sequences:
-            if checker(sequence):
+            if checker(sequence) and "cut" not in filename:
+                valid_sequences.append(sequence.strip().upper())  
+            elif checker_cut(sequence) and "cut" in filename:
                 valid_sequences.append(sequence.strip().upper())  
             else:
                 raise ValueError("Error! Invalid character in sequence:", sequence)

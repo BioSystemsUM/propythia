@@ -1,11 +1,14 @@
 import os
 import pickle
+import random
 import sys
 import math
 import numpy as np
 from itertools import product
+import torch
 
 ALPHABET = 'ACGT'
+ALPHABET_CUT = 'ACGTN'
 pairs = {
     'A': 'T',
     'T': 'A',
@@ -29,13 +32,25 @@ combinations = {
 }
 
 # -----------------------------------------------------------------------------
-
+def seed_everything(seed=42):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 def checker(sequence):
     """
     Checks if the input sequence is a valid DNA sequence.
     """
     return all(i in ALPHABET for i in sequence)
+
+def checker_cut(sequence):
+    """
+    Checks if the input sequence is a valid DNA sequence. Includes the 'N' character as valid because it is used to fill the sequence to the right length.
+    """
+    return all(i in ALPHABET_CUT for i in sequence)
 
 def normal_round(n):
     """

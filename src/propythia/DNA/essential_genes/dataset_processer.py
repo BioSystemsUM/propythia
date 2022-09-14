@@ -57,7 +57,7 @@ def get_ids(data):
 
 def get_ensembl_ids_from_DEG(data):
     embl, hgnc = get_ids(data)
-    ligacoes = read_tsv("datasets/ligacoes.tsv")
+    ligacoes = read_tsv("../datasets/essential_genes/ligacoes.tsv")
 
     ensembl_from_hgnc = []
     for i in hgnc:
@@ -124,23 +124,23 @@ def create_negative_dataset(d):
     print("negative dataset:", len(d), "keys", len(
         all_sequences), "seqs", len(set(all_sequences)), "unique")
 
-    with open("datasets/essential_genes_negative.csv", "w") as f:
-        headers = ["id", "sequence"]
-        writer = csv.writer(f, delimiter=",")
-        writer.writerow(headers)
-        for key, seqs in res.items():
-            for i in seqs:
-                writer.writerow([key, i])
+    # with open("../datasets/essential_genes/essential_genes_negative.csv", "w") as f:
+    #     headers = ["id", "sequence"]
+    #     writer = csv.writer(f, delimiter=",")
+    #     writer.writerow(headers)
+    #     for key, seqs in res.items():
+    #         for i in seqs:
+    #             writer.writerow([key, i])
             
 
 def main():
     print("DEG stats")
     print("-" * 50)
-    deg_data = read_csv("datasets/essential_genes.csv")
+    deg_data = read_csv("../datasets/essential_genes/deg.csv")
     embl_ids = get_ensembl_ids_from_DEG(deg_data)
 
     # ----------------------------------------------------------------------
-    filename = "datasets/mart_export.fa"
+    filename = "../datasets/essential_genes/mart_export.fa"
     print()
     print("ENSEMBL stats")
     print("-" * 50)

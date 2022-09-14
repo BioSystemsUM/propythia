@@ -8,7 +8,9 @@ from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 from ray.tune import CLIReporter
 from functools import partial
-
+import numpy
+numpy.random.seed(2022)
+torch.manual_seed(2022)
 
 def hyperparameter_tuning(device, config):
     """
@@ -24,6 +26,7 @@ def hyperparameter_tuning(device, config):
     model_label = config['combination']['model_label']
     data_dir = config['combination']['data_dir']
     mode = config['combination']['mode']
+    class_weights = config['combination']['class_weights']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
 
@@ -99,9 +102,10 @@ def hyperparameter_tuning(device, config):
     acc, mcc, report = test(device, best_trained_model, testloader)
     print("Results in test set:")
     print("--------------------")
-    print("- model:  ", model_label)
-    print("- mode:   ", mode)
-    print("- dataset:", data_dir.split("/")[-1])
+    print("- model:        ", model_label)
+    print("- mode:         ", mode)
+    print("- dataset:      ", data_dir.split("/")[-1])
+    print("- class weights:", class_weights)
     print("--------------------")
     print('Accuracy: %.3f' % acc)
     print('MCC: %.3f' % mcc)
