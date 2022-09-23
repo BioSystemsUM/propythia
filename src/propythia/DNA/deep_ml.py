@@ -14,27 +14,12 @@ from src.test import test
 from src.hyperparameter_tuning import hyperparameter_tuning
 from src.train import traindata
 from ray import tune
-from utils import combinations, seed_everything
+from utils import combinations, seed_everything, calculate_possibilities
 
 # Set seed for reproducibility and set device
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 seed_everything(42)
-
-def create_objects_from_config(config):
-    # --------- create the cross entropy pytorch object ---------
-    class_weights = torch.tensor(config['combination']['class_weights']).to(device)
-    config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss(weight=class_weights)
-    
-    # --------- create ray tune objects ---------
-    config['hyperparameter_search_space'] = {
-        "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
-        "lr": tune.choice(config['hyperparameter_search_space']['lr']),
-        "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
-        "dropout": tune.choice(config['hyperparameter_search_space']['dropout']),
-        "num_layers": tune.choice(config['hyperparameter_search_space']['num_layers']),
-    }
-    return config
 
 def read_config(filename='config.json'):
     """
@@ -43,15 +28,19 @@ def read_config(filename='config.json'):
     with open(filename) as f:
         config = json.load(f)
     
+    # --------------------------------------------------------------------------------------------------
+    # ------------------------------------ check if data_dir exists ------------------------------------
+    # --------------------------------------------------------------------------------------------------
     current_path = os.getcwd()
     current_path = current_path.replace("/notebooks", "") # when running from notebook
     
-    # --------- check if data_dir exists ---------
     config['combination']['data_dir'] = current_path + '/datasets/' + config['combination']['data_dir']
     if not os.path.exists(config['combination']['data_dir']):
         raise ValueError("Data directory does not exist:", config['combination']['data_dir'])    
 
-    # --------- check if model and mode combination is valid ---------
+    # --------------------------------------------------------------------------------------------------
+    # --------------------------- check if model and mode combination is valid -------------------------
+    # --------------------------------------------------------------------------------------------------
     model_label = config['combination']['model_label']
     mode = config['combination']['mode']
     if(model_label in combinations):
@@ -60,15 +49,31 @@ def read_config(filename='config.json'):
     else:
         raise ValueError('Model label:', model_label, 'not implemented in', combinations.keys())
 
-    # --------- check if it's binary classification ---------
+    # --------------------------------------------------------------------------------------------------
+    # --------------------------- check if it's binary classification ----------------------------------
+    # --------------------------------------------------------------------------------------------------
     loss = config['fixed_vals']['loss_function']
     output_size = config['fixed_vals']['output_size']
     if(loss != "cross_entropy" or output_size != 2):
         raise ValueError(
             'Model is not binary classification, please set loss_function to cross_entropy and output_size to 2')
 
-    config = create_objects_from_config(config)
-
+    # --------------------------------------------------------------------------------------------------
+    # --------------------------- create the cross entropy pytorch object ------------------------------
+    # --------------------------------------------------------------------------------------------------
+    class_weights = torch.tensor(config['combination']['class_weights']).to(device)
+    config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss(weight=class_weights)
+    
+    # --------------------------------------------------------------------------------------------------
+    # --------------------------- create ray tune objects ----------------------------------------------
+    # --------------------------------------------------------------------------------------------------
+    config['hyperparameter_search_space'] = {
+        "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
+        "lr": tune.choice(config['hyperparameter_search_space']['lr']),
+        "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
+        "dropout": tune.choice(config['hyperparameter_search_space']['dropout']),
+        "num_layers": tune.choice(config['hyperparameter_search_space']['num_layers']),
+    }
     return config
 
 
@@ -113,11 +118,11 @@ if __name__ == '__main__':
     config = read_config()
     
     if config['train_all_combinations']:
-        for model_label in combinations:
-            for mode in combinations[model_label]:
-                print("Training model:", model_label, "mode:", mode)
-                config['combination']['model_label'] = model_label
-                config['combination']['mode'] = mode
-                perform(config)
+        arr = calculate_possibilities()
+        for model, mode, dataset in arr:
+            config['combination']['model_label'] = model
+            config['combination']['mode'] = mode
+            config['combination']['data_dir'] = os.getcwd() + '/datasets/' + dataset
+            perform(config)
     else:
         perform(config)

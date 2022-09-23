@@ -2,8 +2,8 @@
     "combination":{
         "model_label": "cnn",
         "mode": "one_hot",
-        "data_dir": "essential_genes_50k_cut",
-        "class_weights": [1.0, 4.0]
+        "data_dir": "primer",
+        "class_weights": [1.0, 1.0]
     },
     "do_tuning": false,
     "train_all_combinations": false,
@@ -23,7 +23,7 @@
         "lr": 1e-3,
         "batch_size": 32,
         "dropout": 0.35,
-        "num_layers": 3
+        "num_layers": 1
     },
     "hyperparameter_search_space": {
         "hidden_size": [32, 64, 128, 256],

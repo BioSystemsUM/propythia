@@ -23,7 +23,7 @@ class DNAEncoder:
             self.sequences = data
             self.dna_sequence = None
               
-    def one_hot_encode(self):
+    def one_hot_encode(self, dimension = 3):
         """
         From: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8138820/
         Calculates binary encoding. Each nucleotide is encoded by a four digit binary vector.
@@ -38,10 +38,21 @@ class DNAEncoder:
             1: [1, 0],
             0: [0, 1]            
         }
+        
+        binary2 = {
+            'A': 1,
+            'C': 2,
+            'G': 3,
+            'T': 4,
+            'N': 0,
+        }
+        
+        values = binary if dimension == 3 else binary2
+        
         if(self.sequences is not None):
-            return np.array([[binary[i] for i in x] for x in self.sequences])
+            return np.array([[values[i] for i in x] for x in self.sequences])
         elif(self.dna_sequence is not None):
-            return np.array([binary[i] for i in self.dna_sequence])
+            return np.array([values[i] for i in self.dna_sequence])
         else:
             print("Unexpected error: self.sequences and self.dna_sequence are None.")
             sys.exit(1)

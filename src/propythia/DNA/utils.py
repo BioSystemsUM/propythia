@@ -106,6 +106,24 @@ def calculate_kmer_list(sequence, k):
     return l
 
 # ----------------------------------------------------------------------------------------------------
+# ------------------------------------ Calculate all possibilites ------------------------------------
+# ----------------------------------------------------------------------------------------------------
+
+def calculate_possibilities():
+    datasets = ['primer', 'h3', 'essential_genes']
+    arr = []
+    for dataset in datasets:
+        for model in combinations:
+            for mode in combinations[model]:
+                comb = model, mode, dataset
+                print(comb)
+                arr.append(comb)
+                
+    print(len(arr))
+    return arr
+
+
+# ----------------------------------------------------------------------------------------------------
 # ------------------- The following functions were retrieved from repDNA package ---------------------
 # ----------------------------------------------------------------------------------------------------
 

@@ -57,6 +57,7 @@ class CNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout, isHalf):
         super(CNN, self).__init__()
         self.num_layers = num_layers
+        self.input_size = input_size
         original_hidden_size = hidden_size
 
         # ------------------- Calculation of max pool output size -------------------
@@ -104,14 +105,22 @@ class CNN(nn.Module):
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
+        print("break 1:", x.shape)
         x = x.permute(0, 2, 1)
+        print("break 2:", x.shape)
         x = self.conv1(x)
+        print("break 3:", x.shape)
         x = self.maxpool(x)
+        print("break 4:", x.shape)
         x = torch.flatten(x, 1)
+        print("break 5:", x.shape)
         for i in range(self.num_layers):
             x = getattr(self, 'fc{}'.format(i))(x)
+            print("break 6:", x.shape)
             x = getattr(self, 'relu{}'.format(i))(x)
+            print("break 7:", x.shape)
             x = getattr(self, 'dropout{}'.format(i))(x)
+            print("break 8:", x.shape)
         x = self.fc_last(x)
         x = self.softmax(x)
         return x
