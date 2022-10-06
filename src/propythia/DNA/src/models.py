@@ -9,13 +9,11 @@ class MLP(nn.Module):
     - Code using Keras: https://github.com/xzhang2016/DeepHE/blob/master/DNN.py
     """
 
-    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout, isHalf):
+    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout):
         super(MLP, self).__init__()
 
         original_hidden_size = hidden_size
         self.num_layers = num_layers
-        
-        convert = (lambda x, y: x // y) if isHalf else (lambda x,y: x * y)
 
         for i in range(num_layers):
             if i == 0:
@@ -24,7 +22,7 @@ class MLP(nn.Module):
                 linear_input = hidden_size
             self.add_module(
                 'fc{}'.format(i),
-                nn.Linear(linear_input, convert(hidden_size,2))
+                nn.Linear(linear_input, hidden_size * 2)
             )
             self.add_module(
                 'relu{}'.format(i),
@@ -34,9 +32,9 @@ class MLP(nn.Module):
                 'dropout{}'.format(i),
                 nn.Dropout(dropout)
             )
-            hidden_size = convert(hidden_size,2)
+            hidden_size *= 2
 
-        self.fc_last = nn.Linear(convert(original_hidden_size,(2 ** num_layers)), output_size)
+        self.fc_last = nn.Linear(original_hidden_size * (2 ** num_layers), output_size)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -54,7 +52,7 @@ class CNN(nn.Module):
     Implementation of Primer's CNN model (https://github.com/abidlabs/deep-learning-genomics-primer/blob/master/A_Primer_on_Deep_Learning_in_Genomics_Public.ipynb)
     """
 
-    def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout, isHalf):
+    def __init__(self, input_size, hidden_size, output_size, sequence_length, num_layers, dropout):
         super(CNN, self).__init__()
         self.num_layers = num_layers
         self.input_size = input_size
@@ -99,28 +97,20 @@ class CNN(nn.Module):
                 'dropout{}'.format(i),
                 nn.Dropout(dropout)
             )
-            hidden_size = hidden_size * 2
+            hidden_size *= 2
 
         self.fc_last = nn.Linear(original_hidden_size * (2 ** num_layers), output_size)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
-        print("break 1:", x.shape)
         x = x.permute(0, 2, 1)
-        print("break 2:", x.shape)
         x = self.conv1(x)
-        print("break 3:", x.shape)
         x = self.maxpool(x)
-        print("break 4:", x.shape)
         x = torch.flatten(x, 1)
-        print("break 5:", x.shape)
         for i in range(self.num_layers):
             x = getattr(self, 'fc{}'.format(i))(x)
-            print("break 6:", x.shape)
             x = getattr(self, 'relu{}'.format(i))(x)
-            print("break 7:", x.shape)
             x = getattr(self, 'dropout{}'.format(i))(x)
-            print("break 8:", x.shape)
         x = self.fc_last(x)
         x = self.softmax(x)
         return x
@@ -130,14 +120,14 @@ class LSTM(nn.Module):
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, dropout, device):
         super(LSTM, self).__init__()
         self.num_directions = 2 if is_bidirectional else 1
         self.hidden_size = hidden_size
         self.device = device
         self.num_layers = num_layers
         
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional, dropout=dropout)
         self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, output_size)
 
     def forward(self, x):
@@ -156,14 +146,14 @@ class GRU(nn.Module):
     https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/Basics/pytorch_rnn_gru_lstm.py
     """
 
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, output_size, sequence_length, dropout, device):
         super(GRU, self).__init__()
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.device = device
         self.num_directions = 2 if is_bidirectional else 1
 
-        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.gru = nn.GRU(input_size, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional, dropout=dropout)
         self.fc = nn.Linear(hidden_size * sequence_length * self.num_directions, output_size)
 
     def forward(self, x):
@@ -178,7 +168,7 @@ class CNN_LSTM(nn.Module):
     """
     https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
     """
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, dropout, device):
         super(CNN_LSTM, self).__init__()
         
         self.num_directions = 2 if is_bidirectional else 1
@@ -195,7 +185,7 @@ class CNN_LSTM(nn.Module):
             nn.ReLU(),
         )
         
-        self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.lstm = nn.LSTM(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional, dropout=dropout)
         
         linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
         self.linear = nn.Linear(linear_input, output_size)
@@ -219,7 +209,7 @@ class CNN_GRU(nn.Module):
     """
     https://medium.com/geekculture/recap-of-how-to-implement-lstm-in-pytorch-e17ec11b061e
     """
-    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, device):
+    def __init__(self, input_size, hidden_size, is_bidirectional, num_layers, sequence_length, output_size, dropout, device):
         super(CNN_GRU, self).__init__()
         
         self.num_directions = 2 if is_bidirectional else 1
@@ -236,7 +226,7 @@ class CNN_GRU(nn.Module):
             nn.ReLU(),
         )
         
-        self.gru = nn.GRU(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional)
+        self.gru = nn.GRU(32, hidden_size, num_layers, batch_first=True, bidirectional=is_bidirectional, dropout=dropout)
         
         linear_input = (math.ceil((sequence_length / 2) / 2) * hidden_size) * self.num_directions
         self.linear = nn.Linear(linear_input, output_size)

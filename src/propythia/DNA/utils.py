@@ -4,6 +4,7 @@ import random
 import sys
 import math
 import numpy as np
+import tensorflow as tf
 from itertools import product
 import torch
 

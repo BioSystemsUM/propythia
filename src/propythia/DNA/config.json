@@ -1,9 +1,9 @@
 {
     "combination":{
-        "model_label": "cnn",
+        "model_label": "cnn_bi_lstm",
         "mode": "one_hot",
-        "data_dir": "primer",
-        "class_weights": [1.0, 1.0]
+        "data_dir": "essential_genes_100k_cut",
+        "class_weights": [1.0, 2.0]
     },
     "do_tuning": false,
     "train_all_combinations": false,
@@ -15,7 +15,7 @@
         "output_size": 2,
         "cpus_per_trial": 2, 
         "gpus_per_trial": 2,
-        "num_samples": 50,
+        "num_samples": 30,
         "kmer_one_hot": 3
     },
     "hyperparameters": {
