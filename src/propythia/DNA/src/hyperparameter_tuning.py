@@ -71,8 +71,8 @@ def hyperparameter_tuning(device, config):
     )
 
     models = {
-        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['num_layers'], best_trial.config['dropout']),
-        'cnn': CNN(input_size, best_trial.config['hidden_size'], output_size, sequence_length, best_trial.config['num_layers'], best_trial.config['dropout']),
+        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout']),
+        'cnn': CNN(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'], sequence_length),
         'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
         'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], best_trial.config['dropout'], device),
         'gru': GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),

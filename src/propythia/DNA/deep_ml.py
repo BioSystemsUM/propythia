@@ -16,7 +16,6 @@ from src.train import traindata
 from ray import tune
 from utils import combinations, seed_everything, calculate_possibilities
 
-# Set seed for reproducibility and set device
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 seed_everything(42)
