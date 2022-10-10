@@ -8,9 +8,10 @@ from ray import tune
 from ray.tune.schedulers import ASHAScheduler
 from ray.tune import CLIReporter
 from functools import partial
-import numpy
-numpy.random.seed(2022)
-torch.manual_seed(2022)
+
+import sys
+sys.path.append("../")
+from utils import seed_everything
 
 def hyperparameter_tuning(device, config):
     """
@@ -29,6 +30,8 @@ def hyperparameter_tuning(device, config):
     class_weights = config['combination']['class_weights']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
+
+    seed_everything(42)
 
     # ------------------------------------------------------------------------------------------
 
@@ -74,7 +77,7 @@ def hyperparameter_tuning(device, config):
         'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout']),
         'cnn': CNN(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'], sequence_length),
         'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
-        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], best_trial.config['dropout'], device),
+        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
         'gru': GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
         'bi_gru': GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
         'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device),

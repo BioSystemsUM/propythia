@@ -1,21 +1,21 @@
 {
     "combination":{
-        "model_label": "cnn_bi_gru",
-        "mode": "one_hot",
-        "data_dir": "essential_genes_100k_cut",
-        "class_weights": [1.0, 2.0]
+        "model_label": "mlp",
+        "mode": "descriptor",
+        "data_dir": "essential_genes_100k",
+        "class_weights": [1.0, 4.0]
     },
-    "do_tuning": false,
+    "do_tuning": true,
     "train_all_combinations": false,
     "fixed_vals":{
-        "epochs": 500,
+        "epochs": 100,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
         "patience": 4,
         "output_size": 2,
         "cpus_per_trial": 2, 
         "gpus_per_trial": 2,
-        "num_samples": 30,
+        "num_samples": 10,
         "kmer_one_hot": 3
     },
     "hyperparameters": {
@@ -26,9 +26,9 @@
         "num_layers": 1
     },
     "hyperparameter_search_space": {
-        "hidden_size": [32, 64, 128, 256],
+        "hidden_size": [32, 64, 128],
         "lr": [1e-4, 1e-3, 1e-2],
-        "batch_size": [8, 16, 32, 64],
+        "batch_size": [16, 32, 64],
         "dropout": [0.2, 0.3, 0.4, 0.5],
         "num_layers": [1, 2]
     }

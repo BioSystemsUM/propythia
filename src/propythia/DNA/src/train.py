@@ -8,6 +8,10 @@ from .prepare_data import prepare_data
 from ray import tune
 import os
 
+import sys
+sys.path.append("../")
+from utils import seed_everything
+
 
 def traindata(config, device, config_from_json, checkpoint_dir=None):
     """
@@ -17,6 +21,8 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     :param fixed_vals: Dictionary of fixed parameters.
     :param checkpoint_dir: Directory to save the model.
     """
+    
+    seed_everything(42)
     
     # Fixed values
     do_tuning = config_from_json['do_tuning']
