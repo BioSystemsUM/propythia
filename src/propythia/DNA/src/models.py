@@ -1,6 +1,12 @@
 import torch
 from torch import nn
 
+import sys
+sys.path.append("../")
+from utils import seed_everything
+
+seed_everything()
+
 class MLP(nn.Module):
     """
     Implementation of DeepHe's MLP model

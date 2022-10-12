@@ -22,7 +22,7 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
     :param checkpoint_dir: Directory to save the model.
     """
     
-    seed_everything(42)
+    seed_everything()
     
     # Fixed values
     do_tuning = config_from_json['do_tuning']
@@ -51,25 +51,28 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
         k=kmer_one_hot,
     )
 
-    models = {
-        'mlp': MLP(input_size, hidden_size, output_size, dropout).to(device),
-        'cnn': CNN(input_size, hidden_size, output_size, dropout, sequence_length).to(device),
-        'lstm': LSTM(input_size, hidden_size, False, num_layers, output_size, sequence_length, dropout, device).to(device),
-        'bi_lstm': LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, dropout, device).to(device),
-        'gru': GRU(input_size, hidden_size, False, num_layers, output_size, sequence_length, dropout, device).to(device),
-        'bi_gru': GRU(input_size, hidden_size, True, num_layers, output_size, sequence_length, dropout, device).to(device),
-        'cnn_lstm': CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, dropout, device).to(device),
-        'cnn_bi_lstm': CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, dropout, device).to(device),
-        'cnn_gru': CNN_GRU(input_size, hidden_size, False, num_layers, sequence_length, output_size, dropout, device).to(device),
-        'cnn_bi_gru': CNN_GRU(input_size, hidden_size, True, num_layers, sequence_length, output_size, dropout, device).to(device)
-    }
-
-    if(model_label in models):
-        model = models[model_label]
+    if model_label == 'mlp':
+        model = MLP(input_size, hidden_size, output_size, dropout).to(device)
+    elif model_label == 'cnn':
+        model = CNN(input_size, hidden_size, output_size, dropout, sequence_length).to(device)
+    elif model_label == 'lstm':
+        model = LSTM(input_size, hidden_size, False, num_layers, output_size, sequence_length, dropout, device).to(device)
+    elif model_label == 'bi_lstm':
+        model = LSTM(input_size, hidden_size, True, num_layers, output_size, sequence_length, dropout, device).to(device)
+    elif model_label == 'gru':
+        model = GRU(input_size, hidden_size, False, num_layers, output_size, sequence_length, dropout, device).to(device)
+    elif model_label == 'bi_gru':
+        model = GRU(input_size, hidden_size, True, num_layers, output_size, sequence_length, dropout, device).to(device)
+    elif model_label == 'cnn_lstm':
+        model = CNN_LSTM(input_size, hidden_size, False, num_layers, sequence_length, output_size, dropout, device).to(device)
+    elif model_label == 'cnn_bi_lstm':
+        model = CNN_LSTM(input_size, hidden_size, True, num_layers, sequence_length, output_size, dropout, device).to(device)
+    elif model_label == 'cnn_gru':
+        model = CNN_GRU(input_size, hidden_size, False, num_layers, sequence_length, output_size, dropout, device).to(device)
+    elif model_label == 'cnn_bi_gru':
+        model = CNN_GRU(input_size, hidden_size, True, num_layers, sequence_length, output_size, dropout, device).to(device)
     else:
-        raise ValueError(
-            'Model label not implemented', model_label,
-            'only implemented models are', models.keys())
+        raise ValueError('Model label not implemented', model_label)
 
     if(optimizer_label == 'adam'):
         optimizer = Adam(model.parameters(), lr=lr)

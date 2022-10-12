@@ -7,6 +7,9 @@ from read_sequence import ReadDNA
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from .encoding import DNAEncoder
+import sys
+sys.path.append("../")
+from utils import seed_everything
 
 def data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size):
     """
@@ -76,6 +79,8 @@ def prepare_data(data_dir, mode, batch_size, k, train_size=0.6, test_size=0.2, v
     :return: input_size: int, the size of the input.
     :return: sequence_length: int, the size of the length of sequence.
     """
+    
+    seed_everything()
     
     fps_x_file = data_dir + '/fps_x_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_x.pkl'
     fps_y_file = data_dir + '/fps_y_descriptor.pkl' if mode == 'descriptor' else data_dir + '/fps_y.pkl'

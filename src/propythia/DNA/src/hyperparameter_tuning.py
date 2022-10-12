@@ -5,7 +5,7 @@ from .test import test
 from .models import *
 from .prepare_data import prepare_data
 from ray import tune
-from ray.tune.schedulers import ASHAScheduler
+from ray.tune.schedulers import HyperBandScheduler
 from ray.tune import CLIReporter
 from functools import partial
 
@@ -31,15 +31,14 @@ def hyperparameter_tuning(device, config):
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
 
-    seed_everything(42)
+    seed_everything()
 
     # ------------------------------------------------------------------------------------------
 
-    scheduler = ASHAScheduler(
+    scheduler = HyperBandScheduler(
         metric="loss",
         mode="min",
         max_t=epochs,
-        grace_period=1,
         reduction_factor=2
     )
 
@@ -72,26 +71,30 @@ def hyperparameter_tuning(device, config):
         batch_size=best_trial.config['batch_size'],
         k=kmer_one_hot,
     )
-
-    models = {
-        'mlp': MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout']),
-        'cnn': CNN(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'], sequence_length),
-        'lstm': LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
-        'bi_lstm': LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
-        'gru': GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
-        'bi_gru': GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device),
-        'cnn_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device),
-        'cnn_bi_lstm': CNN_LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device),
-        'cnn_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device),
-        'cnn_bi_gru': CNN_GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device)
-    }
-
-    if(model_label in models):
-        best_trained_model = models[model_label]
+    
+    if model_label == 'mlp':
+        best_trained_model = MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'])
+    elif model_label == 'cnn':
+        best_trained_model = CNN(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'], sequence_length)
+    elif model_label == 'lstm':
+        best_trained_model = LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device)
+    elif model_label == 'bi_lstm':
+        best_trained_model = LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device)
+    elif model_label == 'gru':
+        best_trained_model = GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device)
+    elif model_label == 'bi_gru':
+        best_trained_model = GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], output_size, sequence_length, best_trial.config['dropout'], device)
+    elif model_label == 'cnn_lstm':
+        best_trained_model = CNN_LSTM(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device)
+    elif model_label == 'cnn_bi_lstm':
+        best_trained_model = CNN_LSTM(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device)
+    elif model_label == 'cnn_gru':
+        best_trained_model = CNN_GRU(input_size, best_trial.config['hidden_size'], False, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device)
+    elif model_label == 'cnn_bi_gru':
+        best_trained_model = CNN_GRU(input_size, best_trial.config['hidden_size'], True, best_trial.config['num_layers'], sequence_length, output_size, best_trial.config['dropout'], device)
     else:
-        raise ValueError(
-            'Model label not implemented', model_label,
-            'only implemented models are', models.keys())
+        raise ValueError('Model label not implemented', model_label)
+        
 
     best_trained_model.to(device)
 

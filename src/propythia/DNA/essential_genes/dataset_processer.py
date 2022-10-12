@@ -140,7 +140,7 @@ def main():
     embl_ids = get_ensembl_ids_from_DEG(deg_data)
 
     # ----------------------------------------------------------------------
-    filename = "../datasets/essential_genes/mart_export.fa"
+    filename = "../datasets/essential_genes/mart_export_unspliced_97.fa"
     print()
     print("ENSEMBL stats")
     print("-" * 50)

@@ -18,7 +18,7 @@ from utils import combinations, seed_everything, calculate_possibilities
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-seed_everything(42)
+seed_everything()
 
 def read_config(filename='config.json'):
     """
@@ -66,13 +66,14 @@ def read_config(filename='config.json'):
     # --------------------------------------------------------------------------------------------------
     # --------------------------- create ray tune objects ----------------------------------------------
     # --------------------------------------------------------------------------------------------------
-    config['hyperparameter_search_space'] = {
-        "hidden_size": tune.choice(config['hyperparameter_search_space']['hidden_size']),
-        "lr": tune.choice(config['hyperparameter_search_space']['lr']),
-        "batch_size": tune.choice(config['hyperparameter_search_space']['batch_size']),
-        "dropout": tune.choice(config['hyperparameter_search_space']['dropout']),
-        "num_layers": tune.choice(config['hyperparameter_search_space']['num_layers']),
-    }
+    config['hyperparameter_search_space']["hidden_size"] = tune.choice(config['hyperparameter_search_space']['hidden_size'])
+    config['hyperparameter_search_space']["lr"] = tune.choice(config['hyperparameter_search_space']['lr'])
+    config['hyperparameter_search_space']["batch_size"] = tune.choice(config['hyperparameter_search_space']['batch_size'])
+    config['hyperparameter_search_space']["dropout"] = tune.choice(config['hyperparameter_search_space']['dropout'])
+    
+    if config['combination']['model_label'] not in ['mlp', 'cnn']:
+        config['hyperparameter_search_space']["num_layers"] = tune.choice(config['hyperparameter_search_space']['num_layers'])
+    
     return config
 
 
