@@ -89,6 +89,6 @@ if __name__ == "__main__":
     else:
         fps_x, fps_y = descriptors() if config['combination']['mode'] == 'descriptor' else encoding()
         batch_size = config['hyperparameters']['batch_size']
-        trainloader, testloader, validloader = data_split(fps_x, fps_y)
+        trainloader, testloader, validloader = data_split(batch_size, fps_x, fps_y)
         model = train(config, trainloader, validloader)
         predict(model, testloader)
