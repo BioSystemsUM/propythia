@@ -9,10 +9,7 @@ import json
 import torch
 from torch import nn
 import os
-from src.prepare_data import prepare_data
-from src.test import test
-from src.hyperparameter_tuning import hyperparameter_tuning
-from src.train import traindata
+from src import prepare_data, test, hyperparameter_tuning, traindata
 from ray import tune
 from utils import combinations, seed_everything, calculate_possibilities
 
@@ -31,7 +28,7 @@ def read_config(filename='config.json'):
     # ------------------------------------ check if data_dir exists ------------------------------------
     # --------------------------------------------------------------------------------------------------
     current_path = os.getcwd()
-    current_path = current_path.replace("/notebooks", "") # when running from notebook
+    current_path = current_path.replace("/quickstarts", "") # when running from notebook
     
     config['combination']['data_dir'] = current_path + '/datasets/' + config['combination']['data_dir']
     if not os.path.exists(config['combination']['data_dir']):
@@ -89,18 +86,22 @@ def perform(config):
         batch_size = config['hyperparameters']['batch_size']
         kmer_one_hot = config['fixed_vals']['kmer_one_hot']
         hyperparameters = config['hyperparameters']
-        
-        # train the model
-        model = traindata(hyperparameters, device, config)
+        dataset_file_format = config['fixed_vals']['dataset_file_format']
+        save_to_pickle = config['fixed_vals']['save_to_pickle']
         
         # get the test data
-        _, testloader, _, _, _ = prepare_data(
+        trainloader, testloader, validloader = prepare_data(
             data_dir=data_dir,
             mode=mode,
             batch_size=batch_size,
             k=kmer_one_hot,
+            dataset_file_format=dataset_file_format,
+            save_to_pickle=save_to_pickle
         )
-
+        
+        # train the model
+        model = traindata(hyperparameters, device, config, trainloader, validloader)
+        
         # test the model
         acc, mcc, report = test(device, model, testloader)
         print("Results in test set:")
@@ -109,6 +110,7 @@ def perform(config):
         print("- mode:         ", mode)
         print("- dataset:      ", data_dir.split("/")[-1])
         print("- class weights:", class_weights)
+        print("- kmer one hot: ", kmer_one_hot)
         print("--------------------")
         print('Accuracy: %.3f' % acc)
         print('MCC: %.3f' % mcc)
@@ -117,12 +119,4 @@ def perform(config):
 if __name__ == '__main__':
     config = read_config()
     
-    if config['train_all_combinations']:
-        arr = calculate_possibilities()
-        for model, mode, dataset in arr:
-            config['combination']['model_label'] = model
-            config['combination']['mode'] = mode
-            config['combination']['data_dir'] = os.getcwd() + '/datasets/' + dataset
-            perform(config)
-    else:
-        perform(config)
+    perform(config)

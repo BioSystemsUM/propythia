@@ -30,6 +30,8 @@ def hyperparameter_tuning(device, config):
     class_weights = config['combination']['class_weights']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
+    dataset_file_format = config['fixed_vals']['dataset_file_format']
+    save_to_pickle = config['fixed_vals']['save_to_pickle']
 
     seed_everything()
 
@@ -48,7 +50,7 @@ def hyperparameter_tuning(device, config):
 
     result = tune.run(
         partial(
-            traindata,
+            prepare_and_train,
             device=device,
             config_from_json=config
         ),
@@ -65,12 +67,19 @@ def hyperparameter_tuning(device, config):
     print("Best trial final validation accuracy:", best_trial.last_result["accuracy"])
     print("Best trial final validation mcc:", best_trial.last_result["mcc"])
 
-    _, testloader, _, input_size, sequence_length = prepare_data(
+    trainloader, testloader, _ = prepare_data(
         data_dir=data_dir,
         mode=mode,
         batch_size=best_trial.config['batch_size'],
         k=kmer_one_hot,
+        dataset_file_format=dataset_file_format,
+        save_to_pickle=save_to_pickle
     )
+    
+    for x, _ in trainloader:
+        input_size = x.shape[-1]
+        sequence_length = x.shape[1]
+        break
     
     if model_label == 'mlp':
         best_trained_model = MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'])
@@ -110,7 +119,29 @@ def hyperparameter_tuning(device, config):
     print("- mode:         ", mode)
     print("- dataset:      ", data_dir.split("/")[-1])
     print("- class weights:", class_weights)
+    print("- kmer one hot: ", kmer_one_hot)
     print("--------------------")
     print('Accuracy: %.3f' % acc)
     print('MCC: %.3f' % mcc)
     print(report)
+
+
+def prepare_and_train(config, device, config_from_json):
+    
+    data_dir = config_from_json['combination']['data_dir']
+    mode = config_from_json['combination']['mode']
+    kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
+    dataset_file_format = config_from_json['fixed_vals']['dataset_file_format']
+    save_to_pickle = config_from_json['fixed_vals']['save_to_pickle']
+    batch_size = config['batch_size']
+    
+    trainloader, _, validloader = prepare_data(
+        data_dir=data_dir,
+        mode=mode,
+        batch_size=batch_size,
+        k=kmer_one_hot,
+        dataset_file_format=dataset_file_format,
+        save_to_pickle=save_to_pickle
+    )
+    
+    traindata(config, device, config_from_json, trainloader, validloader)

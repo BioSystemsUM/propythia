@@ -1,11 +1,11 @@
 {
     "combination":{
-        "model_label": "cnn",
-        "mode": "one_hot",
+        "model_label": "mlp",
+        "mode": "descriptor",
         "data_dir": "primer",
         "class_weights": [1.0, 1.0]
     },
-    "do_tuning": true,
+    "do_tuning": false,
     "fixed_vals":{
         "epochs": 1000,
         "optimizer_label": "adam",

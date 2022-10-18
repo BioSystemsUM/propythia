@@ -93,10 +93,10 @@ def make_kmer_dict(k):
         raise ValueError
 
 def calculate_kmer_onehot(k):
-    nucleotides = [''.join(i) for i in product(ALPHABET, repeat=k)]
+    nucleotides = [''.join(i) for i in product(ALPHABET_CUT, repeat=k)]
     encoded = []
-    for i in range(4 ** k):
-        encoded.append(np.zeros(4 ** k).tolist())
+    for i in range(5 ** k):
+        encoded.append(np.zeros(5 ** k).tolist())
         encoded[i][i] = 1.0
         
     return {nucleotides[i]: encoded[i] for i in range(len(nucleotides))}
@@ -106,6 +106,19 @@ def calculate_kmer_list(sequence, k):
     for i in range(len(sequence) - k + 1):
         l.append(sequence[i:i+k])
     return l
+
+def save_pickle(fps_x_file, fps_y_file, fps_x, fps_y):
+    with open(fps_x_file, 'wb') as f:
+        pickle.dump(fps_x, f)
+    with open(fps_y_file, 'wb') as f:
+        pickle.dump(fps_y, f)
+        
+def load_pickle(fps_x_file, fps_y_file):
+    with open(fps_x_file, 'rb') as f:
+        fps_x = pickle.load(f)
+    with open(fps_y_file, 'rb') as f:
+        fps_y = pickle.load(f)
+    return fps_x, fps_y
 
 # ----------------------------------------------------------------------------------------------------
 # ------------------------------------ Calculate all possibilites ------------------------------------
