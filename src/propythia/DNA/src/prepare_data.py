@@ -34,11 +34,6 @@ def data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_s
         stratify=y
     )
     
-    # if necessary, oversample data using SMOTE
-    # if any class has 60% or more of the data, oversampling is needed
-    if len(y_train) * 0.6 < max([sum(y_train == 0), sum(y_train == 1)]):
-        x_train, y_train = oversample(x_train, y_train)
-    
     print("Set shapes:")
     print("x_train, y_train:", x_train.shape, y_train.shape)
     print("x_cv, y_cv:", x_cv.shape, y_cv.shape)
@@ -141,7 +136,10 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
         print("Loading data from files...")
         fps_x, fps_y = load_pickle(fps_x_file, fps_y_file)
     
-    trainloader, testloader, validloader = data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size)
+    _, testloader, validloader = data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size)
+    #we can only use smote for trainning
+    fps_x, fps_y = oversample(fps_x, fps_y)
+    trainloader, _, _ = data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size)
     
     return trainloader, testloader, validloader
 
