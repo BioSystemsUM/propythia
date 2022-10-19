@@ -27,11 +27,11 @@ def hyperparameter_tuning(device, config):
     model_label = config['combination']['model_label']
     data_dir = config['combination']['data_dir']
     mode = config['combination']['mode']
-    class_weights = config['combination']['class_weights']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
     dataset_file_format = config['fixed_vals']['dataset_file_format']
     save_to_pickle = config['fixed_vals']['save_to_pickle']
+    cutting_length = config['fixed_vals']['cutting_length']
 
     seed_everything()
 
@@ -73,7 +73,8 @@ def hyperparameter_tuning(device, config):
         batch_size=best_trial.config['batch_size'],
         k=kmer_one_hot,
         dataset_file_format=dataset_file_format,
-        save_to_pickle=save_to_pickle
+        save_to_pickle=save_to_pickle,
+        cutting_length=cutting_length
     )
     
     for x, _ in trainloader:
@@ -118,7 +119,6 @@ def hyperparameter_tuning(device, config):
     print("- model:        ", model_label)
     print("- mode:         ", mode)
     print("- dataset:      ", data_dir.split("/")[-1])
-    print("- class weights:", class_weights)
     print("- kmer one hot: ", kmer_one_hot)
     print("--------------------")
     print('Accuracy: %.3f' % acc)
@@ -133,6 +133,7 @@ def prepare_and_train(config, device, config_from_json):
     kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
     dataset_file_format = config_from_json['fixed_vals']['dataset_file_format']
     save_to_pickle = config_from_json['fixed_vals']['save_to_pickle']
+    cutting_length = config_from_json['fixed_vals']['cutting_length']
     batch_size = config['batch_size']
     
     trainloader, _, validloader = prepare_data(
@@ -141,7 +142,8 @@ def prepare_and_train(config, device, config_from_json):
         batch_size=batch_size,
         k=kmer_one_hot,
         dataset_file_format=dataset_file_format,
-        save_to_pickle=save_to_pickle
+        save_to_pickle=save_to_pickle,
+        cutting_length=cutting_length
     )
     
     traindata(config, device, config_from_json, trainloader, validloader)

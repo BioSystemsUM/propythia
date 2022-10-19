@@ -2,8 +2,7 @@
     "combination":{
         "model_label": "mlp",
         "mode": "descriptor",
-        "data_dir": "primer",
-        "class_weights": [1.0, 1.0]
+        "data_dir": "primer"
     },
     "do_tuning": false,
     "fixed_vals":{
@@ -17,7 +16,8 @@
         "num_samples": 10,
         "kmer_one_hot": 4,
         "dataset_file_format": "csv",
-        "save_to_pickle": true
+        "save_to_pickle": true,
+        "cutting_length": 2000
     },
     "hyperparameters": {
         "hidden_size": 32,

@@ -2,10 +2,9 @@
     "combination":{
         "model_label": "cnn",
         "mode": "one_hot",
-        "data_dir": "primer",
-        "class_weights": [1.0, 1.0]
+        "data_dir": "essential_genes_100k_cut"
     },
-    "do_tuning": true,
+    "do_tuning": false,
     "fixed_vals":{
         "epochs": 1000,
         "optimizer_label": "adam",
@@ -17,7 +16,8 @@
         "num_samples": 10,
         "kmer_one_hot": 4,
         "dataset_file_format": "csv",
-        "save_to_pickle": true
+        "save_to_pickle": true,
+        "cutting_length": 2000
     },
     "hyperparameters": {
         "hidden_size": 32,

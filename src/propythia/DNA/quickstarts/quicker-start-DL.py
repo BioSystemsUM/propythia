@@ -11,7 +11,7 @@ from calculate_features import calculate_and_normalize
 from sklearn.preprocessing import StandardScaler
 from deep_ml import read_config
 from utils import seed_everything
-from src import traindata, test, DNAEncoder, data_splitting
+from src import traindata, test, DNAEncoder, data_splitting, oversample
 
 
 def descriptors():
@@ -33,20 +33,6 @@ def encoding():
     fps_x = encoder.one_hot_encode()
     
     return fps_x, fps_y
-
-def data_split(batch_size, fps_x, fps_y):
-    train_size = 0.6
-    validation_size = 0.2
-    test_size = 0.2
-
-    trainloader, testloader, validloader = data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_size)
-    
-    return trainloader, testloader, validloader
-
-def train(config, trainloader, validloader):
-    hyperparameters = config['hyperparameters']
-    model = traindata(hyperparameters, device, config, trainloader, validloader)
-    return model
 
 def predict(model, testloader):
     acc, mcc, report = test(device, model, testloader)
@@ -74,7 +60,7 @@ if __name__ == "__main__":
 
     # Reading the dataset in csv format 
     reader = ReadDNA()
-    filename = "../datasets/primer/dataset.csv"
+    filename = config['combination']['data_dir'] + '/dataset.csv'
     data = reader.read_csv(filename, with_labels=True)
     print(data.head())
     print("Dataset shape:", data.shape)
@@ -87,8 +73,9 @@ if __name__ == "__main__":
         
         hyperparameter_tuning(device, config)
     else:
-        fps_x, fps_y = descriptors() if config['combination']['mode'] == 'descriptor' else encoding()
         batch_size = config['hyperparameters']['batch_size']
-        trainloader, testloader, validloader = data_split(batch_size, fps_x, fps_y)
-        model = train(config, trainloader, validloader)
+        fps_x, fps_y = descriptors() if config['combination']['mode'] == 'descriptor' else encoding()
+        fps_x, fps_y = oversample(fps_x, fps_y, config['combination']['mode'])
+        trainloader, testloader, validloader = data_splitting(fps_x, fps_y, batch_size)
+        model = traindata(config['hyperparameters'], device, config, trainloader, validloader)
         predict(model, testloader)
