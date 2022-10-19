@@ -17,8 +17,8 @@
         "kmer_one_hot": 4,
         "dataset_file_format": "csv",
         "cutting_length": 2000,
-        "save_to_pickle": true,
-        "read_from_pickle": true
+        "save_to_pickle": false,
+        "read_from_pickle": false
     },
     "hyperparameters": {
         "hidden_size": 32,

@@ -127,7 +127,7 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
         # if necessary, oversample data using SMOTE
         # if any class has 60% or more of the data, oversampling is needed
         if len(fps_y) * 0.6 < max([sum(fps_y == 0), sum(fps_y == 1)]):
-            fps_x, fps_y = oversample(fps_x, fps_y, mode)
+            fps_x, fps_y = oversample(fps_x, fps_y)
         
         if save_to_pickle:
             save_pickle(fps_x_file, fps_y_file, fps_x, fps_y)
@@ -144,19 +144,19 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
 ## Auxiliary functions ##
 #########################
 
-def oversample(fps_x, fps_y, mode):
+def oversample(fps_x, fps_y):
     print("Dataset is imbalanced. Oversampling...")
     print("fps_x, fps_y before oversampling:", fps_x.shape, fps_y.shape)
-    is_encodings = mode == 'one_hot' or mode == 'chemical' or mode == 'kmer_one_hot'
     
-    if is_encodings:
-        orig_shape_x = fps_x.shape
+    orig_shape_x = fps_x.shape
+    
+    if len(orig_shape_x) == 3:
         fps_x = np.reshape(fps_x , (orig_shape_x[0], orig_shape_x[1] * orig_shape_x[2]))
 
     oversample = SMOTE(random_state=42)
     fps_x, fps_y = oversample.fit_resample(fps_x, fps_y)
     
-    if is_encodings:
+    if len(orig_shape_x) == 3:
         fps_x = np.reshape(fps_x, (fps_x.shape[0], orig_shape_x[1], orig_shape_x[2]))
         
     print("fps_x, fps_y after oversampling:", fps_x.shape, fps_y.shape)

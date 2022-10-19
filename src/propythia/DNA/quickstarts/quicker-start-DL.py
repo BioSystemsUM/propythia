@@ -67,7 +67,7 @@ if __name__ == "__main__":
     else:
         batch_size = config['hyperparameters']['batch_size']
         fps_x, fps_y = descriptors() if config['combination']['mode'] == 'descriptor' else encoding()
-        fps_x, fps_y = oversample(fps_x, fps_y, config['combination']['mode'])
+        fps_x, fps_y = oversample(fps_x, fps_y)
         trainloader, testloader, validloader = data_splitting(fps_x, fps_y, batch_size)
         model = traindata(config['hyperparameters'], device, config, trainloader, validloader)
         predict(model, testloader)
