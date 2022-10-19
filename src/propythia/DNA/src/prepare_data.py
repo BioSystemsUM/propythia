@@ -125,7 +125,7 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
             raise ValueError("dataset_file_format must be either 'csv' or 'fasta'.")
         
         # check if the sequences are of equal length
-        if len(set(dataset["sequence"].apply(lambda x: len(x)))) != 1:
+        if len(set(dataset["sequence"].apply(lambda x: len(x)))) != 1 and mode != 'descriptor':
             print("Sequences are not of equal length. Equalizing sequences length...")
             dataset = equalize_sequences_length(dataset, cutting_length)
         
