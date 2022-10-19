@@ -32,6 +32,7 @@ def hyperparameter_tuning(device, config):
     dataset_file_format = config['fixed_vals']['dataset_file_format']
     save_to_pickle = config['fixed_vals']['save_to_pickle']
     cutting_length = config['fixed_vals']['cutting_length']
+    read_from_pickle = config['fixed_vals']['read_from_pickle']
 
     seed_everything()
 
@@ -73,8 +74,9 @@ def hyperparameter_tuning(device, config):
         batch_size=best_trial.config['batch_size'],
         k=kmer_one_hot,
         dataset_file_format=dataset_file_format,
+        cutting_length=cutting_length,
         save_to_pickle=save_to_pickle,
-        cutting_length=cutting_length
+        read_from_pickle=read_from_pickle
     )
     
     for x, _ in trainloader:
@@ -134,6 +136,7 @@ def prepare_and_train(config, device, config_from_json):
     dataset_file_format = config_from_json['fixed_vals']['dataset_file_format']
     save_to_pickle = config_from_json['fixed_vals']['save_to_pickle']
     cutting_length = config_from_json['fixed_vals']['cutting_length']
+    read_from_pickle = config_from_json['fixed_vals']['read_from_pickle']
     batch_size = config['batch_size']
     
     trainloader, _, validloader = prepare_data(
@@ -142,8 +145,9 @@ def prepare_and_train(config, device, config_from_json):
         batch_size=batch_size,
         k=kmer_one_hot,
         dataset_file_format=dataset_file_format,
+        cutting_length=cutting_length,
         save_to_pickle=save_to_pickle,
-        cutting_length=cutting_length
+        read_from_pickle=read_from_pickle
     )
     
     traindata(config, device, config_from_json, trainloader, validloader)

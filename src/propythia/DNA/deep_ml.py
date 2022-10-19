@@ -26,6 +26,7 @@ def perform(config):
     dataset_file_format = config['fixed_vals']['dataset_file_format']
     save_to_pickle = config['fixed_vals']['save_to_pickle']
     cutting_length = config['fixed_vals']['cutting_length']
+    read_from_pickle = config['fixed_vals']['read_from_pickle']
     
     if config['do_tuning']:
         hyperparameter_tuning(device, config)
@@ -37,8 +38,10 @@ def perform(config):
             batch_size=batch_size,
             k=kmer_one_hot,
             dataset_file_format=dataset_file_format,
+            cutting_length=cutting_length,
             save_to_pickle=save_to_pickle,
-            cutting_length=cutting_length
+            read_from_pickle=read_from_pickle
+            
         )
         
         # train the model

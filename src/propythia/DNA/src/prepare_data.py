@@ -70,7 +70,7 @@ def equalize_sequences_length(dataset, cutting_length):
     dataset["sequence"] = dataset["sequence"].apply(lambda x: x.ljust(cutting_length, "N"))
     return dataset
 
-def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_length, save_to_pickle = True, train_size=0.6, test_size=0.2, validation_size=0.2):
+def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_length, save_to_pickle = True, read_from_pickle = True, train_size=0.6, test_size=0.2, validation_size=0.2):
     """
     Prepare data for training and testing.
     :param data_dir: str, the path to the data directory.
@@ -78,8 +78,9 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
     :param batch_size: int, the batch size to use.
     :param k: int, value for the kmer one hot encoding.
     :param dataset_file_format: str, the file format of the dataset. Must be either 'csv' or 'fasta'.
-    :param save_to_pickle: bool, whether to save the data to pickle files.
     :param cutting_length: int, the length to cut the sequences to.
+    :param save_to_pickle: bool, whether to save the data to pickle files.
+    :param read_from_pickle: bool, whether to read the data from pickle files.
     :param train_size: float, the proportion of the data to use for training.
     :param test_size: float, the proportion of the data to use for testing.
     :param validation_size: float, the proportion of the data to use for validation.
@@ -101,7 +102,7 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
         fps_y_file = data_dir + '/fps_y_' + mode + '_' + str(k) + '.pkl'
     
     # check if fps_x_file and fps_y_file exist
-    if not os.path.isfile(fps_x_file) or not os.path.isfile(fps_y_file):
+    if not os.path.isfile(fps_x_file) or not os.path.isfile(fps_y_file) or read_from_pickle == False:
         print("Reading the dataset...")
         
         # read dataset
