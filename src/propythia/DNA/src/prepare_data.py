@@ -34,6 +34,16 @@ def data_splitting(fps_x, fps_y, batch_size, train_size, test_size, validation_s
         stratify=y
     )
     
+    # if necessary, oversample data using SMOTE
+    # if any class has 60% or more of the data, oversampling is needed
+    if len(y_train) * 0.6 < max([sum(y_train == 0), sum(y_train == 1)]):
+        x_train, y_train = oversample(x_train, y_train)
+    
+    print("Set shapes:")
+    print("x_train, y_train:", x_train.shape, y_train.shape)
+    print("x_cv, y_cv:", x_cv.shape, y_cv.shape)
+    print("x_test, y_test:", x_test.shape, y_test.shape)
+
     train_data = data_utils.TensorDataset(
         torch.tensor(x_train, dtype=torch.float),
         torch.tensor(y_train, dtype=torch.long)
@@ -124,11 +134,6 @@ def prepare_data(data_dir, mode, batch_size, k, dataset_file_format, cutting_len
             if mode == 'descriptor' \
             else calculate_encoders(dataset, mode, k) 
             
-        # if necessary, oversample data using SMOTE
-        # if any class has 60% or more of the data, oversampling is needed
-        if len(fps_y) * 0.6 < max([sum(fps_y == 0), sum(fps_y == 1)]):
-            fps_x, fps_y = oversample(fps_x, fps_y)
-        
         if save_to_pickle:
             save_pickle(fps_x_file, fps_y_file, fps_x, fps_y)
         
