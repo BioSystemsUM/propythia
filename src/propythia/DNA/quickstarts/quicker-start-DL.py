@@ -10,7 +10,7 @@ from read_sequence import ReadDNA
 from calculate_features import calculate_and_normalize
 from sklearn.preprocessing import StandardScaler
 from deep_ml import read_config
-from utils import seed_everything
+from utils import print_metrics, seed_everything
 from src import traindata, test, DNAEncoder, data_splitting, oversample
 
 
@@ -35,21 +35,13 @@ def encoding():
     return fps_x, fps_y
 
 def predict(model, testloader):
-    acc, mcc, report = test(device, model, testloader)
-
     model_label = config['combination']['model_label']
     mode = config['combination']['mode']
     data_dir = config['combination']['data_dir']
-
-    print("Results in test set:")
-    print("--------------------")
-    print("- model:  ", model_label)
-    print("- mode:   ", mode)
-    print("- dataset:", data_dir.split("/")[-1])
-    print("--------------------")
-    print('Accuracy: %.3f' % acc)
-    print('MCC: %.3f' % mcc)
-    print(report)
+    kmer_one_hot = config['fixed_vals']['kmer_one_hot']
+    
+    metrics = test(device, model, testloader)
+    print_metrics(model_label, mode, data_dir, kmer_one_hot, metrics)
 
 if __name__ == "__main__":
     # Setting up the environment 

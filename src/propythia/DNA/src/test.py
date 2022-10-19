@@ -1,7 +1,7 @@
 import torch
 from numpy import argmax
 from numpy import vstack
-from sklearn.metrics import accuracy_score, matthews_corrcoef, confusion_matrix
+from sklearn.metrics import accuracy_score, f1_score, matthews_corrcoef, confusion_matrix, precision_score, recall_score, roc_auc_score
 
 
 def test(device, model, test_loader):
@@ -29,5 +29,20 @@ def test(device, model, test_loader):
     predictions, actuals = vstack(predictions), vstack(actuals)
     acc = accuracy_score(actuals, predictions)
     mcc = matthews_corrcoef(actuals, predictions)
+    roc_auc = roc_auc_score(actuals, predictions)
+    f1 = f1_score(actuals, predictions)
+    precision = precision_score(actuals, predictions)
+    recall = recall_score(actuals, predictions)
     report = confusion_matrix(actuals, predictions)
-    return acc, mcc, report
+    
+    metrics = {
+        'accuracy': acc,
+        'mcc': mcc,
+        'roc_auc': roc_auc,
+        'f1': f1,
+        'precision': precision,
+        'recall': recall,
+        'confusion_matrix': report
+    }
+    
+    return metrics

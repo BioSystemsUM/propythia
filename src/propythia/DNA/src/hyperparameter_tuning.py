@@ -11,7 +11,7 @@ from functools import partial
 
 import sys
 sys.path.append("../")
-from utils import seed_everything
+from utils import seed_everything, print_metrics
 
 def hyperparameter_tuning(device, config):
     """
@@ -115,17 +115,8 @@ def hyperparameter_tuning(device, config):
         best_checkpoint_dir, "checkpoint"))
     best_trained_model.load_state_dict(model_state)
 
-    acc, mcc, report = test(device, best_trained_model, testloader)
-    print("Results in test set:")
-    print("--------------------")
-    print("- model:        ", model_label)
-    print("- mode:         ", mode)
-    print("- dataset:      ", data_dir.split("/")[-1])
-    print("- kmer one hot: ", kmer_one_hot)
-    print("--------------------")
-    print('Accuracy: %.3f' % acc)
-    print('MCC: %.3f' % mcc)
-    print(report)
+    metrics = test(device, best_trained_model, testloader)
+    print_metrics(model_label, mode, data_dir, kmer_one_hot, metrics)
 
 
 def prepare_and_train(config, device, config_from_json):

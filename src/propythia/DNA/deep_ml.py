@@ -7,10 +7,9 @@ for the given model, feature mode, and data directory.
 import torch
 import os
 from src import prepare_data, test, hyperparameter_tuning, traindata
-from utils import read_config, seed_everything
+from utils import read_config, seed_everything, print_metrics
 
 def perform(config):
-    
     # Setting up the environment     
     os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -41,26 +40,15 @@ def perform(config):
             cutting_length=cutting_length,
             save_to_pickle=save_to_pickle,
             read_from_pickle=read_from_pickle
-            
         )
         
         # train the model
         model = traindata(hyperparameters, device, config, trainloader, validloader)
         
         # test the model
-        acc, mcc, report = test(device, model, testloader)
-        print("Results in test set:")
-        print("--------------------")
-        print("- model:        ", model_label)
-        print("- mode:         ", mode)
-        print("- dataset:      ", data_dir.split("/")[-1])
-        print("- kmer one hot: ", kmer_one_hot)
-        print("--------------------")
-        print('Accuracy: %.3f' % acc)
-        print('MCC: %.3f' % mcc)
-        print(report)
+        metrics = test(device, model, testloader)
+        print_metrics(model_label, mode, data_dir, kmer_one_hot, metrics)
         
 if __name__ == '__main__':
     config = read_config()
-    
     perform(config)

@@ -123,6 +123,27 @@ def load_pickle(fps_x_file, fps_y_file):
         fps_y = pickle.load(f)
     return fps_x, fps_y
 
+def print_metrics(model_label, mode, data_dir, kmer_one_hot, metrics):
+    print("-" * 40)
+    print("Results in test set: ")
+    print("-" * 40)
+    print("model:        ", model_label)
+    print("mode:         ", mode)
+    print("dataset:      ", data_dir.split("/")[-1])
+    if mode == "kmer_one_hot":
+        print("kmer_one_hot: ", kmer_one_hot)
+    print("-" * 40)
+
+    for key in metrics:
+        if key == 'confusion_matrix':
+            print(f"{key:<{20}}= {metrics[key][0]}")
+            print(f"{'':<{20}}  {metrics[key][1]}")
+        else:
+            print(f"{key:<{20}}= {metrics[key]:.3f}")
+            
+    print("-" * 40)
+    
+
 # ----------------------------------------------------------------------------------------------------
 # ------------------------------------ Read the configuration file -----------------------------------
 # ----------------------------------------------------------------------------------------------------
@@ -134,9 +155,7 @@ def read_config(filename='config.json'):
     with open(filename) as f:
         config = json.load(f)
     
-    # --------------------------------------------------------------------------------------------------
-    # ------------------------------------ check if data_dir exists ------------------------------------
-    # --------------------------------------------------------------------------------------------------
+    #  check if data_dir exists 
     current_path = os.getcwd()
     current_path = current_path.replace("/quickstarts", "") # when running from notebook
     
@@ -144,9 +163,7 @@ def read_config(filename='config.json'):
     if not os.path.exists(config['combination']['data_dir']):
         raise ValueError("Data directory does not exist:", config['combination']['data_dir'])    
 
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------- check if model and mode combination is valid -------------------------
-    # --------------------------------------------------------------------------------------------------
+    # check if model and mode combination is valid 
     model_label = config['combination']['model_label']
     mode = config['combination']['mode']
     if(model_label in combinations):
@@ -155,23 +172,17 @@ def read_config(filename='config.json'):
     else:
         raise ValueError('Model label:', model_label, 'not implemented in', combinations.keys())
 
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------- check if it's binary classification ----------------------------------
-    # --------------------------------------------------------------------------------------------------
+    # check if it's binary classification
     loss = config['fixed_vals']['loss_function']
     output_size = config['fixed_vals']['output_size']
     if(loss != "cross_entropy" or output_size != 2):
         raise ValueError(
             'Model is not binary classification, please set loss_function to cross_entropy and output_size to 2')
 
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------- create the cross entropy pytorch object ------------------------------
-    # --------------------------------------------------------------------------------------------------
+    # create the cross entropy pytorch object 
     config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss()
     
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------- create ray tune objects ----------------------------------------------
-    # --------------------------------------------------------------------------------------------------
+    # create ray tune objects
     config['hyperparameter_search_space']["hidden_size"] = tune.choice(config['hyperparameter_search_space']['hidden_size'])
     config['hyperparameter_search_space']["lr"] = tune.choice(config['hyperparameter_search_space']['lr'])
     config['hyperparameter_search_space']["batch_size"] = tune.choice(config['hyperparameter_search_space']['batch_size'])
@@ -181,22 +192,6 @@ def read_config(filename='config.json'):
         config['hyperparameter_search_space']["num_layers"] = tune.choice(config['hyperparameter_search_space']['num_layers'])
     
     return config
-
-
-
-
-def calculate_possibilities():
-    datasets = ['primer', 'h3', 'essential_genes']
-    arr = []
-    for dataset in datasets:
-        for model in combinations:
-            for mode in combinations[model]:
-                comb = model, mode, dataset
-                print(comb)
-                arr.append(comb)
-                
-    print(len(arr))
-    return arr
 
 # ----------------------------------------------------------------------------------------------------
 # ---------------------------------- Auxiliary function for models -----------------------------------

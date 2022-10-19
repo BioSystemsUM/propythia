@@ -158,6 +158,6 @@ def validation(model, device, validloader, loss_function):
             loss = loss_function(output, targets)
             loss_total += loss.item()
 
-    acc, mcc, _ = test(device, model, validloader)
+    metrics = test(device, model, validloader)
 
-    return loss_total / len(validloader), acc, mcc
+    return loss_total / len(validloader), metrics['accuracy'], metrics['mcc']
