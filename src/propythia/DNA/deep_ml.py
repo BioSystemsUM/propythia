@@ -29,16 +29,15 @@ def perform(config):
         kmer_one_hot = config['fixed_vals']['kmer_one_hot']
         hyperparameters = config['hyperparameters']
         
-        # train the model
-        model = traindata(hyperparameters, device, config)
-        
-        # get the test data
-        _, testloader, _, _, _ = prepare_data(
+        trainloader, testloader, validloader, input_size, sequence_length = prepare_data(
             data_dir=data_dir,
             mode=mode,
             batch_size=batch_size,
             k=kmer_one_hot,
         )
+        
+        # train the model
+        model = traindata(hyperparameters, device, config, trainloader, validloader, input_size, sequence_length)
 
         # test the model
         metrics = test(device, model, testloader)

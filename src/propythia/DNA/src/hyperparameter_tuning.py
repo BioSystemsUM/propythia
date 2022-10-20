@@ -48,7 +48,7 @@ def hyperparameter_tuning(device, config):
 
     result = tune.run(
         partial(
-            traindata,
+            prepare_and_train,
             device=device,
             config_from_json=config
         ),
@@ -105,3 +105,21 @@ def hyperparameter_tuning(device, config):
 
     metrics = test(device, best_trained_model, testloader)
     print_metrics(model_label, mode, data_dir, kmer_one_hot, class_weights, metrics)
+
+def prepare_and_train(config, device, config_from_json):
+    
+    seed_everything()
+    
+    data_dir = config_from_json['combination']['data_dir']
+    mode = config_from_json['combination']['mode']
+    kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
+    batch_size = config['batch_size']
+    
+    trainloader, _, validloader, input_size, sequence_length = prepare_data(
+        data_dir=data_dir,
+        mode=mode,
+        batch_size=batch_size,
+        k=kmer_one_hot,
+    )
+    
+    traindata(config, device, config_from_json, trainloader, validloader, input_size, sequence_length)
