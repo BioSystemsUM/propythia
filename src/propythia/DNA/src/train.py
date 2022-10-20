@@ -4,6 +4,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.optim import Adam, SGD
 from .test import test
 from .models import *
+from .prepare_data import prepare_data
 from ray import tune
 import os
 
@@ -12,7 +13,7 @@ sys.path.append("../")
 from utils import seed_everything
 
 
-def traindata(config, device, config_from_json, trainloader, validloader, checkpoint_dir=None):
+def traindata(config, device, config_from_json, checkpoint_dir=None):
     """
     Train the model for a number of epochs.
     :param config: Dictionary of hyperparameters to be tuned.
@@ -25,25 +26,30 @@ def traindata(config, device, config_from_json, trainloader, validloader, checkp
     
     # Fixed values
     do_tuning = config_from_json['do_tuning']
+    data_dir = config_from_json['combination']['data_dir']
+    mode = config_from_json['combination']['mode']
     model_label = config_from_json['combination']['model_label']
+    kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
     output_size = config_from_json['fixed_vals']['output_size']
     optimizer_label = config_from_json['fixed_vals']['optimizer_label']
     epochs = config_from_json['fixed_vals']['epochs']
     patience = config_from_json['fixed_vals']['patience']
     loss_function = config_from_json['fixed_vals']['loss_function']
-    
     last_loss = 100
 
     # Hyperparameters to tune
     hidden_size = config['hidden_size']
     dropout = config['dropout']
     lr = config['lr']
+    batch_size = config['batch_size']
     num_layers = config['num_layers']
-    
-    for x, _ in trainloader:
-        input_size = x.shape[-1]
-        sequence_length = x.shape[1]
-        break
+
+    trainloader, _, validloader, input_size, sequence_length = prepare_data(
+        data_dir=data_dir,
+        mode=mode,
+        batch_size=batch_size,
+        k=kmer_one_hot,
+    )
 
     if model_label == 'mlp':
         model = MLP(input_size, hidden_size, output_size, dropout).to(device)
@@ -132,6 +138,9 @@ def traindata(config, device, config_from_json, trainloader, validloader, checkp
         last_loss = current_loss
         scheduler.step(current_loss)
         if do_tuning:
+            with tune.checkpoint_dir(epoch) as checkpoint_dir:
+                path = os.path.join(checkpoint_dir, "checkpoint")
+                torch.save((model.state_dict(), optimizer.state_dict()), path)
             tune.report(loss=current_loss, accuracy=val_acc, mcc=val_mcc)
         
     if do_tuning == False:
@@ -158,6 +167,6 @@ def validation(model, device, validloader, loss_function):
             loss = loss_function(output, targets)
             loss_total += loss.item()
 
-    metrics = test(device, model, validloader)
+    acc, mcc, _ = test(device, model, validloader)
 
-    return loss_total / len(validloader), metrics['accuracy'], metrics['mcc']
+    return loss_total / len(validloader), acc, mcc

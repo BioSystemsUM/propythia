@@ -1,12 +1,14 @@
 {
     "combination":{
-        "model_label": "cnn",
-        "mode": "one_hot",
-        "data_dir": "essential_genes_100k_cut"
+        "model_label": "mlp",
+        "mode": "descriptor",
+        "data_dir": "essential_genes_100k",
+        "class_weights": [1.0, 2.0]
     },
-    "do_tuning": false,
+    "do_tuning": true,
+    "train_all_combinations": false,
     "fixed_vals":{
-        "epochs": 1000,
+        "epochs": 500,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
         "patience": 4,
@@ -14,17 +16,13 @@
         "cpus_per_trial": 2, 
         "gpus_per_trial": 2,
         "num_samples": 10,
-        "kmer_one_hot": 4,
-        "dataset_file_format": "csv",
-        "cutting_length": 2000,
-        "save_to_pickle": false,
-        "read_from_pickle": false
+        "kmer_one_hot": 3
     },
     "hyperparameters": {
         "hidden_size": 32,
         "lr": 1e-3,
         "batch_size": 32,
-        "dropout": 0.3,
+        "dropout": 0.35,
         "num_layers": 1
     },
     "hyperparameter_search_space": {

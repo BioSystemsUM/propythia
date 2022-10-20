@@ -13,7 +13,6 @@ Email:
 
 from utils import checker, checker_cut
 import pandas as pd
-import os
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 
 class ReadDNA:
@@ -41,13 +40,6 @@ class ReadDNA:
         """
         labels = []
         sequences = []
-
-        if not os.path.isfile(filename):
-            raise ValueError("Error! File does not exist:", filename)
-
-        if 'fasta' not in filename:
-            raise ValueError("Error! File must be in fasta format:", filename)
-
         with open(filename) as handle:
             for key, sequence in SimpleFastaParser(handle):
                 # get label and check if it's valid
@@ -79,13 +71,6 @@ class ReadDNA:
         There must be a column with the sequence.
         If the user wants the labels, he must specify the with_labels parameter as True and the column with the labels must be named "label".
         """
-        
-        if not os.path.isfile(filename):
-            raise ValueError("Error! File does not exist:", filename)
-        
-        if 'csv' not in filename:
-            raise ValueError("Error! File must be in csv format:", filename)
-                
         dataset = pd.read_csv(filename)
         
         # check column names

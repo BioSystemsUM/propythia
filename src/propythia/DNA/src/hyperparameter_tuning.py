@@ -11,7 +11,7 @@ from functools import partial
 
 import sys
 sys.path.append("../")
-from utils import seed_everything, print_metrics
+from utils import seed_everything
 
 def hyperparameter_tuning(device, config):
     """
@@ -27,12 +27,9 @@ def hyperparameter_tuning(device, config):
     model_label = config['combination']['model_label']
     data_dir = config['combination']['data_dir']
     mode = config['combination']['mode']
+    class_weights = config['combination']['class_weights']
     kmer_one_hot = config['fixed_vals']['kmer_one_hot']
     output_size = config['fixed_vals']['output_size']
-    dataset_file_format = config['fixed_vals']['dataset_file_format']
-    save_to_pickle = config['fixed_vals']['save_to_pickle']
-    cutting_length = config['fixed_vals']['cutting_length']
-    read_from_pickle = config['fixed_vals']['read_from_pickle']
 
     seed_everything()
 
@@ -51,7 +48,7 @@ def hyperparameter_tuning(device, config):
 
     result = tune.run(
         partial(
-            prepare_and_train,
+            traindata,
             device=device,
             config_from_json=config
         ),
@@ -68,21 +65,12 @@ def hyperparameter_tuning(device, config):
     print("Best trial final validation accuracy:", best_trial.last_result["accuracy"])
     print("Best trial final validation mcc:", best_trial.last_result["mcc"])
 
-    trainloader, testloader, _ = prepare_data(
+    _, testloader, _, input_size, sequence_length = prepare_data(
         data_dir=data_dir,
         mode=mode,
         batch_size=best_trial.config['batch_size'],
         k=kmer_one_hot,
-        dataset_file_format=dataset_file_format,
-        cutting_length=cutting_length,
-        save_to_pickle=save_to_pickle,
-        read_from_pickle=read_from_pickle
     )
-    
-    for x, _ in trainloader:
-        input_size = x.shape[-1]
-        sequence_length = x.shape[1]
-        break
     
     if model_label == 'mlp':
         best_trained_model = MLP(input_size, best_trial.config['hidden_size'], output_size, best_trial.config['dropout'])
@@ -115,30 +103,14 @@ def hyperparameter_tuning(device, config):
         best_checkpoint_dir, "checkpoint"))
     best_trained_model.load_state_dict(model_state)
 
-    metrics = test(device, best_trained_model, testloader)
-    print_metrics(model_label, mode, data_dir, kmer_one_hot, metrics)
-
-
-def prepare_and_train(config, device, config_from_json):
-    
-    data_dir = config_from_json['combination']['data_dir']
-    mode = config_from_json['combination']['mode']
-    kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
-    dataset_file_format = config_from_json['fixed_vals']['dataset_file_format']
-    save_to_pickle = config_from_json['fixed_vals']['save_to_pickle']
-    cutting_length = config_from_json['fixed_vals']['cutting_length']
-    read_from_pickle = config_from_json['fixed_vals']['read_from_pickle']
-    batch_size = config['batch_size']
-    
-    trainloader, _, validloader = prepare_data(
-        data_dir=data_dir,
-        mode=mode,
-        batch_size=batch_size,
-        k=kmer_one_hot,
-        dataset_file_format=dataset_file_format,
-        cutting_length=cutting_length,
-        save_to_pickle=save_to_pickle,
-        read_from_pickle=read_from_pickle
-    )
-    
-    traindata(config, device, config_from_json, trainloader, validloader)
+    acc, mcc, report = test(device, best_trained_model, testloader)
+    print("Results in test set:")
+    print("--------------------")
+    print("- model:        ", model_label)
+    print("- mode:         ", mode)
+    print("- dataset:      ", data_dir.split("/")[-1])
+    print("- class weights:", class_weights)
+    print("--------------------")
+    print('Accuracy: %.3f' % acc)
+    print('MCC: %.3f' % mcc)
+    print(report)

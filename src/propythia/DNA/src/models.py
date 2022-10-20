@@ -3,7 +3,7 @@ from torch import nn
 
 import sys
 sys.path.append("../")
-from utils import seed_everything, calc_maxpool_output
+from utils import seed_everything
 
 seed_everything()
 
@@ -188,3 +188,23 @@ class CNN_GRU(nn.Module):
         out = out.reshape(out.shape[0], -1)
         y = self.last_linear(out)
         return y
+
+
+# Auxiliary function
+
+def calc_maxpool_output(hidden_size, sequence_length):
+    conv1_padding = 0
+    conv1_dilation = 1
+    conv1_kernel_size = 12
+    conv1_stride = 1
+
+    l_out = ((sequence_length + 2*conv1_padding - conv1_dilation*(conv1_kernel_size-1) - 1)/conv1_stride + 1)
+    maxpool_padding = 0
+    maxpool_dilation = 1
+    maxpool_stride = 5
+    maxpool_kernel_size = 12
+    max_pool_output = int((l_out+2*maxpool_padding-maxpool_dilation*(maxpool_kernel_size-1)-1)/maxpool_stride+1)
+
+    max_pool_output *= hidden_size
+    
+    return max_pool_output
