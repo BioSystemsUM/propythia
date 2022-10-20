@@ -3,12 +3,12 @@
         "model_label": "mlp",
         "mode": "descriptor",
         "data_dir": "essential_genes_100k",
-        "class_weights": [1.0, 2.0]
+        "class_weights": [1.0, 1.0]
     },
     "do_tuning": true,
     "train_all_combinations": false,
     "fixed_vals":{
-        "epochs": 500,
+        "epochs": 1000,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
         "patience": 4,

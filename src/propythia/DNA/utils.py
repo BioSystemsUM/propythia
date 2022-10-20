@@ -6,6 +6,9 @@ import math
 import numpy as np
 from itertools import product
 import torch
+import json
+from torch import nn
+from ray import tune
 
 ALPHABET = 'ACGT'
 ALPHABET_CUT = 'ACGTN'
@@ -30,6 +33,28 @@ combinations = {
     'cnn_gru': ['one_hot', 'chemical', 'kmer_one_hot'],
     'cnn_bi_gru': ['one_hot', 'chemical', 'kmer_one_hot']
 }
+
+def print_metrics(model_label, mode, data_dir, kmer_one_hot, class_weights, metrics):
+    print("-" * 40)
+    print("Results in test set: ")
+    print("-" * 40)
+    print("model:        ", model_label)
+    print("mode:         ", mode)
+    print("dataset:      ", data_dir.split("/")[-1])
+    if mode == "kmer_one_hot":
+        print("kmer_one_hot: ", kmer_one_hot)
+    if "essential_genes" in data_dir:
+        print("class_weights:", class_weights)
+    print("-" * 40)
+
+    for key in metrics:
+        if key == 'confusion_matrix':
+            print(f"{key:<{20}}= {metrics[key][0]}")
+            print(f"{'':<{20}}  {metrics[key][1]}")
+        else:
+            print(f"{key:<{20}}= {metrics[key]:.3f}")
+
+    print("-" * 40)
 
 # -----------------------------------------------------------------------------
 def seed_everything(seed=42):
@@ -107,22 +132,72 @@ def calculate_kmer_list(sequence, k):
         l.append(sequence[i:i+k])
     return l
 
+def read_config(device, filename='config.json'):
+    """
+    Reads the configuration file and validates the values. Returns the configuration.
+    """
+    with open(filename) as f:
+        config = json.load(f)
+    
+    # ------------------------------------ check if data_dir exists ------------------------------------
+    current_path = os.getcwd()
+    current_path = current_path.replace("/notebooks", "") # when running from notebook
+    
+    config['combination']['data_dir'] = current_path + '/datasets/' + config['combination']['data_dir']
+    if not os.path.exists(config['combination']['data_dir']):
+        raise ValueError("Data directory does not exist:", config['combination']['data_dir'])    
+
+    # --------------------------- check if model and mode combination is valid -------------------------
+    model_label = config['combination']['model_label']
+    mode = config['combination']['mode']
+    if(model_label in combinations):
+        if(mode not in combinations[model_label]):
+            raise ValueError(model_label, 'does not support', mode, ', please choose one of', combinations[model_label])
+    else:
+        raise ValueError('Model label:', model_label, 'not implemented in', combinations.keys())
+
+    # --------------------------- check if it's binary classification ----------------------------------
+    loss = config['fixed_vals']['loss_function']
+    output_size = config['fixed_vals']['output_size']
+    if(loss != "cross_entropy" or output_size != 2):
+        raise ValueError(
+            'Model is not binary classification, please set loss_function to cross_entropy and output_size to 2')
+
+    # --------------------------- create the cross entropy pytorch object ------------------------------
+    class_weights = torch.tensor(config['combination']['class_weights']).to(device)
+    config['fixed_vals']['loss_function'] = nn.CrossEntropyLoss(weight=class_weights)
+    
+    # --------------------------- create ray tune objects ----------------------------------------------
+    config['hyperparameter_search_space']["hidden_size"] = tune.choice(config['hyperparameter_search_space']['hidden_size'])
+    config['hyperparameter_search_space']["lr"] = tune.choice(config['hyperparameter_search_space']['lr'])
+    config['hyperparameter_search_space']["batch_size"] = tune.choice(config['hyperparameter_search_space']['batch_size'])
+    config['hyperparameter_search_space']["dropout"] = tune.choice(config['hyperparameter_search_space']['dropout'])
+    
+    if config['combination']['model_label'] not in ['mlp', 'cnn']:
+        config['hyperparameter_search_space']["num_layers"] = tune.choice(config['hyperparameter_search_space']['num_layers'])
+    
+    return config
+
 # ----------------------------------------------------------------------------------------------------
-# ------------------------------------ Calculate all possibilites ------------------------------------
+# ---------------------------------- Auxiliary function for models -----------------------------------
 # ----------------------------------------------------------------------------------------------------
 
-def calculate_possibilities():
-    datasets = ['primer', 'h3', 'essential_genes']
-    arr = []
-    for dataset in datasets:
-        for model in combinations:
-            for mode in combinations[model]:
-                comb = model, mode, dataset
-                print(comb)
-                arr.append(comb)
-                
-    print(len(arr))
-    return arr
+def calc_maxpool_output(hidden_size, sequence_length):
+    conv1_padding = 0
+    conv1_dilation = 1
+    conv1_kernel_size = 12
+    conv1_stride = 1
+
+    l_out = ((sequence_length + 2*conv1_padding - conv1_dilation*(conv1_kernel_size-1) - 1)/conv1_stride + 1)
+    maxpool_padding = 0
+    maxpool_dilation = 1
+    maxpool_stride = 5
+    maxpool_kernel_size = 12
+    max_pool_output = int((l_out+2*maxpool_padding-maxpool_dilation*(maxpool_kernel_size-1)-1)/maxpool_stride+1)
+
+    max_pool_output *= hidden_size
+    
+    return max_pool_output
 
 
 # ----------------------------------------------------------------------------------------------------

@@ -104,8 +104,8 @@ class DNAEncoder:
         """
         if(self.sequences is not None):
             res = []
+            d = calculate_kmer_onehot(k)
             for sequence in self.sequences:
-                d = calculate_kmer_onehot(k)
                 l = calculate_kmer_list(sequence, k)
                 res.append(np.array([d[i] for i in l]))
             return np.array(res)

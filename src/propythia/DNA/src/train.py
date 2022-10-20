@@ -50,7 +50,7 @@ def traindata(config, device, config_from_json, checkpoint_dir=None):
         batch_size=batch_size,
         k=kmer_one_hot,
     )
-
+    
     if model_label == 'mlp':
         model = MLP(input_size, hidden_size, output_size, dropout).to(device)
     elif model_label == 'cnn':
@@ -167,6 +167,6 @@ def validation(model, device, validloader, loss_function):
             loss = loss_function(output, targets)
             loss_total += loss.item()
 
-    acc, mcc, _ = test(device, model, validloader)
+    metrics = test(device, model, validloader)
 
-    return loss_total / len(validloader), acc, mcc
+    return loss_total / len(validloader), metrics['accuracy'], metrics['mcc']
