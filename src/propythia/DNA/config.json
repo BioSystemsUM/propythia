@@ -6,17 +6,16 @@
         "class_weights": [1.0, 1.0]
     },
     "do_tuning": true,
-    "train_all_combinations": false,
     "fixed_vals":{
         "epochs": 1000,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
-        "patience": 4,
+        "patience": 2,
         "output_size": 2,
         "cpus_per_trial": 2, 
         "gpus_per_trial": 2,
         "num_samples": 10,
-        "kmer_one_hot": 3
+        "kmer_one_hot": 4
     },
     "hyperparameters": {
         "hidden_size": 32,

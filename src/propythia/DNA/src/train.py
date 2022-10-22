@@ -105,9 +105,12 @@ def traindata(config, device, config_from_json, trainloader, validloader, input_
         current_loss, val_acc, val_mcc = validation(model, device, validloader, loss_function)
         print('The Current Loss:', current_loss)
 
-        if current_loss >= last_loss:
+        if current_loss >= last_loss or torch.isnan(loss):
             trigger_times += 1
-            print('trigger Times:', trigger_times)
+            if torch.isnan(loss):
+                print('NAN loss! trigger_times:', trigger_times)
+            else:
+                print('trigger Times:', trigger_times)
 
             if trigger_times >= patience:
                 print('Early stopping!\nStart to test process.')

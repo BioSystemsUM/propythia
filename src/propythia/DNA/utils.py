@@ -57,7 +57,7 @@ def print_metrics(model_label, mode, data_dir, kmer_one_hot, class_weights, metr
     print("-" * 40)
 
 # -----------------------------------------------------------------------------
-def seed_everything(seed=42):
+def seed_everything(seed=24):
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
@@ -118,10 +118,10 @@ def make_kmer_dict(k):
         raise ValueError
 
 def calculate_kmer_onehot(k):
-    nucleotides = [''.join(i) for i in product(ALPHABET, repeat=k)]
+    nucleotides = [''.join(i) for i in product(ALPHABET_CUT, repeat=k)]
     encoded = []
-    for i in range(4 ** k):
-        encoded.append(np.zeros(4 ** k).tolist())
+    for i in range(5 ** k):
+        encoded.append(np.zeros(5 ** k).tolist())
         encoded[i][i] = 1.0
         
     return {nucleotides[i]: encoded[i] for i in range(len(nucleotides))}
