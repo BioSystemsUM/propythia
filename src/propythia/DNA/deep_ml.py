@@ -46,5 +46,3 @@ def perform(config):
 if __name__ == '__main__':
     config = read_config(device)
     perform(config)
-    
-    config['combination']['class_weights'] = [1.0, 1.0]

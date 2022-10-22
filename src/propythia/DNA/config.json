@@ -1,9 +1,9 @@
 {
     "combination":{
-        "model_label": "mlp",
-        "mode": "descriptor",
-        "data_dir": "essential_genes_100k",
-        "class_weights": [1.0, 1.0]
+        "model_label": "cnn",
+        "mode": "one_hot",
+        "data_dir": "essential_genes_100k_cut",
+        "class_weights": [1.0, 4.0]
     },
     "do_tuning": true,
     "fixed_vals":{

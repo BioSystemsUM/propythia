@@ -57,7 +57,7 @@ def print_metrics(model_label, mode, data_dir, kmer_one_hot, class_weights, metr
     print("-" * 40)
 
 # -----------------------------------------------------------------------------
-def seed_everything(seed=24):
+def seed_everything(seed=42):
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
