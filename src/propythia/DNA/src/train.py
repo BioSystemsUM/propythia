@@ -82,6 +82,7 @@ def traindata(config, device, config_from_json, trainloader, validloader, input_
 
     # ------------------------------------------------------------------------------------------------
 
+    trigger_times = 0
     for epoch in range(1, epochs+1):
         model.train()
 

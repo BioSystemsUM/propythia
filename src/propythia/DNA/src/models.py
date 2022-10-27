@@ -3,9 +3,7 @@ from torch import nn
 
 import sys
 sys.path.append("../")
-from utils import seed_everything, calc_maxpool_output
-
-seed_everything()
+from utils import calc_maxpool_output
 
 class MLP(nn.Module):
     """

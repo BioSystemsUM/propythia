@@ -1,21 +1,21 @@
 {
     "combination":{
-        "model_label": "cnn",
-        "mode": "one_hot",
+        "model_label": "bi_lstm",
+        "mode": "chemical",
         "data_dir": "essential_genes_100k_cut",
-        "class_weights": [1.0, 4.0]
+        "class_weights": [1.0, 1.0]
     },
     "do_tuning": true,
     "fixed_vals":{
-        "epochs": 1000,
+        "epochs": 500,
         "optimizer_label": "adam",
         "loss_function": "cross_entropy",
         "patience": 2,
         "output_size": 2,
         "cpus_per_trial": 2, 
         "gpus_per_trial": 2,
-        "num_samples": 10,
-        "kmer_one_hot": 4
+        "num_samples": 5,
+        "kmer_one_hot": 2
     },
     "hyperparameters": {
         "hidden_size": 32,

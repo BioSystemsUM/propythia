@@ -11,11 +11,10 @@ from src.prepare_data import prepare_data
 from src.test import test
 from src.hyperparameter_tuning import hyperparameter_tuning
 from src.train import traindata
-from utils import print_metrics, seed_everything, read_config
+from utils import print_metrics, read_config
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3,4,5'
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-seed_everything()
 
 def perform(config):
     if config['do_tuning']:

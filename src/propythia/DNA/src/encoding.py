@@ -12,12 +12,10 @@ import sys
 from typing import Union
 import numpy as np
 sys.path.append('../')
-from utils import calculate_kmer_onehot, calculate_kmer_list, seed_everything
+from utils import calculate_kmer_onehot, calculate_kmer_list
 
 class DNAEncoder:
     def __init__(self, data: Union[str, np.ndarray]):
-        
-        seed_everything()
         
         if(isinstance(data, str)):
             self.dna_sequence = data.strip().upper()

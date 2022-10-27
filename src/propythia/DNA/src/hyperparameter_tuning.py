@@ -108,8 +108,6 @@ def hyperparameter_tuning(device, config):
 
 def prepare_and_train(config, device, config_from_json):
     
-    seed_everything()
-    
     data_dir = config_from_json['combination']['data_dir']
     mode = config_from_json['combination']['mode']
     kmer_one_hot = config_from_json['fixed_vals']['kmer_one_hot']
