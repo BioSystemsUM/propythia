@@ -19,6 +19,9 @@ import pandas as pd
 from joblib import Parallel, delayed
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
+import torch
+import esm
+from transformers import AutoTokenizer, AutoModel
 
 
 class Encoding:
@@ -44,7 +47,7 @@ class Encoding:
 
         self.col = col
         self.padded = False
-        self.result.drop_duplicates(subset = self.col, keep='first', inplace=True)
+        self.result.drop_duplicates(subset=self.col, keep='first', inplace=True)
 
         for path in [os.path.split(__file__)[0]]:
             if os.path.exists(os.path.join(path, str(''))):
@@ -69,16 +72,16 @@ class Encoding:
             alphabet = 'X' + alphabet
         char_to_int = dict((c, i) for i, c in enumerate(alphabet))  # dicionarios de hot encoding
         int_to_char = dict((i, c) for i, c in enumerate(alphabet))  # dicionarios de reversão
-
         try:
             with Parallel(n_jobs=n_jobs) as parallel:
                 res = parallel(
-                    delayed(seq_padding)(seq, self.col, char_to_int, int_to_char, seq_len, padding_truncating) for seq
+                    delayed(seq_padding)(seq, char_to_int, int_to_char, seq_len, padding_truncating) for seq
                     in self.result[self.col])
-            res = pd.DataFrame(res)
+            self.result = self.result.assign(padded_sequence=res)
+            return self.result
         except:
             raise Exception('Sequences not preprocessed. Run sequence preprocessing')
-        return res
+
 
     def get_hot_encoded(self, alphabet: str = "XARNDCEQGHILKMFPSTWYV", n_jobs: int = 4):
         """
@@ -96,10 +99,10 @@ class Encoding:
         char_to_int = dict((c, i) for i, c in enumerate(alphabet))  # dicionario de hot encoding
         try:
             with Parallel(n_jobs=n_jobs) as parallel:
-                res = parallel(delayed(seq_hot_encoded)(seq, self.col, char_to_int) for seq in self.result[self.col])
-            res = pd.DataFrame(res)
-            if self.padded: res.drop_duplicates(subset='padded_sequence', keep='first', inplace=True)
-            return res
+                res = parallel(delayed(seq_hot_encoded)(seq, char_to_int) for seq in self.result[self.col])
+
+            self.result = self.result.assign(One_hot_encoding=res)
+            return self.result
         except:
             raise Exception('Amino acids not included in the alphabet found. Please run preprocessing methods.')
 
@@ -120,14 +123,21 @@ class Encoding:
             alphabet = 'X' + alphabet
         char_to_int = dict((c, i) for i, c in enumerate(alphabet))  # dicionarios de hot encoding
         int_to_char = dict((i, c) for i, c in enumerate(alphabet))  # dicionarios de reversão
-        try:
-            with Parallel(n_jobs=n_jobs) as parallel:
-                res = parallel(delayed(seq_padded_hot)(seq, self.col, char_to_int, int_to_char, seq_len,
-                                                       padding_truncating) for seq in self.result[self.col])
-            res = pd.DataFrame(res)
-            return res
-        except:
-            raise Exception('Amino acids not included in the alphabet found. Please run preprocessing methods.')
+        # try:
+        with Parallel(n_jobs=n_jobs) as parallel:
+            res = parallel(delayed(seq_padded_hot)(seq, char_to_int, int_to_char, seq_len,
+                                                   padding_truncating) for seq in self.result[self.col])
+        pad_seques, hot_enc_seqs = [], []
+        for elemt in res:
+            pad_seques.append(elemt[1])
+            hot_enc_seqs.append(elemt[0])
+
+        self.result = self.result.assign(pad_seques=pad_seques)
+        self.result = self.result.assign(One_hot_encoding=hot_enc_seqs)
+        return self.result
+
+        # except:
+        #     raise Exception('Amino acids not included in the alphabet found. Please run preprocessing methods.')
 
     def get_blosum(self, blosum: str = 'blosum62', n_jobs: int = 4):
         """
@@ -144,7 +154,6 @@ class Encoding:
 
         :return: Dataframe with blosum encoding for each sequence
         """
-
         if blosum == 'blosum62':
             encoding = pd.read_csv(self.path + '/adjuv_functions/features_functions/data/blosum62.csv',
                                    index_col=0).to_dict()
@@ -156,10 +165,9 @@ class Encoding:
         try:
             if isinstance(encoding, dict):
                 with Parallel(n_jobs=n_jobs) as parallel:
-                    res = parallel(delayed(seq_blosum_encoding)(seq, self.col, encoding) for seq in self.result[self.col])
-                res = pd.DataFrame(res)
-                if self.padded: res.drop_duplicates(subset='padded_sequence', keep='first', inplace=True)
-                return res
+                    res = parallel(delayed(seq_blosum_encoding)(seq, encoding) for seq in self.result[self.col])
+                self.result = self.result.assign(blosum=res)
+                return self.result
             else:
                 raise Exception('The provided encoding is not a dictionary')
         except:
@@ -179,17 +187,17 @@ class Encoding:
         :return: Dataframe with the Fisher Transform encoding for each sequence.
         """
         encoding = pd.read_csv(self.path + '/adjuv_functions/features_functions/data/nlf.csv', index_col=0).to_dict()
-        try:
-            if isinstance(encoding, dict):
-                with Parallel(n_jobs=n_jobs) as parallel:
-                    res = parallel(delayed(seq_nlf_encoding)(seq, self.col, encoding) for seq in self.result[self.col])
-                res = pd.DataFrame(res)
-                if self.padded: res.drop_duplicates(subset='padded_sequence', keep='first', inplace=True)
-                return res
-            else:
-                raise Exception('The provided encoding is not valid')
-        except:
-            raise Exception('Sequences not preprocessed. Run sequence preprocessing')
+
+        # try:
+        if isinstance(encoding, dict):
+            with Parallel(n_jobs=n_jobs) as parallel:
+                res = parallel(delayed(seq_nlf_encoding)(seq, encoding) for seq in self.result[self.col])
+            self.result = self.result.assign(nlf=res)
+            return self.result
+        else:
+            raise Exception('The provided encoding is not valid')
+        # except:
+        #     raise Exception('Sequences not preprocessed. Run sequence preprocessing')
 
     def get_zscale(self, n_jobs: int = 4):
         """
@@ -206,44 +214,107 @@ class Encoding:
         try:
             if isinstance(encoding, dict):
                 with Parallel(n_jobs=n_jobs) as parallel:
-                    res = parallel(delayed(seq_zscale_encoding)(seq, self.col, encoding) for seq in self.result[self.col])
-                res = pd.DataFrame(res)
-                if self.padded: res.drop_duplicates(subset='padded_sequence', keep='first', inplace=True)
-                return res
+                    res = parallel(
+                        delayed(seq_zscale_encoding)(seq, encoding) for seq in self.result[self.col])
+                self.result = self.result.assign(zscale=res)
+                return self.result
             else:
                 raise Exception('The provided encoding is not valid')
         except:
             raise Exception('Sequences not preprocessed. Run sequence preprocessing')
 
-    def get_all(self, alphabet: str = "XARNDCEQGHILKMFPSTWYV", seq_len: int = 600, padding_truncating='post',
-                blosum: str = 'blosum62', use_padded: bool = False, n_jobs: int = 4):
+    def get_esm(self, v_esm : str = 'esm2_150', batch : int = 4):
         """
-        Calculate all encoding functions for the protein sequences.
+        This method encodes each amino acid of the sequence by the ESM model transformer.
+        More information available in: https://github.com/facebookresearch/esm
 
-        :param alphabet: The alphabet of aminoacids to be used.
-        :param seq_len: The maximum length for all sequences. By default the length is 600 amino acids
-        :param padding_truncating: 'pre' or 'post' pad either before or after each sequence, also removes values from sequences larger than seq_len. By default padding is after each sequence.
-        :param blosum: blosum matrix to use either 'blosum62' or 'blosum50'. by default 'blosum62'
-        :param use_padded: A bool argument, if true it uses the padded sequences for the one-hot, blosum and z-scale encoding.
-        :param n_jobs: number of CPU cores to be used. Default used is 4 CPU cores
-        :return: Dataframe with all encodings for each sequence.
+        :param v_esm: Version of the esm model
+                    -'esm2_150' - model ESM2 with 150M parameters
+                    -'esm2_650' - model ESM2 with 650M parameters
+                    -'esm_1b' - model ESM-1b
+        :param batch: number of sequences to process by batch (WARNING: for 16 gb of ram, 2 sequences per batch is
+                        recommended)
+        :return: Dataframe with the ESM encoding for each sequence.
         """
-        if use_padded:
-            self.result = self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',
-                                            on=self.col)
-            self.col = 'padded_sequence'
-            self.padded = True
+        if v_esm == 'esm2_150':
+            layer = 30
+            model, alphabet = esm.pretrained.esm2_t30_150M_UR50D()
+        elif v_esm == 'esm_1b':
+            layer = 33
+            model, alphabet = esm.pretrained.esm1b_t33_650M_UR50S()
+        elif v_esm == 'esm2_650':
+            layer = 33
+            model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
         else:
-            self.result = self.result.merge(self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs), how='left', on=self.col)
-            self.result = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
-        self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
-        self.result = self.result.merge(self.get_nlf(n_jobs), how='left', on=self.col)
-        self.result = self.result.merge(self.get_zscale(n_jobs), how='left', on=self.col)
+            raise Exception('ESM model not available')
 
+        alphabet = alphabet
+        batch_converter = alphabet.get_batch_converter()
+        model.eval()
+        feature = []
+        sequences =  self.result[self.col].tolist()
+        sequences = [(str(seq_index), sequences[seq_index]) for seq_index in range(len(sequences))]
+        for index in range(0, len(sequences), batch): #it has to run in batch, otherwise no 754 gb of ram not enought
+            representations = {}
+            print(str(index) + '/' + str(len(sequences)))
+            if index + batch <= len(sequences):
+                seq = sequences[index: index + batch]
+            else:
+                seq = sequences[index: len(sequences)]
+
+            batch_labels, batch_strs, batch_tokens = batch_converter(seq)
+            # Extract per-residue representations (on CPU)
+            with torch.no_grad():
+                results = model(batch_tokens, repr_layers=[layer], return_contacts=True)
+            representations = results["representations"][layer]
+
+            for seq_num in range(len(representations)):
+                seq_emd = representations[seq_num].numpy()
+                feature.append(seq_emd)
+
+        self.result = self.result.assign(esm=feature)
         return self.result
 
-    def get_adaptable(self, list_of_functions : list, alphabet: str = "XARNDCEQGHILKMFPSTWYV", seq_len: int = 600, padding_truncating='post',
-                blosum: str = 'blosum62', use_padded: bool = False, n_jobs: int = 4):
+    def get_protbert(self, batch : int =4):
+        """
+        This method encodes each amino acid of the sequence by the ProtBert model transformer.
+        More information available in: https://github.com/agemagician/ProtTrans
+
+        :param batch: number of sequences to process by batch (WARNING: for 16 gb of ram, 4 sequences per batch is
+                        recommended)
+        :return: Dataframe with the ProtBert encoding for each sequence.
+        """
+        tokenizer = AutoTokenizer.from_pretrained("Rostlab/prot_bert", do_lower_case=False)
+        model = AutoModel.from_pretrained("Rostlab/prot_bert")
+
+        device = torch.device('cpu')
+        model = model.eval()
+        features = []
+        for index in range(0, self.result[self.col].shape[0], batch):
+            print(str(index) + '/' + str(self.result[self.col].shape[0]))
+            if index + batch <= self.result[self.col].shape[0]:
+                seq = self.result[self.col][index: index + batch].tolist()
+            else:
+                seq = self.result[self.col][index: self.result[self.col].shape[0]].tolist()
+
+            ids = tokenizer.batch_encode_plus(seq, add_special_tokens=True)
+            batch_tokens = torch.tensor(ids['input_ids']).to(device)
+            attention_mask = torch.tensor(ids['attention_mask']).to(device)
+            with torch.no_grad():
+                embedding = model(input_ids=batch_tokens, attention_mask=attention_mask)[0]
+            embedding = embedding.cpu().numpy()
+
+            for seq_num in range(len(embedding)):
+                seq_len = (attention_mask[seq_num] == 1).sum()
+                seq_emd = embedding[seq_num][1:seq_len - 1]
+                features.append(seq_emd)
+
+        self.result = self.result.assign(protbert=features)
+        return self.result
+
+    def get_adaptable(self, list_of_functions: list, alphabet: str = "XARNDCEQGHILKMFPSTWYV", seq_len: int = 600,
+                      padding_truncating='post',
+                      blosum: str = 'blosum62', use_padded: bool = True, v_esm : str = 'esm2_150', batch : int = 4, n_jobs: int = 4):
         """
         It allows to run a selected set of encoding functions for the protein sequences.
 
@@ -259,18 +330,19 @@ class Encoding:
 
         for function in list_of_functions:
             if function == 1:
-                self.result = self.result.merge(self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
+                self.result = self.get_seq_pad(seq_len, alphabet, padding_truncating, n_jobs)
                 if use_padded: self.col = 'padded_sequence'
-            if function == 2: self.result  = self.result.merge(self.get_hot_encoded(alphabet, n_jobs), how='left', on=self.col)
-            if function == 3: self.result = self.result.merge(self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs), how='left',on=self.col)
-            if function == 4: self.result = self.result.merge(self.get_blosum(blosum, n_jobs), how='left', on=self.col)
-            if function == 5: self.result = self.result.merge(self.get_nlf(n_jobs), how='left', on=self.col)
-            if function == 6: self.result = self.result.merge(self.get_zscale(n_jobs), how='left', on=self.col)
-            if function == 7: self.get_all(alphabet, seq_len, padding_truncating, blosum, use_padded, n_jobs)
-
+            if function == 2: self.get_hot_encoded(alphabet, n_jobs)
+            if function == 3: self.get_pad_and_hot_encoding(seq_len, alphabet, padding_truncating, n_jobs)
+            if function == 4: self.get_blosum(blosum, n_jobs)
+            if function == 5: self.get_nlf(n_jobs)
+            if function == 6: self.get_zscale(n_jobs)
+            if function == 7: self.get_esm(v_esm,batch)
+            if function == 8: self.get_protbert(batch)
         return self.result
 
-def seq_blosum_encoding(ProteinSequence: str, col: str, encoding: dict):
+
+def seq_blosum_encoding(ProteinSequence: str, encoding: dict):
     """
     BLOSUM62 is a substitution matrix that specifies the similarity of one amino acid to another by means of a score.
     This score reflects the frequency of substitutions found from studying protein sequence conservation
@@ -281,15 +353,13 @@ def seq_blosum_encoding(ProteinSequence: str, col: str, encoding: dict):
     at each position of the sequence. This produces 24*seqlen matrix.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param encoding: dict with the encoding. Keys are the aminoacid residues and values the encoding.
     :return: dict form with blosum encoding
     """
-    res = {col: ProteinSequence}
-    res['blosum'] = [list(encoding[i].values()) for i in ProteinSequence]
-    return res
+    return [list(encoding[i].values()) for i in ProteinSequence]
 
-def seq_nlf_encoding(ProteinSequence: str, col: str, encoding : dict):
+
+def seq_nlf_encoding(ProteinSequence: str, encoding: dict):
     """
     Method that takes many physicochemical properties and transforms them using a Fisher Transform (similar to a PCA)
     creating a smaller set of features that can describe the amino acid just as well.
@@ -300,17 +370,13 @@ def seq_nlf_encoding(ProteinSequence: str, col: str, encoding : dict):
     This function just receives 20aa letters, therefore preprocessing is required.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param encoding: dict with the encoding. Keys are the aminoacid residues and values the encoding.
     :return: Dict form with the Fisher Transform encoding for the sequence.
     """
-    res = {col: ProteinSequence}
-    ProteinSequence = ProteinSequence.replace('X','')
-    res['nlf'] = [list(encoding[i].values()) for i in ProteinSequence]
-    return res
+    return [list(encoding[i].values()) for i in ProteinSequence]
 
 
-def seq_zscale_encoding(ProteinSequence : str, col : str, encoding):
+def seq_zscale_encoding(ProteinSequence: str, encoding):
     """
     This method encodes which amino acid of the sequence into a Z-scales. Each Z scale represent an amino-acid property:
     Z1: Lipophilicity
@@ -319,22 +385,18 @@ def seq_zscale_encoding(ProteinSequence : str, col : str, encoding):
     Z4 and Z5: They relate electronegativity, heat of formation, electrophilicity and hardness.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param encoding: dict with the encoding. Keys are the aminoacid residues and values the encoding.
     :return: dict form with the Z-scale encoding for the sequence.
     """
-    res = {col: ProteinSequence}
-    res['zscale'] = [encoding[i] for i in ProteinSequence]
-    return res
+    return [encoding[i] for i in ProteinSequence]
 
 
-def seq_padding(ProteinSequence : str, col: str, char_to_int: dict, int_to_char: dict, seq_len: int,
+def seq_padding(ProteinSequence: str, char_to_int: dict, int_to_char: dict, seq_len: int,
                 padding_truncating: str = 'post'):
     """
     This methods performs the padding of the sequence.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param char_to_int: dict with the encoding. Keys are the aminoacid residues and values the corresponding int.
     :param int_to_char: dict with the encoding. Keys are the corresponding int and the the values aminoacid residues.
     :param seq_len: The maximum length for all sequences. By default the length is 600 amino acids.
@@ -348,17 +410,14 @@ def seq_padding(ProteinSequence : str, col: str, char_to_int: dict, int_to_char:
 
     char_paded = [int_to_char[i] for i in list_of_sequences_length[0]]
     pad_aa = ''.join(char_paded)
-    res = {col: ProteinSequence}
-    res['padded_sequence'] = pad_aa
-    return res
+    return pad_aa
 
 
-def seq_hot_encoded(ProteinSequence : str, col: str, char_to_int: dict):
+def seq_hot_encoded(ProteinSequence: str, char_to_int: dict):
     """
     This methods performs the one-hot-encoding of the sequence.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param char_to_int: dict with the encoding. Keys are the aminoacid residues and values the corresponding int.
 
     :return: Dict form with the one-hot-encoding for the sequence.
@@ -366,17 +425,15 @@ def seq_hot_encoded(ProteinSequence : str, col: str, char_to_int: dict):
     integer_encoded = [char_to_int[char] for char in ProteinSequence]
     integer_encoded.append(len(char_to_int.keys()) - 1)
     hot_enc = to_categorical(integer_encoded)
-    res = {col : ProteinSequence}
-    res['One_hot_encoding'] = hot_enc[:len(hot_enc)-1]
-    return res
+    return hot_enc[:len(hot_enc) - 1]
 
-def seq_padded_hot(ProteinSequence : str, col: str, char_to_int: dict, int_to_char: dict, seq_len: int,
-                padding_truncating: str = 'post'):
+
+def seq_padded_hot(ProteinSequence: str, char_to_int: dict, int_to_char: dict, seq_len: int,
+                   padding_truncating: str = 'post'):
     """
     This methods performs the padding of the sequence and one-hot-encode the padded sequence.
 
     :param ProteinSequence: protein sequence to be encoded
-    :param col: name of the collum for the original protein sequences.
     :param char_to_int: dict with the encoding. Keys are the aminoacid residues and values the corresponding int.
     :param int_to_char: dict with the encoding. Keys are the corresponding int and the the values aminoacid residues.
     :param seq_len: The maximum length for all sequences. By default the length is 600 amino acids.
@@ -394,11 +451,8 @@ def seq_padded_hot(ProteinSequence : str, col: str, char_to_int: dict, int_to_ch
 
     hot_enc = to_categorical(integer_padded).tolist()
 
-    res = {col: ProteinSequence}
-    res['padded_sequence'] = pad_aa[:len(pad_aa)-1]
-    res['One_hot_encoding'] = hot_enc[:len(hot_enc)-1]
+    return (hot_enc[:len(hot_enc) - 1], pad_aa[:len(pad_aa) - 1])
 
-    return res
 
 zs = {
     'A': [0.24, -2.32, 0.60, -0.14, 1.30],  # A
