@@ -188,20 +188,20 @@ class Encoding:
         """
         encoding = pd.read_csv(self.path + '/adjuv_functions/features_functions/data/nlf.csv', index_col=0).to_dict()
 
-        # try:
-        if isinstance(encoding, dict):
-            with Parallel(n_jobs=n_jobs) as parallel:
-                res = parallel(delayed(seq_nlf_encoding)(seq, encoding) for seq in self.result[self.col])
-            self.result = self.result.assign(nlf=res)
-            return self.result
-        else:
-            raise Exception('The provided encoding is not valid')
-        # except:
-        #     raise Exception('Sequences not preprocessed. Run sequence preprocessing')
+        try:
+            if isinstance(encoding, dict):
+                with Parallel(n_jobs=n_jobs) as parallel:
+                    res = parallel(delayed(seq_nlf_encoding)(seq, encoding) for seq in self.result[self.col])
+                self.result = self.result.assign(nlf=res)
+                return self.result
+            else:
+                raise Exception('The provided encoding is not valid')
+        except:
+            raise Exception('Sequences not preprocessed. Run sequence preprocessing')
 
     def get_zscale(self, n_jobs: int = 4):
         """
-        This method encodes which amino acid of the sequence into a Z-scales. Each Z scale represent an amino-acid property:
+        This method encodes each amino acid of the sequence into a Z-scales. Each Z scale represent an amino-acid property:
         Z1: Lipophilicity
         Z2: Steric properties (Steric bulk/Polarizability)
         Z3: Electronic properties (Polarity / Charge)
@@ -378,7 +378,7 @@ def seq_nlf_encoding(ProteinSequence: str, encoding: dict):
 
 def seq_zscale_encoding(ProteinSequence: str, encoding):
     """
-    This method encodes which amino acid of the sequence into a Z-scales. Each Z scale represent an amino-acid property:
+    This method encodes each amino acid of the sequence into a Z-scales. Each Z scale represent an amino-acid property:
     Z1: Lipophilicity
     Z2: Steric properties (Steric bulk/Polarizability)
     Z3: Electronic properties (Polarity / Charge)
