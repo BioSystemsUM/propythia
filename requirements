@@ -1,10 +1,11 @@
 numpy
 pandas
 scipy
-sklearn
+scikit-learn
 biopython
 matplotlib
-Keras
-Tensorflow
-umap
-umap.plot
+keras
+tensorflow
+umap-learn
+seaborn
+umap-learn[plot]
