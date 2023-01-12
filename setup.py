@@ -20,8 +20,6 @@ setup(
         "matplotlib==3.6.2",
         "networkx==2.8.8",
         "numpy==1.23.5",
-        "pandas==1.5.2"
-        "scikit-image==0.19.3",
         "scikit-learn==1.2.0",
         "scipy==1.9.3",
         "seaborn==0.12.1",
