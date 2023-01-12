@@ -28,7 +28,8 @@ setup(
         "tqdm==4.64.1",
         "umap==0.1.1",
         "umap-learn[plot]==0.5.3",
-        "bokeh==2.4.3"
+        "bokeh==2.4.3",
+        "chardet==5.1.0"
     ],
     author='Ana Marta Sequeira',
     author_email='anamartasequeira94@gmail.com',
