@@ -24,7 +24,7 @@ setup(
         "scipy==1.9.3",
         "seaborn==0.12.1",
         "tensorboard==2.11.0",
-        "tensorflow==2.11.0",
+        "tensorflow==2.11.1",
         "tqdm==4.64.1",
         "umap==0.1.1",
         "umap-learn[plot]==0.5.3",
