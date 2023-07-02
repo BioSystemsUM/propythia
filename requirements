@@ -1,3 +1,15 @@
+numpy
+pandas
+scipy
+sklearn
+biopython
+matplotlib
+Keras
+Tensorflow
+umap
+umap.plot
+fair-esm
+transformers
 biopython==1.80
 holoviews==1.15.3
 joblib==1.2.0
