@@ -21,7 +21,7 @@ setup(
         "networkx==2.8.8",
         "numpy==1.23.5",
         "scikit-learn==1.2.0",
-        "scipy==1.9.3",
+        "scipy==1.10.0",
         "seaborn==0.12.1",
         "tensorboard==2.11.0",
         "tensorflow==2.11.1",
