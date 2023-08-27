@@ -1,4 +1,9 @@
-build/*
-__pycache__/*
-.idea/*
-dist/*
+propythia/example/described_in_papers/AMP/datasets/
+propythia/example/described_in_papers/enzyme/datasets/
+propythia/example/described_in_papers/comparison/transporter_substrate/
+propythia/example/described_in_papers/comparison/anticancer/
+propythia/example/described_in_papers/comparison/subcellular_location/
+propythia/example/described_in_papers/comparison/t_cell_epitopes/
+propythia/example/described_in_papers/comparison/ubq_sites/
+propythia/example/described_in_papers/comparison/results_comparison.csv
+

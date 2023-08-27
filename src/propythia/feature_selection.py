@@ -27,7 +27,7 @@ from sklearn.svm import SVC
 from sklearn.feature_selection import RFE, RFECV
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from propythia.adjuv_functions.ml_deep.utils import timer
+from .ml.utils import timer
 import numpy as np
 
 

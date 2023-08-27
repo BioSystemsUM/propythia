@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import umap
 import umap.plot
 from sklearn.manifold import TSNE
-from propythia.adjuv_functions.ml_deep.utils import timer
+from .ml.utils import timer
 sns.set()
 
 

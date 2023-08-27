@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "propythia"
+version = "3.0.0"
+authors = [
+  { name="Main Author: Ana Marta Sequeira", email="id9417@alunos.uminho.pt",
+   name = "Contributors: Miguel Barros, João Abreu, Ivan Gomes", email = "None"},
+]
+description = "Propythia - A platform for classification of peptides/proteins using machine and deep learning"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/BioSystemsUM/propythia"
+"Bug Tracker" = "https://github.com/BioSystemsUM/propythia/issues"

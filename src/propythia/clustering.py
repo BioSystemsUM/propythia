@@ -22,7 +22,7 @@ from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
-from propythia.adjuv_functions.ml_deep.utils import timer
+from .ml.utils import timer
 
 
 class Cluster:

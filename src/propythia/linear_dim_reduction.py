@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.lines import Line2D
 from sklearn.decomposition import PCA, SparsePCA, MiniBatchSparsePCA, TruncatedSVD
-from propythia.adjuv_functions.ml_deep.utils import timer
+from .ml.utils import timer
 
 sns.set()
 
